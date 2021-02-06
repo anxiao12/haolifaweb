@@ -89,11 +89,11 @@ export default {
             twoYearDate:
                 new Date().getFullYear() +
                 "-" +
-                this.addRezo(new Date().getMonth()),
+                this.addRezo(new Date().getMonth() + 1),
             threeYearDate:
                 new Date().getFullYear() +
                 "-" +
-                this.addRezo(new Date().getMonth()),
+                this.addRezo(new Date().getMonth() + 1),
             chartOneList: [],
             yearDate: new Date().getFullYear() + "",
             fourYearDate: new Date().getFullYear() + "",
