@@ -14,7 +14,9 @@ import {
   Dialog,
   Select,
   Option,
-  DatePicker
+  DatePicker,
+  Tabs,
+  TabPane,
 } from 'element-ui'
 import './common'
 
@@ -25,6 +27,8 @@ Vue.use(Select)
 Vue.use(Option)
 Vue.use(DatePicker)
 Vue.use(Radio)
+Vue.use(Tabs)
+Vue.use(TabPane)
 Vue.config.productionTip = false
 Vue.prototype.$echarts = echarts
 Vue.prototype.$http = axios

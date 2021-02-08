@@ -3,7 +3,14 @@
         <div class="flex-v-center tool-bar">
             <div class="flex-v-center search-bar" style="margin-right: 20px;">
                 <i class="icon f-20 c-8">search</i>
-                <input type="text" class="flex-item" v-model="filter.orderNo" @change="$refs.list.update(true);getOrderQty()" placeholder="订单号" style="width: 200px;">
+                <input
+                    type="text"
+                    class="flex-item"
+                    v-model="filter.orderNo"
+                    @change="$refs.list.update(true);getOrderQty()"
+                    placeholder="订单号"
+                    style="width: 200px;"
+                />
                 订单状态：
                 <select v-model="filter.orderStatus" class="f-14" @change="$refs.list.update(true);getOrderQty()">
                     <option value="-1">全部</option>
@@ -18,9 +25,30 @@
                 </select>
                 <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
                 开始时间:
-                <el-date-picker v-model="filter.startDate" type="date" value-format="yyyy-MM-dd" @change="$refs.list.update(true);getOrderQty()" :editable="false" placeholder="选择年月日"></el-date-picker>结束时间:
-                <el-date-picker v-model="filter.endDate" type="date" value-format="yyyy-MM-dd" @change="$refs.list.update(true);getOrderQty()" :editable="false" placeholder="选择年月日"></el-date-picker>
-                 <input type="text" class="flex-item" v-model="filter.demandName" @change="$refs.list.update(true);getOrderQty()" placeholder="需方" style="width: 200px;">
+                <el-date-picker
+                    v-model="filter.startDate"
+                    type="date"
+                    value-format="yyyy-MM-dd"
+                    @change="$refs.list.update(true);getOrderQty()"
+                    :editable="false"
+                    placeholder="选择年月日"
+                ></el-date-picker>结束时间:
+                <el-date-picker
+                    v-model="filter.endDate"
+                    type="date"
+                    value-format="yyyy-MM-dd"
+                    @change="$refs.list.update(true);getOrderQty()"
+                    :editable="false"
+                    placeholder="选择年月日"
+                ></el-date-picker>
+                <input
+                    type="text"
+                    class="flex-item"
+                    v-model="filter.demandName"
+                    @change="$refs.list.update(true);getOrderQty()"
+                    placeholder="需方"
+                    style="width: 200px;"
+                />
             </div>
             <div class="flex-item"></div>
         </div>
@@ -98,7 +126,11 @@
                                 订单合同:
                                 <a :href="info.orderContractUrl" style="margin-right: 15px;">下载</a>
                                 <a target="_blank" v-if="(info.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$') " :href="info.orderContractUrl">预览</a>
-                                <a target="_blank" v-if="!(info.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$')" :href="'http://view.officeapps.live.com/op/view.aspx?src='+ info.orderContractUrl">预览</a>
+                                <a
+                                    target="_blank"
+                                    v-if="!(info.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$')"
+                                    :href="'http://view.officeapps.live.com/op/view.aspx?src='+ info.orderContractUrl"
+                                >预览</a>
                                 <a href="javascript:;" @click="getPreCheckMater(info.orderNo)" style="margin-left: 15px;">核料清单</a>
                             </td>
                             <!-- <td colspan="6" class="b">
@@ -114,7 +146,11 @@
                             <td colspan="3" class="b">{{item.fileName}}</td>
                             <td colspan="12" class="b">
                                 <a target="_blank" v-if="(item.fileUrl).match('\.(pdf|jpe?g|png|bmp)$') " :href="item.fileUrl">预览</a>
-                                <a target="_blank" v-if="!(item.fileUrl).match('\.(pdf|jpe?g|png|bmp)$')" :href="'http://view.officeapps.live.com/op/view.aspx?src='+ item.fileUrl">预览</a>
+                                <a
+                                    target="_blank"
+                                    v-if="!(item.fileUrl).match('\.(pdf|jpe?g|png|bmp)$')"
+                                    :href="'http://view.officeapps.live.com/op/view.aspx?src='+ item.fileUrl"
+                                >预览</a>
                             </td>
                         </tr>
                         <tr>
@@ -210,7 +246,11 @@
                             <td colspan="6">{{accessory.fileUrl}}</td>
                             <td colspan="2">
                                 <a target="_blank" v-if="!(accessory.fileUrl).match('\.(doc|docx|xls|xlsx)$') " :href="accessory.fileUrl">预览</a>
-                                <a target="_blank" v-if="(accessory.fileUrl).match('\.(doc|docx|xls|xlsx)$')" :href="'http://view.officeapps.live.com/op/view.aspx?src='+ accessory.fileUrl">预览</a>
+                                <a
+                                    target="_blank"
+                                    v-if="(accessory.fileUrl).match('\.(doc|docx|xls|xlsx)$')"
+                                    :href="'http://view.officeapps.live.com/op/view.aspx?src='+ accessory.fileUrl"
+                                >预览</a>
                             </td>
                         </tr>
                         <tr>
@@ -358,7 +398,7 @@ export default {
                 deliverStatus: -1,
                 startDate: "",
                 endDate: "",
-                demandName:""
+                demandName: ""
             },
             info: {},
             // orderStatusList: {},
@@ -402,6 +442,7 @@ export default {
         this.getOrderQty();
         // this.getOrderStatusList();
     },
+    // activated(){}
     methods: {
         getAccessory(orderNo) {
             this.$http
@@ -490,9 +531,7 @@ export default {
         getProcess(item) {
             this.$http
                 .get(
-                    `/haolifa/flowInstance/flow/progress/?formNo=${
-                        item.orderNo
-                    }`
+                    `/haolifa/flowInstance/flow/progress/?formNo=${item.orderNo}`
                 )
                 .then(res => {
                     this.processList = res;

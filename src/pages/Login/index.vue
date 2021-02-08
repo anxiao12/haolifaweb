@@ -1,24 +1,24 @@
 <template>
     <div class="abs page-login flex-center" style="justify-content: normal;">
         <div class="t-mt5" style="text-align:center;">
-            <img src="../../assets/img/logo_title-1.png" style="width:80%;">
+            <img src="../../assets/img/logo_title-1.png" style="width:80%;" />
         </div>
         <div class="t-mt10">
             <div class="loginBox">
                 <h3 class="title">用户登录</h3>
                 <form>
                     <div class="t-inputWrap">
-                        <input type="text" v-model="username" autocomplete="off" placeholder="请输入用户名">
+                        <input type="text" v-model="username" autocomplete="off" placeholder="请输入用户名" />
                         <div class="inputIcon t-user"></div>
                     </div>
                     <div class="t-inputWrap">
-                        <input type="password" v-model="password" autocomplete="off" @keydown.enter.native="login" placeholder="请输入密码">
+                        <input type="password" v-model="password" autocomplete="off" @keydown.enter.native="login" placeholder="请输入密码" />
                         <div class="inputIcon t-password"></div>
                     </div>
                     <div class="t-inputWrap">
-                        <input type="text" class="inputCode" autocomplete="off" v-model="imageCode" @keyup.enter="login" placeholder="请输入验证码">
+                        <input type="text" class="inputCode" autocomplete="off" v-model="imageCode" @keyup.enter="login" placeholder="请输入验证码" />
                         <div class="codeImg">
-                            <img @click="getImageCode()" :src="authImg" alt>
+                            <img @click="getImageCode()" :src="authImg" alt />
                         </div>
                         <div class="inputIcon t-codeIcon"></div>
                     </div>
@@ -89,6 +89,8 @@ export default {
         }
     },
     created() {
+        //登录时清空tab
+        this.$store.commit("INITMENUTABS");
         this.getImageCode();
     },
     methods: {

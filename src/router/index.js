@@ -56,10 +56,22 @@ const router = createRouter()
 
 router.beforeEach((to, from, next) => {
   if (to.meta.open) {
+    if (to.path != "/login") {
+      store.commit("UPDATEMENUTABS", {
+        name: to.meta.title,
+        url: to.path
+      })
+    }
     next()
     return
   }
   if (store.state.account.menus) {
+    if (to.path != "/login") {
+      store.commit("UPDATEMENUTABS", {
+        name: to.meta.title,
+        url: to.path
+      })
+    }
     next()
     return
   }

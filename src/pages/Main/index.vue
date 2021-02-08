@@ -3,20 +3,27 @@
         <div class="top-bar bg-blue flex-v-center">
             <!-- <icon-btn class="c-f" @click="leftOpen=!leftOpen">menu</icon-btn> -->
             <router-link to="/" class="flex-v-center logo">
-                <img src="../../assets/img/logo_full_white.png" alt="LOGO">
+                <img src="../../assets/img/logo_full_white.png" alt="LOGO" />
                 <span class="f-20 c-f b w-320">好利信息化智能制造管控系统</span>
             </router-link>
             <span class="f-16 c-f" style="margin-left: 10px;">{{$route.meta.title}}</span>
             <div class="flex-item"></div>
-            <account/>
+            <account />
         </div>
         <div class="flex-item flex" style="width: 100%;overflow: hidden;">
             <div class="left scroll-y" v-if="leftOpen" style="background: #f8f8f8;">
-                <main-left/>
+                <main-left />
             </div>
-            <div class="flex-item relative" style="width: 0;">
+            <div class="flex-item relative" style="width: 0;overflow-y: auto;">
+                <div style="height:36px;background: #3a8ee630;">
+                    <el-tabs v-model="$store.state.tab.tabIndex" type="card" closable @tab-remove="removeTab" size="mini" @tab-click="tabClick">
+                        <el-tab-pane v-for="(item, i) in $store.state.tab.menuTabs" :key="i" :label="item.name" :name="item.url"></el-tab-pane>
+                    </el-tabs>
+                </div>
                 <transition name="slide-y">
-                    <router-view class="abs"/>
+                    <keep-alive>
+                        <router-view class="abs" style="top:36px" />
+                    </keep-alive>
                 </transition>
             </div>
         </div>
@@ -32,8 +39,22 @@ export default {
     components: { Account, MainLeft },
     data() {
         return {
-            leftOpen: true
+            leftOpen: true,
+            editableTabsValue: "/"
         };
+    },
+    created() {
+        console.log(this.$store.state.tab.menuTabs);
+    },
+    methods: {
+        removeTab(val) {
+            if (val == "/") return;
+            this.$store.commit("DELMENUTABS", val);
+        },
+        tabClick(obj) {
+            console.log(this.editableTabsValue);
+            this.$router.push({ path: obj.name });
+        }
     }
 };
 </script>
@@ -61,6 +82,9 @@ export default {
     }
     .w-320 {
         width: 320px;
+    }
+    .el-tabs--card > .el-tabs__header {
+        border: 0;
     }
 }
 </style>
