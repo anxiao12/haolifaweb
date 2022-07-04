@@ -1,2 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["node"],{"45ba":function(n,e,t){"use strict";t.r(e);var c=function(){var n=this,e=n.$createElement,t=n._self._c||e;return t("div",{staticClass:"page-node"},[n._v("\n  page-node\n")])},a=[],d={name:"page-node"},o=d,s=(t("d4d4"),t("5d22")),u=Object(s["a"])(o,c,a,!1,null,null,null);e["default"]=u.exports},cfc5:function(n,e,t){},d4d4:function(n,e,t){"use strict";t("cfc5")}}]);
-//# sourceMappingURL=node.03fedbee.js.map

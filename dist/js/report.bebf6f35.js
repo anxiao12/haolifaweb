@@ -1,2 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["report"],{"68a3":function(e,t,n){"use strict";n("b6ed")},a639:function(e,t,n){"use strict";n.r(t);var r=function(){var e=this,t=e.$createElement,n=e._self._c||t;return n("div",{staticClass:"page-report"},[e._v("\n  page-report\n")])},a=[],o={name:"page-report"},p=o,s=(n("68a3"),n("5d22")),c=Object(s["a"])(p,r,a,!1,null,null,null);t["default"]=c.exports},b6ed:function(e,t,n){}}]);
-//# sourceMappingURL=report.bebf6f35.js.map
