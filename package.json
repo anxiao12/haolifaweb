@@ -1,0 +1,47 @@
+{
+  "name": "haolifa",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "eslintConfig": {
+    "rules": {
+      "eslint-disable-next-line": false,
+      "generator-star-spacing": "off",
+      "no-tabs": "off",
+      "no-unused-vars": "off",
+      "no-console": "off",
+      "no-irregular-whitespace": "off",
+      "no-debugger": "off",
+      "indent": ["off", 2]
+    }
+  },
+  "dependencies": {
+    "@tinymce/tinymce-vue": "^3.0.1",
+    "axios": "^0.18.0",
+    "babel-polyfill": "^6.26.0",
+    "element-ui": "^2.15.7",
+    "formdata-polyfill": "^3.0.12",
+    "module": "^1.2.5",
+    "moment": "^2.22.2",
+    "tinymce": "^5.1.5",
+    "vue": "^2.5.17",
+    "vue-router": "^3.1.1",
+    "vuex": "^3.0.1"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.0.0",
+    "@vue/cli-plugin-eslint": "^3.0.0",
+    "@vue/cli-service": "^3.0.0",
+    "@vue/eslint-config-standard": "^3.0.0",
+    "babel-plugin-component": "^1.1.1",
+    "echarts": "^4.4.0",
+    "less": "^3.0.4",
+    "less-loader": "^4.1.0",
+    "vue-template-compiler": "^2.5.17",
+    "worker-loader": "^2.0.0"
+  }
+}
