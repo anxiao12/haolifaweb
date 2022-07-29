@@ -16,7 +16,10 @@
       "no-console": "off",
       "no-irregular-whitespace": "off",
       "no-debugger": "off",
-      "indent": ["off", 2]
+      "indent": [
+        "off",
+        2
+      ]
     }
   },
   "dependencies": {
@@ -39,6 +42,8 @@
     "@vue/eslint-config-standard": "^3.0.0",
     "babel-plugin-component": "^1.1.1",
     "echarts": "^4.4.0",
+    "eslint": "^8.20.0",
+    "eslint-config-standard": "^17.0.0",
     "less": "^3.0.4",
     "less-loader": "^4.1.0",
     "vue-template-compiler": "^2.5.17",

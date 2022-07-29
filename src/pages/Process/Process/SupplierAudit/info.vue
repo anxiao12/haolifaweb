@@ -2,7 +2,7 @@
     <div class="page-supplier-info abs scroll-y">
         <div class="form-content">
             <div class="b f-18 flex-v-center" style="margin-bottom: 20px;">
-                <icon-btn class="mr-15" @click="$router.back()">arrow_back</icon-btn>
+                <icon-btn class="mr-15" @click="$store.commit('DELMENUTABS', '/process/supplier/'+$route.params.id);$router.back()">arrow_back</icon-btn>
                 <div class="flex-item">供应商详情</div>
                 <router-link :to="'/supplier/edit?id='+$route.params.id">
                     <icon-btn small v-tooltip="'编辑'">edit</icon-btn>
@@ -260,6 +260,9 @@ export default {
         };
     },
     created() {
+        this.getInfo();
+    },
+    activated() {
         this.getInfo();
     },
     methods: {

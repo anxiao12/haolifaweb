@@ -3,3 +3,4 @@ babel.config.js
 src/components/imageView/lib/*.js
 src/common/
 public/
+src/

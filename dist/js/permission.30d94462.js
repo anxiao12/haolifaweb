@@ -1,2 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["permission"],{"3f85":function(n,e,s){"use strict";s("d709")},"6985b":function(n,e,s){"use strict";s.r(e);var i=function(){var n=this,e=n.$createElement,s=n._self._c||e;return s("div",{staticClass:"page-permission"},[n._v("\n  page-permission\n")])},t=[],a={name:"page-permission"},c=a,o=(s("3f85"),s("cba8")),p=Object(o["a"])(c,i,t,!1,null,null,null);e["default"]=p.exports},d709:function(n,e,s){}}]);
-//# sourceMappingURL=permission.30d94462.js.map

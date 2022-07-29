@@ -45,7 +45,7 @@
         <layer v-if="layer" :title="form.id ?'编辑':'新增' " width="70%">
             <div class="layer-text" style="padding-bottom: 50px;">
                 <div class="flex">
-                    <select-box v-model="form.departName" class="flex-item mr-20" hint="必填" :list="deptList" label="部门名称"></select-box>
+                    <input-box v-model="form.departName"  @click="deptFlag=true" class="flex-item mr-20" label="岗位名称"></input-box>
                     <select-box v-model="form.workType" class="flex-item mr-20" hint="必填" :list="typeList" label="工种类别"></select-box>
                 </div>
                 <div class="flex">
@@ -58,14 +58,20 @@
                 <el-button class="mr-20" size="mini" @click="close">关闭</el-button>
             </div>
         </layer>
+        <layer v-if="deptFlag"  width="50%">
+            <div class="layer-text" style="padding-bottom: 50px;">
+                <dept-select @selectClick="selectClick"></dept-select>
+            </div>
+        </layer>
     </div>
 </template>
 
 <script>
 import DataList from "@/components/datalist";
+import DeptSelect from "@/components/deptSelect";
 export default {
     name: "jiaoxiaogongshi-list",
-    components: { DataList },
+    components: { DataList ,DeptSelect},
     data() {
         return {
             filter: {
@@ -88,13 +94,20 @@ export default {
                 { text: "管理", value: "管理" }
             ],
             loading: false,
-            deptList: []
+            deptList: [],
+            deptFlag:false
         };
     },
     mounted() {
         this.getDeptList();
     },
     methods: {
+        selectClick(data){
+            if(data){
+                this.form.departName = data.name;
+            }
+            this.deptFlag = false;
+        },
         flush() {
             this.filter = {
                 departName: "",

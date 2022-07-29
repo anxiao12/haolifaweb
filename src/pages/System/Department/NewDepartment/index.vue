@@ -19,6 +19,10 @@
         </div>
         <layer v-if="layer" :title="form.id ? '编辑部门' : '新增部门'" width="400px">
             <div class="layer-text">
+                <!-- <select-box v-model="name1" :list="allDeptList" @change="aa" label="父部门名称"></select-box> -->
+                <el-select class="mycs" style="width:100%" v-model="form.pid" placeholder="父部门名称">
+                    <el-option v-for="(obj,j) in allDeptList" :key="j" :label="obj.text" :value="obj.value"></el-option>
+                </el-select>
                 <input-box v-model="form.deptName" label="部门名称"></input-box>
                 <input-box v-model="form.deptNo" label="部门编号"></input-box>
                 <input-box v-model="form.description" label="备注" multi-line></input-box>
@@ -50,16 +54,22 @@ export default {
                 deptName: "",
                 description: "",
                 deptNo: "",
-                pid: 0
-            }
+                pid: ""
+            },
+            allDeptList:[],
         };
     },
     created() {
         this.getList();
+        this.getDeptList()
+    },
+    activated(){
+        this.getDeptList()
     },
     methods: {
         flush() {
             this.getList();
+            this.getDeptList()
         },
         getList() {
             this.$http
@@ -71,16 +81,34 @@ export default {
                     this.$toast(e.message || e.msg);
                 });
         },
+        getDeptList(){
+            this.$http
+           .get(`/haolifa/dept/list`)
+                .then(res => {
+                    this.allDeptList = res.map(item => {
+                        return {
+                            text: item.deptName,
+                            value: item.id+''
+                        };
+                    });
+                    console.log(this.allDeptList)
+                })
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
+        },
         nodeClick() {},
         add(data) {
             this.layer = true;
             if (data) {
                 this.form.pid = data.id;
+                console.log(this.form.pid)
             } else {
-                this.form.pid = 0;
+                this.form.pid = "";
             }
         },
         edit(item) {
+            console.log(item);
             this.layer = true;
             this.form.id = item.id;
             this.form.pid = item.parentId;
@@ -105,6 +133,7 @@ export default {
                         .then(res => {
                             this.$toast("删除成功");
                             this.getList();
+                            this.getDeptList();
                         })
                         .catch(e => {
                             this.$toast(e.message || e.msg);
@@ -113,7 +142,7 @@ export default {
             });
         },
         cancel() {
-            this.form.id = this.form.deptName = this.form.description = this.form.deptNo =
+            this.form.id =this.form.pid = this.form.deptName = this.form.description = this.form.deptNo =
                 "";
             this.layer = false;
         },
@@ -123,6 +152,7 @@ export default {
             this.$http[method]("/haolifa/dept", form)
                 .then(res => {
                     this.getList();
+                     this.getDeptList();
                     this.$toast("保存成功");
                     this.cancel();
                     this.form.id = this.form.deptName = this.form.description = this.deptNo =
@@ -150,4 +180,11 @@ export default {
     font-size: 14px;
     padding-right: 8px;
 }
+.mycs {
+        input {
+            border: 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+            border-radius: 0;
+        }
+    }
 </style>

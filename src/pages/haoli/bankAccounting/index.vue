@@ -167,6 +167,7 @@
                         :list="acceptList"
                         label="收款类别"
                     ></select-box>
+
                     <select-box
                         v-model="form.deptId"
                         class="flex-item mr-20"

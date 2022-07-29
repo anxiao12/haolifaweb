@@ -1,5 +1,6 @@
 module.exports = {
   baseUrl: '/',
+  lintOnSave:false,
   devServer: {
     port: 8082,
     proxy: {
