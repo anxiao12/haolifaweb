@@ -18,7 +18,7 @@
                 <select-box class="flex-item mr-20" :list="busTypeList" v-model="form.busType" label="类别"></select-box>
             </div>
             <div class="flex">
-                <input-box v-model="form.materialGraphName" class="flex-item mr-20" label="零件名称"></input-box>
+                <input-box v-model="form.materialGraphName" class="flex-item mr-20" :disabled="true" label="零件名称"></input-box>
                 <input-box v-model="form.model" class="flex-item mr-20" label="型号"></input-box>
                 <input-box v-model="form.specifications" class="flex-item mr-20" label="规格"></input-box>
                 <input-box v-model="form.number" class="flex-item mr-20" label="数量"></input-box>
@@ -106,9 +106,7 @@ export default {
 
                 this.$http
                     .get(
-                        `/haolifa/material/getListByClassifyId/${
-                            this.materialClassify[0].value
-                        }`
+                        `/haolifa/material/getListByClassifyId/${this.materialClassify[0].value}`
                     )
                     .then(res => {
                         this.materialGraphNoList = res.map(item => {
@@ -152,9 +150,7 @@ export default {
         getBatch() {
             this.$http
                 .get(
-                    `/haolifa/store-room/material-batch-nos?graphNo=${
-                        this.form.materialGraphNo
-                    }`
+                    `/haolifa/store-room/material-batch-nos?graphNo=${this.form.materialGraphNo}`
                 )
                 .then(res => {
                     this.batchNumberList = res.map(item => {
@@ -185,9 +181,7 @@ export default {
                         }
                         this.$http
                             .get(
-                                `/haolifa/material/getListByClassifyId/${
-                                    this.classifyId
-                                }`
+                                `/haolifa/material/getListByClassifyId/${this.classifyId}`
                             )
                             .then(res => {
                                 this.materialGraphNoList = res.map(item => {

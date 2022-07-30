@@ -7,14 +7,7 @@
             <button class="btn btn-small" @click="totask">待办事项</button>
             <div class="flex-v-center search-bar" style="margin-right: 20px;margin-left: 80px;">
                 <i class="icon f-20 c-8">search</i>
-                <input
-                    type="text"
-                    class="flex-item"
-                    v-model="filter.formNo"
-                    @change="$refs.list.update(true)"
-                    placeholder="订单号"
-                    style="width: 200px;"
-                >
+                <input type="text" class="flex-item" v-model="filter.formNo" @change="$refs.list.update(true)" placeholder="订单号" style="width: 200px;" />
             </div>
         </div>
         <!-- <div class="flex-v-center search-bar" style="margin-right: 20px;"> -->
@@ -23,18 +16,14 @@
             <data-list ref="list" method="get" :page-size="15" :param="filter" url="/haolifa/todo">
                 <tr slot="header">
                     <th style="width: 60px;">序号</th>
+                    <th>操作</th>
                     <th>发起人</th>
                     <th>流程</th>
                     <th>订单号</th>
                     <th>发起时间</th>
-                    <th>操作</th>
                 </tr>
                 <template slot="item" slot-scope="{ item, index }">
                     <td>{{index}}</td>
-                    <td>{{item.createUserRealName}}</td>
-                    <td>{{item.flowName}}</td>
-                    <td>{{item.formNo}}</td>
-                    <td>{{item.createTime}}</td>
                     <td>
                         <a
                             v-if="item.flowId == 1 || item.flowId == 6"
@@ -93,6 +82,10 @@
                             @click="$router.push({path:'/jkfkEntrust',query:{instanceId:item.instanceId,stepId:item.stepId}})"
                         >详情</a>
                     </td>
+                    <td>{{item.createUserRealName}}</td>
+                    <td>{{item.flowName}}</td>
+                    <td>{{item.formNo}}</td>
+                    <td>{{item.createTime}}</td>
                 </template>
             </data-list>
         </div>
