@@ -234,7 +234,7 @@ export default {
                     {
                         name: "自控物资管理",
                         url: "/zikongwuzhiList",
-                        id: "ljdck"
+                        id: "zkwzgl"
                     },
                     {
                         name: "零星物资管理",

@@ -1,0 +1,2 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["report"],{a639:function(e,n,t){"use strict";t.r(n);var r=function(){var e=this,n=e._self._c;return n("div",{staticClass:"page-report"},[e._v("\n  page-report\n")])},a=[],c={name:"page-report"},o=c,p=(t("bdac"),t("2877")),s=Object(p["a"])(o,r,a,!1,null,null,null);n["default"]=s.exports},bdac:function(e,n,t){"use strict";t("e422")},e422:function(e,n,t){}}]);
+//# sourceMappingURL=report.ac60b7c2.js.map

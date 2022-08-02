@@ -45,7 +45,7 @@
         <layer v-if="layer" :title="form.id ?'编辑':'新增' " width="70%">
             <div class="layer-text" style="padding-bottom: 50px;">
                 <div class="flex">
-                    <input-box v-model="form.departName"  @click="deptFlag=true" class="flex-item mr-20" label="岗位名称"></input-box>
+                    <input-box v-model="form.departName"  @click="deptFlag=true" class="flex-item mr-20" label="部门名称"></input-box>
                     <select-box v-model="form.workType" class="flex-item mr-20" hint="必填" :list="typeList" label="工种类别"></select-box>
                 </div>
                 <div class="flex">

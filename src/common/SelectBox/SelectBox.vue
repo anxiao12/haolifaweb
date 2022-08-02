@@ -16,7 +16,7 @@
         </div>
 
         <transition name="slide-y">
-            <ul class="select-option scroll-y" v-if="show">
+            <ul class="select-option scroll-y" v-show="show">
                 <li
                     v-for="(item,i) in (filterable ? filterList : list)"
                     :class="{ 'active': item[optionText] === model, 'disabled': item[optionDisabled] }"
@@ -239,7 +239,7 @@ export default {
         border-radius: 2px;
         box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.06),
             0 3px 8px rgba(0, 0, 0, 0.15);
-        z-index: 200;
+        z-index: 300;
     }
     .select-option li {
         padding: 5px 15px;
