@@ -485,7 +485,7 @@ export default {
                 .then(res => {
                     this.loading = false;
                     this.layer = false;
-                    this.$refs.list.update(true);
+                    this.$refs.list.update();
                 })
                 .catch(e => {
                     this.loading = false;

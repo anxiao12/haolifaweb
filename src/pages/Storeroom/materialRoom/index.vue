@@ -184,7 +184,7 @@ export default {
                     this.$toast("入库成功");
                     this.storeRoom.layerShow = false;
                     this.loading = false;
-                    this.$refs.list.update(true);
+                    this.$refs.list.update();
                 })
                 .catch(e => {
                     this.loading = false;

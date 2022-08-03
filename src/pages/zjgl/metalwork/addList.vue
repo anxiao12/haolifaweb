@@ -285,6 +285,27 @@
                 <btn flat color="#008eff" @click="layer=false">关闭</btn>
             </div>
         </layer>
+        <layer v-if="layerTable" title="任务分配" width="90%">
+            <div class="layer-text" style="padding-bottom: 50px;">
+                <el-table :data="tableData" v-loading="tableLoading" tooltip-effect="dark" style="width: 100%">
+                    <el-table-column prop="orderNo" label="订单号"></el-table-column>
+                    <el-table-column prop="postCapability" label="岗位能力名称"></el-table-column>
+                    <el-table-column prop="postName" label="岗位(工序)名称"></el-table-column>
+                    <el-table-column prop="postCode" label="岗位(工序)代码"></el-table-column>
+                    <el-table-column label="人员选择">
+                        <template slot-scope="scope">
+                            <el-select size="mini" multiple v-model="form.payOrderUserRelationProcedureList[scope.row.number].userId" clearable>
+                                <el-option v-for="(item,i) in scope.row.userList" :key="i" :label="item.userName" :value="item.userId"></el-option>
+                            </el-select>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </div>
+            <div class="layer-btns">
+                <el-button class="mr-20" size="mini" :loading="saveLoading" type="primary" @click="saveSelect">保存</el-button>
+                <el-button class="mr-20" size="mini" @click="layerTable=false">关闭</el-button>
+            </div>
+        </layer>
     </div>
 </template>
 
@@ -363,7 +384,13 @@ export default {
             entrust: {},
             items: [],
             fileList: [],
-            layer: false
+            layer: false,
+            saveLoading:false,
+            layerTable : false,
+            tableLoading:false,
+            tableData:[],
+            form: { payOrderUserRelationProcedureList: [] },
+
         };
     },
     methods: {
@@ -483,6 +510,10 @@ export default {
             });
         },
         addInspectHistory(item) {
+
+            //弹出分配任务
+            this.updateTask(item.entrustNo);
+
             this.resetInspectHistoryAdd();
             this.fileList = [];
             this.inspectHistoryAdd.batchNumber = item.batchNumber;
@@ -497,6 +528,50 @@ export default {
             this.entrustNo = item.entrustNo;
             this.getInfo();
             this.getInspectHistory();
+        },
+        updateTask(orderNo) {
+            this.layerTable = true;
+            this.tableLoading = true;
+            this.tableData = [];
+            this.form = { payOrderUserRelationProcedureList: [] };
+            this.$http
+                .get(
+                    `/haolifa/pay-working-procedure/assignTask?type=3&orderNo=` +
+                        orderNo
+                )
+                .then(res => {
+                    this.tableLoading = false;
+                    if (!res) {
+                        return;
+                    }
+                    this.tableData = res;
+                    this.tableData.map((item, index) => {
+                        item.number = index;
+                        this.form.payOrderUserRelationProcedureList.push({
+                            id: item.id,
+                            userId: item.userId ? item.userId : [],
+                            productId: item.productId,
+                            orderId: item.orderNo
+                        });
+                    });
+                })
+                .catch(e => {
+                    this.tableLoading = false;
+                    this.$toast(e.msg || e.message);
+                });
+        },
+        saveSelect() {
+            this.saveLoading = true;
+            this.$http
+                .post(`/haolifa/pay-working-procedure/saveTask`, this.form)
+                .then(res => {
+                    this.layerTable = false;
+                    this.saveLoading = false;
+                    this.$toast("保存成功");
+                })
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
         },
         updateEntrustStatus(item) {
             this.$http

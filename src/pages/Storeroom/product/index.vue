@@ -256,7 +256,7 @@ export default {
                     this.loading = false;
                     this.form.layerShow = false;
                     this.$toast("出库成功");
-                    this.$refs.list.update(true);
+                    this.$refs.list.update();
                 })
                 .catch(e => {
                     this.loading = false;
