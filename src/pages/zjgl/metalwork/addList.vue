@@ -189,7 +189,7 @@
                 </div>
                 <div class="layer-btns">
                     <btn flat @click="completeLayer=false">取消</btn>
-                    <el-button size="mini" :loading="loading" type="primary" @click="complete">保存</el-button>
+                    <el-button size="mini" :loading="loading" type="primary" @click="saveComlete">保存</el-button>
                 </div>
             </div>
         </layer>
@@ -312,6 +312,7 @@
 <script>
 import DataList from "@/components/datalist";
 import fileToBase64 from "@/utils/fileToBase64";
+import Toast from "../../../common/Toast";
 
 export default {
     name: "metalwork-list",
@@ -449,6 +450,16 @@ export default {
                     this.$toast(e.msg || e.message);
                 });
         },
+        saveComlete(){
+            console.log(this.inspectHistoryAdd.qualifiedNumber)
+            if(!this.inspectHistoryAdd.qualifiedNumber){
+                this.$toast("请输入合格数量");
+                return;
+            }
+             //弹出分配任务
+            this.updateTask(this.entrustNo);
+        },
+        //添加质检保存
         complete() {
             let save = {
                 handlingSuggestion: this.inspectHistoryAdd.handlingSuggestion,
@@ -468,6 +479,7 @@ export default {
                 reasonList: this.inspectHistoryAdd.reasonList
             };
             this.loading = true;
+
             this.$http
                 .post(`/haolifa/material-inspect/history/save`, save)
                 .then(res => {
@@ -511,8 +523,6 @@ export default {
         },
         addInspectHistory(item) {
 
-            //弹出分配任务
-            this.updateTask(item.entrustNo);
 
             this.resetInspectHistoryAdd();
             this.fileList = [];
@@ -551,7 +561,9 @@ export default {
                             id: item.id,
                             userId: item.userId ? item.userId : [],
                             productId: item.productId,
-                            orderId: item.orderNo
+                            orderId: item.orderNo,
+                            isCheckFlag:"",
+                            qualifiedNumber:null
                         });
                     });
                 })
@@ -561,13 +573,19 @@ export default {
                 });
         },
         saveSelect() {
-            this.saveLoading = true;
+            // this.saveLoading = true;
+            this.form.payOrderUserRelationProcedureList.map(item=>{
+                if(item.userId.length==1){
+                    item.qualifiedNumber = this.inspectHistoryAdd.qualifiedNumber;
+                    item.isCheckFlag = 1
+                }
+            })
             this.$http
                 .post(`/haolifa/pay-working-procedure/saveTask`, this.form)
                 .then(res => {
                     this.layerTable = false;
                     this.saveLoading = false;
-                    this.$toast("保存成功");
+                    this.complete()
                 })
                 .catch(e => {
                     this.$toast(e.msg || e.message);
