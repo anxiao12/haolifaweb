@@ -168,7 +168,7 @@
                     <el-table-column prop="postCode" label="岗位(工序)代码"></el-table-column>
                     <el-table-column label="人员选择">
                         <template slot-scope="scope">
-                            <el-select size="mini" v-model="form.payOrderUserRelationProcedureList[scope.row.number].userId" clearable>
+                            <el-select size="mini" multiple v-model="form.payOrderUserRelationProcedureList[scope.row.number].userId" clearable>
                                 <el-option v-for="(item,i) in scope.row.userList" :key="i" :label="item.userName" :value="item.userId"></el-option>
                             </el-select>
                         </template>
@@ -263,7 +263,7 @@ export default {
                         item.number = index;
                         this.form.payOrderUserRelationProcedureList.push({
                             id: item.id,
-                            userId: item.userId ? item.userId : "",
+                            userId: item.userId ? item.userId : [],
                             productId: item.productId,
                             orderId: item.orderNo
                         });

@@ -546,7 +546,7 @@ export default {
             this.form = { payOrderUserRelationProcedureList: [] };
             this.$http
                 .get(
-                    `/haolifa/pay-working-procedure/assignTask?type=3&orderNo=` +
+                    `/haolifa/pay-working-procedure/assignTaskInspect?type=3&orderNo=` +
                         orderNo
                 )
                 .then(res => {
@@ -563,7 +563,7 @@ export default {
                             productId: item.productId,
                             orderId: item.orderNo,
                             isCheckFlag:"",
-                            qualifiedNumber:null
+                            qualifiedNumber:null,
                         });
                     });
                 })
