@@ -40,6 +40,7 @@
                 <div class="flex-item mt-10 mb-10">
                     <span class="f-20">审批栏</span>
                     <span class="f-10 ml-20">当前节点:{{data.dealStep.stepName}}</span>
+                    <btn class="ml-10" v-if="dealStepId == 51" @click="addJishu">添加技术清单</btn>
                 </div>
                 <div class="node">
                     <div>
@@ -49,13 +50,10 @@
                                 <tr>
                                     <td style="width: 2%;"></td>
                                     <td style="width: 7%;"></td>
-                                    <td style="width: 7%;"></td>
-                                    <td style="width: 7%;"></td>
-                                    <td style="width: 7%;"></td>
-                                    <td style="width: 7%;"></td>
-                                    <td style="width: 7%;"></td>
-                                    <td style="width: 7%;"></td>
-                                    <td style="width: 7%;"></td>
+                                    <td style="width: 5%;"></td>
+                                    <td style="width: 5%;"></td>
+                                    <td style="width: 5%;"></td>
+                                    <td style="width: 5%;"></td>
                                     <td style="width: 6%;"></td>
                                     <td style="width: 6%;"></td>
                                     <td style="width: 6%;"></td>
@@ -63,9 +61,14 @@
                                     <td style="width: 6%;"></td>
                                     <td style="width: 6%;"></td>
                                     <td style="width: 6%;"></td>
+                                    <td style="width: 6%;"></td>
+                                    <td style="width: 6%;"></td>
+                                    <td style="width: 6%;"></td>
+                                    <td style="width: 6%;"></td>
+                                    <td style="width: 5%;"></td>
                                 </tr>
                                 <tr>
-                                    <td colspan="16" class="b">技术清单1</td>
+                                    <td colspan="18" class="b">技术清单</td>
                                 </tr>
 
                                 <tr>
@@ -76,9 +79,10 @@
                                     <td colspan="1" rowspan="2">数量</td>
                                     <td colspan="1" rowspan="2">上法兰标准</td>
                                     <td colspan="3" rowspan="1">上法兰尺寸</td>
-                                    <td colspan="4" rowspan="1">出轴尺寸</td>
+                                    <td colspan="5" rowspan="1">出轴尺寸</td>
                                     <td colspan="1" rowspan="2">静扭矩</td>
                                     <td colspan="1" rowspan="2">执行器型号</td>
+                                    <td colspan="1" rowspan="2">备注</td>
                                     <td colspan="1" rowspan="2">操作</td>
                                 </tr>
                                 <tr>
@@ -88,173 +92,70 @@
                                     <td colspan="1" rowspan="1">出轴型式</td>
                                     <td colspan="1" rowspan="1">出轴长度</td>
                                     <td colspan="1" rowspan="1">轴图号</td>
+                                    <td colspan="1" rowspan="1">连接套</td>
                                     <td colspan="1" rowspan="1">过渡盘</td>
                                 </tr>
                                 <tr v-for="(val,index) in technicalRequire" :key="index">
                                     <td colspan="1">{{index+1}}</td>
                                     <td colspan="1">
-                                        <input-box type="text" v-model="val.name"></input-box>
+                                        <input-box type="text" v-model="val.productName"></input-box>
                                     </td>
                                     <td colspan="1">
-                                        <input-box type="text" v-model="val.xinhao"></input-box>
+                                        <input-box type="text" v-model="val.productModel"></input-box>
                                     </td>
                                     <td colspan="1">
-                                        <input-box type="text" v-model="val.guige"></input-box>
+                                        <input-box type="text" v-model="val.specifications"></input-box>
                                     </td>
                                     <td colspan="1">
-                                        <input-box type="text" v-model="val.num"></input-box>
+                                        <input-box type="text" v-model="val.productNum"></input-box>
                                     </td>
                                     <td colspan="1">
-                                        <input-box type="text" v-model="val.biaozhun"></input-box>
+                                        <input-box type="text" v-model="val.upperFlangeStandard	"></input-box>
                                     </td>
                                     <td colspan="1">
-                                        <input-box type="text" v-model="val.lianjiek"></input-box>
+                                        <input-box type="text" v-model="val.connectingHole"></input-box>
                                     </td>
                                     <td colspan="1">
-                                        <input-box type="text" v-model="val.jiaodu"></input-box>
+                                        <input-box type="text" v-model="val.angle"></input-box>
                                     </td>
                                     <td colspan="1">
-                                        <input-box type="text" v-model="val.zhongxinju"></input-box>
+                                        <input-box type="text" v-model="val.centerDistance"></input-box>
                                     </td>
                                     <td colspan="1">
-                                        <input-box type="text" v-model="val.xinshi"></input-box>
+                                        <input-box type="text" v-model="val.outputShaftType"></input-box>
                                     </td>
                                     <td colspan="1">
-                                        <input-box type="text" v-model="val.length"></input-box>
+                                        <input-box type="text" v-model="val.outputShaftLength"></input-box>
                                     </td>
                                     <td colspan="1">
-                                        <input-box type="text" v-model="val.tuhao"></input-box>
+                                        <input-box type="text" v-model="val.axisDrawingNo"></input-box>
                                     </td>
                                     <td colspan="1">
-                                        <input-box type="text" v-model="val.guodupan"></input-box>
+                                        <input-box type="text" v-model="val.connectingSleeve"></input-box>
                                     </td>
                                     <td colspan="1">
-                                        <input-box type="text" v-model="val.jinniuju"></input-box>
+                                        <input-box type="text" v-model="val.transitionPlate"></input-box>
                                     </td>
                                     <td colspan="1">
-                                        <input-box type="text" v-model="val.jishuxinhao"></input-box>
+                                        <input-box type="text" v-model="val.staticTorque"></input-box>
+                                    </td>
+                                    <td colspan="1">
+                                        <input-box type="text" v-model="val.actuatorModel"></input-box>
+                                    </td>
+                                    <td colspan="1">
+                                        <input-box type="text" v-model="val.remark"></input-box>
                                     </td>
                                     <td colspan="1">
                                         <el-button size="mini" icon="el-icon-circle-plus" type="primary" @click="addTechnicalRequire" circle></el-button>
-                                        <el-button v-if="updateInfo.technicalRequire.length>1" style="margin-left:0" size="mini" icon="el-icon-delete" type="danger" @click="delTechnicalRequire(index)" circle></el-button>
+                                        <el-button style="margin-left:0" size="mini" icon="el-icon-delete" type="danger" @click="delTechnicalRequire(index)" circle></el-button>
                                     </td>
                                 </tr>
                             </table>
                         </div>
+                        <div  v-if="dealStepId == 51" class="mt-20">
+                        <el-button size="mini"   type="primary" @click="saveJishu" :loading="jishuLoading">保存技术清单</el-button>
+                        </div>
 
-                        <!--<div class="flex" v-if="dealStepId == 52 || dealStepId == 53">-->
-                        <!--&lt;!&ndash; <input-box-->
-                        <!--:disabled="true"-->
-                        <!--v-model="updateInfo.technicalRequire"-->
-                        <!--:multi-line="true"-->
-                        <!--class="flex-item"-->
-                        <!--label="技术清单说明"-->
-                        <!--style="margin-right: 20px;"-->
-                        <!--&gt;</input-box>&ndash;&gt;-->
-                        <!--<table class="f-14 order-info">-->
-                        <!--<tr>-->
-                        <!--<td style="width: 2%;"></td>-->
-                        <!--<td style="width: 7%;"></td>-->
-                        <!--<td style="width: 7%;"></td>-->
-                        <!--<td style="width: 7%;"></td>-->
-                        <!--<td style="width: 7%;"></td>-->
-                        <!--<td style="width: 7%;"></td>-->
-                        <!--<td style="width: 7%;"></td>-->
-                        <!--<td style="width: 7%;"></td>-->
-                        <!--<td style="width: 7%;"></td>-->
-                        <!--<td style="width: 6%;"></td>-->
-                        <!--<td style="width: 6%;"></td>-->
-                        <!--<td style="width: 6%;"></td>-->
-                        <!--<td style="width: 6%;"></td>-->
-                        <!--<td style="width: 6%;"></td>-->
-                        <!--<td style="width: 6%;"></td>-->
-                        <!--<td style="width: 6%;"></td>-->
-                        <!--</tr>-->
-                        <!--<tr>-->
-                        <!--<td colspan="15" class="b">技术清单</td>-->
-                        <!--</tr>-->
-
-                        <!--<tr>-->
-                        <!--<td colspan="1" rowspan="2">序号</td>-->
-                        <!--<td colspan="1" rowspan="2">产品名称</td>-->
-                        <!--<td colspan="1" rowspan="2">型号</td>-->
-                        <!--<td colspan="1" rowspan="2">规格</td>-->
-                        <!--<td colspan="1" rowspan="2">数量</td>-->
-                        <!--<td colspan="1" rowspan="2">上法兰标准</td>-->
-                        <!--<td colspan="3" rowspan="1">上法兰尺寸</td>-->
-                        <!--<td colspan="4" rowspan="1">出轴尺寸</td>-->
-                        <!--<td colspan="1" rowspan="2">静扭矩</td>-->
-                        <!--<td colspan="1" rowspan="2">执行器型号</td>-->
-                        <!--<td colspan="1" rowspan="2">操作</td>-->
-                        <!--</tr>-->
-                        <!--<tr>-->
-                        <!--<td colspan="1" rowspan="1">连接孔</td>-->
-                        <!--<td colspan="1" rowspan="1">角度</td>-->
-                        <!--<td colspan="1" rowspan="1">中心距</td>-->
-                        <!--<td colspan="1" rowspan="1">出轴型式</td>-->
-                        <!--<td colspan="1" rowspan="1">出轴长度</td>-->
-                        <!--<td colspan="1" rowspan="1">轴图号</td>-->
-                        <!--<td colspan="1" rowspan="1">过渡盘</td>-->
-                        <!--</tr>-->
-                        <!--<tr v-for="(val,index) in technicalRequire" :key="index">-->
-                        <!--<td colspan="1">{{index+1}}</td>-->
-                        <!--<td colspan="1">-->
-                        <!--<input-box type="text" v-model="val.name"></input-box>-->
-                        <!--</td>-->
-                        <!--<td colspan="1">-->
-                        <!--<input-box type="text" v-model="val.xinhao"></input-box>-->
-                        <!--</td>-->
-                        <!--<td colspan="1">-->
-                        <!--<input-box type="text" v-model="val.guige"></input-box>-->
-                        <!--</td>-->
-                        <!--<td colspan="1">-->
-                        <!--<input-box type="text" v-model="val.num"></input-box>-->
-                        <!--</td>-->
-                        <!--<td colspan="1">-->
-                        <!--<input-box type="text" v-model="val.biaozhun"></input-box>-->
-                        <!--</td>-->
-                        <!--<td colspan="1">-->
-                        <!--<input-box type="text" v-model="val.lianjiek"></input-box>-->
-                        <!--</td>-->
-                        <!--<td colspan="1">-->
-                        <!--<input-box type="text" v-model="val.jiaodu"></input-box>-->
-                        <!--</td>-->
-                        <!--<td colspan="1">-->
-                        <!--<input-box type="text" v-model="val.zhongxinju"></input-box>-->
-                        <!--</td>-->
-                        <!--<td colspan="1">-->
-                        <!--<input-box type="text" v-model="val.xinshi"></input-box>-->
-                        <!--</td>-->
-                        <!--<td colspan="1">-->
-                        <!--<input-box type="text" v-model="val.length"></input-box>-->
-                        <!--</td>-->
-                        <!--<td colspan="1">-->
-                        <!--<input-box type="text" v-model="val.tuhao"></input-box>-->
-                        <!--</td>-->
-                        <!--<td colspan="1">-->
-                        <!--<input-box type="text" v-model="val.guodupan"></input-box>-->
-                        <!--</td>-->
-                        <!--<td colspan="1">-->
-                        <!--<input-box type="text" v-model="val.jinniuju"></input-box>-->
-                        <!--</td>-->
-                        <!--<td colspan="1">-->
-                        <!--<input-box type="text" v-model="val.jishuxinhao"></input-box>-->
-                        <!--</td>-->
-                        <!--<td colspan="1">-->
-                        <!--<el-button size="mini" icon="el-icon-circle-plus" type="primary" @click="addTechnicalRequire" circle></el-button>-->
-                        <!--<el-button-->
-                        <!--v-if="updateInfo.technicalRequire.length>1"-->
-                        <!--style="margin-left:0"-->
-                        <!--size="mini"-->
-                        <!--icon="el-icon-delete"-->
-                        <!--type="danger"-->
-                        <!--@click="delTechnicalRequire(index)"-->
-                        <!--circle-->
-                        <!--&gt;</el-button>-->
-                        <!--</td>-->
-                        <!--</tr>-->
-                        <!--</table>-->
-                        <!--</div>-->
                         <div class="flex" v-if="dealStepId > 51">
                             <!-- <input-box
                                 :disabled="true"
@@ -267,22 +168,24 @@
                             <table class="f-14 order-info">
                                 <tr>
                                     <td style="width: 2%;"></td>
-                                    <td style="width: 7%;"></td>
-                                    <td style="width: 7%;"></td>
-                                    <td style="width: 7%;"></td>
-                                    <td style="width: 7%;"></td>
-                                    <td style="width: 7%;"></td>
-                                    <td style="width: 7%;"></td>
-                                    <td style="width: 7%;"></td>
-                                    <td style="width: 7%;"></td>
-                                    <td style="width: 7%;"></td>
-                                    <td style="width: 7%;"></td>
-                                    <td style="width: 7%;"></td>
                                     <td style="width: 6%;"></td>
                                     <td style="width: 6%;"></td>
+                                    <td style="width: 6%;"></td>
+                                    <td style="width: 6%;"></td>
+                                    <td style="width: 6%;"></td>
+                                    <td style="width: 6%;"></td>
+                                    <td style="width: 6%;"></td>
+                                    <td style="width: 6%;"></td>
+                                    <td style="width: 6%;"></td>
+                                    <td style="width: 6%;"></td>
+                                    <td style="width: 6%;"></td>
+                                    <td style="width: 6%;"></td>
+                                    <td style="width: 6%;"></td>
+                                    <td style="width: 6%;"></td>
+                                    <td style="width: 5%;"></td>
                                 </tr>
                                 <tr>
-                                    <td colspan="15" class="b">技术清单</td>
+                                    <td colspan="17" class="b">技术清单</td>
                                 </tr>
 
                                 <tr>
@@ -293,9 +196,10 @@
                                     <td colspan="1" rowspan="2">数量</td>
                                     <td colspan="1" rowspan="2">上法兰标准</td>
                                     <td colspan="3" rowspan="1">上法兰尺寸</td>
-                                    <td colspan="4" rowspan="1">出轴尺寸</td>
+                                    <td colspan="5" rowspan="1">出轴尺寸</td>
                                     <td colspan="1" rowspan="2">静扭矩</td>
                                     <td colspan="1" rowspan="2">执行器型号</td>
+                                    <td colspan="1" rowspan="2">备注</td>
                                 </tr>
                                 <tr>
                                     <td colspan="1" rowspan="1">连接孔</td>
@@ -305,67 +209,29 @@
                                     <td colspan="1" rowspan="1">出轴长度</td>
                                     <td colspan="1" rowspan="1">轴图号</td>
                                     <td colspan="1" rowspan="1">过渡盘</td>
+                                    <td colspan="1" rowspan="1">连接套</td>
                                 </tr>
                                 <tr v-for="(val,index) in technicalRequire" :key="index">
                                     <td colspan="1">{{index+1}}</td>
-                                    <td colspan="1">{{val.name}}</td>
-                                    <td colspan="1">{{val.xinhao}}</td>
-                                    <td colspan="1">{{val.guige}}</td>
-                                    <td colspan="1">{{val.num}}</td>
-                                    <td colspan="1">{{val.biaozhun}}</td>
-                                    <td colspan="1">{{val.lianjiek}}</td>
-                                    <td colspan="1">{{val.jiaodu}}</td>
-                                    <td colspan="1">{{val.zhongxinju}}</td>
-                                    <td colspan="1">{{val.xinshi}}</td>
-                                    <td colspan="1">{{val.length}}</td>
-                                    <td colspan="1">{{val.tuhao}}</td>
-                                    <td colspan="1">{{val.guodupan}}</td>
-                                    <td colspan="1">{{val.jinniuju}}</td>
-                                    <td colspan="1">{{val.jishuxinhao}}</td>
-                                    <!-- <td colspan="1">
-                                        <input-box type="text" disabled v-model="val.name"></input-box>
-                                    </td>
-                                    <td colspan="1">
-                                        <input-box type="text" disabled v-model="val.xinhao"></input-box>
-                                    </td>
-                                    <td colspan="1">
-                                        <input-box type="text" disabled v-model="val.guige"></input-box>
-                                    </td>
-                                    <td colspan="1">
-                                        <input-box type="text" disabled v-model="val.num"></input-box>
-                                    </td>
-                                    <td colspan="1">
-                                        <input-box type="text" disabled v-model="val.biaozhun"></input-box>
-                                    </td>
-                                    <td colspan="1">
-                                        <input-box type="text" disabled v-model="val.lianjiek"></input-box>
-                                    </td>
-                                    <td colspan="1">
-                                        <input-box type="text" disabled v-model="val.jiaodu"></input-box>
-                                    </td>
-                                    <td colspan="1">
-                                        <input-box type="text" disabled v-model="val.zhongxinju"></input-box>
-                                    </td>
-                                    <td colspan="1">
-                                        <input-box type="text" disabled v-model="val.xinshi"></input-box>
-                                    </td>
-                                    <td colspan="1">
-                                        <input-box type="text" disabled v-model="val.length"></input-box>
-                                    </td>
-                                    <td colspan="1">
-                                        <input-box type="text" disabled v-model="val.tuhao"></input-box>
-                                    </td>
-                                    <td colspan="1">
-                                        <input-box type="text" disabled v-model="val.guodupan"></input-box>
-                                    </td>
-                                    <td colspan="1">
-                                        <input-box type="text" disabled v-model="val.jinniuju"></input-box>
-                                    </td>
-                                    <td colspan="1">
-                                        <input-box type="text" disabled v-model="val.jishuxinhao"></input-box>
-                                    </td>-->
+                                    <td colspan="1">{{val.productName}}</td>
+                                    <td colspan="1">{{val.productModel}}</td>
+                                    <td colspan="1">{{val.specifications}}</td>
+                                    <td colspan="1">{{val.productNum}}</td>
+                                    <td colspan="1">{{val.upperFlangeStandard}}</td>
+                                    <td colspan="1">{{val.connectingHole}}</td>
+                                    <td colspan="1">{{val.angle}}</td>
+                                    <td colspan="1">{{val.centerDistance}}</td>
+                                    <td colspan="1">{{val.outputShaftType}}</td>
+                                    <td colspan="1">{{val.outputShaftLength}}</td>
+                                    <td colspan="1">{{val.axisDrawingNo}}</td>
+                                    <td colspan="1">{{val.transitionPlate}}</td>
+                                    <td colspan="1">{{val.connectingSleeve}}</td>
+                                    <td colspan="1">{{val.staticTorque}}</td>
+                                    <td colspan="1">{{val.actuatorModel}}</td>
+                                    <td colspan="1">{{val.remark}}</td>
                                 </tr>
                             </table>
+
                         </div>
                         <div class="flex" v-if="dealStepId == 56">
                             <input-box v-model="updateInfo.assemblyShop" class="flex-item" label="装配车间" style="margin-right: 20px;"></input-box>
@@ -551,7 +417,8 @@ export default {
             fileName: "",
             multiple: true,
             fileDetailList: [],
-            loading: false
+            loading: false,
+            jishuLoading: false
         };
     },
     activated() {
@@ -579,20 +446,22 @@ export default {
         };
         this.technicalRequire = [
             {
-                name: "",
-                xinhao: "",
-                guige: "",
-                num: "",
-                biaozhun: "",
-                lianjiek: "",
-                jiaodu: "",
-                zhongxinju: "",
-                xinshi: "",
-                length: "",
-                tuhao: "",
-                guodupan: "",
-                jinniuju: "",
-                jishuxinhao: ""
+                "actuatorModel": "",
+                "angle": "",
+                "axisDrawingNo": "",
+                "centerDistance": "",
+                "connectingHole": "",
+                "connectingSleeve": "",
+                "outputShaftLength": "",
+                "outputShaftType": "",
+                "productModel": "",
+                "productName": "",
+                "remark": "",
+                "specifications": "",
+                "staticTorque": "",
+                "transitionPlate": "",
+                "upperFlangeStandard": "",
+                 productNum:""
             }
         ];
         this.orderInfo = null;
@@ -609,22 +478,83 @@ export default {
         this.getData();
     },
     methods: {
+        addJishu(){
+            this.$http
+                .post(
+                    `/haolifa/order-product/get-technical-detailed`,{
+                        orderNo:this.data.formNo
+                    }
+                )
+                .then(res => {
+                    let list = res || [];
+                    if(list.length){
+                        this.technicalRequire = [];
+                        list.forEach(item=>{
+                            let obj = {
+                                "actuatorModel": "",
+                                "angle": "",
+                                "axisDrawingNo": "",
+                                "centerDistance": "",
+                                "connectingHole": "",
+                                "connectingSleeve": "",
+                                "outputShaftLength": "",
+                                "outputShaftType": "",
+                                "productModel": "",
+                                "productName": "",
+                                "remark": "",
+                                "specifications": "",
+                                "staticTorque": "",
+                                "transitionPlate": "",
+                                "upperFlangeStandard": "",
+                                productNum:""
+                            }
+                            Object.keys(obj).forEach(key=>{
+                                obj[key] = item[key]?item[key]:null;
+                            })
+                            this.technicalRequire.push(obj)
+
+                        })
+                    }
+                })
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
+        },
+        saveJishu(){
+            this.$toast("保存接口有问题，未做");
+            return;
+            this.jishuLoading = true;
+            this.$http
+                .post(
+                    `/haolifa/order-product/add-technical-detailed`,{
+                        dto:this.technicalRequire
+                    }
+                )
+                .then(res => {
+                    this.jishuLoading = false;
+                }).catch(e=>{
+                    this.jishuLoading = false;
+                    this.$toast(e.msg || e.message);
+                })
+        },
         addTechnicalRequire() {
             this.technicalRequire.push({
-                name: "",
-                xinhao: "",
-                guige: "",
-                num: "",
-                biaozhun: "",
-                lianjiek: "",
-                jiaodu: "",
-                zhongxinju: "",
-                xinshi: "",
-                length: "",
-                tuhao: "",
-                guodupan: "",
-                jinniuju: "",
-                jishuxinhao: ""
+                "actuatorModel": "",
+                "angle": "",
+                "axisDrawingNo": "",
+                "centerDistance": "",
+                "connectingHole": "",
+                "connectingSleeve": "",
+                "outputShaftLength": "",
+                "outputShaftType": "",
+                "productModel": "",
+                "productName": "",
+                "remark": "",
+                "specifications": "",
+                "staticTorque": "",
+                "transitionPlate": "",
+                "upperFlangeStandard": "",
+                productNum:""
             });
         },
         delTechnicalRequire(index) {

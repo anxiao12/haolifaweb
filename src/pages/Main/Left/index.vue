@@ -682,6 +682,11 @@ export default {
                         name: "新增文件/图纸管理",
                         url: "/fileupload/addList",
                         id: "xzwjtz"
+                    },
+                    {
+                        name: "技术清单",
+                        url: "/jishuList",
+                        id: "jsqd"
                     }
                 ]
             },

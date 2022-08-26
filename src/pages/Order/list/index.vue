@@ -85,17 +85,17 @@
                             <td style="width: 8%;"></td>
                         </tr>
                         <tr>
-                            <td colspan="14" class="b">订单编号 : {{info.orderNo}}</td>
+                            <td colspan="16" class="b">订单编号 : {{info.orderNo}}</td>
                         </tr>
                         <tr>
                             <!-- <td colspan="14" class="b">成品合同订单号 : {{info.orderContractNo}}</td> -->
-                            <td colspan="14" class="b">发货日期 : {{info.deliveryDate}}</td>
+                            <td colspan="16" class="b">发货日期 : {{info.deliveryDate}}</td>
                         </tr>
                         <tr>
-                            <td colspan="14" class="b">订单状态 : {{ orderStatusList[info.orderStatus].text}}</td>
+                            <td colspan="16" class="b">订单状态 : {{ orderStatusList[info.orderStatus].text}}</td>
                         </tr>
                         <tr>
-                            <td colspan="14" class="b">
+                            <td colspan="16" class="b">
                                 订单合同:
                                 <a :href="info.orderContractUrl" style="margin-right: 15px;">下载</a>
                                 <a target="_blank" v-if="(info.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$') " :href="info.orderContractUrl">预览</a>
@@ -108,30 +108,33 @@
                             </td>-->
                         </tr>
                         <tr>
-                            <td colspan="14" class="b" v-if="fileDetailList.length">订单附件:</td>
-                            <td colspan="14" class="b" v-else>订单附件:无</td>
+                            <td colspan="16" class="b" v-if="fileDetailList.length">订单附件:</td>
+                            <td colspan="16" class="b" v-else>订单附件:无</td>
                         </tr>
                         <tr v-for="(item,index) in fileDetailList" :key="index">
-                            <td colspan="3" class="b">{{item.fileName}}</td>
+                            <td colspan="5" class="b">{{item.fileName}}</td>
                             <td colspan="12" class="b">
                                 <a target="_blank" v-if="(item.fileUrl).match('\.(pdf|jpe?g|png|bmp)$') " :href="item.fileUrl">预览</a>
                                 <a target="_blank" v-if="!(item.fileUrl).match('\.(pdf|jpe?g|png|bmp)$')" :href="'http://view.officeapps.live.com/op/view.aspx?src='+ item.fileUrl">预览</a>
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="7" class="b">装配车间: {{info.assemblyShop}}</td>
-                            <td colspan="7" class="b">装配小组: {{info.assemblyGroup}}</td>
+                            <td colspan="8" class="b">装配车间: {{info.assemblyShop}}</td>
+                            <td colspan="8" class="b">装配小组: {{info.assemblyGroup}}</td>
                         </tr>
                         <tr>
-                            <td colspan="7" class="b">采购反馈时间: {{info.purchaseFeedbackTime}}</td>
-                            <td colspan="7" class="b">生产反馈时间: {{info.productionFeedbackTime}}</td>
+                            <td colspan="8" class="b">采购反馈时间: {{info.purchaseFeedbackTime}}</td>
+                            <td colspan="8" class="b">生产反馈时间: {{info.productionFeedbackTime}}</td>
                         </tr>
                         <!-- <tr>
                     <td colspan="6" class="b">工厂反馈完成时间: {{info.finishFeedbackTime}}</td>
                     <td colspan="6" class="b">反馈确认人: {{info.feedbackTimeConfirmUser}}</td>
                         </tr>-->
                         <tr>
-                            <td colspan="14" class="b">技术清单:</td>
+                            <td colspan="4" class="b">技术清单:</td>
+                            <td colspan="12">
+                                <a target="_blank" :href="'/haolifa/export/order-technical-detailed?orderNo='+info.orderNo">导出</a>
+                            </td>
                         </tr>
                         <tr>
                             <td colspan="1" rowspan="2">产品名称</td>
@@ -140,9 +143,10 @@
                             <td colspan="1" rowspan="2">数量</td>
                             <td colspan="1" rowspan="2">上法兰标准</td>
                             <td colspan="3" rowspan="1">上法兰尺寸</td>
-                            <td colspan="4" rowspan="1">出轴尺寸</td>
+                            <td colspan="5" rowspan="1">出轴尺寸</td>
                             <td colspan="1" rowspan="2">静扭矩</td>
                             <td colspan="1" rowspan="2">执行器型号</td>
+                            <td colspan="1" rowspan="2">备注</td>
                         </tr>
                         <tr>
                             <td colspan="1" rowspan="1">连接孔</td>
@@ -152,25 +156,28 @@
                             <td colspan="1" rowspan="1">出轴长度</td>
                             <td colspan="1" rowspan="1">轴图号</td>
                             <td colspan="1" rowspan="1">过渡盘</td>
+                            <td colspan="1" rowspan="1">连接套</td>
                         </tr>
                         <tr v-for="(val,index) in JSON.parse(info.technicalRequire)" :key="index">
-                            <td colspan="1">{{val.name}}</td>
-                            <td colspan="1">{{val.xinhao}}</td>
-                            <td colspan="1">{{val.guige}}</td>
-                            <td colspan="1">{{val.num}}</td>
-                            <td colspan="1">{{val.biaozhun}}</td>
-                            <td colspan="1">{{val.lianjiek}}</td>
-                            <td colspan="1">{{val.jiaodu}}</td>
-                            <td colspan="1">{{val.zhongxinju}}</td>
-                            <td colspan="1">{{val.xinshi}}</td>
-                            <td colspan="1">{{val.length}}</td>
-                            <td colspan="1">{{val.tuhao}}</td>
-                            <td colspan="1">{{val.guodupan}}</td>
-                            <td colspan="1">{{val.jinniuju}}</td>
-                            <td colspan="1">{{val.jishuxinhao}}</td>
+                            <td colspan="1">{{val.productName}}</td>
+                            <td colspan="1">{{val.productModel}}</td>
+                            <td colspan="1">{{val.specifications}}</td>
+                            <td colspan="1">{{val.productNum}}</td>
+                            <td colspan="1">{{val.upperFlangeStandard}}</td>
+                            <td colspan="1">{{val.connectingHole}}</td>
+                            <td colspan="1">{{val.angle}}</td>
+                            <td colspan="1">{{val.centerDistance}}</td>
+                            <td colspan="1">{{val.outputShaftType}}</td>
+                            <td colspan="1">{{val.outputShaftLength}}</td>
+                            <td colspan="1">{{val.axisDrawingNo}}</td>
+                            <td colspan="1">{{val.transitionPlate}}</td>
+                            <td colspan="1">{{val.connectingSleeve}}</td>
+                            <td colspan="1">{{val.staticTorque}}</td>
+                            <td colspan="1">{{val.actuatorModel}}</td>
+                            <td colspan="1">{{val.remark}}</td>
                         </tr>
                         <tr>
-                            <td colspan="14" class="b">订单产品列表</td>
+                            <td colspan="16" class="b">订单产品列表</td>
                         </tr>
                         <tr>
                             <td colspan="1" class="b">产品编号</td>
@@ -182,8 +189,8 @@
                             <td colspan="1" class="b">产品数量</td>
                             <!-- <td colspan="1" class="b">单价</td> -->
                             <td colspan="1" class="b">总计价格</td>
-                            <td colspan="2" class="b">材质说明</td>
-                            <td colspan="2" class="b">产品备注</td>
+                            <td colspan="3" class="b">材质说明</td>
+                            <td colspan="3" class="b">产品备注</td>
                         </tr>
                         <tr v-for="(item,index) in info.orderProductAssociates" :key="index">
                             <td colspan="1">{{item.productNo}}</td>
@@ -195,27 +202,27 @@
                             <td colspan="1">{{item.productNumber}}</td>
                             <!-- <td colspan="1">{{item.price}}</td> -->
                             <td colspan="1">{{item.totalPrice}}</td>
-                            <td colspan="2">{{item.materialDescription}}</td>
-                            <td colspan="2">{{item.productRemark}}</td>
+                            <td colspan="3">{{item.materialDescription}}</td>
+                            <td colspan="3">{{item.productRemark}}</td>
                         </tr>
                         <tr v-if="accessoryList.length > 0">
-                            <td colspan="14" class="b">审批附件:</td>
+                            <td colspan="16" class="b">审批附件:</td>
                         </tr>
                         <tr v-if="accessoryList.length > 0">
                             <td colspan="6" class="b">文件名称</td>
                             <td colspan="6" class="b">文件地址</td>
-                            <td colspan="2" class="b">——</td>
+                            <td colspan="4" class="b">——</td>
                         </tr>
                         <tr v-for="(accessory,index) in accessoryList" :key="index">
                             <td colspan="6">{{accessory.fileName}}</td>
                             <td colspan="6">{{accessory.fileUrl}}</td>
-                            <td colspan="2">
+                            <td colspan="4">
                                 <a target="_blank" v-if="!(accessory.fileUrl).match('\.(doc|docx|xls|xlsx)$') " :href="accessory.fileUrl">预览</a>
                                 <a target="_blank" v-if="(accessory.fileUrl).match('\.(doc|docx|xls|xlsx)$')" :href="'http://view.officeapps.live.com/op/view.aspx?src='+ accessory.fileUrl">预览</a>
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="14" class="b">审核信息</td>
+                            <td colspan="16" class="b">审核信息</td>
                         </tr>
                         <tr>
                             <td colspan="3" class="b">流程节点</td>
@@ -223,7 +230,7 @@
                             <td colspan="1" class="b">审核人</td>
                             <td colspan="2" class="b">审核状态</td>
                             <td colspan="4" class="b">审核意见</td>
-                            <td colspan="2" class="b">审核时间</td>
+                            <td colspan="4" class="b">审核时间</td>
                         </tr>
 
                         <tr v-for="pro in processList" :key="pro.stepName">
@@ -232,7 +239,7 @@
                             <td colspan="1">{{pro.auditUserName}}</td>
                             <td colspan="2">{{statusList[pro.auditResult]}}</td>
                             <td colspan="4">{{pro.auditInfo}}</td>
-                            <td colspan="2">{{pro.auditTime}}</td>
+                            <td colspan="4">{{pro.auditTime}}</td>
                         </tr>
                     </table>
                 </div>
