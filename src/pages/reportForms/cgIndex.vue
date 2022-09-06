@@ -359,7 +359,7 @@ export default {
         },
         //采购根据公司按月
         getBuyTwo(name) {
-            this.cayTotalNum = this.cunpayNum = this.cregisteredNum = this.ctotalNum = 0;
+            this.cunpayNum = this.cregisteredNum = this.ctotalNum = this.cpayTotalNum = 0;
 
             this.$http
                 .post(`/haolifa/report/purchase/selectBySupplierName`, {
@@ -377,7 +377,6 @@ export default {
                         unpay = [],
                         returnTicketAmount = [],
                         unTicketAmount = [];
-
                     res.map(item => {
                         xData.push(item.createTime);
                         payTotal.push(item.payTotal);

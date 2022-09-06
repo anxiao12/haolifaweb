@@ -48,24 +48,24 @@
                             <!-- <input-box v-model="updateInfo.technicalRequire" :multi-line="true" class="flex-item" label="技术清单说明" style="margin-right: 20px;"></input-box> -->
                             <table class="f-14 order-info">
                                 <tr>
-                                    <td style="width: 2%;"></td>
-                                    <td style="width: 7%;"></td>
-                                    <td style="width: 5%;"></td>
-                                    <td style="width: 5%;"></td>
-                                    <td style="width: 5%;"></td>
-                                    <td style="width: 5%;"></td>
-                                    <td style="width: 6%;"></td>
-                                    <td style="width: 6%;"></td>
-                                    <td style="width: 6%;"></td>
-                                    <td style="width: 6%;"></td>
-                                    <td style="width: 6%;"></td>
-                                    <td style="width: 6%;"></td>
-                                    <td style="width: 6%;"></td>
-                                    <td style="width: 6%;"></td>
-                                    <td style="width: 6%;"></td>
-                                    <td style="width: 6%;"></td>
-                                    <td style="width: 6%;"></td>
-                                    <td style="width: 5%;"></td>
+                                    <td style="width: 100px;"></td>
+                                    <td style="width: 100px;"></td>
+                                    <td style="width: 100px;"></td>
+                                    <td style="width: 100px;"></td>
+                                    <td style="width: 100px;"></td>
+                                    <td style="width: 100px;"></td>
+                                    <td style="width: 100px;"></td>
+                                    <td style="width: 100px;"></td>
+                                    <td style="width: 100px;"></td>
+                                    <td style="width: 100px;"></td>
+                                    <td style="width: 100px;"></td>
+                                    <td style="width: 400px;"></td>
+                                    <td style="width: 100px;"></td>
+                                    <td style="width: 100px;"></td>
+                                    <td style="width: 100px;"></td>
+                                    <td style="width: 100px;"></td>
+                                    <td style="width: 100px;"></td>
+                                    <td style="width: 100px;"></td>
                                 </tr>
                                 <tr>
                                     <td colspan="18" class="b">技术清单</td>
@@ -96,7 +96,7 @@
                                     <td colspan="1" rowspan="1">过渡盘</td>
                                 </tr>
                                 <tr v-for="(val,index) in technicalRequire" :key="index">
-                                    <td colspan="1">{{index+1}}</td>
+                                    <td colspan="1">{{val.id}}</td>
                                     <td colspan="1">
                                         <input-box type="text" v-model="val.productName"></input-box>
                                     </td>
@@ -167,22 +167,24 @@
                             ></input-box>-->
                             <table class="f-14 order-info">
                                 <tr>
-                                    <td style="width: 2%;"></td>
-                                    <td style="width: 6%;"></td>
-                                    <td style="width: 6%;"></td>
-                                    <td style="width: 6%;"></td>
-                                    <td style="width: 6%;"></td>
-                                    <td style="width: 6%;"></td>
-                                    <td style="width: 6%;"></td>
-                                    <td style="width: 6%;"></td>
-                                    <td style="width: 6%;"></td>
-                                    <td style="width: 6%;"></td>
-                                    <td style="width: 6%;"></td>
-                                    <td style="width: 6%;"></td>
-                                    <td style="width: 6%;"></td>
-                                    <td style="width: 6%;"></td>
-                                    <td style="width: 6%;"></td>
-                                    <td style="width: 5%;"></td>
+                                    <td style="width: 100px;"></td>
+                                    <td style="width: 100px;"></td>
+                                    <td style="width: 100px;"></td>
+                                    <td style="width: 100px;"></td>
+                                    <td style="width: 100px;"></td>
+                                    <td style="width: 100px;"></td>
+                                    <td style="width: 100px;"></td>
+                                    <td style="width: 100px;"></td>
+                                    <td style="width: 100px;"></td>
+                                    <td style="width: 100px;"></td>
+                                    <td style="width: 100px;"></td>
+                                    <td style="width: 400px;"></td>
+                                    <td style="width: 100px;"></td>
+                                    <td style="width: 100px;"></td>
+                                    <td style="width: 100px;"></td>
+                                    <td style="width: 100px;"></td>
+                                    <td style="width: 100px;"></td>
+                                    <td style="width: 100px;"></td>
                                 </tr>
                                 <tr>
                                     <td colspan="17" class="b">技术清单</td>
@@ -211,8 +213,8 @@
                                     <td colspan="1" rowspan="1">过渡盘</td>
                                     <td colspan="1" rowspan="1">连接套</td>
                                 </tr>
-                                <tr v-for="(val,index) in technicalRequire" :key="index">
-                                    <td colspan="1">{{index+1}}</td>
+                                <tr v-for="(val,index) in orderInfo.orderTechnicalDetaileds" :key="index">
+                                    <td colspan="1">{{val.id}}</td>
                                     <td colspan="1">{{val.productName}}</td>
                                     <td colspan="1">{{val.productModel}}</td>
                                     <td colspan="1">{{val.specifications}}</td>
@@ -490,28 +492,29 @@ export default {
                     if(list.length){
                         this.technicalRequire = [];
                         list.forEach(item=>{
-                            let obj = {
-                                "actuatorModel": "",
-                                "angle": "",
-                                "axisDrawingNo": "",
-                                "centerDistance": "",
-                                "connectingHole": "",
-                                "connectingSleeve": "",
-                                "outputShaftLength": "",
-                                "outputShaftType": "",
-                                "productModel": "",
-                                "productName": "",
-                                "remark": "",
-                                "specifications": "",
-                                "staticTorque": "",
-                                "transitionPlate": "",
-                                "upperFlangeStandard": "",
-                                productNum:""
-                            }
-                            Object.keys(obj).forEach(key=>{
-                                obj[key] = item[key]?item[key]:null;
-                            })
-                            this.technicalRequire.push(obj)
+                            // let obj = {
+                            //     "actuatorModel": "",
+                            //     "angle": "",
+                            //     "axisDrawingNo": "",
+                            //     "centerDistance": "",
+                            //     "connectingHole": "",
+                            //     "connectingSleeve": "",
+                            //     "outputShaftLength": "",
+                            //     "outputShaftType": "",
+                            //     "productModel": "",
+                            //     "productName": "",
+                            //     "remark": "",
+                            //     "specifications": "",
+                            //     "staticTorque": "",
+                            //     "transitionPlate": "",
+                            //     "upperFlangeStandard": "",
+                            //     productNum:"",
+                            //     orderNo:""
+                            // }
+                            // Object.keys(obj).forEach(key=>{
+                            //     obj[key] = item[key]?item[key]:null;
+                            // })
+                            this.technicalRequire.push(item);
 
                         })
                     }
@@ -521,17 +524,19 @@ export default {
                 });
         },
         saveJishu(){
-            this.$toast("保存接口有问题，未做");
-            return;
+            // this.$toast("保存接口有问题，未做");
+            // return;
             this.jishuLoading = true;
             this.$http
                 .post(
                     `/haolifa/order-product/add-technical-detailed`,{
-                        dto:this.technicalRequire
+                        technicalDetailedRels:this.technicalRequire
                     }
                 )
                 .then(res => {
                     this.jishuLoading = false;
+                    this.$toast("保存技术清单成功")
+
                 }).catch(e=>{
                     this.jishuLoading = false;
                     this.$toast(e.msg || e.message);
@@ -602,9 +607,10 @@ export default {
                             this.orderUrl = res.orderContractUrl;
                             this.orderInfo = res;
                             this.updateInfo.orderNo = this.data.formNo;
-                            this.technicalRequire = JSON.parse(
-                                this.orderInfo.technicalRequire
-                            );
+                            // this.technicalRequire = JSON.parse(
+                            //     this.orderInfo.technicalRequire
+                            // );
+                            this.technicalRequire =  this.orderInfo.orderTechnicalDetaileds;
                             if (
                                 this.dealStepId == 52 ||
                                 this.dealStepId == 53
@@ -728,7 +734,7 @@ export default {
                 .then(res => {
                     this.$toast("处理成功");
                     this.$store.commit("DELMENUTABS", "/produce");
-                    history.back(-1);
+                    this.$router.push("/");
                     this.handleStep.backStepId = null;
                     this.backStepLayer = false;
                     // this.getData();
@@ -743,6 +749,8 @@ export default {
                                 )
                                 .then(res => {
                                     this.updateInfo.technicalRequire = "";
+                                    // this.$store.commit("DELMENUTABS", "/produce");
+                                    // this.$router.push("/")
                                 });
                         } else if (this.dealStepId == 52) {
                             // 技术总工
@@ -874,7 +882,7 @@ export default {
                                 .then(res => {});
                         }
                         this.$store.commit("DELMENUTABS", "/produce");
-                        history.back(-1);
+                        this.$router.push("/");
                     }
                 })
                 .catch(e => {

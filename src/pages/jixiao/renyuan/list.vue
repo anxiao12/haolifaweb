@@ -42,6 +42,8 @@
                     <th>岗位名称</th>
                     <th>归属部门</th>
                     <th>直属上级</th>
+                    <th>工资卡号</th>
+                    <th>开户行</th>
                     <th>创建时间</th>
                     <th>更新时间</th>
                     <th class="t-right" style="width: 80px;">操作</th>
@@ -64,6 +66,8 @@
                     <td>{{ item.postName }}</td>
                     <td>{{ item.departName }}</td>
                     <td>{{ item.superiorName }}</td>
+                    <td>{{ item.cardNumber }}</td>
+                    <td>{{ item.bankOfDeposit }}</td>
                     <td>{{ item.createTime }}</td>
                     <td>{{ item.updateTime }}</td>
                     <td class="t-right">
@@ -112,7 +116,11 @@
                     <select-box v-model="form.parentId" class="flex-item mr-20" :list="userList" label="上级人员"></select-box>
                     <input-box v-model="form.basePay" class="flex-item mr-20" type="number" hint="必填" label="基本工资"></input-box>
                     <input-box v-model="form.meritPay" class="flex-item mr-20" type="number" label="绩效工资"></input-box>
+                </div>
+                <div class="flex">
                     <input-box v-model="form.insuranceBase" class="flex-item mr-20" type="number" label="保险基数"></input-box>
+                    <input-box v-model="form.cardNumber" class="flex-item mr-20" type="number" label="工资卡号"></input-box>
+                    <input-box v-model="form.bankOfDeposit" class="flex-item mr-20" type="number" label="开户行"></input-box>
                 </div>
             </div>
             <div class="layer-btns">
@@ -225,7 +233,9 @@ export default {
                 superiorId: "",
                 parentId: "",
                 userNo: "",
-                departId: ""
+                departId: "",
+                bankOfDeposit:"",
+                cardNumber:""
             },
             marryArr: ["", "未婚", "已婚", "离异", "丧偶"],
             marryList: [
@@ -382,6 +392,8 @@ export default {
             this.form.parentId = item.parentId;
             this.form.userNo = item.userNo;
             this.form.departId = item.departId;
+            this.form.bankOfDeposit = item.bankOfDeposit;
+            this.form.cardNumber = item.cardNumber;
         },
         remove(item) {
             this.$confirm({
@@ -502,7 +514,9 @@ export default {
                 superiorId: "",
                 userNo: "",
                 parentId: "",
-                departId: ""
+                departId: "",
+                bankOfDeposit:"",
+                cardNumber:""
             };
         },
         getBanList() {

@@ -1,13 +1,26 @@
 <template>
     <div class="main-left c-6 f-14">
         <!-- <div class="nav-group" v-for="(item,index) in list" v-if="menus.includes(item.id)" :key="item.name"> -->
-        <div class="nav-group" v-for="(item,index) in list" :key="item.name">
-            <div class="flex-v-center nav-item nav-toggle a" @click="item.open = !item.open">
-                <i class="icon" style>{{iconList[index]}}</i>
+        <div
+            class="nav-group"
+            v-for="(item,index) in list"
+            :key="item.name"
+        >
+            <div
+                class="flex-v-center nav-item nav-toggle a"
+                @click="item.open = !item.open"
+            >
+                <i
+                    class="icon"
+                    style
+                >{{iconList[index]}}</i>
                 <span class="flex-item b">{{item.name}}</span>
                 <i class="icon">arrow_drop_{{item.open ? 'up' : 'down'}}</i>
             </div>
-            <div v-if="item.open" class="openMenu">
+            <div
+                v-if="item.open"
+                class="openMenu"
+            >
                 <router-link
                     class="nav-item flex-v-center c-6"
                     v-for="m in item.children"
@@ -52,14 +65,14 @@ export default {
                 "dashboard",
                 "assessment",
                 "contacts",
-                "filter_b_and_w"
-            ]
+                "filter_b_and_w",
+            ],
         };
     },
     computed: {
         menus() {
             return this.$store.state.account.menus;
-        }
+        },
     },
     created() {
         let { menus } = this;
@@ -71,34 +84,34 @@ export default {
                     {
                         name: "角色管理",
                         url: "/role",
-                        id: "jsgl"
+                        id: "jsgl",
                     },
                     {
                         name: "用户管理",
                         url: "/user",
-                        id: "rygl"
+                        id: "rygl",
                     },
                     {
                         name: "人员列表",
                         url: "/jxuser",
-                        id: "rylb"
+                        id: "rylb",
                     },
                     {
                         name: "岗位列表",
                         url: "/gangwei",
-                        id: "bmlb"
+                        id: "bmlb",
                     },
                     {
                         name: "部门管理",
                         url: "/department",
-                        id: "bmgl"
+                        id: "bmgl",
                     },
                     {
                         name: "菜单管理",
                         url: "/department",
-                        id: "cdgl"
-                    }
-                ]
+                        id: "cdgl",
+                    },
+                ],
             },
             {
                 name: "流程管理",
@@ -107,14 +120,14 @@ export default {
                     {
                         name: "流程管理",
                         url: "/process-manager",
-                        id: "lcgl"
+                        id: "lcgl",
                     },
                     {
                         name: "节点管理",
                         url: "/node",
-                        id: "jdgl"
-                    }
-                ]
+                        id: "jdgl",
+                    },
+                ],
             },
             {
                 name: "订单管理",
@@ -123,39 +136,39 @@ export default {
                     {
                         name: "订单列表",
                         url: "/order",
-                        id: "ddlb"
+                        id: "ddlb",
                     },
                     {
                         name: "新增订单",
                         url: "/order/addList",
-                        id: "xzdd"
+                        id: "xzdd",
                     },
                     {
                         name: "订单生成",
                         url: "/order/create",
-                        id: "ddsc"
+                        id: "ddsc",
                     },
                     {
                         name: "订单缺料表",
                         url: "/order/lack",
-                        id: "ddqlb"
+                        id: "ddqlb",
                     },
                     {
                         name: "订单列表编辑",
                         url: "/order/proEdit",
-                        id: "ddlbproduct"
+                        id: "ddlbproduct",
                     },
                     {
                         name: "回款分解",
                         url: "/hkfenjie",
-                        id: "ddhkfj"
+                        id: "ddhkfj",
                     },
                     {
                         name: "客户管理",
                         url: "/khglList",
-                        id: "khgl"
-                    }
-                ]
+                        id: "khgl",
+                    },
+                ],
             },
             {
                 name: "库房管理",
@@ -164,89 +177,89 @@ export default {
                     {
                         name: "库存预警",
                         url: "/earlywarning",
-                        id: "kcyj"
+                        id: "kcyj",
                     },
                     {
                         name: "库房管理",
                         url: "/room",
-                        id: "kfgl"
+                        id: "kfgl",
                     },
                     {
                         name: "库位管理",
                         url: "/rack",
-                        id: "kwgl"
+                        id: "kwgl",
                     },
                     {
                         name: "零件管理",
                         url: "/material",
-                        id: "ljgl"
+                        id: "ljgl",
                     },
                     {
                         name: "库存查询",
                         url: "/materialquery",
-                        id: "kccx"
+                        id: "kccx",
                     },
                     {
                         name: "成品管理",
                         url: "/storeproduct",
-                        id: "cpgl"
+                        id: "cpgl",
                     },
                     {
                         name: "成品库存列表",
                         url: "/productList",
-                        id: "cpkclb"
+                        id: "cpkclb",
                     },
                     {
                         name: "零件待入库",
                         url: "/material-room",
-                        id: "ljdrk"
+                        id: "ljdrk",
                     },
                     {
                         name: "喷涂待入库",
                         url: "/spray-room",
-                        id: "ptdrk"
+                        id: "ptdrk",
                     },
                     {
                         name: "成品待入库",
                         url: "/product-room",
-                        id: "cpdrk"
+                        id: "cpdrk",
                     },
                     {
                         name: "订单领料表",
                         url: "/ordermaterial",
-                        id: "ddllb"
+                        id: "ddllb",
                     },
                     {
                         name: "更换料表",
                         url: "/orderupdate",
-                        id: "dhlb"
+                        id: "dhlb",
                     },
                     {
                         name: "核替换料表",
                         url: "/nuclear-material/list",
-                        id: "kghl"
+                        id: "kghl",
                     },
                     {
                         name: "零件待出库",
                         url: "/part/list",
-                        id: "ljdck"
+                        id: "ljdck",
                     },
                     {
                         name: "自控物资管理",
                         url: "/zikongwuzhiList",
-                        id: "zkwzgl"
+                        id: "zkwzgl",
                     },
                     {
                         name: "零星物资管理",
                         url: "/scattered/list",
-                        id: "lxwzgl"
+                        id: "lxwzgl",
                     },
                     {
                         name: "阀座待入库",
                         url: "/fazuo-room",
-                        id: "fzdrk"
-                    }
-                ]
+                        id: "fzdrk",
+                    },
+                ],
             },
             {
                 name: "配套管理",
@@ -255,19 +268,19 @@ export default {
                     {
                         name: "零件设置",
                         url: "/part",
-                        id: "ljsz"
+                        id: "ljsz",
                     },
                     {
                         name: "成品设置",
                         url: "/product",
-                        id: "cpsz"
+                        id: "cpsz",
                     },
                     {
                         name: "零件分类设置",
                         url: "/parttype",
-                        id: "ljflsz"
-                    }
-                ]
+                        id: "ljflsz",
+                    },
+                ],
             },
             {
                 name: "供应商管理",
@@ -276,29 +289,29 @@ export default {
                     {
                         name: "供应商管理",
                         url: "/supplier/list",
-                        id: "gysgl"
+                        id: "gysgl",
                     },
                     {
                         name: "新增供应商",
                         url: "/supplier/addList",
-                        id: "xzgys"
+                        id: "xzgys",
                     },
                     {
                         name: "供应商产品",
                         url: "/supplierproduct",
-                        id: "gyscp"
+                        id: "gyscp",
                     },
                     {
                         name: "新增供应商产品",
                         url: "/supplierproduct/addList",
-                        id: "xzgyscp"
+                        id: "xzgyscp",
                     },
                     {
                         name: "供应商设备",
                         url: "/supplierequipment",
-                        id: "gyssb"
-                    }
-                ]
+                        id: "gyssb",
+                    },
+                ],
             },
             {
                 name: "采购管理",
@@ -307,59 +320,59 @@ export default {
                     {
                         name: "零件报检单",
                         url: "/applyBuy-material",
-                        id: "ljbjd"
+                        id: "ljbjd",
                     },
                     {
                         name: "创建送检单",
                         url: "/applyBuy-material/addList",
-                        id: "cjsjd"
+                        id: "cjsjd",
                     },
                     {
                         name: "加工委托单",
                         url: "/applyBuy-machining",
-                        id: "jjgbjd"
+                        id: "jjgbjd",
                     },
                     {
                         name: "创建加工委托单",
                         url: "/applyBuy-machining/addList",
-                        id: "cjjjgd"
+                        id: "cjjjgd",
                     },
                     {
                         name: "生产待采购列表",
                         url: "/applyBuy-order",
-                        id: "scdcglb"
+                        id: "scdcglb",
                     },
                     {
                         name: "采购列表",
                         url: "/purchsemanage-purchase/list",
-                        id: "cglb"
+                        id: "cglb",
                     },
                     {
                         name: "新增采购合同",
                         url: "/purchsemanage-purchase/addList",
-                        id: "xzcght"
+                        id: "xzcght",
                     },
                     {
                         name: "机加工单列表",
                         url: "/purchsemanage-entrust/list",
-                        id: "jjglb"
+                        id: "jjglb",
                     },
                     {
                         name: "新增机加工单",
                         url: "/purchsemanage-entrust/addList",
-                        id: "xzjjgdd"
+                        id: "xzjjgdd",
                     },
                     {
                         name: "付款申请列表",
                         url: "/fukuangsq/list",
-                        id: "fksqlb"
+                        id: "fksqlb",
                     },
                     {
                         name: "新增付款申请",
                         url: "/fukuang/list",
-                        id: "xzfksq"
-                    }
-                ]
+                        id: "xzfksq",
+                    },
+                ],
             },
             {
                 name: "质检管理",
@@ -368,74 +381,74 @@ export default {
                     {
                         name: "零件质检列表",
                         url: "/inspect-material",
-                        id: "ljzjlb"
+                        id: "ljzjlb",
                     },
                     {
                         name: "新增零件质检记录",
                         url: "/inspect-material/addList",
-                        id: "xzljzjjl"
+                        id: "xzljzjjl",
                     },
                     {
                         name: "成品质检列表",
                         url: "/inspect-product",
-                        id: "cpzjlb"
+                        id: "cpzjlb",
                     },
                     {
                         name: "新增成品质检记录",
                         url: "/inspect-product/addList",
-                        id: "xzcpzjjl"
+                        id: "xzcpzjjl",
                     },
                     {
                         name: "加工质检列表",
                         url: "/inspect-metalwork",
-                        id: "jgzjlb"
+                        id: "jgzjlb",
                     },
                     {
                         name: "新增加工质检记录",
                         url: "/inspect-metalwork/addList",
-                        id: "xzjgzjjl"
+                        id: "xzjgzjjl",
                     },
                     {
                         name: "压力测试列表",
                         url: "/stresstest",
-                        id: "ylcslb"
+                        id: "ylcslb",
                     },
                     {
                         name: "新增压力测试列表",
                         url: "/stresstest/addList",
-                        id: "xzylcs"
+                        id: "xzylcs",
                     },
                     {
                         name: "喷涂质检列表",
                         url: "/spray/inspect-form/list",
-                        id: "ptzjlb"
+                        id: "ptzjlb",
                     },
                     {
                         name: "新增喷涂质检",
                         url: "/spray/inspect-form/addList",
-                        id: "xzptzj"
+                        id: "xzptzj",
                     },
                     {
                         name: "自控质检列表",
                         url: "/autoControl/zj-list",
-                        id: "zkzjlb"
+                        id: "zkzjlb",
                     },
                     {
                         name: "新增自控质检",
                         url: "/autoControl/zjadd-list",
-                        id: "xzzkzj"
+                        id: "xzzkzj",
                     },
                     {
                         name: "阀座质检列表",
                         url: "/fzzj/zj-list",
-                        id: "fzzjlb"
+                        id: "fzzjlb",
                     },
                     {
                         name: "新增阀座质检",
                         url: "/fzzj/zjadd-list",
-                        id: "xzfzzj"
-                    }
-                ]
+                        id: "xzfzzj",
+                    },
+                ],
             },
             {
                 name: "发货管理",
@@ -444,24 +457,24 @@ export default {
                     {
                         name: "发货单列表",
                         url: "/delivery-bills",
-                        id: "fhdgl"
+                        id: "fhdgl",
                     },
                     {
                         name: "新增发货通知单",
                         url: "/delivery-bills/addList",
-                        id: "xzfhtzd"
+                        id: "xzfhtzd",
                     },
                     {
                         name: "发货记录列表",
                         url: "/delivery-record",
-                        id: "fhjlgl"
+                        id: "fhjlgl",
                     },
                     {
                         name: "新增发货记录",
                         url: "/delivery-record/addList",
-                        id: "xzfhjl"
-                    }
-                ]
+                        id: "xzfhjl",
+                    },
+                ],
             },
             {
                 name: "财务管理",
@@ -470,59 +483,59 @@ export default {
                     {
                         name: "资产管理",
                         url: "/assets",
-                        id: "zcgl"
+                        id: "zcgl",
                     },
                     {
                         name: "费用管理",
                         url: "/cost",
-                        id: "fygl"
+                        id: "fygl",
                     },
                     {
                         name: "生产合同管理",
                         url: "/production",
-                        id: "schtgl"
+                        id: "schtgl",
                     },
                     {
                         name: "采购合同管理",
                         url: "/contract",
-                        id: "htgl"
+                        id: "htgl",
                     },
                     {
                         name: "进项发票管理",
                         url: "/jx-invoice",
-                        id: "jxfp"
+                        id: "jxfp",
                     },
                     {
                         name: "销项发票管理",
                         url: "/xx-invoice",
-                        id: "xxfp"
+                        id: "xxfp",
                     },
                     {
                         name: "发货申请列表",
                         url: "/finance-bills",
-                        id: "fhsqlb"
+                        id: "fhsqlb",
                     },
                     {
                         name: "成品价格管理",
                         url: "/finishedPrice",
-                        id: "cpjggl"
+                        id: "cpjggl",
                     },
                     {
                         name: "新增成品价格",
                         url: "/finishedPrice/addList",
-                        id: "xzcpjg"
+                        id: "xzcpjg",
                     },
                     {
                         name: "零件价格管理",
                         url: "/partPrice",
-                        id: "ljjggl"
+                        id: "ljjggl",
                     },
                     {
                         name: "新增零件价格",
                         url: "/partPrice/addList",
-                        id: "xzljjg"
-                    }
-                ]
+                        id: "xzljjg",
+                    },
+                ],
             },
             {
                 name: "公告管理",
@@ -531,14 +544,14 @@ export default {
                     {
                         name: "新闻管理",
                         url: "/news",
-                        id: "xwgl"
+                        id: "xwgl",
                     },
                     {
                         name: "通知管理",
                         url: "/notification",
-                        id: "tzgl"
-                    }
-                ]
+                        id: "tzgl",
+                    },
+                ],
             },
             {
                 name: "站内信管理",
@@ -547,19 +560,19 @@ export default {
                     {
                         name: "站内信列表",
                         url: "/message",
-                        id: "znxlb"
+                        id: "znxlb",
                     },
                     {
                         name: "新增站内信",
                         url: "/message/add",
-                        id: "xzznx"
+                        id: "xzznx",
                     },
                     {
                         name: "已发站内信",
                         url: "/message/sent",
-                        id: "yfznx"
-                    }
-                ]
+                        id: "yfznx",
+                    },
+                ],
             },
             {
                 name: "经管任务",
@@ -568,14 +581,14 @@ export default {
                     {
                         name: "发票管理",
                         url: "/jgzx-invoice",
-                        id: "kfpgl"
+                        id: "kfpgl",
                     },
                     {
                         name: "新增发票管理",
                         url: "/jgzx-invoice/addList",
-                        id: "xzfp"
-                    }
-                ]
+                        id: "xzfp",
+                    },
+                ],
             },
             {
                 name: "计划管理",
@@ -584,44 +597,44 @@ export default {
                     {
                         name: "零件加工管理",
                         url: "/workcar",
-                        id: "jhjjglb"
+                        id: "jhjjglb",
                     },
                     {
                         name: "生产订单列表",
                         url: "/jhgl-scddlb-list",
-                        id: "jhgl-scddlb"
+                        id: "jhgl-scddlb",
                     },
                     {
                         name: "新增喷涂加工",
                         url: "/spray/add-list",
-                        id: "xzptjg"
+                        id: "xzptjg",
                     },
                     {
                         name: "喷涂加工列表",
                         url: "/spraylist",
-                        id: "ptjglb"
+                        id: "ptjglb",
                     },
                     {
                         name: "自控委托加工",
                         url: "/autoControlList",
-                        id: "zkwtjglb"
+                        id: "zkwtjglb",
                     },
                     {
                         name: "新增自控委托加工",
                         url: "/autoControl/add-list",
-                        id: "xzzkwtjg"
+                        id: "xzzkwtjg",
                     },
                     {
                         name: "阀座委托加工",
                         url: "/fzwtjgList",
-                        id: "fzwtjglb"
+                        id: "fzwtjglb",
                     },
                     {
                         name: "新增阀座委托加工",
                         url: "/xzfzwtjg/add-list",
-                        id: "xzfzwtjg"
-                    }
-                ]
+                        id: "xzfzwtjg",
+                    },
+                ],
             },
             {
                 name: "生产过程管理",
@@ -630,39 +643,39 @@ export default {
                     {
                         name: "零件加工管理",
                         url: "/partmanufacturing",
-                        id: "cjjjglb"
+                        id: "cjjjglb",
                     },
                     {
                         name: "更换料申请",
                         url: "/replacement",
-                        id: "cjzr-ghllb"
+                        id: "cjzr-ghllb",
                     },
                     {
                         name: "新增更换料",
                         url: "/replacement/addList",
-                        id: "xzghllj"
+                        id: "xzghllj",
                     },
                     {
                         name: "生产订单列表",
                         url: "/cjzr-scddlb",
-                        id: "cjzr-scddlb"
+                        id: "cjzr-scddlb",
                     },
                     {
                         name: "喷涂加工列表",
                         url: "/spray/produce-list",
-                        id: "cjzr-scptjg"
+                        id: "cjzr-scptjg",
                     },
                     {
                         name: "自控加工列表",
                         url: "/autoControl/scadd-list",
-                        id: "scgc-zkjglb"
+                        id: "scgc-zkjglb",
                     },
                     {
                         name: "阀座加工列表",
                         url: "/scgc-fzjglb-list",
-                        id: "scgc-fzjglb"
-                    }
-                ]
+                        id: "scgc-fzjglb",
+                    },
+                ],
             },
             {
                 name: "技术管理",
@@ -671,24 +684,24 @@ export default {
                     {
                         name: "更换料列表",
                         url: "/replacementlist",
-                        id: "jsgl-ghllb"
+                        id: "jsgl-ghllb",
                     },
                     {
                         name: "文件/图纸管理",
                         url: "/fileupload",
-                        id: "wjtzgl"
+                        id: "wjtzgl",
                     },
                     {
                         name: "新增文件/图纸管理",
                         url: "/fileupload/addList",
-                        id: "xzwjtz"
+                        id: "xzwjtz",
                     },
                     {
                         name: "技术清单",
                         url: "/jishuList",
-                        id: "jsqd"
-                    }
-                ]
+                        id: "jsqd",
+                    },
+                ],
             },
             {
                 name: "任务管理",
@@ -697,9 +710,9 @@ export default {
                     {
                         name: "任务列表",
                         url: "/taskfinishlist",
-                        id: "rwlb"
-                    }
-                ]
+                        id: "rwlb",
+                    },
+                ],
             },
             {
                 name: "报表管理",
@@ -708,29 +721,29 @@ export default {
                     {
                         name: "费用报表",
                         url: "/report-forms/list",
-                        id: "bjcwbj"
+                        id: "bjcwbj",
                     },
                     {
                         name: "销售报表",
                         url: "/report-forms/xsList",
-                        id: "xsbj"
+                        id: "xsbj",
                     },
                     {
                         name: "采购报表",
                         url: "/report-forms/cgList",
-                        id: "cgbj"
+                        id: "cgbj",
                     },
                     {
                         name: "质量报表",
                         url: "/report-forms/zlList",
-                        id: "zlbj"
+                        id: "zlbj",
                     },
                     {
                         name: "成本报表",
                         url: "/report-forms/cbList",
-                        id: "cbbb"
-                    }
-                ]
+                        id: "cbbb",
+                    },
+                ],
             },
             {
                 name: "绩效管理",
@@ -739,85 +752,85 @@ export default {
                     {
                         name: "考核指标列表",
                         url: "/khzb",
-                        id: "khzb"
+                        id: "khzb",
                     },
                     {
                         name: "考勤列表",
                         url: "/kaoqin",
-                        id: "kqb"
+                        id: "kqb",
                     },
                     {
                         name: "工序明细列表",
                         url: "/jiaoxiaogongxu",
-                        id: "gxlb"
+                        id: "gxlb",
                     },
 
                     {
                         name: "生产能力列表",
                         url: "/jiaoxiaonengli",
-                        id: "scnl"
+                        id: "scnl",
                     },
                     {
                         name: "创建工资列表",
                         url: "/jiaoxiaogongzi",
-                        id: "gzlb"
+                        id: "gzlb",
                     },
                     {
                         name: "工资查询列表",
                         url: "/gongziList",
-                        id: "gzcxlb"
+                        id: "gzcxlb",
                     },
                     {
                         name: "工时定额列表",
                         url: "/jiaoxiaogongshi",
-                        id: "gsdelb"
+                        id: "gsdelb",
                     },
                     {
                         name: "班组列表",
                         url: "/jiaoxiaobanzu",
-                        id: "bzlb"
+                        id: "bzlb",
                     },
                     {
                         name: "考核打分列表",
                         url: "/jiaoxiaodafen",
-                        id: "khdf"
+                        id: "khdf",
                     },
                     {
                         name: "任务分配-零件加工",
                         url: "/lingjianTask",
-                        id: "rwljjggl"
+                        id: "rwljjggl",
                     },
                     {
                         name: "任务分配-生产订单",
                         url: "/shengcTask",
-                        id: "rwscddlb"
+                        id: "rwscddlb",
                     },
                     {
                         name: "任务分配-喷涂加工",
                         url: "/pentuTask",
-                        id: "rwptjglb"
+                        id: "rwptjglb",
                     },
                     {
                         name: "任务分配-自控加工",
                         url: "/zikongTask",
-                        id: "rwzkjg"
+                        id: "rwzkjg",
                     },
                     {
                         name: "任务分配-阀座加工",
                         url: "/fazuoTask",
-                        id: "rwfzjg"
+                        id: "rwfzjg",
                     },
                     {
                         name: "管理人员计提列表",
                         url: "/ryjtList",
-                        id: "glryjtlb"
+                        id: "glryjtlb",
                     },
                     {
                         name: "人员打分管理",
                         url: "/dafenList",
-                        id: "jxrydfgl"
-                    }
-                ]
+                        id: "jxrydfgl",
+                    },
+                ],
             },
             {
                 name: "好利财务",
@@ -826,96 +839,111 @@ export default {
                     {
                         name: "借款申请",
                         url: "/jksqList",
-                        id: "jksq"
+                        id: "jksq",
                     },
                     {
                         name: "借款付款",
                         url: "/jkfkList",
-                        id: "jkfk"
+                        id: "jkfk",
                     },
                     {
                         name: "报销申请",
                         url: "/baoxiaoList",
-                        id: "bxsq"
+                        id: "bxsq",
                     },
                     {
                         name: "报销支付",
                         url: "/bxzfList",
-                        id: "bxzf"
+                        id: "bxzf",
                     },
                     {
                         name: "现金日记账",
                         url: "/cashAccounting",
-                        id: "xjrjz"
+                        id: "xjrjz",
                     },
                     {
                         name: "银行日记账",
                         url: "/bankAccounting",
-                        id: "yhrjz"
+                        id: "yhrjz",
                     },
                     {
                         name: "其他货币",
                         url: "/otherAccounting",
-                        id: "qtrjz"
+                        id: "qtrjz",
                     },
                     {
                         name: "付款计划",
                         url: "/pay/planList",
-                        id: "fkjh"
+                        id: "fkjh",
                     },
                     {
                         name: "应付汇总",
                         url: "/yfhzList",
-                        id: "yfhz"
+                        id: "yfhz",
                     },
                     {
                         name: "科目管理",
                         url: "/kemuList",
-                        id: "kmgl"
+                        id: "kmgl",
                     },
                     {
                         name: "科目费用预算",
                         url: "/kemufeiyongList",
-                        id: "kmfyys"
+                        id: "kmfyys",
                     },
                     {
                         name: "部门费用预算",
                         url: "/deptCost",
-                        id: "bmfyys"
+                        id: "bmfyys",
                     },
                     {
                         name: "应收款项",
                         url: "/tradeReceivable",
-                        id: "yskx"
+                        id: "yskx",
                     },
                     {
                         name: "财务挂账",
                         url: "/cwgzList",
-                        id: "cwgg"
+                        id: "cwgg",
                     },
                     {
                         name: "分解审核",
                         url: "/fjshList",
-                        id: "fjsh"
+                        id: "fjsh",
                     },
                     {
                         name: "固定资产管理",
                         url: "/gdzcList",
-                        id: "gdzc"
-                    }
-                ]
-            }
+                        id: "gdzc",
+                    },
+                    {
+                        name: "采购合同汇总统计",
+                        url: "/caigoutongjiList",
+                        id: "cghthztj",
+                    },
+                    {
+                        name: "销售合同汇总统计",
+                        url: "/xiaoshoutongjiList",
+                        id: "xshthztj",
+                    },
+                    {
+                        name: "公司单位",
+                        url: "/companyList",
+                        id: "gsdw",
+                    },
+                ],
+            },
         ];
-        menu.forEach(m => {
-            m.children = m.children.filter(item => menus.includes(item.id));
+        menu.forEach((m) => {
+            m.children = m.children.filter((item) => menus.includes(item.id));
         });
-        this.list = menu.filter(m => m.children.length);
+        this.list = menu.filter((m) => m.children.length);
         // 默认展开对应的菜单
         let id = this.$route.meta.id;
-        this.list.forEach(group => {
+        this.list.forEach((group) => {
             let open = false;
             group.children &&
-                group.children.forEach(item => {
+                group.children.forEach((item) => {
                     if (item.id === id) open = true;
                 });
             this.$set(group, "open", open);
@@ -923,14 +951,14 @@ export default {
     },
     methods: {
         getList() {
-            this.$http.get("/haolifa/menu").then(res => {
-                res.forEach(item => {
+            this.$http.get("/haolifa/menu").then((res) => {
+                res.forEach((item) => {
                     item.open = false;
                 });
                 this.list = res;
             });
-        }
-    }
+        },
+    },
 };
 </script>
 

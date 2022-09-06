@@ -309,6 +309,17 @@ export default {
     },
     created() {
         this.filter.createUserId = 0;
+        if(this.$route.query.name){
+            this.filter.supplierName = this.$route.query.name
+            this.$refs.list.update(true);
+        }
+    },
+    activated() {
+        this.filter.createUserId = 0;
+        if(this.$route.query.name){
+            this.filter.supplierName = this.$route.query.name
+            this.$refs.list.update(true);
+        }
     },
     methods: {
         flush() {
@@ -320,9 +331,6 @@ export default {
             };
             this.$refs.list.update(true);
         },
-        // info: function(formId) {
-        //     this.$router.push(`/purchsemanage-purchase/info?formId=${formId}`);
-        // },
         getInfo(formId) {
             this.layer = true;
             // this.orderUrl = "/haolifa/export/purchaseOrder/" + formId;

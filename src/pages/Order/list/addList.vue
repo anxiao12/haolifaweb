@@ -224,7 +224,7 @@
                             <td colspan="1" rowspan="1">过渡盘</td>
                             <td colspan="1" rowspan="1">连接套</td>
                         </tr>
-                        <tr v-for="(val,index) in JSON.parse(info.technicalRequire)" :key="index">
+                        <tr v-for="(val,index) in info.orderTechnicalDetaileds" :key="index">
                             <td colspan="1">{{val.productName}}</td>
                             <td colspan="1">{{val.productModel}}</td>
                             <td colspan="1">{{val.specifications}}</td>
