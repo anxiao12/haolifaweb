@@ -1,27 +1,86 @@
 <template>
     <div class="page-invoice-list">
-        <i class="icon icon-abs" @click="flush">autorenew</i>
+        <i
+            class="icon icon-abs"
+            @click="flush"
+        >autorenew</i>
         <div class="flex-v-center tool-bar">
-            <div class="flex-v-center search-bar" style="margin-right: 20px;">
+            <div
+                class="flex-v-center search-bar"
+                style="margin-right: 20px;"
+            >
                 <i class="icon f-20 c-8">search</i>
-                <input type="text" class="flex-item" v-model="filter.workshopName" @change="
-            $refs.list.update(true)" placeholder="车间名称" style="width: 200px;">
-                <input type="text" class="flex-item" v-model="filter.workType" @change="
-            $refs.list.update(true)" placeholder="工种类别" style="width: 200px;">
-                <input type="text" class="flex-item" v-model="filter.productModel" @change="
-            $refs.list.update(true)" placeholder="适用工单产品型号" style="width: 200px;">
-                <input type="text" class="flex-item" v-model="filter.postName" @change="
-            $refs.list.update(true)" placeholder="岗位（工序）名称" style="width: 200px;">
-                <input type="text" class="flex-item" v-model="filter.postCapability" @change="
-            $refs.list.update(true)" placeholder="岗位能力简称" style="width: 200px;">
-                <input type="text" class="flex-item" v-model="filter.postCode" @change="
-            $refs.list.update(true)" placeholder="岗位（工序）代码" style="width: 200px;">
+                <input
+                    type="text"
+                    class="flex-item"
+                    v-model="filter.workshopName"
+                    @change="
+            $refs.list.update(true)"
+                    placeholder="车间名称"
+                    style="width: 200px;"
+                >
+                <input
+                    type="text"
+                    class="flex-item"
+                    v-model="filter.workType"
+                    @change="
+            $refs.list.update(true)"
+                    placeholder="工种类别"
+                    style="width: 200px;"
+                >
+                <input
+                    type="text"
+                    class="flex-item"
+                    v-model="filter.productModel"
+                    @change="
+            $refs.list.update(true)"
+                    placeholder="适用工单产品型号"
+                    style="width: 200px;"
+                >
+                <input
+                    type="text"
+                    class="flex-item"
+                    v-model="filter.postName"
+                    @change="
+            $refs.list.update(true)"
+                    placeholder="岗位（工序）名称"
+                    style="width: 200px;"
+                >
+                <input
+                    type="text"
+                    class="flex-item"
+                    v-model="filter.postCapability"
+                    @change="
+            $refs.list.update(true)"
+                    placeholder="岗位能力简称"
+                    style="width: 200px;"
+                >
+                <input
+                    type="text"
+                    class="flex-item"
+                    v-model="filter.postCode"
+                    @change="
+            $refs.list.update(true)"
+                    placeholder="岗位（工序）代码"
+                    style="width: 200px;"
+                >
             </div>
             <div class="flex-item"></div>
-            <btn class="b" flat color="#008eff" @click="add">新增</btn>
+            <btn
+                class="b"
+                flat
+                color="#008eff"
+                @click="add"
+            >新增</btn>
         </div>
         <div class="flex-item scroll-y">
-            <data-list ref="list" :page-size="15" :param="filter" url="/haolifa/pay-working-procedure/getList" method="post">
+            <data-list
+                ref="list"
+                :page-size="15"
+                :param="filter"
+                url="/haolifa/pay-working-procedure/getList"
+                method="post"
+            >
                 <tr slot="header">
                     <th style="width: 60px;">序号</th>
                     <th>车间名称</th>
@@ -32,10 +91,16 @@
                     <th>岗位（工序）代码</th>
                     <th>创建时间</th>
                     <th>更新时间</th>
-                    <th class="t-right" style="width: 80px;">操作</th>
+                    <th
+                        class="t-right"
+                        style="width: 80px;"
+                    >操作</th>
                 </tr>
                 <!-- item: 当前行数据; index: 当前行数 -->
-                <template slot="item" slot-scope="{ item, index }">
+                <template
+                    slot="item"
+                    slot-scope="{ item, index }"
+                >
                     <td class="c-a">{{ index }}</td>
                     <td>{{ item.workshopName }}</td>
                     <td>{{ item.workType }}</td>
@@ -46,30 +111,98 @@
                     <td>{{ item.createTime }}</td>
                     <td>{{ item.updateTime }}</td>
                     <td class="t-right">
-                        <a href="javascript:;" class="blue" @click="edit(item)">编辑 |&nbsp;</a>
-                        <a href="javascript:;" class="red" @click="remove(item)">删除</a>
+                        <a
+                            href="javascript:;"
+                            class="blue"
+                            @click="edit(item)"
+                        >编辑 |&nbsp;</a>
+                        <a
+                            href="javascript:;"
+                            class="red"
+                            @click="remove(item)"
+                        >删除</a>
                     </td>
                 </template>
             </data-list>
         </div>
-        <layer v-if="layer" :title="form.id ?'编辑':'新增' " width="70%">
-            <div class="layer-text" style="padding-bottom: 50px;">
+        <layer
+            v-if="layer"
+            :title="form.id ?'编辑':'新增' "
+            width="70%"
+        >
+            <div
+                class="layer-text"
+                style="padding-bottom: 50px;"
+            >
                 <div class="flex">
-                    <select-box v-model="form.workshopName" class="flex-item mr-20" hint="必填" :list="deptList" label="车间名称"></select-box>
-                    <select-box v-model="form.workType" class="flex-item mr-20" hint="必填" :list="workTypeList" label="工种类别"></select-box>
+                    <input-box
+                        v-model="form.workshopName"
+                        @click="deptFlag=true"
+                        hint="必填"
+                        class="flex-item mr-20"
+                        label="车间名称"
+                    ></input-box>
+                    <select-box
+                        v-model="form.workType"
+                        class="flex-item mr-20"
+                        hint="必填"
+                        :list="workTypeList"
+                        label="工种类别"
+                    ></select-box>
                 </div>
                 <div class="flex">
-                    <input-box v-model="form.productModel" class="flex-item mr-20" hint="必填" label="适用工单产品型号"></input-box>
-                    <input-box v-model="form.postName" class="flex-item mr-20" hint="必填" label="岗位（工序）名称"></input-box>
+                    <input-box
+                        v-model="form.productModel"
+                        class="flex-item mr-20"
+                        hint="必填"
+                        label="适用工单产品型号"
+                    ></input-box>
+                    <input-box
+                        v-model="form.postName"
+                        class="flex-item mr-20"
+                        hint="必填"
+                        label="岗位（工序）名称"
+                    ></input-box>
                 </div>
                 <div class="flex">
-                    <input-box v-model="form.postCapability" class="flex-item mr-20" hint="必填" label="岗位能力简称"></input-box>
-                    <input-box v-model="form.postCode" class="flex-item mr-20" hint="必填" label="岗位（工序）代码"></input-box>
+                    <input-box
+                        v-model="form.postCapability"
+                        class="flex-item mr-20"
+                        hint="必填"
+                        label="岗位能力简称"
+                    ></input-box>
+                    <input-box
+                        v-model="form.postCode"
+                        class="flex-item mr-20"
+                        hint="必填"
+                        label="岗位（工序）代码"
+                    ></input-box>
                 </div>
             </div>
             <div class="layer-btns">
-                <el-button class="mr-20" size="mini" :loading="loading" type="primary" @click="save">保存</el-button>
-                <el-button class="mr-20" size="mini" @click="close">关闭</el-button>
+                <el-button
+                    class="mr-20"
+                    size="mini"
+                    :loading="loading"
+                    type="primary"
+                    @click="save"
+                >保存</el-button>
+                <el-button
+                    class="mr-20"
+                    size="mini"
+                    @click="close"
+                >关闭</el-button>
+            </div>
+        </layer>
+        <layer
+            v-if="deptFlag"
+            width="50%"
+        >
+            <div
+                class="layer-text"
+                style="padding-bottom: 50px;"
+            >
+                <dept-select @selectClick="selectClick"></dept-select>
             </div>
         </layer>
     </div>
@@ -77,9 +210,10 @@
 
 <script>
 import DataList from "@/components/datalist";
+import DeptSelect from "@/components/deptSelect";
 export default {
     name: "jiaoxiaogongxu-list",
-    components: { DataList },
+    components: { DataList, DeptSelect },
     data() {
         return {
             filter: {
@@ -90,9 +224,10 @@ export default {
                 productModel: "",
                 serial: "",
                 workType: "",
-                workshopName: ""
+                workshopName: "",
             },
             layer: false,
+            deptFlag: false,
             form: {
                 id: "",
                 pageNum: "",
@@ -103,11 +238,11 @@ export default {
                 productModel: "",
                 serial: "",
                 workType: "",
-                workshopName: ""
+                workshopName: "",
             },
             deptList: [],
             loading: false,
-            workTypeList: []
+            workTypeList: [],
         };
     },
     mounted() {
@@ -115,6 +250,12 @@ export default {
         this.getWorkList();
     },
     methods: {
+        selectClick(data) {
+            if (data) {
+                this.form.workshopName = data.name;
+            }
+            this.deptFlag = false;
+        },
         flush() {
             this.filter = {
                 id: "",
@@ -124,37 +265,37 @@ export default {
                 productModel: "",
                 serial: "",
                 workType: "",
-                workshopName: ""
+                workshopName: "",
             };
             this.$refs.list.update(true);
         },
         getDeptList() {
             this.$http
                 .get("/haolifa/dept/list")
-                .then(res => {
-                    res.map(item => {
+                .then((res) => {
+                    res.map((item) => {
                         this.deptList.push({
                             text: item.deptName,
-                            value: item.deptName
+                            value: item.deptName,
                         });
                     });
                 })
-                .catch(e => {
+                .catch((e) => {
                     this.$toast(e.msg || e.message);
                 });
         },
         getWorkList() {
             this.$http
                 .get("/haolifa/dictionaries/getTypeOfWorkEnum")
-                .then(res => {
-                    res.result.map(item => {
+                .then((res) => {
+                    res.result.map((item) => {
                         this.workTypeList.push({
                             text: item.name,
-                            value: item.name
+                            value: item.name,
                         });
                     });
                 })
-                .catch(e => {
+                .catch((e) => {
                     this.$toast(e.msg || e.message);
                 });
         },
@@ -178,14 +319,14 @@ export default {
                 yes: () => {
                     this.$http
                         .get(`/haolifa/pay-working-procedure/del/${item.id}`)
-                        .then(res => {
+                        .then((res) => {
                             this.$toast("删除成功");
                             this.$refs.list.update(true);
                         })
-                        .catch(e => {
+                        .catch((e) => {
                             this.$toast(e.msg || e.message);
                         });
-                }
+                },
             });
         },
         add() {
@@ -217,18 +358,16 @@ export default {
                 return;
             }
             this.loading = true;
-            let url = this.form.id
-                ? "/haolifa/pay-working-procedure/edit"
-                : "/haolifa/pay-working-procedure/save";
+            let url = this.form.id ? "/haolifa/pay-working-procedure/edit" : "/haolifa/pay-working-procedure/save";
             this.$http
                 .post(url, this.form)
-                .then(res => {
+                .then((res) => {
                     this.close();
                     this.$toast("保存成功");
                     this.$refs.list.update(true);
                     this.loading = false;
                 })
-                .catch(e => {
+                .catch((e) => {
                     this.loading = false;
                     this.$toast(e.msg || e.message);
                 });
@@ -245,10 +384,10 @@ export default {
                 productModel: "",
                 serial: "",
                 workType: "",
-                workshopName: ""
+                workshopName: "",
             };
-        }
-    }
+        },
+    },
 };
 </script>
 

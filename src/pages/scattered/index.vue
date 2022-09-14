@@ -1,8 +1,14 @@
 <template>
     <div class="page-material-list">
-        <i class="icon icon-abs" @click="flush">autorenew</i>
+        <i
+            class="icon icon-abs"
+            @click="flush"
+        >autorenew</i>
         <div class="flex-v-center tool-bar">
-            <div class="flex-v-center search-bar" style="margin-right: 20px;">
+            <div
+                class="flex-v-center search-bar"
+                style="margin-right: 20px;"
+            >
                 <i class="icon f-20 c-8">search</i>
                 <input
                     type="text"
@@ -40,14 +46,29 @@
             </div>
             <div class="flex-item"></div>
             <!-- <btn class="b" flat color="#008eff" @click="exportExcelIn">零件待入库导出</btn> -->
-            <btn class="b" flat color="#008eff" @click="exportExcelIn">入库导出</btn>
-            <btn class="b" flat color="#008eff" @click="exportExcelOut">出库导出</btn>
+            <btn
+                class="b"
+                flat
+                color="#008eff"
+                @click="exportExcelIn"
+            >入库导出</btn>
+            <btn
+                class="b"
+                flat
+                color="#008eff"
+                @click="exportExcelOut"
+            >出库导出</btn>
             <a
                 class="b"
                 style="color:rgb(0, 142, 255)"
                 href="/haolifa/sporadic/material/surplus"
             >结存导出</a>
-            <btn class="b" flat color="#008eff" @click="$router.push('/scattered/add')">新增</btn>
+            <btn
+                class="b"
+                flat
+                color="#008eff"
+                @click="$router.push('/scattered/add')"
+            >新增</btn>
         </div>
         <div class="flex-item scroll-y">
             <data-list
@@ -67,10 +88,16 @@
                     <th>单价</th>
                     <th>当前库存</th>
                     <th>金额</th>
-                    <th class="t-center" style="width: 80px;">操作</th>
+                    <th
+                        class="t-center"
+                        style="width: 80px;"
+                    >操作</th>
                 </tr>
                 <!-- item: 当前行数据; index: 当前行数 -->
-                <template slot="item" slot-scope="{ item, index }">
+                <template
+                    slot="item"
+                    slot-scope="{ item, index }"
+                >
                     <td class="c-a">{{index}}</td>
                     <td>{{item.materialName}}</td>
                     <td>{{item.classifyName}}</td>
@@ -83,112 +110,291 @@
                     <td>
                         <!-- <icon-btn small @click="edit(item)">edit</icon-btn>
                         <icon-btn small @click="remove(item)">delete</icon-btn>-->
-                        <a href="javascript:;" class="blue" @click="entryMaterial(item)">入库</a> |
-                        <a href="javascript:;" class="blue" @click="outMaterial(item)">出库</a> |
-                        <a href="javascript:;" class="blue" @click="entryInfo(item)">入库详情</a> |
-                        <a href="javascript:;" class="blue" @click="outInfo(item)">出库详情</a> |
-                        <a href="javascript:;" class="blue" @click="editInfo(item)">编辑</a> |
-                        <a href="javascript:;" class="blue" @click="delInfo(item)">删除</a>
+                        <a
+                            href="javascript:;"
+                            class="blue"
+                            @click="entryMaterial(item)"
+                        >入库</a> |
+                        <a
+                            href="javascript:;"
+                            class="blue"
+                            @click="outMaterial(item)"
+                        >出库</a> |
+                        <a
+                            href="javascript:;"
+                            class="blue"
+                            @click="entryInfo(item)"
+                        >入库详情</a> |
+                        <a
+                            href="javascript:;"
+                            class="blue"
+                            @click="outInfo(item)"
+                        >出库详情</a> |
+                        <a
+                            href="javascript:;"
+                            class="blue"
+                            @click="editInfo(item)"
+                        >编辑</a> |
+                        <a
+                            href="javascript:;"
+                            class="blue"
+                            @click="delInfo(item)"
+                        >删除</a>
                     </td>
                 </template>
             </data-list>
         </div>
-        <layer v-if="exportInLayer" :title="'导出'" width="30%">
-            <div class="layer-text" style="padding-bottom: 50px;min-height:380px;">
+        <layer
+            v-if="exportInLayer"
+            :title="'导出'"
+            width="30%"
+        >
+            <div
+                class="layer-text"
+                style="padding-bottom: 50px;min-height:380px;"
+            >
                 <div class="flex ml-20 mr-20">
-                    <date-picker v-model="exportInForm.startDate" class="flex-item" label="开始时间"></date-picker>
-                </div>
-                <div class="flex ml-20 mr-20">
-                    <date-picker v-model="exportInForm.endDate" class="flex-item" label="结束时间"></date-picker>
-                </div>
-                <div class="flex ml-20 mr-20">
-                    <input-box v-model="exportInForm.materialName" class="flex-item" label="物料名称"></input-box>
-                </div>
-            </div>
-            <div class="layer-btns">
-                <btn flat @click="exportInLayer=false">取消</btn>
-                <btn flat color="#008eff" @click="downloadIn()">确定</btn>
-            </div>
-        </layer>
-        <layer v-if="exportOutLayer" :title="'导出'" width="30%">
-            <div class="layer-text" style="padding-bottom: 50px;min-height:380px;">
-                <div class="flex ml-20 mr-20">
-                    <date-picker v-model="exportOutForm.startDate" class="flex-item" label="开始时间"></date-picker>
-                </div>
-                <div class="flex ml-20 mr-20">
-                    <date-picker v-model="exportOutForm.endDate" class="flex-item" label="结束时间"></date-picker>
-                </div>
-                <div class="flex ml-20 mr-20">
-                    <input-box v-model="exportOutForm.materialName" class="flex-item" label="零件图号"></input-box>
-                </div>
-            </div>
-            <div class="layer-btns">
-                <btn flat @click="exportOutLayer=false">取消</btn>
-                <btn flat color="#008eff" @click="downloadOut()">确定</btn>
-            </div>
-        </layer>
-        <layer v-if="outLayer" :title="'出库'" width="30%">
-            <div class="layer-text" style="padding-bottom: 50px;min-height:380px;">
-                <div class="flex ml-20 mr-20">
-                    <input-box v-model="outObj.quantity" type="number" class="flex-item" label="数量"></input-box>
-                </div>
-                <div class="flex ml-20 mr-20">
-                    <select-box
-                        v-model="outObj.receiveDepartment"
+                    <date-picker
+                        v-model="exportInForm.startDate"
                         class="flex-item"
-                        :list="deptList"
+                        label="开始时间"
+                    ></date-picker>
+                </div>
+                <div class="flex ml-20 mr-20">
+                    <date-picker
+                        v-model="exportInForm.endDate"
+                        class="flex-item"
+                        label="结束时间"
+                    ></date-picker>
+                </div>
+                <div class="flex ml-20 mr-20">
+                    <input-box
+                        v-model="exportInForm.materialName"
+                        class="flex-item"
+                        label="物料名称"
+                    ></input-box>
+                </div>
+            </div>
+            <div class="layer-btns">
+                <btn
+                    flat
+                    @click="exportInLayer=false"
+                >取消</btn>
+                <btn
+                    flat
+                    color="#008eff"
+                    @click="downloadIn()"
+                >确定</btn>
+            </div>
+        </layer>
+        <layer
+            v-if="exportOutLayer"
+            :title="'导出'"
+            width="30%"
+        >
+            <div
+                class="layer-text"
+                style="padding-bottom: 50px;min-height:380px;"
+            >
+                <div class="flex ml-20 mr-20">
+                    <date-picker
+                        v-model="exportOutForm.startDate"
+                        class="flex-item"
+                        label="开始时间"
+                    ></date-picker>
+                </div>
+                <div class="flex ml-20 mr-20">
+                    <date-picker
+                        v-model="exportOutForm.endDate"
+                        class="flex-item"
+                        label="结束时间"
+                    ></date-picker>
+                </div>
+                <div class="flex ml-20 mr-20">
+                    <input-box
+                        v-model="exportOutForm.materialName"
+                        class="flex-item"
+                        label="零件图号"
+                    ></input-box>
+                </div>
+            </div>
+            <div class="layer-btns">
+                <btn
+                    flat
+                    @click="exportOutLayer=false"
+                >取消</btn>
+                <btn
+                    flat
+                    color="#008eff"
+                    @click="downloadOut()"
+                >确定</btn>
+            </div>
+        </layer>
+        <layer
+            v-if="outLayer"
+            :title="'出库'"
+            width="30%"
+        >
+            <div
+                class="layer-text"
+                style="padding-bottom: 50px;min-height:380px;"
+            >
+                <div class="flex ml-20 mr-20">
+                    <input-box
+                        v-model="outObj.quantity"
+                        type="number"
+                        class="flex-item"
+                        label="数量"
+                    ></input-box>
+                </div>
+                <div class="flex ml-20 mr-20">
+                    <input-box
+                        v-model="outObj.receiveDepartment"
+                        @click="deptFlag=true"
+                        class="flex-item mr-20"
                         label="领料部门"
-                    ></select-box>
+                    ></input-box>
                 </div>
             </div>
             <div class="layer-btns">
-                <btn flat @click="outLayer=false">取消</btn>
-                <btn flat color="#008eff" @click="outScattered()">确定</btn>
+                <btn
+                    flat
+                    @click="outLayer=false"
+                >取消</btn>
+                <btn
+                    flat
+                    color="#008eff"
+                    @click="outScattered()"
+                >确定</btn>
             </div>
         </layer>
-        <layer v-if="inLayer" :title="'入库'" width="30%">
-            <div class="layer-text" style="padding-bottom: 50px;min-height:380px;">
+        <layer
+            v-if="inLayer"
+            :title="'入库'"
+            width="30%"
+        >
+            <div
+                class="layer-text"
+                style="padding-bottom: 50px;min-height:380px;"
+            >
                 <div class="flex ml-20 mr-20">
-                    <input-box v-model="inObj.quantity" type="number" class="flex-item" label="数量"></input-box>
+                    <input-box
+                        v-model="inObj.quantity"
+                        type="number"
+                        class="flex-item"
+                        label="数量"
+                    ></input-box>
                 </div>
             </div>
             <div class="layer-btns">
-                <btn flat @click="inLayer=false">取消</btn>
-                <btn flat color="#008eff" @click="inScattered()">确定</btn>
+                <btn
+                    flat
+                    @click="inLayer=false"
+                >取消</btn>
+                <btn
+                    flat
+                    color="#008eff"
+                    @click="inScattered()"
+                >确定</btn>
             </div>
         </layer>
-        <layer v-if="editLayer" :title="'编辑'" width="30%">
-            <div class="layer-text" style="padding-bottom: 20px;min-height:40px;">
+        <layer
+            v-if="editLayer"
+            :title="'编辑'"
+            width="30%"
+        >
+            <div
+                class="layer-text"
+                style="padding-bottom: 20px;min-height:40px;"
+            >
                 <div class="flex ml-20 mr-20">
-                    <input-box v-model="editForm.materialName" class="flex-item" label="名称"></input-box>
+                    <input-box
+                        v-model="editForm.materialName"
+                        class="flex-item"
+                        label="名称"
+                    ></input-box>
                 </div>
                 <div class="flex ml-20 mr-20">
-                    <input-box v-model="editForm.classifyName" class="flex-item" label="分类名称"></input-box>
+                    <input-box
+                        v-model="editForm.classifyName"
+                        class="flex-item"
+                        label="分类名称"
+                    ></input-box>
                 </div>
                 <div class="flex ml-20 mr-20">
-                    <input-box v-model="editForm.model" class="flex-item" label="型号"></input-box>
+                    <input-box
+                        v-model="editForm.model"
+                        class="flex-item"
+                        label="型号"
+                    ></input-box>
                 </div>
                 <div class="flex ml-20 mr-20">
-                    <input-box v-model="editForm.specifications" class="flex-item" label="规格"></input-box>
+                    <input-box
+                        v-model="editForm.specifications"
+                        class="flex-item"
+                        label="规格"
+                    ></input-box>
                 </div>
                 <div class="flex ml-20 mr-20">
-                    <input-box v-model="editForm.price" type="number" class="flex-item" label="价格"></input-box>
+                    <input-box
+                        v-model="editForm.price"
+                        type="number"
+                        class="flex-item"
+                        label="价格"
+                    ></input-box>
                 </div>
             </div>
             <div class="layer-btns">
-                <btn flat @click="editLayer=false">取消</btn>
-                <btn flat color="#008eff" @click="saveScattered()">确定</btn>
+                <btn
+                    flat
+                    @click="editLayer=false"
+                >取消</btn>
+                <btn
+                    flat
+                    color="#008eff"
+                    @click="saveScattered()"
+                >确定</btn>
             </div>
         </layer>
-        <layer v-if="inLayer" :title="'入库'" width="30%">
-            <div class="layer-text" style="padding-bottom: 50px;min-height:380px;">
+        <layer
+            v-if="inLayer"
+            :title="'入库'"
+            width="30%"
+        >
+            <div
+                class="layer-text"
+                style="padding-bottom: 50px;min-height:380px;"
+            >
                 <div class="flex ml-20 mr-20">
-                    <input-box v-model="inObj.quantity" type="number" class="flex-item" label="数量"></input-box>
+                    <input-box
+                        v-model="inObj.quantity"
+                        type="number"
+                        class="flex-item"
+                        label="数量"
+                    ></input-box>
                 </div>
             </div>
             <div class="layer-btns">
-                <btn flat @click="inLayer=false">取消</btn>
-                <btn flat color="#008eff" @click="inScattered()">确定</btn>
+                <btn
+                    flat
+                    @click="inLayer=false"
+                >取消</btn>
+                <btn
+                    flat
+                    color="#008eff"
+                    @click="inScattered()"
+                >确定</btn>
+            </div>
+        </layer>
+        <layer
+            v-if="deptFlag"
+            width="50%"
+        >
+            <div
+                class="layer-text"
+                style="padding-bottom: 50px;"
+            >
+                <dept-select @selectClick="selectClick"></dept-select>
             </div>
         </layer>
     </div>
@@ -196,32 +402,36 @@
 
 <script>
 import DataList from "@/components/datalist";
-
+import DeptSelect from "@/components/deptSelect";
 export default {
     name: "scattered-list",
-    components: { DataList },
+    components: { DataList, DeptSelect },
     data() {
         return {
             exportOutLayer: false,
             exportInLayer: false,
+            deptFlag: false,
             classifyList: [],
             filter: {
                 classifyName: "",
                 materialName: "",
                 model: "",
-                specifications: ""
+                specifications: "",
             },
             exportInForm: {
                 materialName: "",
                 startDate: "",
-                endDate: ""
+                endDate: "",
             },
             exportOutForm: {
                 startDate: "",
                 endDate: "",
-                materialName: ""
+                materialName: "",
             },
-            statusList: [{ value: 1, text: "待入库" }, { value: 2, text: "已入库" }],
+            statusList: [
+                { value: 1, text: "待入库" },
+                { value: 2, text: "已入库" },
+            ],
             money: "",
             outLayer: false,
             outObj: {
@@ -229,30 +439,36 @@ export default {
                 type: 1,
                 sporadicId: "",
                 quantity: 0,
-                receiveDepartment: ""
+                receiveDepartment: "",
             },
             inObj: {
                 graphNo: "",
                 type: 1,
                 sporadicId: "",
-                quantity: 0
+                quantity: 0,
             },
             inLayer: false,
             editLayer: false,
             editForm: {},
-            deptList: []
+            deptList: [],
         };
     },
     created() {
         this.getDeptList();
     },
     methods: {
+        selectClick(data) {
+            if (data) {
+                this.outObj.receiveDepartment = data.name;
+            }
+            this.deptFlag = false;
+        },
         flush() {
             this.filter = {
                 classifyName: "",
                 materialName: "",
                 model: "",
-                specifications: ""
+                specifications: "",
             };
             this.$refs.list.update(true);
         },
@@ -272,15 +488,15 @@ export default {
         getDeptList() {
             this.$http
                 .get(`/haolifa/dept/list`)
-                .then(res => {
-                    this.deptList = res.map(item => {
+                .then((res) => {
+                    this.deptList = res.map((item) => {
                         return {
                             text: item.deptName,
-                            value: item.deptName
+                            value: item.deptName,
                         };
                     });
                 })
-                .catch(e => {
+                .catch((e) => {
                     this.$toast(e.msg || e.message);
                 });
         },
@@ -299,12 +515,12 @@ export default {
 
             this.$http
                 .post("/haolifa/sporadic/out", this.outObj)
-                .then(res => {
+                .then((res) => {
                     this.$toast("出库成功");
                     this.outLayer = false;
                     this.$refs.list.update(true);
                 })
-                .catch(e => {
+                .catch((e) => {
                     this.$toast(e.msg);
                 });
         },
@@ -315,12 +531,12 @@ export default {
             }
             this.$http
                 .post("/haolifa/sporadic/entry", this.inObj)
-                .then(res => {
+                .then((res) => {
                     this.$toast("入库成功");
                     this.inLayer = false;
                     this.$refs.list.update(true);
                 })
-                .catch(e => {
+                .catch((e) => {
                     this.$toast(e.msg);
                 });
         },
@@ -338,7 +554,7 @@ export default {
             this.exportInForm = {
                 startDate: "",
                 endDate: "",
-                materialName: ""
+                materialName: "",
             };
         },
         exportExcelOut() {
@@ -346,7 +562,7 @@ export default {
             this.exportOutForm = {
                 startDate: "",
                 endDate: "",
-                materialName: ""
+                materialName: "",
             };
         },
         downloadOut() {
@@ -393,12 +609,12 @@ export default {
             }
             this.$http
                 .post("/haolifa/sporadic/update", this.editForm)
-                .then(res => {
+                .then((res) => {
                     this.$toast("修改成功");
                     this.editLayer = false;
                     this.$refs.list.update(true);
                 })
-                .catch(e => {
+                .catch((e) => {
                     this.$toast(e.msg);
                 });
         },
@@ -411,16 +627,16 @@ export default {
                 yes: () => {
                     this.$http
                         .post(`/haolifa/sporadic/del/${item.id}`)
-                        .then(res => {
+                        .then((res) => {
                             this.$toast("删除成功");
                             this.$refs.list.update(true);
                         })
-                        .catch(e => {
+                        .catch((e) => {
                             this.$toast(e.msg);
                         });
-                }
+                },
             });
-        }
+        },
     },
     filters: {
         numFilter(value) {
@@ -429,8 +645,8 @@ export default {
             let realVal = parseFloat(value).toFixed(2);
 
             return realVal;
-        }
-    }
+        },
+    },
 };
 </script>
 

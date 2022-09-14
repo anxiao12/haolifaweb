@@ -1,8 +1,14 @@
 <template>
     <div class="page-orders-list">
-        <i class="icon icon-abs" @click="flush">autorenew</i>
+        <i
+            class="icon icon-abs"
+            @click="flush"
+        >autorenew</i>
         <div class="flex-v-center tool-bar">
-            <div class="flex-v-center search-bar" style="margin-right: 20px;">
+            <div
+                class="flex-v-center search-bar"
+                style="margin-right: 20px;"
+            >
                 <i class="icon f-20 c-8">search</i>
                 <input
                     type="text"
@@ -57,10 +63,16 @@
                     <option value="1">未出库</option>
                     <option value="2">已出库</option>
                 </select>
-                <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
+                <i
+                    class="icon"
+                    style="margin-left: -20px;pointer-events:none;"
+                >arrow_drop_down</i>
             </div>
             <div class="flex-item">
-                <btn class="ml-20" @click="allOut">整单出库</btn>
+                <btn
+                    class="ml-20"
+                    @click="allOut"
+                >整单出库</btn>
             </div>
         </div>
         <div class="flex-item scroll-y">
@@ -80,10 +92,16 @@
                     <th>领料单位</th>
                     <th>类型</th>
                     <th>出库状态</th>
-                    <th class="t-right" style="width: 80px;">操作</th>
+                    <th
+                        class="t-right"
+                        style="width: 80px;"
+                    >操作</th>
                 </tr>
                 <!-- item: 当前行数据; index: 当前行数 -->
-                <template slot="item" slot-scope="{ item, index }">
+                <template
+                    slot="item"
+                    slot-scope="{ item, index }"
+                >
                     <td class="c-a">{{index}}</td>
                     <td>{{item.busNo}}</td>
                     <td>{{item.batchNumber}}</td>
@@ -105,7 +123,11 @@
                 </template>
             </data-list>
         </div>
-        <layer v-if="layer" title="出库" width="70%">
+        <layer
+            v-if="layer"
+            title="出库"
+            width="70%"
+        >
             <div style="padding:0 30px;">
                 <div class="flex-v-center">
                     <input-box
@@ -122,15 +144,24 @@
                     ></input-box>
                 </div>
                 <div class="flex-v-center">
-                    <input-box v-model="form.orderNo" class="mr-10" label="单号" style="width: 25%"></input-box>
-                    <input-box v-model="form.price" class="mr-10" label="零件购买单价" style="width: 25%"></input-box>
-                    <select-box
-                        v-model="form.receiveDepartment"
-                        class="flex-item mr-10"
-                        :list="deptList"
-                        label="领料部门"
+                    <input-box
+                        v-model="form.orderNo"
+                        class="mr-10"
+                        label="单号"
                         style="width: 25%"
-                    ></select-box>
+                    ></input-box>
+                    <input-box
+                        v-model="form.price"
+                        class="mr-10"
+                        label="零件购买单价"
+                        style="width: 25%"
+                    ></input-box>
+                    <input-box
+                        v-model="form.receiveDepartment"
+                        @click="deptFlag=true"
+                        class="flex-item mr-20"
+                        label="领料部门"
+                    ></input-box>
                 </div>
                 <div class="flex-v-center">
                     <!-- <select-box v-model="form.roomNo" @change="getRoomId(form.roomNo)" class="mr-10" :list="roomList" label="所属库房" style="width: 25%"></select-box>
@@ -158,7 +189,10 @@
                     ></input-box>
                 </div>
             </div>
-            <div class="flex-v-center" style="margin: 50px auto 100px;">
+            <div
+                class="flex-v-center"
+                style="margin: 50px auto 100px;"
+            >
                 <el-button
                     class="mr-20"
                     size="mini"
@@ -166,10 +200,20 @@
                     type="primary"
                     @click="submit"
                 >提交</el-button>
-                <btn big flat bg class="ml-20 mr-20" @click="layer=false">取消</btn>
+                <btn
+                    big
+                    flat
+                    bg
+                    class="ml-20 mr-20"
+                    @click="layer=false"
+                >取消</btn>
             </div>
         </layer>
-        <layer v-if="outLayer" title="整单出库" width="50%">
+        <layer
+            v-if="outLayer"
+            title="整单出库"
+            width="50%"
+        >
             <div class="flex ml-20 mr-20">
                 <input-box
                     v-model="outForm.busNo"
@@ -186,16 +230,45 @@
                 ></select-box>
             </div>
             <div class="flex ml-20 mr-20">
-                <select-box
+                <input-box
                     v-model="outForm.receiveDepartment"
-                    class="flex-item mr-10"
-                    :list="deptList"
+                    @click="deptFlag2=true"
+                    class="flex-item mr-20"
                     label="领料部门"
-                ></select-box>
+                ></input-box>
             </div>
             <div class="layer-btns">
-                <btn flat @click="outLayer=false">取消</btn>
-                <btn flat color="#008eff" @click="allOutSave()">确定</btn>
+                <btn
+                    flat
+                    @click="outLayer=false"
+                >取消</btn>
+                <btn
+                    flat
+                    color="#008eff"
+                    @click="allOutSave()"
+                >确定</btn>
+            </div>
+        </layer>
+        <layer
+            v-if="deptFlag"
+            width="50%"
+        >
+            <div
+                class="layer-text"
+                style="padding-bottom: 50px;"
+            >
+                <dept-select @selectClick="selectClick"></dept-select>
+            </div>
+        </layer>
+        <layer
+            v-if="deptFlag2"
+            width="50%"
+        >
+            <div
+                class="layer-text"
+                style="padding-bottom: 50px;"
+            >
+                <dept-select @selectClick="selectClick2"></dept-select>
             </div>
         </layer>
     </div>
@@ -203,25 +276,31 @@
 
 <script>
 import DataList from "@/components/datalist";
+import DeptSelect from "@/components/deptSelect";
 
 export default {
     name: "part-list",
-    components: { DataList },
+    components: { DataList, DeptSelect },
     data() {
         return {
             btnFlag: false,
             layer: false,
             loading: false,
+            deptFlag: false,
+            deptFlag2: false,
             filter: {
                 busNo: "",
                 graphNo: "",
                 materialName: "",
                 batchNumber: "",
                 outRoomStatus: "",
-                type: ""
+                type: "",
             },
             typeArrList: ["", "领料单出库", "机加工委托", "喷涂委托"],
-            typeList: [{ text: "原料库", value: 1 }, { text: "成品库", value: 2 }],
+            typeList: [
+                { text: "原料库", value: 1 },
+                { text: "成品库", value: 2 },
+            ],
             form: {
                 materialGraphNo: "",
                 orderNo: "",
@@ -235,7 +314,7 @@ export default {
                 busNo: "",
                 type: "",
                 batchNoList: [],
-                batchNoDTOList: []
+                batchNoDTOList: [],
             },
             name: "",
             roomList: [],
@@ -247,17 +326,33 @@ export default {
             outForm: {
                 busNo: "",
                 type: "1",
-                receiveDepartment: "装配车间"
+                receiveDepartment: "装配车间",
             },
-            outTypeList: [{ text: "领料单出库", value: "1" }, { text: "机加工委托", value: "2" }, { text: "喷涂委托", value: "3" }],
-            deptList: []
+            outTypeList: [
+                { text: "领料单出库", value: "1" },
+                { text: "机加工委托", value: "2" },
+                { text: "喷涂委托", value: "3" },
+            ],
+            deptList: [],
         };
     },
     activated() {
         this.getRoomList();
-        this.getDeptList();
+        // this.getDeptList();
     },
     methods: {
+        selectClick(data) {
+            if (data) {
+                this.form.receiveDepartment = data.name;
+            }
+            this.deptFlag = false;
+        },
+        selectClick2(data) {
+            if (data) {
+                this.outForm.receiveDepartment = data.name;
+            }
+            this.deptFlag2 = false;
+        },
         flush() {
             this.filter = {
                 busNo: "",
@@ -265,7 +360,7 @@ export default {
                 materialName: "",
                 batchNumber: "",
                 outRoomStatus: "",
-                type: ""
+                type: "",
             };
             this.$refs.list.update(true);
         },
@@ -280,11 +375,11 @@ export default {
                 specifications: "",
                 classifyId: 0,
                 pageNum: 1,
-                pageSize: 20
+                pageSize: 20,
             };
             this.$http
                 .post("/haolifa/material/pageInfo", data)
-                .then(res => {
+                .then((res) => {
                     this.form.materialGraphNo = item.graphNo;
                     this.form.orderNo = item.busNo;
                     this.form.name = item.materialName;
@@ -302,16 +397,16 @@ export default {
                         this.$http
                             .post("/haolifa/store-room/batch-no-list", {
                                 batchNo: item.batchNumber,
-                                graphNo: item.graphNo
+                                graphNo: item.graphNo,
                             })
-                            .then(res => {
+                            .then((res) => {
                                 // this.form.roomNo = res[0].roomNo;
                                 // this.getRoomId(res[0].roomNo);
                                 // this.form.rackNo = res[0].rackNo;
-                                this.materialBatchNoList = res.map(item => {
+                                this.materialBatchNoList = res.map((item) => {
                                     return {
                                         value: item.materialBatchNo + "+" + item.quantity + "+" + item.roomNo + "+" + item.rackNo,
-                                        text: item.materialBatchNo + "(" + item.quantity + ")"
+                                        text: item.materialBatchNo + "(" + item.quantity + ")",
                                     };
                                 });
                                 // this.materialBatchNoList = [
@@ -326,7 +421,7 @@ export default {
                                 //     }
                                 // ];
                             })
-                            .catch(e => {
+                            .catch((e) => {
                                 this.loading = false;
                                 this.$toast(e.msg || e.message);
                             });
@@ -334,26 +429,26 @@ export default {
                         this.$http
                             .post("/haolifa/store-room/batch-no-list", {
                                 qty: item.outQuantity,
-                                graphNo: item.graphNo
+                                graphNo: item.graphNo,
                             })
-                            .then(res => {
+                            .then((res) => {
                                 // this.form.roomNo = res[0].roomNo;
                                 // this.getRoomId(res[0].roomNo);
                                 // this.form.rackNo = res[0].rackNo;
-                                this.materialBatchNoList = res.map(item => {
+                                this.materialBatchNoList = res.map((item) => {
                                     return {
                                         value: item.materialBatchNo + "+" + item.quantity + "+" + item.roomNo + "+" + item.rackNo,
-                                        text: item.materialBatchNo + "(" + item.quantity + ")"
+                                        text: item.materialBatchNo + "(" + item.quantity + ")",
                                     };
                                 });
                             })
-                            .catch(e => {
+                            .catch((e) => {
                                 this.loading = false;
                                 this.$toast(e.msg || e.message);
                             });
                     }
                 })
-                .catch(e => {
+                .catch((e) => {
                     this.loading = false;
                     this.$toast(e.msg || e.message);
                 });
@@ -364,15 +459,15 @@ export default {
                 let graphNo = encodeURI(this.form.materialGraphNo);
                 this.$http
                     .get(`/haolifa/store-room/material-batch-nos?roomNo=${this.form.roomNo}&rackNo=${storeRoomRackNo}&graphNo=${graphNo}`)
-                    .then(res => {
-                        this.materialBatchNoList = res.map(item => {
+                    .then((res) => {
+                        this.materialBatchNoList = res.map((item) => {
                             return {
                                 value: item.materialBatchNo + "+" + item.quantity + "+" + item.roomNo + "+" + item.rackNo,
-                                text: item.materialBatchNo + "(" + item.quantity + ")"
+                                text: item.materialBatchNo + "(" + item.quantity + ")",
                             };
                         });
                     })
-                    .catch(e => {
+                    .catch((e) => {
                         this.loading = false;
                         this.$toast(e.msg || e.message);
                     });
@@ -384,17 +479,17 @@ export default {
             }
             this.$http
                 .get(`/haolifa/store-room/rack/list/${roomNo}`)
-                .then(res => {
+                .then((res) => {
                     if (res.length === 0) {
                         this.rackList = [];
                         this.$toast("无对应库位");
                         return;
                     }
-                    this.rackList = res.map(item => {
+                    this.rackList = res.map((item) => {
                         return { value: item.rackNo, text: item.rackName };
                     });
                 })
-                .catch(e => {
+                .catch((e) => {
                     this.loading = false;
                     this.$toast(e.msg || e.message);
                 });
@@ -402,15 +497,15 @@ export default {
         getDeptList() {
             this.$http
                 .get(`/haolifa/dept/list`)
-                .then(res => {
-                    this.deptList = res.map(item => {
+                .then((res) => {
+                    this.deptList = res.map((item) => {
                         return {
                             text: item.deptName,
-                            value: item.deptName
+                            value: item.deptName,
                         };
                     });
                 })
-                .catch(e => {
+                .catch((e) => {
                     this.$toast(e.msg || e.message);
                 });
         },
@@ -418,14 +513,14 @@ export default {
         getRoomList() {
             this.$http
                 .get("/haolifa/store-room/listInfo?type=0")
-                .then(res => {
+                .then((res) => {
                     this.roomList = res
-                        .filter(item => !item.isDelete)
-                        .map(item => {
+                        .filter((item) => !item.isDelete)
+                        .map((item) => {
                             return { value: item.roomNo, text: item.name };
                         });
                 })
-                .catch(e => {
+                .catch((e) => {
                     this.loading = false;
                     this.$toast(e.msg || e.message);
                 });
@@ -433,19 +528,19 @@ export default {
         getRoomRackList() {
             this.$http
                 .get("/haolifa/store-room/rack/pageInfo")
-                .then(res => {
+                .then((res) => {
                     this.rackList = res.list
-                        .filter(item => !item.isDelete)
-                        .map(item => {
+                        .filter((item) => !item.isDelete)
+                        .map((item) => {
                             return {
                                 value: item.rackNo,
                                 text: item.rackName,
                                 roomId: item.storeRoomNo,
-                                id: item.id
+                                id: item.id,
                             };
                         });
                 })
-                .catch(e => {
+                .catch((e) => {
                     this.loading = false;
                     this.$toast(e.msg || e.message);
                 });
@@ -477,17 +572,17 @@ export default {
                     materialBatchNo: arr[0],
                     quantity: arr[1],
                     rackNo: arr[3],
-                    roomNo: arr[2]
+                    roomNo: arr[2],
                 });
             }
             const method = "put";
             this.$http[method](`/haolifa/store-room/entryOut/outMaterial`, form)
-                .then(res => {
+                .then((res) => {
                     this.loading = false;
                     this.layer = false;
                     this.$refs.list.update();
                 })
-                .catch(e => {
+                .catch((e) => {
                     this.loading = false;
                     this.$toast(e.msg || e.message);
                 });
@@ -497,7 +592,7 @@ export default {
             this.outForm = {
                 busNo: "",
                 type: "1",
-                receiveDepartment: "装配车间"
+                receiveDepartment: "装配车间",
             };
         },
         allOutSave() {
@@ -507,12 +602,12 @@ export default {
             }
             this.$http
                 .post("/haolifa/store-room/whole-out-bound", this.outForm)
-                .then(res => {
+                .then((res) => {
                     this.outLayer = false;
                     this.$toast("整单出库完成");
                     this.$refs.list.update(true);
                 })
-                .catch(e => {
+                .catch((e) => {
                     this.$toast(e.msg || e.message);
                 });
         },
@@ -528,10 +623,10 @@ export default {
                 name: "",
                 materialBatchNo: "",
                 busNo: "",
-                type: ""
+                type: "",
             };
-        }
-    }
+        },
+    },
 };
 </script>
 

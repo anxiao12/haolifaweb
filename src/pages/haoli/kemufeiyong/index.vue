@@ -1,24 +1,62 @@
 <template>
     <div class="page-kemu-list">
-        <i class="icon icon-abs" @click="flush">autorenew</i>
+        <i
+            class="icon icon-abs"
+            @click="flush"
+        >autorenew</i>
         <div class="flex-v-center tool-bar">
-            <div class="flex-v-center search-bar" style="margin-right: 20px;">
+            <div
+                class="flex-v-center search-bar"
+                style="margin-right: 20px;"
+            >
                 <i class="icon f-20 c-8">search</i>
-                <input type="text" class="flex-item" v-model="filter.name" @change="
-            $refs.list.update(true)" placeholder="费用明细" style="width: 200px;">
-                <input type="text" class="flex-item" v-model="filter.deptName" @change="
-            $refs.list.update(true)" placeholder="部门名称" style="width: 200px;">
+                <input
+                    type="text"
+                    class="flex-item"
+                    v-model="filter.name"
+                    @change="
+            $refs.list.update(true)"
+                    placeholder="费用明细"
+                    style="width: 200px;"
+                >
+                <input
+                    type="text"
+                    class="flex-item"
+                    v-model="filter.deptName"
+                    @change="
+            $refs.list.update(true)"
+                    placeholder="部门名称"
+                    style="width: 200px;"
+                >
                 费用类别:
-                <select v-model="filter.subjectsTypeCode" class="f-14" @change="$refs.list.update(true);">
+                <select
+                    v-model="filter.subjectsTypeCode"
+                    class="f-14"
+                    @change="$refs.list.update(true);"
+                >
                     <option value>全部</option>
-                    <option v-for="(item,i) in subjectList" :value="item.value">{{item.text}}</option>
+                    <option
+                        v-for="(item,i) in subjectList"
+                        :value="item.value"
+                    >{{item.text}}</option>
                 </select>
             </div>
             <div class="flex-item"></div>
-            <btn class="b" flat color="#008eff" @click="add">新增</btn>
+            <btn
+                class="b"
+                flat
+                color="#008eff"
+                @click="add"
+            >新增</btn>
         </div>
         <div class="flex-item scroll-y">
-            <data-list ref="list" :page-size="15" :param="filter" url="/haolifa/finance/costbudget/subjects/getSubjectsBudgetList" method="post">
+            <data-list
+                ref="list"
+                :page-size="15"
+                :param="filter"
+                url="/haolifa/finance/costbudget/subjects/getSubjectsBudgetList"
+                method="post"
+            >
                 <tr slot="header">
                     <th style="width: 60px;">序号</th>
                     <th>费用类别</th>
@@ -29,10 +67,16 @@
                     <th>备注</th>
                     <th>更新时间</th>
                     <th>创建时间</th>
-                    <th class="t-right" style="width: 80px;">操作</th>
+                    <th
+                        class="t-right"
+                        style="width: 80px;"
+                    >操作</th>
                 </tr>
                 <!-- item: 当前行数据; index: 当前行数 -->
-                <template slot="item" slot-scope="{ item, index }">
+                <template
+                    slot="item"
+                    slot-scope="{ item, index }"
+                >
                     <td class="c-a">{{ index }}</td>
                     <td>{{ item.subjectsName }}</td>
                     <td>{{ item.name }}</td>
@@ -43,36 +87,95 @@
                     <td>{{ item.updateTime }}</td>
                     <td>{{ item.createTime }}</td>
                     <td class="t-right">
-                        <a href="javascript:;" class="blue" @click="edit(item)">编辑 |&nbsp;</a>
-                        <a href="javascript:;" class="red" @click="remove(item)">删除</a>
+                        <a
+                            href="javascript:;"
+                            class="blue"
+                            @click="edit(item)"
+                        >编辑 |&nbsp;</a>
+                        <a
+                            href="javascript:;"
+                            class="red"
+                            @click="remove(item)"
+                        >删除</a>
                     </td>
                 </template>
             </data-list>
         </div>
-        <layer v-if="layer" title="添加" width="50%">
-            <div class="layer-text" style="padding-bottom: 50px;">
+        <layer
+            v-if="layer"
+            title="添加"
+            width="50%"
+        >
+            <div
+                class="layer-text"
+                style="padding-bottom: 50px;"
+            >
                 <div class="flex">
-                    <select-box v-model="form.subjectsType" class="flex-item mr-20" :list="subjectList" @change="subjectsTypeChange" label="选择费用类别"></select-box>
+                    <select-box
+                        v-model="form.subjectsType"
+                        class="flex-item mr-20"
+                        :list="subjectList"
+                        @change="subjectsTypeChange"
+                        label="选择费用类别"
+                    ></select-box>
                 </div>
                 <div class="flex">
-                    <select-box v-model="form.subjectsId" class="flex-item mr-20" :list="subjectList2" @change="subChange" label="选择费用明细"></select-box>
+                    <select-box
+                        v-model="form.subjectsId"
+                        class="flex-item mr-20"
+                        :list="subjectList2"
+                        @change="subChange"
+                        label="选择费用明细"
+                    ></select-box>
                 </div>
                 <div class="flex">
-                    <select-box v-model="form.deptId" class="flex-item mr-20" :list="deptList" label="选择部门"></select-box>
+                    <input-box
+                        v-model="form.deptName"
+                        @click="deptFlag=true"
+                        class="flex-item mr-20"
+                        label="选择部门"
+                    ></input-box>
                 </div>
                 <div class="flex">
-                    <input-box v-model="form.costRatio" class="flex-item mr-20" label="比例（1-100）"></input-box>
+                    <input-box
+                        v-model="form.costRatio"
+                        class="flex-item mr-20"
+                        label="比例（1-100）"
+                    ></input-box>
                 </div>
                 <!-- <div class="flex">
                     <select-box v-model="form.status" class="flex-item mr-20" :list="statusList" label="状态"></select-box>
                 </div>-->
                 <div class="flex">
-                    <input-box v-model="form.remark" class="flex-item mr-20" label="备注"></input-box>
+                    <input-box
+                        v-model="form.remark"
+                        class="flex-item mr-20"
+                        label="备注"
+                    ></input-box>
                 </div>
             </div>
             <div class="layer-btns">
-                <btn flat color="#008eff" @click="save">保存</btn>
-                <btn flat color="#008eff" @click="close">关闭</btn>
+                <btn
+                    flat
+                    color="#008eff"
+                    @click="save"
+                >保存</btn>
+                <btn
+                    flat
+                    color="#008eff"
+                    @click="close"
+                >关闭</btn>
+            </div>
+        </layer>
+        <layer
+            v-if="deptFlag"
+            width="50%"
+        >
+            <div
+                class="layer-text"
+                style="padding-bottom: 50px;"
+            >
+                <dept-select @selectClick="selectClick"></dept-select>
             </div>
         </layer>
     </div>
@@ -80,9 +183,10 @@
 
 <script>
 import DataList from "@/components/datalist";
+import DeptSelect from "@/components/deptSelect";
 export default {
     name: "khzb-list",
-    components: { DataList },
+    components: { DataList, DeptSelect },
     data() {
         return {
             filter: {
@@ -90,25 +194,27 @@ export default {
                 deptName: "",
                 name: "",
                 subjectsId: "",
-                subjectsTypeCode: ""
+                subjectsTypeCode: "",
             },
             statusList: [
                 { text: "正常", value: "1" },
-                { text: "禁用", value: "2" }
+                { text: "禁用", value: "2" },
             ],
             subjectList: [],
             subjectList2: [],
             layer: false,
+            deptFlag: false,
             form: {
                 costRatio: "",
                 deptId: "",
+                deptName: "",
                 name: "",
                 remark: "",
                 // status: "1",
                 subjectsId: "",
-                subjectsType: ""
+                subjectsType: "",
             },
-            deptList: []
+            deptList: [],
         };
     },
     activated() {
@@ -116,13 +222,20 @@ export default {
         this.getDeptList();
     },
     methods: {
+        selectClick(data) {
+            if (data) {
+                this.form.deptName = data.name;
+                this.form.deptId = data.id;
+            }
+            this.deptFlag = false;
+        },
         flush() {
             this.filter = {
                 deptId: "",
                 deptName: "",
                 name: "",
                 subjectsId: "",
-                subjectsTypeCode: ""
+                subjectsTypeCode: "",
             };
             this.$refs.list.update(true);
             this.getSubjectList();
@@ -131,16 +244,16 @@ export default {
         getSubjectList() {
             this.$http
                 .get("/haolifa/sys-dict/getDictListByType/SUBJECTS_TYPE")
-                .then(res => {
+                .then((res) => {
                     this.subjectList = [];
-                    res.map(item => {
+                    res.map((item) => {
                         this.subjectList.push({
                             text: item.desc,
-                            value: item.code
+                            value: item.code,
                         });
                     });
                 })
-                .catch(e => {
+                .catch((e) => {
                     this.$toast(e.msg || e.message);
                 });
         },
@@ -153,20 +266,20 @@ export default {
                 .post("/haolifa/finance/subjects/getSubjectsListAllP", {
                     pageNum: 1,
                     pageSize: 1000,
-                    subjectsType: this.form.subjectsType
+                    subjectsType: this.form.subjectsType,
                 })
-                .then(res => {
-                    res.map(item => {
+                .then((res) => {
+                    res.map((item) => {
                         this.subjectList2.push({
                             text: item.name,
-                            value: item.id
+                            value: item.id,
                         });
                     });
                 });
         },
         subChange() {
             if (this.form.subjectsId) {
-                this.subjectList.map(item => {
+                this.subjectList.map((item) => {
                     if (this.form.subjectsId == item.value) {
                         this.form.name = item.text;
                     }
@@ -180,29 +293,28 @@ export default {
             this.form = {
                 costRatio: item.costRatio,
                 deptId: item.deptId,
+                deptName: item.deptName,
                 name: item.name,
                 remark: item.remark,
                 subjectsId: item.subjectsId,
                 id: item.id,
-                subjectsType: item.subjectsTypeCode
+                subjectsType: item.subjectsTypeCode,
             };
             this.subjectsTypeChange(2);
             this.layer = true;
         },
         save() {
             this.loading = true;
-            let url = this.form.id
-                ? "/haolifa/finance/costbudget/subjects/updateSubjectsBudget"
-                : "/haolifa/finance/costbudget/subjects/saveSubjectsBudget";
+            let url = this.form.id ? "/haolifa/finance/costbudget/subjects/updateSubjectsBudget" : "/haolifa/finance/costbudget/subjects/saveSubjectsBudget";
             this.$http
                 .post(url, this.form)
-                .then(res => {
+                .then((res) => {
                     this.close();
                     this.$toast("保存成功");
                     this.loading = false;
                     this.$refs.list.update(true);
                 })
-                .catch(e => {
+                .catch((e) => {
                     this.$toast(e.msg || e.message);
                 });
         },
@@ -214,7 +326,7 @@ export default {
                 remark: "",
                 subjectsType: "",
                 // status: "1",
-                subjectsId: ""
+                subjectsId: "",
             };
             this.layer = false;
         },
@@ -226,37 +338,33 @@ export default {
                 btns: ["取消", "删除"],
                 yes: () => {
                     this.$http
-                        .get(
-                            `/haolifa/finance/costbudget/subjects/deleteSubjectsBudget/${
-                                item.id
-                            }`
-                        )
-                        .then(res => {
+                        .get(`/haolifa/finance/costbudget/subjects/deleteSubjectsBudget/${item.id}`)
+                        .then((res) => {
                             this.$toast("删除成功");
                             this.$refs.list.update(true);
                         })
-                        .catch(e => {
+                        .catch((e) => {
                             this.$toast(e.msg || e.message);
                         });
-                }
+                },
             });
         },
         getDeptList() {
             this.$http
                 .get("/haolifa/dept/list")
-                .then(res => {
-                    res.map(item => {
+                .then((res) => {
+                    res.map((item) => {
                         this.deptList.push({
                             text: item.deptName,
-                            value: item.id
+                            value: item.id,
                         });
                     });
                 })
-                .catch(e => {
+                .catch((e) => {
                     this.$toast(e.msg || e.message);
                 });
-        }
-    }
+        },
+    },
 };
 </script>
 

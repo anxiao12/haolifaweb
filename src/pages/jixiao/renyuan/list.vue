@@ -1,30 +1,86 @@
 <template>
     <div class="page-invoice-list">
-        <i class="icon icon-abs" @click="flush">autorenew</i>
+        <i
+            class="icon icon-abs"
+            @click="flush"
+        >autorenew</i>
         <div class="flex-v-center tool-bar">
-            <div class="flex-v-center search-bar" style="margin-right: 20px;">
+            <div
+                class="flex-v-center search-bar"
+                style="margin-right: 20px;"
+            >
                 <i class="icon f-20 c-8">search</i>
-                <input type="text" class="flex-item" v-model="filter.userName" @change="
-            $refs.list.update(true)" placeholder="姓名" style="width: 200px;">
+                <input
+                    type="text"
+                    class="flex-item"
+                    v-model="filter.userName"
+                    @change="
+            $refs.list.update(true)"
+                    placeholder="姓名"
+                    style="width: 200px;"
+                >
 
-                <input type="text" class="flex-item" v-model="filter.postName" @change="
-            $refs.list.update(true)" placeholder="岗位名称" style="width: 200px;">
-                <input type="text" class="flex-item" v-model="filter.departName" @change="
-            $refs.list.update(true)" placeholder="归属部门" style="width: 200px;">
-                <input type="text" class="flex-item" v-model="filter.superiorName" @change="
-            $refs.list.update(true)" placeholder="直属上级" style="width: 200px;">
+                <input
+                    type="text"
+                    class="flex-item"
+                    v-model="filter.postName"
+                    @change="
+            $refs.list.update(true)"
+                    placeholder="岗位名称"
+                    style="width: 200px;"
+                >
+                <input
+                    type="text"
+                    class="flex-item"
+                    v-model="filter.departName"
+                    @change="
+            $refs.list.update(true)"
+                    placeholder="归属部门"
+                    style="width: 200px;"
+                >
+                <input
+                    type="text"
+                    class="flex-item"
+                    v-model="filter.superiorName"
+                    @change="
+            $refs.list.update(true)"
+                    placeholder="直属上级"
+                    style="width: 200px;"
+                >
                 人员类型
-                <select v-model="filter.userType" class="f-14" @change="$refs.list.update(true)">
+                <select
+                    v-model="filter.userType"
+                    class="f-14"
+                    @change="$refs.list.update(true)"
+                >
                     <option value>所有</option>
-                    <option v-for="item in userArr" :value="item.value" v-bind:key="item.value">{{item.text}}</option>
+                    <option
+                        v-for="item in userArr"
+                        :value="item.value"
+                        v-bind:key="item.value"
+                    >{{item.text}}</option>
                 </select>
-                <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
+                <i
+                    class="icon"
+                    style="margin-left: -20px;pointer-events:none;"
+                >arrow_drop_down</i>
             </div>
             <div class="flex-item"></div>
-            <btn class="b" flat color="#008eff" @click="add">新增</btn>
+            <btn
+                class="b"
+                flat
+                color="#008eff"
+                @click="add"
+            >新增</btn>
         </div>
         <div class="flex-item scroll-y">
-            <data-list ref="list" :page-size="15" :param="filter" url="/haolifa/pay-user/getList" method="post">
+            <data-list
+                ref="list"
+                :page-size="15"
+                :param="filter"
+                url="/haolifa/pay-user/getList"
+                method="post"
+            >
                 <tr slot="header">
                     <th style="width: 60px;">序号</th>
                     <th>姓名</th>
@@ -46,10 +102,16 @@
                     <th>开户行</th>
                     <th>创建时间</th>
                     <th>更新时间</th>
-                    <th class="t-right" style="width: 80px;">操作</th>
+                    <th
+                        class="t-right"
+                        style="width: 80px;"
+                    >操作</th>
                 </tr>
                 <!-- item: 当前行数据; index: 当前行数 -->
-                <template slot="item" slot-scope="{ item, index }">
+                <template
+                    slot="item"
+                    slot-scope="{ item, index }"
+                >
                     <td class="c-a">{{ index }}</td>
                     <td>{{ item.userName }}</td>
                     <td>{{ item.userNo }}</td>
@@ -71,61 +133,249 @@
                     <td>{{ item.createTime }}</td>
                     <td>{{ item.updateTime }}</td>
                     <td class="t-right">
-                        <a href="javascript:;" class="blue" @click="edit(item)">编辑 |&nbsp;</a>
-                        <a href="javascript:;" class="red" @click="remove(item)">删除</a>
+                        <a
+                            href="javascript:;"
+                            class="blue"
+                            @click="edit(item)"
+                        >编辑 |&nbsp;</a>
+                        <a
+                            href="javascript:;"
+                            class="red"
+                            @click="remove(item)"
+                        >删除</a>
                     </td>
                 </template>
             </data-list>
         </div>
-        <layer v-if="layer" :title="form.id ?'编辑':'新增' " width="70%">
-            <div class="layer-text" style="padding-bottom: 50px;">
+        <layer
+            v-if="layer"
+            :title="form.id ?'编辑':'新增' "
+            width="70%"
+        >
+            <div
+                class="layer-text"
+                style="padding-bottom: 50px;"
+            >
                 <div class="flex">
-                    <input-box v-model="form.userName" class="flex-item mr-20" hint="必填" label="姓名"></input-box>
-                    <input-box v-model="form.userNo" class="flex-item mr-20" hint="必填" label="员工编号"></input-box>
-                    <select-box v-model="form.sex" class="flex-item mr-20" :list="sexList" hint="必填" label="性别"></select-box>
-                    <input-box v-model="form.phone" class="flex-item mr-20" hint="必填" label="联系电话"></input-box>
-                    <input-box v-model="form.idCard" class="flex-item mr-20" hint="必填" label="身份证号码"></input-box>
+                    <input-box
+                        v-model="form.userName"
+                        class="flex-item mr-20"
+                        hint="必填"
+                        label="姓名"
+                    ></input-box>
+                    <input-box
+                        v-model="form.userNo"
+                        class="flex-item mr-20"
+                        hint="必填"
+                        label="员工编号"
+                    ></input-box>
+                    <select-box
+                        v-model="form.sex"
+                        class="flex-item mr-20"
+                        :list="sexList"
+                        hint="必填"
+                        label="性别"
+                    ></select-box>
+                    <input-box
+                        v-model="form.phone"
+                        class="flex-item mr-20"
+                        hint="必填"
+                        label="联系电话"
+                    ></input-box>
+                    <input-box
+                        v-model="form.idCard"
+                        class="flex-item mr-20"
+                        hint="必填"
+                        label="身份证号码"
+                    ></input-box>
                 </div>
                 <div class="flex">
-                    <input-box v-model="form.nativePlace" class="flex-item mr-20" hint="必填" label="籍贯"></input-box>
-                    <input-box v-model="form.registered" class="flex-item mr-20" hint="必填" label="户口所在地"></input-box>
-                    <input-box v-model="form.nation" class="flex-item mr-20" hint="必填" label="民族"></input-box>
-                    <input-box v-model="form.address" class="flex-item mr-20" hint="必填" label="常用住址"></input-box>
+                    <input-box
+                        v-model="form.nativePlace"
+                        class="flex-item mr-20"
+                        hint="必填"
+                        label="籍贯"
+                    ></input-box>
+                    <input-box
+                        v-model="form.registered"
+                        class="flex-item mr-20"
+                        hint="必填"
+                        label="户口所在地"
+                    ></input-box>
+                    <input-box
+                        v-model="form.nation"
+                        class="flex-item mr-20"
+                        hint="必填"
+                        label="民族"
+                    ></input-box>
+                    <input-box
+                        v-model="form.address"
+                        class="flex-item mr-20"
+                        hint="必填"
+                        label="常用住址"
+                    ></input-box>
                 </div>
                 <div class="flex">
-                    <date-picker v-model="form.birthday" hint="必填" class="flex-item" style="margin-right: 20px;" label="出生日期"></date-picker>
-                    <input-box v-model="form.politicalOutlook" class="flex-item mr-20" hint="必填" label="政治面貌"></input-box>
-                    <select-box v-model="form.marryStatus" class="flex-item mr-20" hint="必填" :list="marryList" label="婚姻状况"></select-box>
-                    <input-box v-model="form.mail" class="flex-item mr-20" hint="必填" label="邮箱"></input-box>
+                    <date-picker
+                        v-model="form.birthday"
+                        hint="必填"
+                        class="flex-item"
+                        style="margin-right: 20px;"
+                        label="出生日期"
+                    ></date-picker>
+                    <input-box
+                        v-model="form.politicalOutlook"
+                        class="flex-item mr-20"
+                        hint="必填"
+                        label="政治面貌"
+                    ></input-box>
+                    <select-box
+                        v-model="form.marryStatus"
+                        class="flex-item mr-20"
+                        hint="必填"
+                        :list="marryList"
+                        label="婚姻状况"
+                    ></select-box>
+                    <input-box
+                        v-model="form.mail"
+                        class="flex-item mr-20"
+                        hint="必填"
+                        label="邮箱"
+                    ></input-box>
                 </div>
                 <div class="flex">
-                    <select-box v-model="form.education" class="flex-item mr-20" hint="必填" :list="educationList" label="学历"></select-box>
-                    <input-box v-model="form.major" class="flex-item mr-20" hint="必填" label="专业"></input-box>
-                    <date-picker v-model="form.graduationTime" hint="必填" class="flex-item" style="margin-right: 20px;" label="毕业时间"></date-picker>
-                    <input-box v-model="form.universityFrom" class="flex-item mr-20" hint="必填" label="毕业院校"></input-box>
+                    <select-box
+                        v-model="form.education"
+                        class="flex-item mr-20"
+                        hint="必填"
+                        :list="educationList"
+                        label="学历"
+                    ></select-box>
+                    <input-box
+                        v-model="form.major"
+                        class="flex-item mr-20"
+                        hint="必填"
+                        label="专业"
+                    ></input-box>
+                    <date-picker
+                        v-model="form.graduationTime"
+                        hint="必填"
+                        class="flex-item"
+                        style="margin-right: 20px;"
+                        label="毕业时间"
+                    ></date-picker>
+                    <input-box
+                        v-model="form.universityFrom"
+                        class="flex-item mr-20"
+                        hint="必填"
+                        label="毕业院校"
+                    ></input-box>
                 </div>
                 <div class="flex">
-                    <date-picker v-model="form.workingTime" hint="必填" class="flex-item" style="margin-right: 20px;" label="入职时间"></date-picker>
-                    <select-box v-model="form.userType" class="flex-item mr-20" hint="必填" :list="userArr" label="人员类型"></select-box>
-                    <select-box v-model="form.postId" class="flex-item mr-20" hint="必填" :list="postList" label="岗位名称"></select-box>
+                    <date-picker
+                        v-model="form.workingTime"
+                        hint="必填"
+                        class="flex-item"
+                        style="margin-right: 20px;"
+                        label="入职时间"
+                    ></date-picker>
+                    <select-box
+                        v-model="form.userType"
+                        class="flex-item mr-20"
+                        hint="必填"
+                        :list="userArr"
+                        label="人员类型"
+                    ></select-box>
+                    <select-box
+                        v-model="form.postId"
+                        class="flex-item mr-20"
+                        hint="必填"
+                        :list="postList"
+                        label="岗位名称"
+                    ></select-box>
                     <!-- <select-box v-model="form.teamId" class="flex-item mr-20" hint="必填" :list="banList" label="班组名称"></select-box> -->
-                    <select-box v-model="form.departId" class="flex-item mr-20" hint="必填" :list="deptList" label="归属部门"></select-box>
+                    <!-- <select-box v-model="form.departId" class="flex-item mr-20" hint="必填" :list="deptList" label="归属部门"></select-box> -->
+                    <input-box
+                        v-model="form.departName"
+                        @click="deptFlag=true"
+                        hint="必填"
+                        class="flex-item mr-20"
+                        label="归属部门"
+                    ></input-box>
                 </div>
                 <div class="flex">
-                    <select-box v-model="form.superiorId" class="flex-item mr-20" hint="必填" :list="postList" label="直属上级"></select-box>
-                    <select-box v-model="form.parentId" class="flex-item mr-20" :list="userList" label="上级人员"></select-box>
-                    <input-box v-model="form.basePay" class="flex-item mr-20" type="number" hint="必填" label="基本工资"></input-box>
-                    <input-box v-model="form.meritPay" class="flex-item mr-20" type="number" label="绩效工资"></input-box>
+                    <select-box
+                        v-model="form.superiorId"
+                        class="flex-item mr-20"
+                        hint="必填"
+                        :list="postList"
+                        label="直属上级"
+                    ></select-box>
+                    <select-box
+                        v-model="form.parentId"
+                        class="flex-item mr-20"
+                        :list="userList"
+                        label="上级人员"
+                    ></select-box>
+                    <input-box
+                        v-model="form.basePay"
+                        class="flex-item mr-20"
+                        type="number"
+                        hint="必填"
+                        label="基本工资"
+                    ></input-box>
+                    <input-box
+                        v-model="form.meritPay"
+                        class="flex-item mr-20"
+                        type="number"
+                        label="绩效工资"
+                    ></input-box>
                 </div>
                 <div class="flex">
-                    <input-box v-model="form.insuranceBase" class="flex-item mr-20" type="number" label="保险基数"></input-box>
-                    <input-box v-model="form.cardNumber" class="flex-item mr-20" type="number" label="工资卡号"></input-box>
-                    <input-box v-model="form.bankOfDeposit" class="flex-item mr-20" type="number" label="开户行"></input-box>
+                    <input-box
+                        v-model="form.insuranceBase"
+                        class="flex-item mr-20"
+                        type="number"
+                        label="保险基数"
+                    ></input-box>
+                    <input-box
+                        v-model="form.cardNumber"
+                        class="flex-item mr-20"
+                        type="number"
+                        label="工资卡号"
+                    ></input-box>
+                    <input-box
+                        v-model="form.bankOfDeposit"
+                        class="flex-item mr-20"
+                        type="number"
+                        label="开户行"
+                    ></input-box>
                 </div>
             </div>
             <div class="layer-btns">
-                <el-button class="mr-20" size="mini" :loading="loading" type="primary" @click="save">保存</el-button>
-                <el-button class="mr-20" size="mini" @click="close">关闭</el-button>
+                <el-button
+                    class="mr-20"
+                    size="mini"
+                    :loading="loading"
+                    type="primary"
+                    @click="save"
+                >保存</el-button>
+                <el-button
+                    class="mr-20"
+                    size="mini"
+                    @click="close"
+                >关闭</el-button>
+            </div>
+        </layer>
+        <layer
+            v-if="deptFlag"
+            width="50%"
+        >
+            <div
+                class="layer-text"
+                style="padding-bottom: 50px;"
+            >
+                <dept-select @selectClick="selectClick"></dept-select>
             </div>
         </layer>
     </div>
@@ -133,9 +383,10 @@
 
 <script>
 import DataList from "@/components/datalist";
+import DeptSelect from "@/components/deptSelect";
 export default {
     name: "khzb-list",
-    components: { DataList },
+    components: { DataList, DeptSelect },
     data() {
         return {
             filter: {
@@ -180,9 +431,10 @@ export default {
                 updateUser: "",
                 userName: "",
                 userType: "",
-                workingTime: ""
+                workingTime: "",
             },
             layer: false,
+            deptFlag: false,
             form: {
                 address: "",
                 basePay: 0,
@@ -234,39 +486,29 @@ export default {
                 parentId: "",
                 userNo: "",
                 departId: "",
-                bankOfDeposit:"",
-                cardNumber:""
+                bankOfDeposit: "",
+                cardNumber: "",
             },
             marryArr: ["", "未婚", "已婚", "离异", "丧偶"],
             marryList: [
                 {
                     text: "未婚",
-                    value: "1"
+                    value: "1",
                 },
                 {
                     text: "已婚",
-                    value: "2"
+                    value: "2",
                 },
                 {
                     text: "离异",
-                    value: "3"
+                    value: "3",
                 },
                 {
                     text: "丧偶",
-                    value: "4"
-                }
+                    value: "4",
+                },
             ],
-            educationArr: [
-                "",
-                "小学",
-                "初中",
-                "中专",
-                "高中",
-                "大专",
-                "本科",
-                "硕士",
-                "博士"
-            ],
+            educationArr: ["", "小学", "初中", "中专", "高中", "大专", "本科", "硕士", "博士"],
             educationList: [
                 { text: "小学", value: "1" },
                 { text: "初中", value: "2" },
@@ -275,16 +517,19 @@ export default {
                 { text: "大专", value: "5" },
                 { text: "本科", value: "6" },
                 { text: "硕士", value: "7" },
-                { text: "博士", value: "8" }
+                { text: "博士", value: "8" },
             ],
             sexArr: ["", "男", "女"],
-            sexList: [{ text: "男", value: "1" }, { text: "女", value: "2" }],
+            sexList: [
+                { text: "男", value: "1" },
+                { text: "女", value: "2" },
+            ],
             banList: [],
             postList: [],
             deptList: [],
             userArr: [],
             userList: [],
-            loading: false
+            loading: false,
         };
     },
     mounted() {
@@ -295,6 +540,14 @@ export default {
         this.getPostList();
     },
     methods: {
+        selectClick(data) {
+            if (data) {
+                console.log(data);
+                this.form.departName = data.name;
+                this.form.departId = data.id;
+            }
+            this.deptFlag = false;
+        },
         flush() {
             this.filter = {
                 address: "",
@@ -337,7 +590,7 @@ export default {
                 updateUser: "",
                 userName: "",
                 userType: "",
-                workingTime: ""
+                workingTime: "",
             };
             this.$refs.list.update(true);
             this.getBanList();
@@ -394,6 +647,7 @@ export default {
             this.form.departId = item.departId;
             this.form.bankOfDeposit = item.bankOfDeposit;
             this.form.cardNumber = item.cardNumber;
+            this.form.departName = item.departName;
         },
         remove(item) {
             this.$confirm({
@@ -404,14 +658,14 @@ export default {
                 yes: () => {
                     this.$http
                         .get(`/haolifa/pay-user/del/${item.id}`)
-                        .then(res => {
+                        .then((res) => {
                             this.$toast("删除成功");
                             this.$refs.list.update(true);
                         })
-                        .catch(e => {
+                        .catch((e) => {
                             this.$toast(e.msg || e.message);
                         });
-                }
+                },
             });
         },
         add() {
@@ -445,19 +699,17 @@ export default {
                 return;
             }
             this.loading = true;
-            let url = this.form.id
-                ? "/haolifa/pay-user/edit"
-                : "/haolifa/pay-user/save";
+            let url = this.form.id ? "/haolifa/pay-user/edit" : "/haolifa/pay-user/save";
             this.$http
                 .post(url, this.form)
-                .then(res => {
+                .then((res) => {
                     this.layer = false;
                     this.$toast("保存成功");
                     this.close();
                     this.$refs.list.update(true);
                     this.loading = false;
                 })
-                .catch(e => {
+                .catch((e) => {
                     this.loading = false;
                     this.$toast(e.msg || e.message);
                 });
@@ -515,67 +767,67 @@ export default {
                 userNo: "",
                 parentId: "",
                 departId: "",
-                bankOfDeposit:"",
-                cardNumber:""
+                bankOfDeposit: "",
+                cardNumber: "",
             };
         },
         getBanList() {
             this.$http
                 .post("/haolifa/pay-team/getAllList")
-                .then(res => {
-                    res.map(item => {
+                .then((res) => {
+                    res.map((item) => {
                         this.banList.push({
                             text: item.teamName,
-                            value: item.id
+                            value: item.id,
                         });
                     });
                 })
-                .catch(e => {
+                .catch((e) => {
                     this.$toast(e.msg || e.message);
                 });
         },
         getDeptList() {
             this.$http
                 .get("/haolifa/dept/list")
-                .then(res => {
-                    res.map(item => {
+                .then((res) => {
+                    res.map((item) => {
                         this.deptList.push({
                             text: item.deptName,
-                            value: item.id
+                            value: item.id,
                         });
                     });
                 })
-                .catch(e => {
+                .catch((e) => {
                     this.$toast(e.msg || e.message);
                 });
         },
         getPostList() {
             this.$http
                 .post("/haolifa/pay-production-work-shop/getAllList")
-                .then(res => {
-                    res.map(item => {
+                .then((res) => {
+                    res.map((item) => {
                         this.postList.push({
                             text: item.postName,
-                            value: item.id
+                            value: item.id,
                         });
                     });
                 })
-                .catch(e => {
+                .catch((e) => {
                     this.$toast(e.msg || e.message);
                 });
         },
         getUsers() {
             this.$http
                 .get("/haolifa/dictionaries/getUserType")
-                .then(res => {
-                    res.result.map(item => {
+                .then((res) => {
+                    res.result.map((item) => {
                         this.userArr.push({
                             text: item.name,
-                            value: item.code
+                            value: item.code,
                         });
                     });
                 })
-                .catch(e => {
+                .catch((e) => {
                     this.$toast(e.msg || e.message);
                 });
         },
@@ -593,21 +845,21 @@ export default {
                     teamId: "",
                     teamName: "",
                     userName: "",
-                    userType: ""
+                    userType: "",
                 })
-                .then(res => {
-                    res.map(item => {
+                .then((res) => {
+                    res.map((item) => {
                         this.userList.push({
                             text: item.userName,
-                            value: item.id
+                            value: item.id,
                         });
                     });
                 })
-                .catch(e => {
+                .catch((e) => {
                     this.$toast(e.msg || e.message);
                 });
-        }
-    }
+        },
+    },
 };
 </script>
 

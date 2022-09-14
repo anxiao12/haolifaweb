@@ -931,6 +931,11 @@ export default {
                         url: "/companyList",
                         id: "gsdw",
                     },
+                    {
+                        name: "项目管理",
+                        url: "/projectList",
+                        id: "xmgl",
+                    },
                 ],
             },
         ];

@@ -1,8 +1,14 @@
 <template>
     <div class="page-cashAccounting-list">
-        <i class="icon icon-abs" @click="flush">autorenew</i>
+        <i
+            class="icon icon-abs"
+            @click="flush"
+        >autorenew</i>
         <div class="flex-v-center tool-bar">
-            <div class="flex-v-center search-bar" style="margin-right: 20px;">
+            <div
+                class="flex-v-center search-bar"
+                style="margin-right: 20px;"
+            >
                 <i class="icon f-20 c-8">search</i>
                 <input
                     type="text"
@@ -38,7 +44,10 @@
                     @change="$refs.list.update(true);getAssetsData()"
                 >
                     <option value>全部</option>
-                    <option v-for="(item,i) in addTypeList" :value="item.value">{{item.text}}</option>
+                    <option
+                        v-for="(item,i) in addTypeList"
+                        :value="item.value"
+                    >{{item.text}}</option>
                 </select>
                 类别名称:
                 <select
@@ -47,7 +56,10 @@
                     @change="$refs.list.update(true);getAssetsData()"
                 >
                     <option value>全部</option>
-                    <option v-for="(item,i) in typeList" :value="item.value">{{item.text}}</option>
+                    <option
+                        v-for="(item,i) in typeList"
+                        :value="item.value"
+                    >{{item.text}}</option>
                 </select>
                 部门:
                 <select
@@ -56,7 +68,10 @@
                     @change="$refs.list.update(true);getAssetsData()"
                 >
                     <option value>全部</option>
-                    <option v-for="(item,i) in deptList" :value="item.value">{{item.text}}</option>
+                    <option
+                        v-for="(item,i) in deptList"
+                        :value="item.value"
+                    >{{item.text}}</option>
                 </select>
                 状态:
                 <select
@@ -65,16 +80,36 @@
                     @change="$refs.list.update(true);getAssetsData()"
                 >
                     <option value>全部</option>
-                    <option v-for="(item,i) in statusList" :value="item.value">{{item.text}}</option>
+                    <option
+                        v-for="(item,i) in statusList"
+                        :value="item.value"
+                    >{{item.text}}</option>
                 </select>
             </div>
             <div class="flex-item"></div>
-            <btn class="b" flat color="#008eff" @click="add()">新增</btn>
+            <btn
+                class="b"
+                flat
+                color="#008eff"
+                @click="add()"
+            >新增</btn>
         </div>
         <div class="flex-v-center tool-bar">
-            <btn class="b" flat color="#008eff">资产合计：{{assettsObj.totalPrice}}</btn>
-            <btn class="b" flat color="#008eff">资产净值：{{assettsObj.netWorth}}</btn>
-            <btn class="b" flat color="#008eff">累积计提折旧：{{assettsObj.accumulatedDepreciation}}</btn>
+            <btn
+                class="b"
+                flat
+                color="#008eff"
+            >资产合计：{{assettsObj.totalPrice}}</btn>
+            <btn
+                class="b"
+                flat
+                color="#008eff"
+            >资产净值：{{assettsObj.netWorth}}</btn>
+            <btn
+                class="b"
+                flat
+                color="#008eff"
+            >累积计提折旧：{{assettsObj.accumulatedDepreciation}}</btn>
         </div>
         <div class="flex-item scroll-y">
             <data-list
@@ -111,10 +146,16 @@
                     <th>净值</th>
                     <th>状态</th>
                     <th>备注</th>
-                    <th class="t-right" style="width: 80px;">操作</th>
+                    <th
+                        class="t-right"
+                        style="width: 80px;"
+                    >操作</th>
                 </tr>
                 <!-- item: 当前行数据; index: 当前行数 -->
-                <template slot="item" slot-scope="{ item, index }">
+                <template
+                    slot="item"
+                    slot-scope="{ item, index }"
+                >
                     <td class="c-a">{{ index }}</td>
                     <td>{{ item.name }}</td>
                     <td>{{ item.bh }}</td>
@@ -142,18 +183,45 @@
                     <td>{{ item.statusCN }}</td>
                     <td>{{ item.remark }}</td>
                     <td class="t-right">
-                        <a href="javascript:;" class="blue" @click="edit(item)">编辑 |&nbsp;</a>
-                        <a href="javascript:;" class="red" @click="remove(item)">删除</a>
+                        <a
+                            href="javascript:;"
+                            class="blue"
+                            @click="edit(item)"
+                        >编辑 |&nbsp;</a>
+                        <a
+                            href="javascript:;"
+                            class="red"
+                            @click="remove(item)"
+                        >删除</a>
                     </td>
                 </template>
             </data-list>
         </div>
-        <layer v-if="layer" :title="form.id ?'编辑':'新增'" width="50%">
-            <div class="layer-text" style="padding-bottom: 50px;">
+        <layer
+            v-if="layer"
+            :title="form.id ?'编辑':'新增'"
+            width="50%"
+        >
+            <div
+                class="layer-text"
+                style="padding-bottom: 50px;"
+            >
                 <div class="flex">
-                    <input-box v-model="form.name" class="flex-item mr-20" label="资产名称"></input-box>
-                    <input-box v-model="form.bh" class="flex-item mr-20" label="资产编号"></input-box>
-                    <input-box v-model="form.specifications" class="flex-item mr-20" label="规格型号"></input-box>
+                    <input-box
+                        v-model="form.name"
+                        class="flex-item mr-20"
+                        label="资产名称"
+                    ></input-box>
+                    <input-box
+                        v-model="form.bh"
+                        class="flex-item mr-20"
+                        label="资产编号"
+                    ></input-box>
+                    <input-box
+                        v-model="form.specifications"
+                        class="flex-item mr-20"
+                        label="规格型号"
+                    ></input-box>
                 </div>
                 <div class="flex">
                     <select-box
@@ -162,7 +230,11 @@
                         :list="typeList"
                         label="资产类别"
                     ></select-box>
-                    <input-box v-model="form.manufacturer" class="flex-item mr-20" label="生产厂家"></input-box>
+                    <input-box
+                        v-model="form.manufacturer"
+                        class="flex-item mr-20"
+                        label="生产厂家"
+                    ></input-box>
                     <select-box
                         v-model="form.addType"
                         class="flex-item mr-20"
@@ -171,12 +243,12 @@
                     ></select-box>
                 </div>
                 <div class="flex">
-                    <select-box
-                        v-model="form.deptId"
+                    <input-box
+                        v-model="form.deptName"
+                        @click="deptFlag=true"
                         class="flex-item mr-20"
-                        :list="deptList"
                         label="使用部门"
-                    ></select-box>
+                    ></input-box>
                     <!-- <input-box v-model="form.departName"  @click="deptFlag=true" class="flex-item mr-20" label="部门名称"></input-box> -->
                     <select-box
                         v-model="form.userName"
@@ -184,16 +256,32 @@
                         :list="userList"
                         label="领用人"
                     ></select-box>
-                    <input-box v-model="form.location" class="flex-item mr-20" label="存放地点"></input-box>
+                    <input-box
+                        v-model="form.location"
+                        class="flex-item mr-20"
+                        label="存放地点"
+                    ></input-box>
                 </div>
                 <div class="flex">
-                    <input-box v-model="form.num" class="flex-item mr-20" label="资产数量"></input-box>
-                    <input-box v-model="form.unit" class="flex-item mr-20" label="单位"></input-box>
-                    <input-box v-model="form.price" class="flex-item mr-20" label="采购单价"></input-box>
-                    </div>
+                    <input-box
+                        v-model="form.num"
+                        class="flex-item mr-20"
+                        label="资产数量"
+                    ></input-box>
+                    <input-box
+                        v-model="form.unit"
+                        class="flex-item mr-20"
+                        label="单位"
+                    ></input-box>
+                    <input-box
+                        v-model="form.price"
+                        class="flex-item mr-20"
+                        label="采购单价"
+                    ></input-box>
+                </div>
                 <div class="flex">
                     <!-- <input-box v-model="form.totalPrice" class="flex-item mr-20" label="采购金额"></input-box> -->
-                     <date-picker
+                    <date-picker
                         v-model="form.purchasingTime"
                         class="flex-item"
                         style="margin-right: 20px;"
@@ -205,20 +293,32 @@
                         style="margin-right: 20px;"
                         label="开始使用日期"
                     ></date-picker>
-                     </div>
-                <div class="flex">
-                    <input-box v-model="form.outputRate" class="flex-item mr-20" label="净残值率"></input-box>
-                    <input-box v-model="form.salvageValue" class="flex-item mr-20" label="净残值"></input-box>
-                    <input-box v-model="form.useYear" class="flex-item mr-20" label="使用年限"></input-box>
                 </div>
                 <div class="flex">
-                     <select-box
+                    <input-box
+                        v-model="form.outputRate"
+                        class="flex-item mr-20"
+                        label="净残值率"
+                    ></input-box>
+                    <input-box
+                        v-model="form.salvageValue"
+                        class="flex-item mr-20"
+                        label="净残值"
+                    ></input-box>
+                    <input-box
+                        v-model="form.useYear"
+                        class="flex-item mr-20"
+                        label="使用年限"
+                    ></input-box>
+                </div>
+                <div class="flex">
+                    <select-box
                         v-model="form.depreciationMethod"
                         class="flex-item mr-20"
                         :list="methodList"
                         label="折旧方法"
                     ></select-box>
-                     <select-box
+                    <select-box
                         v-model="form.status"
                         class="flex-item mr-20"
                         :list="statusList"
@@ -239,20 +339,37 @@
                         label="累计折旧"
                     ></input-box> -->
                     <!-- <input-box v-model="form.netWorth" class="flex-item mr-20" label="净值"></input-box> -->
-                   
-                   
+
                 </div>
                 <div class="flex">
-                    <input-box v-model="form.remark" class="flex-item mr-20" label="备注"></input-box>
+                    <input-box
+                        v-model="form.remark"
+                        class="flex-item mr-20"
+                        label="备注"
+                    ></input-box>
                 </div>
             </div>
             <div class="layer-btns">
-                <btn flat color="#008eff" @click="save">保存</btn>
-                <btn flat color="#008eff" @click="close">关闭</btn>
+                <btn
+                    flat
+                    color="#008eff"
+                    @click="save"
+                >保存</btn>
+                <btn
+                    flat
+                    color="#008eff"
+                    @click="close"
+                >关闭</btn>
             </div>
         </layer>
-         <layer v-if="deptFlag"  width="50%">
-            <div class="layer-text" style="padding-bottom: 50px;">
+        <layer
+            v-if="deptFlag"
+            width="50%"
+        >
+            <div
+                class="layer-text"
+                style="padding-bottom: 50px;"
+            >
                 <dept-select @selectClick="selectClick"></dept-select>
             </div>
         </layer>
@@ -264,7 +381,7 @@ import DataList from "@/components/datalist";
 import DeptSelect from "@/components/deptSelect";
 export default {
     name: "cashAccounting",
-    components: { DataList,DeptSelect },
+    components: { DataList, DeptSelect },
     data() {
         return {
             filter: {
@@ -274,44 +391,48 @@ export default {
                 name: "",
                 status: "",
                 type: "",
-                userName: ""
+                userName: "",
             },
             layer: false,
             form: {
-                "addType": "",
-                "bh": "",
-                "depreciationMethod": "",
-                "deptId": null,
-                "location": "",
-                "manufacturer": "",
-                "name": "",
-                "num": 0,
-                "outputRate": null,
-                "price": 0,
-                "purchasingTime": "",
-                "remark": "",
-                "specifications": "",
-                "startTime": "",
-                "status": "",
-                "totalPrice": 0,
-                "type": "",
-                "unit": "",
-                "useYear": null,
-                "userName": ""
+                addType: "",
+                bh: "",
+                depreciationMethod: "",
+                deptId: null,
+                location: "",
+                manufacturer: "",
+                name: "",
+                num: 0,
+                outputRate: null,
+                price: 0,
+                purchasingTime: "",
+                remark: "",
+                specifications: "",
+                startTime: "",
+                status: "",
+                totalPrice: 0,
+                type: "",
+                unit: "",
+                useYear: null,
+                userName: "",
+                deptName: "",
             },
             deptList: [],
-            statusList: [{ text: "正常", value: "0" }, { text: "停用", value: "1" }],
+            statusList: [
+                { text: "正常", value: "0" },
+                { text: "停用", value: "1" },
+            ],
             accountList: [],
             addTypeList: [],
             typeList: [],
             userList: [],
             methodList: [],
-            assettsObj:{
+            assettsObj: {
                 accumulatedDepreciation: 0,
                 netWorth: 0,
-                totalPrice: 0
+                totalPrice: 0,
             },
-            deptFlag:false
+            deptFlag: false,
         };
     },
     mounted() {
@@ -320,7 +441,7 @@ export default {
         this.getDeptList();
         this.getUserList();
         this.getMethodList();
-         this.getAssetsData()
+        this.getAssetsData();
     },
     methods: {
         flush() {
@@ -331,77 +452,79 @@ export default {
                 name: "",
                 status: "",
                 type: "",
-                userName: ""
+                userName: "",
             };
             this.$refs.list.update(true);
-            this.getAssetsData()
+            this.getAssetsData();
         },
-        selectClick(data){
-            if(data){
-                this.form.departName = data.name;
+        selectClick(data) {
+            if (data) {
+                this.form.deptName = data.name;
+                this.form.deptId = data.id;
             }
             this.deptFlag = false;
         },
-        getAssetsData(){
-            this.$http.post("/haolifa/finance/assets/getAssetsSum",this.filter)
-            .then(res=>{
-                this.assettsObj.accumulatedDepreciation = res.accumulatedDepreciation
-                this.assettsObj.netWorth = res.netWorth
-                this.assettsObj.totalPrice = res.totalPrice
-            })
-            .catch(e => {
-                this.$toast(e.msg || e.message);
-            });
+        getAssetsData() {
+            this.$http
+                .post("/haolifa/finance/assets/getAssetsSum", this.filter)
+                .then((res) => {
+                    this.assettsObj.accumulatedDepreciation = res.accumulatedDepreciation;
+                    this.assettsObj.netWorth = res.netWorth;
+                    this.assettsObj.totalPrice = res.totalPrice;
+                })
+                .catch((e) => {
+                    this.$toast(e.msg || e.message);
+                });
         },
         //付款类型
         getAddType() {
             this.$http
                 .get(`/haolifa/sys-dict/getDictListByType/ASSETS_ADD_TYPE`)
-                .then(res => {
-                    this.addTypeList = res.map(item => {
+                .then((res) => {
+                    this.addTypeList = res.map((item) => {
                         return {
                             text: item.desc,
-                            value: item.code
+                            value: item.code,
                         };
                     });
                 })
-                .catch(e => {
+                .catch((e) => {
                     this.$toast(e.msg || e.message);
                 });
         },
         getTypeList() {
             this.$http
                 .get(`/haolifa/sys-dict/getDictListByType/ASSETS_TYPE`)
-                .then(res => {
-                    this.typeList = res.map(item => {
+                .then((res) => {
+                    this.typeList = res.map((item) => {
                         return {
                             text: item.desc,
-                            value: item.code
+                            value: item.code,
                         };
                     });
                 })
-                .catch(e => {
+                .catch((e) => {
                     this.$toast(e.msg || e.message);
                 });
         },
         getMethodList() {
             this.$http
                 .get(`/haolifa/sys-dict/getDictListByType/DEPRECIATION_METHOD`)
-                .then(res => {
-                    this.methodList = res.map(item => {
+                .then((res) => {
+                    this.methodList = res.map((item) => {
                         return {
                             text: item.desc,
-                            value: item.code
+                            value: item.code,
                         };
                     });
                 })
-                .catch(e => {
+                .catch((e) => {
                     this.$toast(e.msg || e.message);
                 });
         },
         getAccName(value) {
             let str = "";
-            this.acceptList.map(item => {
+            this.acceptList.map((item) => {
                 if (item.value == value) {
                     str = item.text;
                 }
@@ -411,15 +534,15 @@ export default {
         getDeptList() {
             this.$http
                 .get(`/haolifa/dept/list`)
-                .then(res => {
-                    this.deptList = res.map(item => {
+                .then((res) => {
+                    this.deptList = res.map((item) => {
                         return {
                             text: item.deptName,
-                            value: item.id + ""
+                            value: item.id + "",
                         };
                     });
                 })
-                .catch(e => {
+                .catch((e) => {
                     this.$toast(e.msg || e.message);
                 });
         },
@@ -437,23 +560,23 @@ export default {
                     teamId: "",
                     teamName: "",
                     userName: "",
-                    userType: ""
+                    userType: "",
                 })
-                .then(res => {
-                    this.userList = res.map(item => {
+                .then((res) => {
+                    this.userList = res.map((item) => {
                         return {
                             text: item.userName,
-                            value: item.userName
+                            value: item.userName,
                         };
                     });
                 })
-                .catch(e => {
+                .catch((e) => {
                     this.$toast(e.message || e.msg);
                 });
         },
         edit(item) {
             this.layer = true;
-            Object.keys(this.form).forEach(key => {
+            Object.keys(this.form).forEach((key) => {
                 this.form[key] = item[key];
             });
             this.form.id = item.id;
@@ -467,14 +590,14 @@ export default {
                 yes: () => {
                     this.$http
                         .get(`/haolifa/finance/assets/delete/${item.id}`)
-                        .then(res => {
+                        .then((res) => {
                             this.$toast("删除成功");
                             this.$refs.list.update(true);
                         })
-                        .catch(e => {
+                        .catch((e) => {
                             this.$toast(e.msg || e.message);
                         });
-                }
+                },
             });
         },
         add(type) {
@@ -484,12 +607,12 @@ export default {
             let url = this.form.id ? "/haolifa/finance/assets/updateAssets" : "/haolifa/finance/assets/save";
             this.$http
                 .post(url, this.form)
-                .then(res => {
+                .then((res) => {
                     this.close();
                     this.$toast("保存成功");
                     this.$refs.list.update(true);
                 })
-                .catch(e => {
+                .catch((e) => {
                     this.$toast(e.msg || e.message);
                 });
         },
@@ -520,10 +643,11 @@ export default {
                 status: "",
                 type: "",
                 useYear: "",
-                userName: ""
+                userName: "",
+                deptName: "",
             };
-        }
-    }
+        },
+    },
 };
 </script>
 
