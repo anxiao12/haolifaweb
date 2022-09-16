@@ -143,7 +143,12 @@
                             v-if="item.applyStatus==1 || item.applyStatus==4"
                             class="red"
                             @click="remove(item)"
-                        >删除</a>
+                        >删除 |&nbsp;</a>
+                        <a
+                            :href="'/haolifa/finance/loanapply/printPDF/'+item.id"
+                            class="blue"
+                            target="_blank"
+                        >打印</a>
                     </td>
                 </template>
             </data-list>
@@ -158,11 +163,77 @@
                 style="padding-bottom: 50px;"
             >
                 <div class="flex">
+                    <select-box
+                        v-model="form.projectCode"
+                        class="flex-item mr-20"
+                        :list="projectList"
+                        label="经费项目"
+                    ></select-box>
+                    <select-box
+                        v-model="form.payType"
+                        class="flex-item mr-20"
+                        :list="payTypeList"
+                        @change="payTypeChange"
+                        label="支付类型"
+                    ></select-box>
+                    <el-select
+                        v-if="form.payType==1"
+                        v-model="companyCode"
+                        size="mini"
+                        clearable
+                        @change="companyChange"
+                        :filterable="true"
+                        placeholder="单位选择"
+                    >
+                        <el-option
+                            v-for="(item,i) in companyList"
+                            :key="i"
+                            :label="item.name"
+                            :value="item.code"
+                        ></el-option>
+                    </el-select>
+                    <el-select
+                        v-if="form.payType==2"
+                        v-model="userId"
+                        size="mini"
+                        clearable
+                        @change="userChange"
+                        :filterable="true"
+                        placeholder="人员选择"
+                    >
+                        <el-option
+                            v-for="(item,i) in userList"
+                            :key="i"
+                            :label="item.userName + '--'+item.userNo"
+                            :value="item.userNo"
+                        ></el-option>
+                    </el-select>
+                </div>
+                <div class="flex">
                     <input-box
                         v-model="form.accountName"
                         class="flex-item mr-20"
                         label="户名"
                     ></input-box>
+                    <input-box
+                        v-model="form.bankOfDeposit"
+                        class="flex-item mr-20"
+                        label="开户行"
+                    ></input-box>
+                    <input-box
+                        v-model="form.cardNumber"
+                        class="flex-item mr-20"
+                        label="卡号"
+                    ></input-box>
+
+                </div>
+                <div class="flex">
+                    <select-box
+                        v-model="form.amountType"
+                        class="flex-item mr-20"
+                        :list="amountTypeList"
+                        label="资金性质"
+                    ></select-box>
                     <input-box
                         v-model="form.amount"
                         class="flex-item mr-20"
@@ -177,20 +248,30 @@
                 </div>
                 <div class="flex">
                     <select-box
-                        v-model="form.amountType"
+                        v-model="form.travelFlag"
                         class="flex-item mr-20"
-                        :list="amountTypeList"
-                        label="资金性质"
+                        :list="travelFlagList"
+                        label="是否差旅借款"
                     ></select-box>
+                </div>
+                <div
+                    class="flex"
+                    v-if="form.travelFlag == 1"
+                >
                     <input-box
-                        v-model="form.bankOfDeposit"
+                        v-model="form.travelPeoNum"
                         class="flex-item mr-20"
-                        label="开户行"
+                        label="出差人数"
                     ></input-box>
                     <input-box
-                        v-model="form.cardNumber"
+                        v-model="form.travelDays"
                         class="flex-item mr-20"
-                        label="卡号"
+                        label="出差天数"
+                    ></input-box>
+                    <input-box
+                        v-model="form.travelArrAddress"
+                        class="flex-item mr-20"
+                        label="出差地点"
                     ></input-box>
                 </div>
                 <div class="flex">
@@ -279,6 +360,12 @@ export default {
                 loanDate: "",
                 purpose: "",
                 remark: "",
+                payType: "",
+                projectCode: "",
+                travelArrAddress: "",
+                travelDays: "",
+                travelFlag: "",
+                travelPeoNum: "",
             },
             typeList: [
                 { text: "收款", value: "1" },
@@ -287,6 +374,10 @@ export default {
             amountTypeList: [
                 { text: "现金", value: "1" },
                 { text: "支票", value: "2" },
+            ],
+            travelFlagList: [
+                { text: "是", value: "1" },
+                { text: "否", value: "2" },
             ],
             statusList: [],
             acceptList: [],
@@ -301,13 +392,25 @@ export default {
                 { text: "承兑", value: "承兑" },
             ],
             accountList: [],
+            userList: [],
+            projectList: [],
+            companyList: [],
+            companyCode: "",
+            userId: "",
+            payTypeList: [
+                { text: "对公", value: "1" },
+                { text: "对私", value: "2" },
+            ],
         };
     },
-    mounted() {
+    activated() {
         this.getPayType();
         this.getAcceptType();
         this.getDeptList();
         this.getAccount();
+        this.getUserList();
+        this.getProList();
+        this.getCompanyList();
     },
     methods: {
         selectClick(data) {
@@ -329,6 +432,27 @@ export default {
                 type: "1",
             };
             this.$refs.list.update(true);
+        },
+        payTypeChange() {
+            this.form.bankOfDeposit = this.form.cardNumber = this.form.accountName = this.userId = this.companyCode = "";
+        },
+        companyChange() {
+            this.companyList.forEach((item) => {
+                if (item.code == this.companyCode) {
+                    this.form.accountName = item.accountName;
+                    this.form.cardNumber = item.cardNumber;
+                    this.form.bankOfDeposit = item.bankOfDeposit;
+                }
+            });
+        },
+        userChange() {
+            this.userList.forEach((item) => {
+                if (item.userNo == this.userId) {
+                    this.form.accountName = item.userName;
+                    this.form.cardNumber = item.cardNumber;
+                    this.form.bankOfDeposit = item.bankOfDeposit;
+                }
+            });
         },
         //付款类型
         getPayType() {
@@ -354,6 +478,64 @@ export default {
                 }
             });
             return str;
+        },
+        //项目列表
+        getProList() {
+            this.$http
+                .post("/haolifa/finance/projectbudget/getCurUserProjectBudgetList", {
+                    code: "",
+                    name: "",
+                    pageNum: 1,
+                    pageSize: 9990,
+                })
+                .then((res) => {
+                    this.projectList = res.list.map((item) => {
+                        return { text: item.name, value: item.code };
+                    });
+                })
+                .catch((e) => {
+                    this.$toast(e.msg || e.message);
+                });
+        },
+        //单位列表
+        getCompanyList() {
+            this.$http
+                .post("/haolifa/finance/company/getCompanyList", {
+                    code: "",
+                    name: "",
+                    pageNum: 1,
+                    pageSize: 9990,
+                })
+                .then((res) => {
+                    this.companyList = res.list;
+                })
+                .catch((e) => {
+                    this.$toast(e.msg || e.message);
+                });
+        },
+        //人员列表
+        getUserList() {
+            this.$http
+                .post("/haolifa/pay-user/getAllList", {
+                    departName: "",
+                    id: 0,
+                    pageNum: 0,
+                    pageSize: 0,
+                    postId: 0,
+                    postName: "",
+                    sex: 0,
+                    superiorId: 0,
+                    teamId: 0,
+                    teamName: "",
+                    userName: "",
+                    userType: "",
+                })
+                .then((res) => {
+                    this.userList = res;
+                })
+                .catch((e) => {
+                    this.$toast(e.msg || e.message);
+                });
         },
         //款收类型
         getAcceptType() {
@@ -409,18 +591,10 @@ export default {
         },
         edit(item) {
             this.layer = true;
+            Object.keys(this.form).forEach((key) => {
+                this.form[key] = item[key];
+            });
             this.form.id = item.id;
-            this.form.accountName = item.accountName;
-            this.form.amount = item.amount;
-            this.form.amountType = item.amountType;
-            this.form.bankOfDeposit = item.bankOfDeposit;
-            this.form.cardNumber = item.cardNumber;
-            this.form.deptId = item.deptId;
-            this.form.deptName = item.deptName;
-            this.form.expectRepaymentDate = item.expectRepaymentDate;
-            this.form.loanDate = item.loanDate;
-            this.form.purpose = item.purpose;
-            this.form.remark = item.remark;
         },
         remove(item) {
             this.$confirm({
@@ -489,6 +663,12 @@ export default {
                 loanDate: "",
                 purpose: "",
                 remark: "",
+                payType: "",
+                projectCode: "",
+                travelArrAddress: "",
+                travelDays: "",
+                travelFlag: "",
+                travelPeoNum: "",
             };
         },
     },
@@ -507,8 +687,14 @@ export default {
     .scroll-y {
         padding-bottom: 40px;
     }
-
-    //
+    .el-select--mini {
+        .el-input__inner {
+            border: 0;
+            border-radius: 0;
+            border-bottom: 1px solid #ccc;
+            margin-top: 14px;
+        }
+    }
 }
 .fixed-length {
     width: 100px;

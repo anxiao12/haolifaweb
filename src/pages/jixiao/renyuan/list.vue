@@ -347,7 +347,6 @@
                     <input-box
                         v-model="form.bankOfDeposit"
                         class="flex-item mr-20"
-                        type="number"
                         label="开户行"
                     ></input-box>
                 </div>

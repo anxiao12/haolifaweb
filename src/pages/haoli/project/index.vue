@@ -69,7 +69,7 @@
                     <td class="c-a">{{ index }}</td>
                     <td>{{ item.name }}</td>
                     <td>{{ item.code }}</td>
-                    <td>{{ item.deptId }}</td>
+                    <td>{{ item.deptName }}</td>
                     <td>{{ item.year }}</td>
                     <td>{{ item.month }}</td>
                     <td>{{ item.totalQuota }}</td>
@@ -139,11 +139,11 @@
                     ></select-box>
                 </div>
                 <div class="flex">
-                    <input-box
+                    <!-- <input-box
                         v-model="form.balanceQuota"
                         class="flex-item mr-20"
                         label="剩余额度"
-                    ></input-box>
+                    ></input-box> -->
                     <input-box
                         v-model="form.totalQuota"
                         class="flex-item mr-20"

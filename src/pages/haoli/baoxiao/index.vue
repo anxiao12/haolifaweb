@@ -94,19 +94,19 @@
                         <a
                             href="javascript:;"
                             class="blue"
-                            v-if="item.applyStatus==0"
+                            v-if="item.applyStatus==0 || item.applyStatus==4"
                             @click="approve(item)"
                         >发起审批 |&nbsp;</a>
                         <a
                             href="javascript:;"
                             class="blue"
-                            v-if="item.applyStatus==0"
+                            v-if="item.applyStatus==0 || item.applyStatus==4"
                             @click="edit(item)"
                         >编辑 |&nbsp;</a>
                         <a
                             href="javascript:;"
                             class="red"
-                            v-if="item.applyStatus==0"
+                            v-if="item.applyStatus==0 || item.applyStatus==4"
                             @click="remove(item)"
                         >删除 |</a>
                         <a
@@ -114,6 +114,11 @@
                             class="blue"
                             @click="detail(item)"
                         >详情</a>
+                        <a
+                            :href="'/haolifa/finance/reimburseapply/printPDF/'+item.id"
+                            class="blue"
+                            target="_blank"
+                        > | 打印</a>
                     </td>
                 </template>
             </data-list>
@@ -139,6 +144,7 @@
                             v-model="form.projectCode"
                             size="mini"
                             clearable
+                            @change="projectChange"
                         >
                             <el-option
                                 v-for="(item,i) in proList"
@@ -147,6 +153,7 @@
                                 :value="item.code"
                             ></el-option>
                         </el-select>
+                        剩余额度：{{balanceQuota}}
                     </el-descriptions-item>
                     <el-descriptions-item>
                         <template slot="label">支付类型</template>
@@ -172,6 +179,7 @@
                             v-model="companyCode"
                             size="mini"
                             clearable
+                            :filterable="true"
                             @change="companyChange"
                         >
                             <el-option
@@ -733,6 +741,7 @@ export default {
                 serialNo: "",
                 type: "",
             },
+            balanceQuota: null,
             layer: false,
             layer2: false,
             form: {
@@ -856,6 +865,14 @@ export default {
         },
         payTypeChange() {
             this.companyCode = this.userCode = this.form.accountName = this.form.cardNumber = this.form.bankOfDeposit = "";
+        },
+        projectChange() {
+            this.balanceQuota = null;
+            this.proList.forEach((item) => {
+                if (item.code == this.form.projectCode) {
+                    this.balanceQuota = item.balanceQuota;
+                }
+            });
         },
         costAdd(type) {
             if (type == 1) {
@@ -1105,15 +1122,15 @@ export default {
                     };
                     if (res.type == 2) {
                         this.form.reimburseCostDetailAddDTOList = [];
-                        res.reimburseCostDetailRSDTOList.map((item) => {
-                            this.$http.get(`/haolifa/finance/costbudget/subjects/getCurUserSubjectsBudgetList/${item.subjectType}`).then((r) => {
+                        res.reimburseCostDetailRSDTOList.map((it) => {
+                            this.$http.get(`/haolifa/finance/costbudget/subjects/getCurUserSubjectsBudgetList/${it.subjectsType}`).then((r) => {
                                 let obj = {
-                                    amount: item.amount,
-                                    docNum: item.docNum,
-                                    remark: item.remark,
-                                    subject: item.subject + "",
-                                    subjectsType: item.subjectsType + "",
-                                    time: item.amount,
+                                    amount: it.amount,
+                                    docNum: it.docNum,
+                                    remark: it.remark,
+                                    subject: it.subject + "",
+                                    subjectsType: it.subjectsType + "",
+                                    time: it.amount,
                                     type: "2",
                                     balanceAmount: null,
                                     subjectList2: r,
@@ -1123,22 +1140,22 @@ export default {
                         });
                     } else {
                         this.form.reimburseTravelDetailAddDTOList = [];
-                        res.reimburseTravelDetailRSDTOList.map((item) => {
+                        res.reimburseTravelDetailRSDTOList.map((it) => {
                             let obj = {
-                                arrAddress: item.arrAddress,
-                                arrTime: item.arrTime,
-                                depAddress: item.depAddress,
-                                depTime: item.depTime,
-                                projectAmount: item.arrAdprojectAmountdress,
-                                projectDocNum: item.projectDocNum,
-                                projectType: item.projectType,
-                                remark: item.remark,
-                                travelDays: item.travelDays,
-                                travelSubsidyAmount: item.travelSubsidyAmount,
+                                arrAddress: it.arrAddress,
+                                arrTime: it.arrTime,
+                                depAddress: it.depAddress,
+                                depTime: it.depTime,
+                                projectAmount: it.arrAdprojectAmountdress,
+                                projectDocNum: it.projectDocNum,
+                                projectType: it.projectType,
+                                remark: it.remark,
+                                travelDays: it.travelDays,
+                                travelSubsidyAmount: it.travelSubsidyAmount,
                                 type: "1",
-                                vehicle: item.vehicle,
-                                vehicleAmount: item.vehicleAmount,
-                                vehicleDocNum: item.vehicleDocNum,
+                                vehicle: it.vehicle,
+                                vehicleAmount: it.vehicleAmount,
+                                vehicleDocNum: it.vehicleDocNum,
                             };
                             this.form.reimburseTravelDetailAddDTOList.push(obj);
                         });
@@ -1202,20 +1219,19 @@ export default {
             this.layer = true;
         },
         save() {
-            // if (
-            //     !this.form.operateDate ||
-            //     !this.form.collectionType ||
-            //     !this.form.payment ||
-            //     !this.form.paymentType ||
-            //     !this.form.payCompany ||
-            //     !this.form.deptId ||
-            //     !this.form.certificateNumber ||
-            //     !this.form.collectionMoney ||
-            //     !this.form.collectCompany
-            // ) {
-            //     this.$toast("请输入必填项");
-            //     return;
-            // }amount: 0,
+            if (!this.form.projectCode) {
+                this.$toast("请选择经费项目");
+                return;
+            }
+            if (!this.form.payType) {
+                this.$toast("请选择支付类型");
+                return;
+            }
+            if (!this.form.remark) {
+                this.$toast("请输入备注摘要");
+                return;
+            }
+
             this.form.reimburseCostDetailAddDTOList.map((item) => {
                 delete item.subjectList2;
             });

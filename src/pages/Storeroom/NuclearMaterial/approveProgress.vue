@@ -1,17 +1,34 @@
 <template>
     <div class="abs scroll-y">
-        <div class="metalwork-info" style="width:100%;margin:0 auto">
-            <div class="b f-18 flex-v-center" style="margin-bottom: 20px;">
-                <icon-btn class="mr-15" @click="$router.back()">arrow_back</icon-btn>
+        <div
+            class="metalwork-info"
+            style="width:100%;margin:0 auto"
+        >
+            <div
+                class="b f-18 flex-v-center"
+                style="margin-bottom: 20px;"
+            >
+                <icon-btn
+                    class="mr-15"
+                    @click="$router.back()"
+                >arrow_back</icon-btn>
                 <div class="flex-item">审批进度</div>
             </div>
             <div style="min-width:1200px">
-                <div class="approve" v-for="(item,index) in list" :key="index">
+                <div
+                    class="approve"
+                    v-for="(item,index) in list"
+                    :key="index"
+                >
                     <p>{{item.roleName}}</p>
                     <p :class="item.auditResult == 4 ? 'button ccc' : 'button'">{{item.stepName}}</p>
                     <span v-if="index<list.length-1">-----></span>
                     <p>{{status[item.auditResult]}}{{item.auditTime}}</p>
-                    <div class="approve" style="position: absolute;top: 123px" v-if="item.child.length>0">
+                    <div
+                        class="approve"
+                        style="position: absolute;top: 123px"
+                        v-if="item.child.length>0"
+                    >
                         <div class="height-line"></div>
                         <div class="bottom-arrows"></div>
                         <p>{{item.child[0].roleName}}</p>
@@ -39,8 +56,8 @@ export default {
                 0: "审核不通过",
                 1: "审核通过",
                 3: "流程初始化",
-                4: "未审核"
-            }
+                4: "未审核",
+            },
         };
     },
     created() {
@@ -53,18 +70,16 @@ export default {
         getInfo(formNo, formId) {
             console.log(formNo, formId);
             this.$http
-                .get(
-                    `/haolifa/flowInstance/flow/progress?formNo=${formNo}&formId=${formId}`
-                )
-                .then(res => {
+                .get(`/haolifa/flowInstance/flow/progress?formNo=${encodeURIComponent(formNo)}&formId=${formId}`)
+                .then((res) => {
                     console.log(res);
                     this.list = res;
                 })
-                .catch(e => {
+                .catch((e) => {
                     this.$toast(e.msg || e.message);
                 });
-        }
-    }
+        },
+    },
 };
 </script>
 
