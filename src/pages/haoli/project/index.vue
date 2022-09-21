@@ -47,9 +47,9 @@
             >
                 <tr slot="header">
                     <th style="width: 60px;">序号</th>
-                    <th>单位名称</th>
+                    <th>项目名称</th>
                     <th>项目编号</th>
-                    <th>所属部门</th>
+                    <th>部门名称</th>
                     <th>预算年度</th>
                     <th>预算月份</th>
                     <th>预算经费总额度</th>

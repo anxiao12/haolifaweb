@@ -1,9 +1,15 @@
 <template>
-    <div class="p-p-base" v-if="data">
+    <div
+        class="p-p-base"
+        v-if="data"
+    >
         <div class="node">
             <div class="flex-item mt-10 mb-10">
                 <span class="f-20">基本信息</span>
-                <btn @click="nuclear(data.formNo)" style="left: 74%;">核料清单查看</btn>
+                <btn
+                    @click="nuclear(data.formNo)"
+                    style="left: 74%;"
+                >核料清单查看</btn>
             </div>
 
             <div class="node">
@@ -26,13 +32,24 @@
                 <div class="node-title mb-10">
                     <span class="b">待审批附件：</span>
                     <span>
-                        <a class="a" flat style="color: #008eff" :href="orderUrl">下载生产订单</a>
+                        <a
+                            class="a"
+                            flat
+                            style="color: #008eff"
+                            :href="orderUrl"
+                        >下载生产订单</a>
                     </span>
                 </div>
                 <div class="node-title mb-10">
                     <span class="b">待审批附件预览：</span>
                     <span>
-                        <a target="_blank" class="a" flat style="color: #008eff" :href="'http://view.officeapps.live.com/op/view.aspx?src='+ orderUrl">生产订单预览</a>
+                        <a
+                            target="_blank"
+                            class="a"
+                            flat
+                            style="color: #008eff"
+                            :href="'http://view.officeapps.live.com/op/view.aspx?src='+ orderUrl"
+                        >生产订单预览</a>
                     </span>
                 </div>
             </div>
@@ -40,11 +57,18 @@
                 <div class="flex-item mt-10 mb-10">
                     <span class="f-20">审批栏</span>
                     <span class="f-10 ml-20">当前节点:{{data.dealStep.stepName}}</span>
-                    <btn class="ml-10" v-if="dealStepId == 51" @click="addJishu">添加技术清单</btn>
+                    <btn
+                        class="ml-10"
+                        v-if="dealStepId == 51"
+                        @click="addJishu"
+                    >添加技术清单</btn>
                 </div>
                 <div class="node">
                     <div>
-                        <div class="flex" v-if="dealStepId == 51">
+                        <div
+                            class="flex"
+                            v-if="dealStepId == 51"
+                        >
                             <!-- <input-box v-model="updateInfo.technicalRequire" :multi-line="true" class="flex-item" label="技术清单说明" style="margin-right: 20px;"></input-box> -->
                             <table class="f-14 order-info">
                                 <tr>
@@ -68,95 +92,233 @@
                                     <td style="width: 100px;"></td>
                                 </tr>
                                 <tr>
-                                    <td colspan="18" class="b">技术清单</td>
+                                    <td
+                                        colspan="18"
+                                        class="b"
+                                    >技术清单</td>
                                 </tr>
 
                                 <tr>
-                                    <td colspan="1" rowspan="2">序号</td>
-                                    <td colspan="1" rowspan="2">产品名称</td>
-                                    <td colspan="1" rowspan="2">型号</td>
-                                    <td colspan="1" rowspan="2">规格</td>
-                                    <td colspan="1" rowspan="2">数量</td>
-                                    <td colspan="1" rowspan="2">上法兰标准</td>
-                                    <td colspan="3" rowspan="1">上法兰尺寸</td>
-                                    <td colspan="5" rowspan="1">出轴尺寸</td>
-                                    <td colspan="1" rowspan="2">静扭矩</td>
-                                    <td colspan="1" rowspan="2">执行器型号</td>
-                                    <td colspan="1" rowspan="2">备注</td>
-                                    <td colspan="1" rowspan="2">操作</td>
+                                    <td
+                                        colspan="1"
+                                        rowspan="2"
+                                    >序号</td>
+                                    <td
+                                        colspan="1"
+                                        rowspan="2"
+                                    >产品名称</td>
+                                    <td
+                                        colspan="1"
+                                        rowspan="2"
+                                    >型号</td>
+                                    <td
+                                        colspan="1"
+                                        rowspan="2"
+                                    >规格</td>
+                                    <td
+                                        colspan="1"
+                                        rowspan="2"
+                                    >数量</td>
+                                    <td
+                                        colspan="1"
+                                        rowspan="2"
+                                    >上法兰标准</td>
+                                    <td
+                                        colspan="3"
+                                        rowspan="1"
+                                    >上法兰尺寸</td>
+                                    <td
+                                        colspan="5"
+                                        rowspan="1"
+                                    >出轴尺寸</td>
+                                    <td
+                                        colspan="1"
+                                        rowspan="2"
+                                    >静扭矩</td>
+                                    <td
+                                        colspan="1"
+                                        rowspan="2"
+                                    >执行器型号</td>
+                                    <td
+                                        colspan="1"
+                                        rowspan="2"
+                                    >备注</td>
+                                    <td
+                                        colspan="1"
+                                        rowspan="2"
+                                    >操作</td>
                                 </tr>
                                 <tr>
-                                    <td colspan="1" rowspan="1">连接孔</td>
-                                    <td colspan="1" rowspan="1">角度</td>
-                                    <td colspan="1" rowspan="1">中心距</td>
-                                    <td colspan="1" rowspan="1">出轴型式</td>
-                                    <td colspan="1" rowspan="1">出轴长度</td>
-                                    <td colspan="1" rowspan="1">轴图号</td>
-                                    <td colspan="1" rowspan="1">连接套</td>
-                                    <td colspan="1" rowspan="1">过渡盘</td>
+                                    <td
+                                        colspan="1"
+                                        rowspan="1"
+                                    >连接孔</td>
+                                    <td
+                                        colspan="1"
+                                        rowspan="1"
+                                    >角度</td>
+                                    <td
+                                        colspan="1"
+                                        rowspan="1"
+                                    >中心距</td>
+                                    <td
+                                        colspan="1"
+                                        rowspan="1"
+                                    >出轴型式</td>
+                                    <td
+                                        colspan="1"
+                                        rowspan="1"
+                                    >出轴长度</td>
+                                    <td
+                                        colspan="1"
+                                        rowspan="1"
+                                    >轴图号</td>
+                                    <td
+                                        colspan="1"
+                                        rowspan="1"
+                                    >连接套</td>
+                                    <td
+                                        colspan="1"
+                                        rowspan="1"
+                                    >过渡盘</td>
                                 </tr>
-                                <tr v-for="(val,index) in technicalRequire" :key="index">
-                                    <td colspan="1">{{val.id}}</td>
+                                <tr
+                                    v-for="(val,index) in technicalRequire"
+                                    :key="index"
+                                >
+                                    <td colspan="1">{{val.seqNo}}</td>
                                     <td colspan="1">
-                                        <input-box type="text" v-model="val.productName"></input-box>
+                                        <input-box
+                                            type="text"
+                                            v-model="val.productName"
+                                        ></input-box>
                                     </td>
                                     <td colspan="1">
-                                        <input-box type="text" v-model="val.productModel"></input-box>
+                                        <input-box
+                                            type="text"
+                                            v-model="val.productModel"
+                                        ></input-box>
                                     </td>
                                     <td colspan="1">
-                                        <input-box type="text" v-model="val.specifications"></input-box>
+                                        <input-box
+                                            type="text"
+                                            v-model="val.specifications"
+                                        ></input-box>
                                     </td>
                                     <td colspan="1">
-                                        <input-box type="text" v-model="val.productNum"></input-box>
+                                        <input-box
+                                            type="text"
+                                            v-model="val.productNum"
+                                        ></input-box>
                                     </td>
                                     <td colspan="1">
-                                        <input-box type="text" v-model="val.upperFlangeStandard	"></input-box>
+                                        <input-box
+                                            type="text"
+                                            v-model="val.upperFlangeStandard	"
+                                        ></input-box>
                                     </td>
                                     <td colspan="1">
-                                        <input-box type="text" v-model="val.connectingHole"></input-box>
+                                        <input-box
+                                            type="text"
+                                            v-model="val.connectingHole"
+                                        ></input-box>
                                     </td>
                                     <td colspan="1">
-                                        <input-box type="text" v-model="val.angle"></input-box>
+                                        <input-box
+                                            type="text"
+                                            v-model="val.angle"
+                                        ></input-box>
                                     </td>
                                     <td colspan="1">
-                                        <input-box type="text" v-model="val.centerDistance"></input-box>
+                                        <input-box
+                                            type="text"
+                                            v-model="val.centerDistance"
+                                        ></input-box>
                                     </td>
                                     <td colspan="1">
-                                        <input-box type="text" v-model="val.outputShaftType"></input-box>
+                                        <input-box
+                                            type="text"
+                                            v-model="val.outputShaftType"
+                                        ></input-box>
                                     </td>
                                     <td colspan="1">
-                                        <input-box type="text" v-model="val.outputShaftLength"></input-box>
+                                        <input-box
+                                            type="text"
+                                            v-model="val.outputShaftLength"
+                                        ></input-box>
                                     </td>
                                     <td colspan="1">
-                                        <input-box type="text" v-model="val.axisDrawingNo"></input-box>
+                                        <input-box
+                                            type="text"
+                                            v-model="val.axisDrawingNo"
+                                        ></input-box>
                                     </td>
                                     <td colspan="1">
-                                        <input-box type="text" v-model="val.connectingSleeve"></input-box>
+                                        <input-box
+                                            type="text"
+                                            v-model="val.connectingSleeve"
+                                        ></input-box>
                                     </td>
                                     <td colspan="1">
-                                        <input-box type="text" v-model="val.transitionPlate"></input-box>
+                                        <input-box
+                                            type="text"
+                                            v-model="val.transitionPlate"
+                                        ></input-box>
                                     </td>
                                     <td colspan="1">
-                                        <input-box type="text" v-model="val.staticTorque"></input-box>
+                                        <input-box
+                                            type="text"
+                                            v-model="val.staticTorque"
+                                        ></input-box>
                                     </td>
                                     <td colspan="1">
-                                        <input-box type="text" v-model="val.actuatorModel"></input-box>
+                                        <input-box
+                                            type="text"
+                                            v-model="val.actuatorModel"
+                                        ></input-box>
                                     </td>
                                     <td colspan="1">
-                                        <input-box type="text" v-model="val.remark"></input-box>
+                                        <input-box
+                                            type="text"
+                                            v-model="val.remark"
+                                        ></input-box>
                                     </td>
                                     <td colspan="1">
-                                        <el-button size="mini" icon="el-icon-circle-plus" type="primary" @click="addTechnicalRequire" circle></el-button>
-                                        <el-button style="margin-left:0" size="mini" icon="el-icon-delete" type="danger" @click="delTechnicalRequire(index)" circle></el-button>
+                                        <el-button
+                                            size="mini"
+                                            icon="el-icon-circle-plus"
+                                            type="primary"
+                                            @click="addTechnicalRequire"
+                                            circle
+                                        ></el-button>
+                                        <el-button
+                                            style="margin-left:0"
+                                            size="mini"
+                                            icon="el-icon-delete"
+                                            type="danger"
+                                            @click="delTechnicalRequire(index)"
+                                            circle
+                                        ></el-button>
                                     </td>
                                 </tr>
                             </table>
                         </div>
-                        <div  v-if="dealStepId == 51" class="mt-20">
-                        <el-button size="mini"   type="primary" @click="saveJishu" :loading="jishuLoading">保存技术清单</el-button>
+                        <div
+                            v-if="dealStepId == 51"
+                            class="mt-20"
+                        >
+                            <el-button
+                                size="mini"
+                                type="primary"
+                                @click="saveJishu"
+                                :loading="jishuLoading"
+                            >保存技术清单</el-button>
                         </div>
 
-                        <div class="flex" v-if="dealStepId > 51">
+                        <div
+                            class="flex"
+                            v-if="dealStepId > 51"
+                        >
                             <!-- <input-box
                                 :disabled="true"
                                 v-model="updateInfo.technicalRequire"
@@ -187,34 +349,97 @@
                                     <td style="width: 100px;"></td>
                                 </tr>
                                 <tr>
-                                    <td colspan="17" class="b">技术清单</td>
+                                    <td
+                                        colspan="17"
+                                        class="b"
+                                    >技术清单</td>
                                 </tr>
 
                                 <tr>
-                                    <td colspan="1" rowspan="2">序号</td>
-                                    <td colspan="1" rowspan="2">产品名称</td>
-                                    <td colspan="1" rowspan="2">型号</td>
-                                    <td colspan="1" rowspan="2">规格</td>
-                                    <td colspan="1" rowspan="2">数量</td>
-                                    <td colspan="1" rowspan="2">上法兰标准</td>
-                                    <td colspan="3" rowspan="1">上法兰尺寸</td>
-                                    <td colspan="5" rowspan="1">出轴尺寸</td>
-                                    <td colspan="1" rowspan="2">静扭矩</td>
-                                    <td colspan="1" rowspan="2">执行器型号</td>
-                                    <td colspan="1" rowspan="2">备注</td>
+                                    <td
+                                        colspan="1"
+                                        rowspan="2"
+                                    >序号</td>
+                                    <td
+                                        colspan="1"
+                                        rowspan="2"
+                                    >产品名称</td>
+                                    <td
+                                        colspan="1"
+                                        rowspan="2"
+                                    >型号</td>
+                                    <td
+                                        colspan="1"
+                                        rowspan="2"
+                                    >规格</td>
+                                    <td
+                                        colspan="1"
+                                        rowspan="2"
+                                    >数量</td>
+                                    <td
+                                        colspan="1"
+                                        rowspan="2"
+                                    >上法兰标准</td>
+                                    <td
+                                        colspan="3"
+                                        rowspan="1"
+                                    >上法兰尺寸</td>
+                                    <td
+                                        colspan="5"
+                                        rowspan="1"
+                                    >出轴尺寸</td>
+                                    <td
+                                        colspan="1"
+                                        rowspan="2"
+                                    >静扭矩</td>
+                                    <td
+                                        colspan="1"
+                                        rowspan="2"
+                                    >执行器型号</td>
+                                    <td
+                                        colspan="1"
+                                        rowspan="2"
+                                    >备注</td>
                                 </tr>
                                 <tr>
-                                    <td colspan="1" rowspan="1">连接孔</td>
-                                    <td colspan="1" rowspan="1">角度</td>
-                                    <td colspan="1" rowspan="1">中心距</td>
-                                    <td colspan="1" rowspan="1">出轴型式</td>
-                                    <td colspan="1" rowspan="1">出轴长度</td>
-                                    <td colspan="1" rowspan="1">轴图号</td>
-                                    <td colspan="1" rowspan="1">过渡盘</td>
-                                    <td colspan="1" rowspan="1">连接套</td>
+                                    <td
+                                        colspan="1"
+                                        rowspan="1"
+                                    >连接孔</td>
+                                    <td
+                                        colspan="1"
+                                        rowspan="1"
+                                    >角度</td>
+                                    <td
+                                        colspan="1"
+                                        rowspan="1"
+                                    >中心距</td>
+                                    <td
+                                        colspan="1"
+                                        rowspan="1"
+                                    >出轴型式</td>
+                                    <td
+                                        colspan="1"
+                                        rowspan="1"
+                                    >出轴长度</td>
+                                    <td
+                                        colspan="1"
+                                        rowspan="1"
+                                    >轴图号</td>
+                                    <td
+                                        colspan="1"
+                                        rowspan="1"
+                                    >过渡盘</td>
+                                    <td
+                                        colspan="1"
+                                        rowspan="1"
+                                    >连接套</td>
                                 </tr>
-                                <tr v-for="(val,index) in orderInfo.orderTechnicalDetaileds" :key="index">
-                                    <td colspan="1">{{val.id}}</td>
+                                <tr
+                                    v-for="(val,index) in orderInfo.orderTechnicalDetaileds"
+                                    :key="index"
+                                >
+                                    <td colspan="1">{{val.seqNo}}</td>
                                     <td colspan="1">{{val.productName}}</td>
                                     <td colspan="1">{{val.productModel}}</td>
                                     <td colspan="1">{{val.specifications}}</td>
@@ -235,18 +460,59 @@
                             </table>
 
                         </div>
-                        <div class="flex" v-if="dealStepId == 56">
-                            <input-box v-model="updateInfo.assemblyShop" class="flex-item" label="装配车间" style="margin-right: 20px;"></input-box>
+                        <div
+                            class="flex"
+                            v-if="dealStepId == 56"
+                        >
+                            <input-box
+                                v-model="updateInfo.assemblyShop"
+                                class="flex-item"
+                                label="装配车间"
+                                style="margin-right: 20px;"
+                            ></input-box>
                         </div>
-                        <div class="flex" v-if="dealStepId == 57">
-                            <input-box :disabled="true" v-model="updateInfo.assemblyShop" class="flex-item" label="装配车间" style="margin-right: 20px;"></input-box>
-                            <input-box v-model="updateInfo.assemblyGroup" class="flex-item" label="装配小组" style="margin-right: 20px;"></input-box>
+                        <div
+                            class="flex"
+                            v-if="dealStepId == 57"
+                        >
+                            <input-box
+                                :disabled="true"
+                                v-model="updateInfo.assemblyShop"
+                                class="flex-item"
+                                label="装配车间"
+                                style="margin-right: 20px;"
+                            ></input-box>
+                            <input-box
+                                v-model="updateInfo.assemblyGroup"
+                                class="flex-item"
+                                label="装配小组"
+                                style="margin-right: 20px;"
+                            ></input-box>
                         </div>
-                        <div class="flex" v-if="dealStepId == 54">
-                            <date-picker v-model="updateInfo.purchaseFeedbackTime" hint="必填" class="flex-item" label="采购完成时间" style="margin-right: 20px;"></date-picker>
+                        <div
+                            class="flex"
+                            v-if="dealStepId == 54"
+                        >
+                            <date-picker
+                                v-model="updateInfo.purchaseFeedbackTime"
+                                hint="必填"
+                                class="flex-item"
+                                label="采购完成时间"
+                                style="margin-right: 20px;"
+                            ></date-picker>
                         </div>
-                        <div class="flex" v-if="dealStepId == 55 && purchaseList.length>0">
-                            <input-box :disabled="true" v-model="updateInfo.purchaseFeedbackTime" hint="必填" class="flex-item" label="采购完成时间" style="margin-right: 20px;"></input-box>
+                        <div
+                            class="flex"
+                            v-if="dealStepId == 55 && purchaseList.length>0"
+                        >
+                            <input-box
+                                :disabled="true"
+                                v-model="updateInfo.purchaseFeedbackTime"
+                                hint="必填"
+                                class="flex-item"
+                                label="采购完成时间"
+                                style="margin-right: 20px;"
+                            ></input-box>
                         </div>
                         <div>
                             <div v-if="purchaseList.length>0">
@@ -272,16 +538,43 @@
                             </div>
                         </div>
                         <div class="flex">
-                            <input-box v-model="handleStep.auditInfo" :multi-line="true" class="flex-item" label="审批意见" style="margin-right: 20px;"></input-box>
+                            <input-box
+                                v-model="handleStep.auditInfo"
+                                :multi-line="true"
+                                class="flex-item"
+                                label="审批意见"
+                                style="margin-right: 20px;"
+                            ></input-box>
                         </div>
                         <div class="flex">
-                            <upload-box btnText="附件上传" :fileList="fileList" :onchange="uploadFile" :onremove="removeFile" :multiple="multiple" style="width: 50%"></upload-box>
+                            <upload-box
+                                btnText="附件上传"
+                                :fileList="fileList"
+                                :onchange="uploadFile"
+                                :onremove="removeFile"
+                                :multiple="multiple"
+                                style="width: 50%"
+                            ></upload-box>
                         </div>
-                        <div class="flex" style="margin-top:10px;">
+                        <div
+                            class="flex"
+                            style="margin-top:10px;"
+                        >
                             <!-- <btn @click="handleStepM(1)">同意</btn> -->
-                            <el-button size="mini" type="primary" :loading="loading" @click="handleStepM(1)">同意</el-button>
-                            <btn class="ml-10" @click="handleStepM(0)">不同意</btn>
-                            <btn class="ml-10" @click="backStepM()">退回</btn>
+                            <el-button
+                                size="mini"
+                                type="primary"
+                                :loading="loading"
+                                @click="handleStepM(1)"
+                            >同意</el-button>
+                            <btn
+                                class="ml-10"
+                                @click="handleStepM(0)"
+                            >不同意</btn>
+                            <btn
+                                class="ml-10"
+                                @click="backStepM()"
+                            >退回</btn>
                         </div>
                     </div>
                 </div>
@@ -303,7 +596,10 @@
                             <th>审核附件</th>
                             <th>操作</th>
                         </tr>
-                        <tr v-for="(item, i) in data.historyInfos" :key="i">
+                        <tr
+                            v-for="(item, i) in data.historyInfos"
+                            :key="i"
+                        >
                             <td>{{item.historyId}}</td>
                             <td>{{item.instanceId}}</td>
                             <td>{{item.auditResult == 3?'发起':'审批'}}</td>
@@ -312,16 +608,33 @@
                             <td>{{auditResults[item.auditResult].name}}</td>
                             <td>{{item.auditInfo}}</td>
                             <td v-if="i<data.historyInfos.length-1">
-                                <a target="_blank" v-for="(file,index) in item.accessories" :key="index" :href="file.fileUrl">{{file.fileName}}</a>
+                                <a
+                                    target="_blank"
+                                    v-for="(file,index) in item.accessories"
+                                    :key="index"
+                                    :href="file.fileUrl"
+                                >{{file.fileName}}</a>
                                 <br>
                             </td>
                             <td v-else-if="fileDetailList.length>0">
-                                <a target="_blank" style="display:block" v-for="(f,index) in fileDetailList" :key="index" :href="f.fileUrl">{{f.fileName}}</a>
+                                <a
+                                    target="_blank"
+                                    style="display:block"
+                                    v-for="(f,index) in fileDetailList"
+                                    :key="index"
+                                    :href="f.fileUrl"
+                                >{{f.fileName}}</a>
                                 <br>
                             </td>
                             <td v-else>无</td>
                             <td>
-                                <a href="javascript:;" v-if="item.accessories.length || fileDetailList.length" style="margin-right: 3px" class="blue" @click="removeAccessory(item.historyId)">删除</a>
+                                <a
+                                    href="javascript:;"
+                                    v-if="item.accessories.length || fileDetailList.length"
+                                    style="margin-right: 3px"
+                                    class="blue"
+                                    @click="removeAccessory(item.historyId)"
+                                >删除</a>
                             </td>
                         </tr>
                     </table>
@@ -332,25 +645,50 @@
                     <span class="f-20">审批附件</span>
                 </div>
                 <div class="flex-item">
-                    <div v-for="(item,i) in data.accessories" :key="i" style="margin-left:20px;margin-top:5px;">
+                    <div
+                        v-for="(item,i) in data.accessories"
+                        :key="i"
+                        style="margin-left:20px;margin-top:5px;"
+                    >
                         <div class="flex">
-                            <a :href="item.fileUrl" style="text-decoration:none ;out-line: none ;color:blue" target="_blank">{{item.fileName}}</a>
+                            <a
+                                :href="item.fileUrl"
+                                style="text-decoration:none ;out-line: none ;color:blue"
+                                target="_blank"
+                            >{{item.fileName}}</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <layer v-if="backStepLayer" :title="'退回节点'" width="450px">
+        <layer
+            v-if="backStepLayer"
+            :title="'退回节点'"
+            width="450px"
+        >
             <div class="node">
-                <div class="node-item" v-for="item in backSteps">
-                    <radio-box v-model="handleStep.backStepId" :label="item.stepId"></radio-box>
+                <div
+                    class="node-item"
+                    v-for="item in backSteps"
+                >
+                    <radio-box
+                        v-model="handleStep.backStepId"
+                        :label="item.stepId"
+                    ></radio-box>
                     {{item.stepName}}
                 </div>
             </div>
             <div class="layer-btns">
-                <btn flat @click="cancel()">取消</btn>
-                <btn flat color="#008eff" @click="complete()">提交</btn>
+                <btn
+                    flat
+                    @click="cancel()"
+                >取消</btn>
+                <btn
+                    flat
+                    color="#008eff"
+                    @click="complete()"
+                >提交</btn>
             </div>
         </layer>
     </div>
@@ -370,7 +708,7 @@ export default {
                 { status: 0, name: "审核不通过" },
                 { status: 1, name: "审核通过" },
                 { status: 2, name: "退回" },
-                { status: 3, name: "流程初始化" }
+                { status: 3, name: "流程初始化" },
             ],
             handleStep: {
                 id: 0,
@@ -382,7 +720,7 @@ export default {
                 formType: 0,
                 backStepId: null,
                 condition: true,
-                accessorys: []
+                accessorys: [],
             },
             backSteps: [],
             dealStepId: 0,
@@ -392,7 +730,7 @@ export default {
                 assemblyShop: null,
                 finishFeedbackTime: null,
                 purchaseFeedbackTime: null,
-                technicalRequire: ""
+                technicalRequire: "",
             },
             technicalRequire: [
                 {
@@ -409,8 +747,8 @@ export default {
                     tuhao: "",
                     guodupan: "",
                     jinniuju: "",
-                    jishuxinhao: ""
-                }
+                    jishuxinhao: "",
+                },
             ],
             orderInfo: null,
             actionType: 0,
@@ -420,7 +758,7 @@ export default {
             multiple: true,
             fileDetailList: [],
             loading: false,
-            jishuLoading: false
+            jishuLoading: false,
         };
     },
     activated() {
@@ -432,7 +770,7 @@ export default {
             assemblyShop: null,
             finishFeedbackTime: null,
             purchaseFeedbackTime: null,
-            technicalRequire: ""
+            technicalRequire: "",
         };
         this.handleStep = {
             id: 0,
@@ -444,27 +782,27 @@ export default {
             formType: 0,
             backStepId: null,
             condition: true,
-            accessorys: []
+            accessorys: [],
         };
         this.technicalRequire = [
             {
-                "actuatorModel": "",
-                "angle": "",
-                "axisDrawingNo": "",
-                "centerDistance": "",
-                "connectingHole": "",
-                "connectingSleeve": "",
-                "outputShaftLength": "",
-                "outputShaftType": "",
-                "productModel": "",
-                "productName": "",
-                "remark": "",
-                "specifications": "",
-                "staticTorque": "",
-                "transitionPlate": "",
-                "upperFlangeStandard": "",
-                 productNum:""
-            }
+                actuatorModel: "",
+                angle: "",
+                axisDrawingNo: "",
+                centerDistance: "",
+                connectingHole: "",
+                connectingSleeve: "",
+                outputShaftLength: "",
+                outputShaftType: "",
+                productModel: "",
+                productName: "",
+                remark: "",
+                specifications: "",
+                staticTorque: "",
+                transitionPlate: "",
+                upperFlangeStandard: "",
+                productNum: "",
+            },
         ];
         this.orderInfo = null;
         this.actionType = 0;
@@ -480,18 +818,16 @@ export default {
         this.getData();
     },
     methods: {
-        addJishu(){
+        addJishu() {
             this.$http
-                .post(
-                    `/haolifa/order-product/get-technical-detailed`,{
-                        orderNo:this.data.formNo
-                    }
-                )
-                .then(res => {
+                .post(`/haolifa/order-product/get-technical-detailed`, {
+                    orderNo: this.data.formNo,
+                })
+                .then((res) => {
                     let list = res || [];
-                    if(list.length){
+                    if (list.length) {
                         this.technicalRequire = [];
-                        list.forEach(item=>{
+                        list.forEach((item) => {
                             // let obj = {
                             //     "actuatorModel": "",
                             //     "angle": "",
@@ -515,51 +851,48 @@ export default {
                             //     obj[key] = item[key]?item[key]:null;
                             // })
                             this.technicalRequire.push(item);
-
-                        })
+                        });
                     }
                 })
-                .catch(e => {
+                .catch((e) => {
                     this.$toast(e.msg || e.message);
                 });
         },
-        saveJishu(){
+        saveJishu() {
             // this.$toast("保存接口有问题，未做");
             // return;
             this.jishuLoading = true;
             this.$http
-                .post(
-                    `/haolifa/order-product/add-technical-detailed`,{
-                        technicalDetailedRels:this.technicalRequire
-                    }
-                )
-                .then(res => {
+                .post(`/haolifa/order-product/add-technical-detailed`, {
+                    technicalDetailedRels: this.technicalRequire,
+                })
+                .then((res) => {
                     this.jishuLoading = false;
-                    this.$toast("保存技术清单成功")
-
-                }).catch(e=>{
+                    this.$toast("保存技术清单成功");
+                })
+                .catch((e) => {
                     this.jishuLoading = false;
                     this.$toast(e.msg || e.message);
-                })
+                });
         },
         addTechnicalRequire() {
             this.technicalRequire.push({
-                "actuatorModel": "",
-                "angle": "",
-                "axisDrawingNo": "",
-                "centerDistance": "",
-                "connectingHole": "",
-                "connectingSleeve": "",
-                "outputShaftLength": "",
-                "outputShaftType": "",
-                "productModel": "",
-                "productName": "",
-                "remark": "",
-                "specifications": "",
-                "staticTorque": "",
-                "transitionPlate": "",
-                "upperFlangeStandard": "",
-                productNum:""
+                actuatorModel: "",
+                angle: "",
+                axisDrawingNo: "",
+                centerDistance: "",
+                connectingHole: "",
+                connectingSleeve: "",
+                outputShaftLength: "",
+                outputShaftType: "",
+                productModel: "",
+                productName: "",
+                remark: "",
+                specifications: "",
+                staticTorque: "",
+                transitionPlate: "",
+                upperFlangeStandard: "",
+                productNum: "",
             });
         },
         delTechnicalRequire(index) {
@@ -567,15 +900,9 @@ export default {
         },
         getData() {
             this.$http
-                .get(
-                    `/haolifa/flowInstance/flow-history/${
-                        this.$route.query.instanceId
-                    }`
-                )
-                .then(res => {
-                    res.createTime = moment(res.createTime).format(
-                        "YYYY-MM-DD HH:mm"
-                    );
+                .get(`/haolifa/flowInstance/flow-history/${this.$route.query.instanceId}`)
+                .then((res) => {
+                    res.createTime = moment(res.createTime).format("YYYY-MM-DD HH:mm");
                     this.data = res;
                     this.data.historyInfos.accessory;
                     this.handleStep.id = res.instanceId;
@@ -585,106 +912,63 @@ export default {
                     }
                     //获取订单上传附件
                     this.$http
-                        .get(
-                            `/haolifa/order-product/accessory?orderNo=${
-                                this.data.formNo
-                            }`
-                        )
-                        .then(res => {
+                        .get(`/haolifa/order-product/accessory?orderNo=${this.data.formNo}`)
+                        .then((res) => {
                             this.fileDetailList = res;
                         })
-                        .catch(e => {
+                        .catch((e) => {
                             this.$toast(e.msg || e.message);
                         });
                     // 获取订单详情
-                    this.$http
-                        .get(
-                            `/haolifa/order-product/details?orderNo=${
-                                this.data.formNo
-                            }`
-                        )
-                        .then(res => {
-                            this.orderUrl = res.orderContractUrl;
-                            this.orderInfo = res;
-                            this.updateInfo.orderNo = this.data.formNo;
-                            // this.technicalRequire = JSON.parse(
-                            //     this.orderInfo.technicalRequire
-                            // );
-                            this.technicalRequire =  this.orderInfo.orderTechnicalDetaileds;
-                            if (
-                                this.dealStepId == 52 ||
-                                this.dealStepId == 53
-                            ) {
-                                // 总工 核料 看到技术清单
-                                this.updateInfo.technicalRequire = this.orderInfo.technicalRequire;
-                                this.technicalRequire = JSON.parse(
-                                    this.updateInfo.technicalRequire
-                                );
-                                if (this.dealStepId == 53) {
-                                    //库管核料
-                                    if (res.orderStatus == "2") {
-                                        // 核料中
-                                        this.actionType = 1; // 去核料
-                                    } else if (res.orderStatus == "3") {
-                                        // 替换料审批中
-                                        this.actionType = 2; // 提示不能操作。
-                                    } else if (res.orderStatus == "4") {
-                                        // 核料完成：
-                                        this.actionType = 0;
-                                        // 查看是否需要采购
-                                        this.$http
-                                            .get(
-                                                `/haolifa/applyBuy/product/list?orderNo=${
-                                                    this.data.formNo
-                                                }`
-                                            )
-                                            .then(res => {
-                                                res.length > 0
-                                                    ? (this.handleStep.condition = false)
-                                                    : true;
-                                            });
-                                    }
+                    this.$http.get(`/haolifa/order-product/details?orderNo=${this.data.formNo}`).then((res) => {
+                        this.orderUrl = res.orderContractUrl;
+                        this.orderInfo = res;
+                        this.updateInfo.orderNo = this.data.formNo;
+                        // this.technicalRequire = JSON.parse(
+                        //     this.orderInfo.technicalRequire
+                        // );
+                        this.technicalRequire = this.orderInfo.orderTechnicalDetaileds;
+                        if (this.dealStepId == 52 || this.dealStepId == 53) {
+                            // 总工 核料 看到技术清单
+                            this.updateInfo.technicalRequire = this.orderInfo.technicalRequire;
+                            this.technicalRequire = JSON.parse(this.updateInfo.technicalRequire);
+                            if (this.dealStepId == 53) {
+                                //库管核料
+                                if (res.orderStatus == "2") {
+                                    // 核料中
+                                    this.actionType = 1; // 去核料
+                                } else if (res.orderStatus == "3") {
+                                    // 替换料审批中
+                                    this.actionType = 2; // 提示不能操作。
+                                } else if (res.orderStatus == "4") {
+                                    // 核料完成：
+                                    this.actionType = 0;
+                                    // 查看是否需要采购
+                                    this.$http.get(`/haolifa/applyBuy/product/list?orderNo=${this.data.formNo}`).then((res) => {
+                                        res.length > 0 ? (this.handleStep.condition = false) : true;
+                                    });
                                 }
-                            } else if (this.dealStepId == 57) {
-                                this.updateInfo.assemblyShop = this.orderInfo.assemblyShop;
-                            } else if (this.dealStepId == 54) {
-                                this.$http
-                                    .get(
-                                        `/haolifa/applyBuy/product/list?orderNo=${
-                                            this.data.formNo
-                                        }`
-                                    )
-                                    .then(res => {
-                                        this.purchaseList = JSON.parse(
-                                            JSON.stringify(res)
-                                        );
-                                    });
-                            } else if (this.dealStepId == 55) {
-                                this.$http
-                                    .get(
-                                        `/haolifa/applyBuy/product/list?orderNo=${
-                                            this.data.formNo
-                                        }`
-                                    )
-                                    .then(res => {
-                                        this.purchaseList = JSON.parse(
-                                            JSON.stringify(res)
-                                        );
-                                    });
-                                this.updateInfo.purchaseFeedbackTime = moment(
-                                    res.purchaseFeedbackTime
-                                ).format("YYYY-MM-DD");
                             }
-                        });
+                        } else if (this.dealStepId == 57) {
+                            this.updateInfo.assemblyShop = this.orderInfo.assemblyShop;
+                        } else if (this.dealStepId == 54) {
+                            this.$http.get(`/haolifa/applyBuy/product/list?orderNo=${this.data.formNo}`).then((res) => {
+                                this.purchaseList = JSON.parse(JSON.stringify(res));
+                            });
+                        } else if (this.dealStepId == 55) {
+                            this.$http.get(`/haolifa/applyBuy/product/list?orderNo=${this.data.formNo}`).then((res) => {
+                                this.purchaseList = JSON.parse(JSON.stringify(res));
+                            });
+                            this.updateInfo.purchaseFeedbackTime = moment(res.purchaseFeedbackTime).format("YYYY-MM-DD");
+                        }
+                    });
                 })
-                .catch(e => {
+                .catch((e) => {
                     this.$toast(e.message || e.msg);
                 });
         },
         handleStepM(auditResult) {
-            this.updateInfo.technicalRequire = JSON.stringify(
-                this.technicalRequire
-            );
+            this.updateInfo.technicalRequire = JSON.stringify(this.technicalRequire);
             if (auditResult != 2) {
                 if (this.actionType == 1) {
                     // 提示去核料
@@ -695,12 +979,8 @@ export default {
                         btns: ["稍后再说", "现在核料"],
                         yes: () => {
                             this.$store.commit("DELMENUTABS", "/produce");
-                            this.$router.push(
-                                `/nuclear-material?orderNo=${
-                                    this.orderInfo.orderNo
-                                }`
-                            );
-                        }
+                            this.$router.push(`/nuclear-material?orderNo=${this.orderInfo.orderNo}`);
+                        },
                     });
                     return;
                 } else if (this.actionType == 2) {
@@ -712,12 +992,8 @@ export default {
                         btns: ["取消", "查看"],
                         yes: () => {
                             this.$store.commit("DELMENUTABS", "/produce");
-                            this.$router.push(
-                                `/nuclear-replace-form?orderNo=${
-                                    this.orderInfo.orderNo
-                                }`
-                            );
-                        }
+                            this.$router.push(`/nuclear-replace-form?orderNo=${this.orderInfo.orderNo}`);
+                        },
                     });
                     return;
                 }
@@ -731,7 +1007,7 @@ export default {
             this.handleStep.auditResult = auditResult;
             this.$http
                 .post(`/haolifa/flowInstance/handleStep`, this.handleStep)
-                .then(res => {
+                .then((res) => {
                     this.$toast("处理成功");
                     this.$store.commit("DELMENUTABS", "/produce");
                     this.$router.push("/");
@@ -742,16 +1018,11 @@ export default {
                     if (auditResult == 1) {
                         if (this.dealStepId == 51) {
                             // 技术员：技术清单
-                            this.$http
-                                .post(
-                                    `/haolifa/order-product/updateInfo`,
-                                    this.updateInfo
-                                )
-                                .then(res => {
-                                    this.updateInfo.technicalRequire = "";
-                                    // this.$store.commit("DELMENUTABS", "/produce");
-                                    // this.$router.push("/")
-                                });
+                            this.$http.post(`/haolifa/order-product/updateInfo`, this.updateInfo).then((res) => {
+                                this.updateInfo.technicalRequire = "";
+                                // this.$store.commit("DELMENUTABS", "/produce");
+                                // this.$router.push("/")
+                            });
                         } else if (this.dealStepId == 52) {
                             // 技术总工
                             if (this.orderInfo.isCheckMaterial == 1) {
@@ -759,74 +1030,39 @@ export default {
                             }
                         } else if (this.dealStepId == 54) {
                             // 采购反馈
-                            this.$http
-                                .post(
-                                    `/haolifa/applyBuy/updateStatusByOrderNo?arriveTime=${
-                                        this.updateInfo.purchaseFeedbackTime
-                                    }&orderNo=${this.updateInfo.orderNo}`
-                                )
-                                .then(res => {});
-                            this.$http
-                                .post(
-                                    `/haolifa/order-product/updateInfo`,
-                                    this.updateInfo
-                                )
-                                .then(res => {
-                                    this.updateInfo.purchaseFeedbackTime = null;
-                                });
+                            this.$http.post(`/haolifa/applyBuy/updateStatusByOrderNo?arriveTime=${this.updateInfo.purchaseFeedbackTime}&orderNo=${this.updateInfo.orderNo}`).then((res) => {});
+                            this.$http.post(`/haolifa/order-product/updateInfo`, this.updateInfo).then((res) => {
+                                this.updateInfo.purchaseFeedbackTime = null;
+                            });
                         } else if (this.dealStepId == 55) {
                             // 综合计划
                             if (this.orderInfo.isCheckMaterial == 1) {
                                 status = 5;
                             }
-                            this.$http
-                                .post(
-                                    `/haolifa/applyBuy/updateStatusByOrderNo/2?orderNo=${
-                                        this.updateInfo.orderNo
-                                    }`
-                                )
-                                .then(res => {});
-                            this.$http
-                                .post(
-                                    `/haolifa/order-product/updateInfo`,
-                                    this.updateInfo
-                                )
-                                .then(res => {
-                                    this.updateInfo.finishFeedbackTime = null;
-                                });
+                            this.$http.post(`/haolifa/applyBuy/updateStatusByOrderNo/2?orderNo=${this.updateInfo.orderNo}`).then((res) => {});
+                            this.$http.post(`/haolifa/order-product/updateInfo`, this.updateInfo).then((res) => {
+                                this.updateInfo.finishFeedbackTime = null;
+                            });
                         } else if (this.dealStepId == 56) {
                             // 生产调度
                             if (this.orderInfo.isCheckMaterial == 1) {
                                 status = 6;
                             }
-                            this.$http
-                                .post(
-                                    `/haolifa/order-product/updateInfo`,
-                                    this.updateInfo
-                                )
-                                .then(res => {
-                                    this.updateInfo.assemblyShop = null;
-                                });
+                            this.$http.post(`/haolifa/order-product/updateInfo`, this.updateInfo).then((res) => {
+                                this.updateInfo.assemblyShop = null;
+                            });
                         } else if (this.dealStepId == 57) {
                             // 车间主任
-                            this.$http
-                                .post(
-                                    `/haolifa/order-product/updateInfo`,
-                                    this.updateInfo
-                                )
-                                .then(res => {
-                                    this.updateInfo.assemblyGroup = null;
-                                });
+                            this.$http.post(`/haolifa/order-product/updateInfo`, this.updateInfo).then((res) => {
+                                this.updateInfo.assemblyGroup = null;
+                            });
                         }
                         if (this.dealStepId != 57) {
                             let updateStatus = {
                                 orderNo: this.data.formNo,
-                                status: status
+                                status: status,
                             };
-                            this.$http.post(
-                                `/haolifa/order-product/updateStatus`,
-                                updateStatus
-                            );
+                            this.$http.post(`/haolifa/order-product/updateStatus`, updateStatus);
                         }
                     } else if (auditResult == 2) {
                         // 退回操作
@@ -841,51 +1077,31 @@ export default {
                             }
                         }
                         if (this.handleStep.backStepId < 53) {
-                            this.$http.post(
-                                `/haolifa/order-product/release-material?orderNo=${
-                                    this.data.formNo
-                                }`
-                            );
+                            this.$http.post(`/haolifa/order-product/release-material?orderNo=${this.data.formNo}`);
                         }
                         let updateStatus = {
                             orderNo: this.data.formNo,
-                            status: status
+                            status: status,
                         };
-                        this.$http.post(
-                            `/haolifa/order-product/updateStatus`,
-                            updateStatus
-                        );
+                        this.$http.post(`/haolifa/order-product/updateStatus`, updateStatus);
                     } else {
                         // 不通过
                         status = 14;
                         let updateStatus = {
                             orderNo: this.data.formNo,
-                            status: status
+                            status: status,
                         };
-                        this.$http.post(
-                            `/haolifa/order-product/updateStatus`,
-                            updateStatus
-                        );
+                        this.$http.post(`/haolifa/order-product/updateStatus`, updateStatus);
                         if (this.dealStepId == 55) {
                             // 释放料
-                            this.$http.post(
-                                `/haolifa/order-product/release-material?orderNo=${
-                                    updateStatus.orderNo
-                                }`
-                            );
-                            this.$http
-                                .post(
-                                    `/haolifa/applyBuy/updateStatusByOrderNo?orderNo=${
-                                        this.updateInfo.orderNo
-                                    }/4`
-                                )
-                                .then(res => {});
+                            this.$http.post(`/haolifa/order-product/release-material?orderNo=${updateStatus.orderNo}`);
+                            this.$http.post(`/haolifa/applyBuy/updateStatusByOrderNo?orderNo=${this.updateInfo.orderNo}/4`).then((res) => {});
                         }
                         this.$store.commit("DELMENUTABS", "/produce");
                         this.$router.push("/");
                     }
                 })
-                .catch(e => {
+                .catch((e) => {
                     this.$toast(e.msg || e.message);
                 });
         },
@@ -896,22 +1112,22 @@ export default {
         uploadFile(file, fileList) {
             this.loading = true;
             this.loadingMsg = "正在上传";
-            fileToBase64(file.source).then(base64Str => {
+            fileToBase64(file.source).then((base64Str) => {
                 this.$http
                     .post("/haolifa/file/uploadFileBase64", {
                         base64Source: base64Str,
-                        fileName: file.name
+                        fileName: file.name,
                     })
-                    .then(res => {
+                    .then((res) => {
                         this.handleStep.accessorys.push({
                             fileName: file.name,
-                            fileUrl: res
+                            fileUrl: res,
                         });
                         // this.handleStep.accessorys[0].fileUrl = res;
                         // this.handleStep.accessorys[0].fileName = file.name;
                         this.loading = false;
                     })
-                    .catch(e => {
+                    .catch((e) => {
                         this.$toast(e.msg || e.message);
                         this.loading = false;
                     });
@@ -928,7 +1144,7 @@ export default {
         backStepM() {
             this.$http
                 .get(`/haolifa/flowInstance/backSteps/${this.handleStep.id}`)
-                .then(res => {
+                .then((res) => {
                     // console.log('backSteps', res);
                     if (res.length > 0) {
                         this.backSteps = res;
@@ -937,7 +1153,7 @@ export default {
                         this.$toast("无可退回节点");
                     }
                 })
-                .catch(e => {
+                .catch((e) => {
                     this.$toast(e.msg || e.message);
                 });
         },
@@ -949,17 +1165,15 @@ export default {
                 btns: ["取消", "删除"],
                 yes: () => {
                     this.$http
-                        .get(
-                            `/haolifa/flowInstance/remove-history-accessory/${historyId}`
-                        )
-                        .then(res => {
+                        .get(`/haolifa/flowInstance/remove-history-accessory/${historyId}`)
+                        .then((res) => {
                             this.$toast("删除成功");
                             this.getData();
                         })
-                        .catch(e => {
+                        .catch((e) => {
                             this.$toast(e.msg || e.message);
                         });
-                }
+                },
             });
         },
         complete() {
@@ -968,8 +1182,8 @@ export default {
         cancel() {
             this.backStepLayer = false;
             this.handleStep.backStepId = null;
-        }
-    }
+        },
+    },
 };
 </script>
 

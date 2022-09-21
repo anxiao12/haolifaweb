@@ -153,12 +153,13 @@
                 <div class="form-content metalwork-info">
                     <table class="f-14 order-info">
                         <tr>
-                            <td style="width: 7%;"></td>
-                            <td style="width: 7%;"></td>
-                            <td style="width: 7%;"></td>
-                            <td style="width: 7%;"></td>
-                            <td style="width: 7%;"></td>
-                            <td style="width: 7%;"></td>
+                            <td style="width: 6%;"></td>
+                            <td style="width: 6%;"></td>
+                            <td style="width: 6%;"></td>
+                            <td style="width: 6%;"></td>
+                            <td style="width: 6%;"></td>
+                            <td style="width: 6%;"></td>
+                            <td style="width: 6%;"></td>
                             <td style="width: 7%;"></td>
                             <td style="width: 7%;"></td>
                             <td style="width: 7%;"></td>
@@ -170,26 +171,26 @@
                         </tr>
                         <tr>
                             <td
-                                colspan="16"
+                                colspan="17"
                                 class="b"
                             >订单编号 : {{info.orderNo}}</td>
                         </tr>
                         <tr>
                             <!-- <td colspan="14" class="b">成品合同订单号 : {{info.orderContractNo}}</td> -->
                             <td
-                                colspan="16"
+                                colspan="17"
                                 class="b"
                             >发货日期 : {{info.deliveryDate}}</td>
                         </tr>
                         <tr>
                             <td
-                                colspan="16"
+                                colspan="17"
                                 class="b"
                             >订单状态 : {{ orderStatusList[info.orderStatus].text}}</td>
                         </tr>
                         <tr>
                             <td
-                                colspan="16"
+                                colspan="17"
                                 class="b"
                             >
                                 订单合同:
@@ -220,12 +221,12 @@
                         </tr>
                         <tr>
                             <td
-                                colspan="16"
+                                colspan="17"
                                 class="b"
                                 v-if="fileDetailList.length"
                             >订单附件:</td>
                             <td
-                                colspan="16"
+                                colspan="17"
                                 class="b"
                                 v-else
                             >订单附件:无</td>
@@ -260,7 +261,7 @@
                                 class="b"
                             >装配车间: {{info.assemblyShop}}</td>
                             <td
-                                colspan="8"
+                                colspan="9"
                                 class="b"
                             >装配小组: {{info.assemblyGroup}}</td>
                         </tr>
@@ -270,7 +271,7 @@
                                 class="b"
                             >采购反馈时间: {{info.purchaseFeedbackTime}}</td>
                             <td
-                                colspan="8"
+                                colspan="9"
                                 class="b"
                             >生产反馈时间: {{info.productionFeedbackTime}}</td>
                         </tr>
@@ -283,14 +284,23 @@
                                 colspan="4"
                                 class="b"
                             >技术清单:</td>
-                            <td colspan="12">
+                            <td colspan="13">
                                 <a
+                                    v-if="info.orderTechnicalDetaileds.length"
                                     target="_blank"
                                     :href="'/haolifa/export/order-technical-detailed?orderNo='+info.orderNo"
                                 >导出</a>
+                                <a
+                                    href="javascript:;"
+                                    v-else
+                                >无</a>
                             </td>
                         </tr>
-                        <tr>
+                        <tr v-if="info.orderTechnicalDetaileds.length">
+                            <td
+                                colspan="1"
+                                rowspan="2"
+                            >序号</td>
                             <td
                                 colspan="1"
                                 rowspan="2"
@@ -332,7 +342,7 @@
                                 rowspan="2"
                             >备注</td>
                         </tr>
-                        <tr>
+                        <tr v-if="info.orderTechnicalDetaileds.length">
                             <td
                                 colspan="1"
                                 rowspan="1"
@@ -370,6 +380,7 @@
                             v-for="(val,index) in info.orderTechnicalDetaileds"
                             :key="index"
                         >
+                            <td colspan="1">{{val.seqNo}}</td>
                             <td colspan="1">{{val.productName}}</td>
                             <td colspan="1">{{val.productModel}}</td>
                             <td colspan="1">{{val.specifications}}</td>
@@ -389,7 +400,7 @@
                         </tr>
                         <tr>
                             <td
-                                colspan="16"
+                                colspan="17"
                                 class="b"
                             >订单产品列表</td>
                         </tr>
@@ -428,7 +439,7 @@
                                 class="b"
                             >总计价格</td>
                             <td
-                                colspan="3"
+                                colspan="4"
                                 class="b"
                             >材质说明</td>
                             <td
@@ -449,12 +460,12 @@
                             <td colspan="1">{{item.productNumber}}</td>
                             <!-- <td colspan="1">{{item.price}}</td> -->
                             <td colspan="1">{{item.totalPrice}}</td>
-                            <td colspan="3">{{item.materialDescription}}</td>
+                            <td colspan="4">{{item.materialDescription}}</td>
                             <td colspan="3">{{item.productRemark}}</td>
                         </tr>
                         <tr v-if="accessoryList.length > 0">
                             <td
-                                colspan="16"
+                                colspan="17"
                                 class="b"
                             >审批附件:</td>
                         </tr>
@@ -464,7 +475,7 @@
                                 class="b"
                             >文件名称</td>
                             <td
-                                colspan="6"
+                                colspan="7"
                                 class="b"
                             >文件地址</td>
                             <td
@@ -477,7 +488,7 @@
                             :key="index"
                         >
                             <td colspan="6">{{accessory.fileName}}</td>
-                            <td colspan="6">{{accessory.fileUrl}}</td>
+                            <td colspan="7">{{accessory.fileUrl}}</td>
                             <td colspan="4">
                                 <a
                                     target="_blank"
@@ -493,7 +504,7 @@
                         </tr>
                         <tr>
                             <td
-                                colspan="16"
+                                colspan="17"
                                 class="b"
                             >审核信息</td>
                         </tr>
@@ -515,7 +526,7 @@
                                 class="b"
                             >审核状态</td>
                             <td
-                                colspan="4"
+                                colspan="5"
                                 class="b"
                             >审核意见</td>
                             <td
@@ -532,7 +543,7 @@
                             <td colspan="2">{{pro.roleName}}</td>
                             <td colspan="1">{{pro.auditUserName}}</td>
                             <td colspan="2">{{statusList[pro.auditResult]}}</td>
-                            <td colspan="4">{{pro.auditInfo}}</td>
+                            <td colspan="5">{{pro.auditInfo}}</td>
                             <td colspan="4">{{pro.auditTime}}</td>
                         </tr>
                     </table>

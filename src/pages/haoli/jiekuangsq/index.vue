@@ -168,7 +168,14 @@
                         class="flex-item mr-20"
                         :list="projectList"
                         label="经费项目"
+                        @change="projectChange"
                     ></select-box>
+                    <input-box
+                        v-model="balanceQuota"
+                        class="flex-item mr-20"
+                        :disabled="true"
+                        label="剩余额度"
+                    ></input-box>
                     <select-box
                         v-model="form.payType"
                         class="flex-item mr-20"
@@ -401,6 +408,7 @@ export default {
                 { text: "对公", value: "1" },
                 { text: "对私", value: "2" },
             ],
+            balanceQuota: null,
         };
     },
     activated() {
@@ -419,6 +427,15 @@ export default {
                 this.form.deptId = data.id;
             }
             this.deptFlag = false;
+        },
+        projectChange() {
+            this.balanceQuota = null;
+            console.log(111);
+            this.projectList.forEach((item) => {
+                if (item.value == this.form.projectCode) {
+                    this.balanceQuota = item.balanceQuota;
+                }
+            });
         },
         flush() {
             this.filter = {
@@ -490,7 +507,7 @@ export default {
                 })
                 .then((res) => {
                     this.projectList = res.list.map((item) => {
-                        return { text: item.name, value: item.code };
+                        return { text: item.name, value: item.code, balanceQuota: item.balanceQuota };
                     });
                 })
                 .catch((e) => {
@@ -652,6 +669,7 @@ export default {
         },
         close() {
             this.layer = this.layer2 = false;
+            this.balanceQuota = null;
             this.form = {
                 accountName: "",
                 amount: 0,
