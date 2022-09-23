@@ -28,6 +28,45 @@
                     placeholder="项目编号"
                     style="width: 200px;"
                 >
+                部门名称：
+                <select
+                    v-model="filter.deptId"
+                    class="f-14"
+                    @change="$refs.list.update(true)"
+                >
+                    <option value>全部</option>
+                    <option
+                        v-for="(item,i) in deptList"
+                        :value="item.id"
+                        :key="i"
+                    >{{item.deptName}}</option>
+                </select>
+                年份选择：
+                <select
+                    v-model="filter.year"
+                    class="f-14"
+                    @change="$refs.list.update(true)"
+                >
+                    <option value>全部</option>
+                    <option
+                        v-for="(item,i) in yearList"
+                        :value="item.value"
+                        :key="i"
+                    >{{item.text}}</option>
+                </select>
+                月份选择：
+                <select
+                    v-model="filter.month"
+                    class="f-14"
+                    @change="$refs.list.update(true)"
+                >
+                    <option value>全部</option>
+                    <option
+                        v-for="(item,i) in monthList"
+                        :value="item.value"
+                        :key="i"
+                    >{{item.text}}</option>
+                </select>
             </div>
             <div class="flex-item"></div>
             <btn
@@ -197,6 +236,9 @@ export default {
             filter: {
                 code: "",
                 name: "",
+                year: "",
+                month: "",
+                deptId: "",
             },
             subjectsList: [],
             form: {
@@ -247,24 +289,39 @@ export default {
                 { value: "2029", text: "2029" },
             ],
             deptFlag: false,
+            deptList: [],
         };
     },
-    mounted() {},
+    mounted() {
+        this.getDeptList();
+    },
     methods: {
         flush() {
             this.filter = {
                 code: "",
                 name: "",
+                year: "",
+                month: "",
+                deptId: "",
             };
             this.$refs.list.update(true);
         },
         selectClick(data) {
             if (data) {
-                console.log(data);
                 this.form.deptName = data.name;
                 this.form.deptId = data.id;
             }
             this.deptFlag = false;
+        },
+        getDeptList() {
+            this.$http
+                .get("/haolifa/dept/list")
+                .then((res) => {
+                    this.deptList = res;
+                })
+                .catch((e) => {
+                    this.$toast(e.msg || e.message);
+                });
         },
         remove(item) {
             this.$confirm({
