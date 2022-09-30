@@ -1,5 +1,5 @@
 <template>
-    <div class="page-cashAccounting-list">
+    <div class="page-baoxiao-list">
         <i
             class="icon icon-abs"
             @click="flush"
@@ -290,6 +290,10 @@
                                 :value="item.id"
                             ></el-option>
                         </el-select>
+                    </el-descriptions-item>
+                    <el-descriptions-item>
+                        <template slot="label">出差人</template>
+                        <el-input v-model="form.travelUserName"></el-input>
                     </el-descriptions-item>
                 </el-descriptions>
                 <div v-if="form.type == 2">
@@ -619,6 +623,10 @@
                         <template slot="label">借款</template>
                         {{form.loanAmount}}
                     </el-descriptions-item>
+                    <el-descriptions-item>
+                        <template slot="label">出差人</template>
+                        {{form.travelUserName}}
+                    </el-descriptions-item>
                 </el-descriptions>
                 <div v-if="form.type == 2">
                     <el-table
@@ -670,7 +678,7 @@
                         ></el-table-column>
                         <el-table-column
                             label="项目"
-                            prop="projectType"
+                            prop="projectTypeCN"
                         ></el-table-column>
                         <el-table-column
                             label="出发地"
@@ -789,6 +797,7 @@ export default {
                 type: "1",
                 projectCode: "",
                 payType: "",
+                travelUserName: "",
             },
             projectList: [],
             typeList: [
@@ -1119,6 +1128,7 @@ export default {
                         type: res.type,
                         payType: res.payType,
                         projectCode: res.projectCode,
+                        travelUserName: res.travelUserName,
                     };
                     if (res.type == 2) {
                         this.form.reimburseCostDetailAddDTOList = [];
@@ -1146,14 +1156,14 @@ export default {
                                 arrTime: it.arrTime,
                                 depAddress: it.depAddress,
                                 depTime: it.depTime,
-                                projectAmount: it.arrAdprojectAmountdress,
+                                projectAmount: it.projectAmount,
                                 projectDocNum: it.projectDocNum,
-                                projectType: it.projectType,
+                                projectType: it.projectType + "",
                                 remark: it.remark,
                                 travelDays: it.travelDays,
                                 travelSubsidyAmount: it.travelSubsidyAmount,
                                 type: "1",
-                                vehicle: it.vehicle,
+                                vehicle: it.vehicle + "",
                                 vehicleAmount: it.vehicleAmount,
                                 vehicleDocNum: it.vehicleDocNum,
                             };
@@ -1191,6 +1201,12 @@ export default {
                 .then((res) => {
                     this.layer2 = true;
                     this.form = res;
+                    // if (res.type == 2) {
+                    //     this.form.reimburseCostDetailRSDTOList.forEach((item) => {
+                    //         item.projectType = item.projectType + "";
+                    //         item.vehicle = item.vehicle + "";
+                    //     });
+                    // }
                 })
                 .catch((e) => {
                     this.$toast(e.msg || e.message);
@@ -1235,7 +1251,7 @@ export default {
             this.form.reimburseCostDetailAddDTOList.map((item) => {
                 delete item.subjectList2;
             });
-            let url = this.form.id ? "/haolifa/finance/bankbill/updateBankBill" : "/haolifa/finance/reimburseapply/save";
+            let url = this.form.id ? "/haolifa/finance/reimburseapply/updateReimburseApply" : "/haolifa/finance/reimburseapply/save";
             this.$http
                 .post(url, this.form)
                 .then((res) => {
@@ -1292,6 +1308,7 @@ export default {
                 reimburseType: "1",
                 remark: "",
                 type: "1",
+                travelUserName: "",
             };
         },
         close2() {
@@ -1339,6 +1356,7 @@ export default {
                 reimburseType: "1",
                 remark: "",
                 type: "1",
+                travelUserName: "",
             };
         },
     },
@@ -1346,7 +1364,7 @@ export default {
 </script>
 
 <style lang="less">
-.page-cashAccounting-list {
+.page-baoxiao-list {
     select {
         background: none;
         border: none;
