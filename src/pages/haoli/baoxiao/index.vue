@@ -60,6 +60,7 @@
                     <th style="width: 60px;">序号</th>
                     <th>报销人</th>
                     <th>金额</th>
+                    <th>项目名称</th>
                     <th>报销类型</th>
                     <th>报销方式</th>
                     <th>部门</th>
@@ -81,6 +82,7 @@
                     <td class="c-a">{{ index }}</td>
                     <td>{{ item.reimburseUserName }}</td>
                     <td>{{ item.amount }}</td>
+                    <td>{{ item.projectCodeName }}</td>
                     <td>{{ item.typeCN }}</td>
                     <td>{{ item.reimburseTypeCN }}</td>
                     <td>{{ item.deptName }}</td>
@@ -553,6 +555,23 @@
                         </el-table-column>
                     </el-table>
                 </div>
+                <div class="flex mt-20">
+                    <el-upload
+                        class="upload-demo"
+                        ref="upload"
+                        action="#"
+                        :on-remove="handleRemove"
+                        :file-list="fileList"
+                        :before-upload="submitUpload"
+                        multiple
+                    >
+                        <el-button
+                            slot="trigger"
+                            size="small"
+                            type="warning"
+                        >附件上传</el-button>
+                    </el-upload>
+                </div>
             </div>
             <div class="layer-btns">
                 <btn
@@ -626,6 +645,15 @@
                     <el-descriptions-item>
                         <template slot="label">出差人</template>
                         {{form.travelUserName}}
+                    </el-descriptions-item>
+                    <el-descriptions-item>
+                        <template slot="label">附件</template>
+                        <a
+                            :href="item.fileUrl"
+                            target="_blank"
+                            v-for="(item,i) in form.fileUrlList"
+                            :key="i"
+                        >{{item.fileName}}</a>
                     </el-descriptions-item>
                 </el-descriptions>
                 <div v-if="form.type == 2">
@@ -736,6 +764,7 @@
 
 <script>
 import DataList from "@/components/datalist";
+import fileToBase64 from "@/utils/fileToBase64";
 export default {
     name: "cashAccounting",
     components: { DataList },
@@ -798,6 +827,7 @@ export default {
                 projectCode: "",
                 payType: "",
                 travelUserName: "",
+                fileUrlList: [],
             },
             projectList: [],
             typeList: [
@@ -820,6 +850,7 @@ export default {
             companyCode: "",
             userList: [],
             userCode: "",
+            fileList: [],
         };
     },
     activated() {
@@ -1129,7 +1160,17 @@ export default {
                         payType: res.payType,
                         projectCode: res.projectCode,
                         travelUserName: res.travelUserName,
+                        fileUrlList: res.fileUrlList,
                     };
+                    if (res.fileUrlList.length) {
+                        this.fileList = [];
+                        res.fileUrlList.forEach((item) => {
+                            this.fileList.push({
+                                name: item.fileName,
+                                url: item.fileUrl,
+                            });
+                        });
+                    }
                     if (res.type == 2) {
                         this.form.reimburseCostDetailAddDTOList = [];
                         res.reimburseCostDetailRSDTOList.map((it) => {
@@ -1247,6 +1288,14 @@ export default {
                 this.$toast("请输入备注摘要");
                 return;
             }
+            if (!this.fileList.length) {
+                this.$toast("请上传附件");
+                return;
+            }
+            this.form.fileUrlList = [];
+            this.fileList.forEach((item) => {
+                this.form.fileUrlList.push({ fileName: item.name, fileUrl: item.url });
+            });
 
             this.form.reimburseCostDetailAddDTOList.map((item) => {
                 delete item.subjectList2;
@@ -1309,7 +1358,30 @@ export default {
                 remark: "",
                 type: "1",
                 travelUserName: "",
+                fileUrlList: [],
             };
+            this.fileList = [];
+        },
+        handleRemove(file, fileList) {
+            this.fileList = fileList;
+        },
+        submitUpload(file) {
+            fileToBase64(file).then((base64Str) => {
+                this.$http
+                    .post("/haolifa/file/uploadFileBase64", {
+                        base64Source: base64Str,
+                        fileName: file.name,
+                    })
+                    .then((res) => {
+                        this.fileList.push({
+                            name: file.name,
+                            url: res,
+                        });
+                    })
+                    .catch((e) => {
+                        this.$toast(e.msg || e.message);
+                    });
+            });
         },
         close2() {
             this.layer2 = false;

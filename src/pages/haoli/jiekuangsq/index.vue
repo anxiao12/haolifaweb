@@ -83,6 +83,7 @@
                     <th>编号</th>
                     <th>借款部门</th>
                     <th>借款人</th>
+                    <th>项目名称</th>
                     <th>借款金额</th>
                     <th>还款金额</th>
                     <th>余欠金额</th>
@@ -111,6 +112,7 @@
                     <td>{{ item.serialNo }}</td>
                     <td>{{ item.deptName }}</td>
                     <td>{{ item.loanUserName }}</td>
+                    <td>{{ item.projectCodeName }}</td>
                     <td>{{ item.amount }}</td>
                     <td>{{ item.paymentAmount }}</td>
                     <td>{{ item.owedAmount }}</td>
@@ -307,6 +309,23 @@
                         label="备注摘要"
                     ></input-box>
                 </div>
+                <div class="flex">
+                    <el-upload
+                        class="upload-demo"
+                        ref="upload"
+                        action="#"
+                        :on-remove="handleRemove"
+                        :file-list="fileList"
+                        :before-upload="submitUpload"
+                        multiple
+                    >
+                        <el-button
+                            slot="trigger"
+                            size="small"
+                            type="warning"
+                        >附件上传</el-button>
+                    </el-upload>
+                </div>
             </div>
             <div class="layer-btns">
                 <btn
@@ -338,6 +357,7 @@
 <script>
 import DataList from "@/components/datalist";
 import DeptSelect from "@/components/deptSelect";
+import fileToBase64 from "@/utils/fileToBase64";
 export default {
     name: "cashAccounting",
     components: { DataList, DeptSelect },
@@ -356,6 +376,7 @@ export default {
             layer: false,
             layer2: false,
             deptFlag: false,
+            fileList: [],
             form: {
                 accountName: "",
                 amount: 0,
@@ -373,6 +394,7 @@ export default {
                 travelDays: "",
                 travelFlag: "",
                 travelPeoNum: "",
+                fileUrlList: [],
             },
             typeList: [
                 { text: "收款", value: "1" },
@@ -409,6 +431,7 @@ export default {
                 { text: "对私", value: "2" },
             ],
             balanceQuota: null,
+            loading: false,
         };
     },
     activated() {
@@ -611,6 +634,15 @@ export default {
             Object.keys(this.form).forEach((key) => {
                 this.form[key] = item[key];
             });
+            this.fileList = [];
+            if (item.fileUrlList.length) {
+                item.fileUrlList.forEach((file) => {
+                    this.fileList.push({
+                        name: file.fileName,
+                        url: file.fileUrl,
+                    });
+                });
+            }
             this.form.id = item.id;
         },
         remove(item) {
@@ -655,6 +687,14 @@ export default {
             this.layer = true;
         },
         save() {
+            if (!this.fileList.length) {
+                this.$toast("请上传附件");
+                return;
+            }
+            this.form.fileUrlList = [];
+            this.fileList.forEach((file) => {
+                this.form.fileUrlList.push({ fileName: file.name, fileUrl: file.url });
+            });
             let url = this.form.id ? "/haolifa/finance/loanapply/updateLoan" : "/haolifa/finance/loanapply/save";
             this.$http
                 .post(url, this.form)
@@ -667,9 +707,31 @@ export default {
                     this.$toast(e.msg || e.message);
                 });
         },
+        handleRemove(file, fileList) {
+            this.fileList = fileList;
+        },
+        submitUpload(file) {
+            fileToBase64(file).then((base64Str) => {
+                this.$http
+                    .post("/haolifa/file/uploadFileBase64", {
+                        base64Source: base64Str,
+                        fileName: file.name,
+                    })
+                    .then((res) => {
+                        this.fileList.push({
+                            name: file.name,
+                            url: res,
+                        });
+                    })
+                    .catch((e) => {
+                        this.$toast(e.msg || e.message);
+                    });
+            });
+        },
         close() {
             this.layer = this.layer2 = false;
             this.balanceQuota = null;
+            this.fileList = [];
             this.form = {
                 accountName: "",
                 amount: 0,
@@ -687,6 +749,7 @@ export default {
                 travelDays: "",
                 travelFlag: "",
                 travelPeoNum: "",
+                fileUrlList: [],
             };
         },
     },

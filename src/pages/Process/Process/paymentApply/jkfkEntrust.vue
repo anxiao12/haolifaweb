@@ -116,6 +116,18 @@
                                             >备注摘要 :</td>
                                             <td colspan="3">{{info.remark}}</td>
                                         </tr>
+                                        <tr>
+                                            <td
+                                                colspan="2"
+                                                class="b"
+                                            >附件 :</td>
+                                            <td colspan="3"><a
+                                                    :href="item.fileUrl"
+                                                    target="_blank"
+                                                    v-for="(item,i) in data.fileUrlList"
+                                                    :key="i"
+                                                >{{item.fileName}}</a></td>
+                                        </tr>
                                     </table>
                                 </div>
                             </div>

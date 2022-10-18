@@ -1,22 +1,50 @@
 <template>
     <div class="page-cashAccounting-list">
-        <i class="icon icon-abs" @click="flush">autorenew</i>
+        <i
+            class="icon icon-abs"
+            @click="flush"
+        >autorenew</i>
         <div class="flex-v-center tool-bar">
-            <div class="flex-v-center search-bar" style="margin-right: 20px;">
+            <div
+                class="flex-v-center search-bar"
+                style="margin-right: 20px;"
+            >
                 <i class="icon f-20 c-8">search</i>
-                <input type="text" class="flex-item" v-model="filter.deptName" @change="
-            $refs.list.update(true)" placeholder="借款部门" style="width: 200px;">
-                <input type="text" class="flex-item" v-model="filter.loanUserName" @change="
-            $refs.list.update(true)" placeholder="借款人" style="width: 200px;">
+                <input
+                    type="text"
+                    class="flex-item"
+                    v-model="filter.deptName"
+                    @change="
+            $refs.list.update(true)"
+                    placeholder="借款部门"
+                    style="width: 200px;"
+                >
+                <input
+                    type="text"
+                    class="flex-item"
+                    v-model="filter.loanUserName"
+                    @change="
+            $refs.list.update(true)"
+                    placeholder="借款人"
+                    style="width: 200px;"
+                >
                 付款状态:
-                <select v-model="filter.payStatus" class="f-14" @change="$refs.list.update(true);">
+                <select
+                    v-model="filter.payStatus"
+                    class="f-14"
+                    @change="$refs.list.update(true);"
+                >
                     <option value>全部</option>
                     <option value="1">未付款</option>
                     <option value="2">付款中</option>
                     <option value="3">付款完成</option>
                 </select>
                 审批状态:
-                <select v-model="filter.applyStatus" class="f-14" @change="$refs.list.update(true);">
+                <select
+                    v-model="filter.applyStatus"
+                    class="f-14"
+                    @change="$refs.list.update(true);"
+                >
                     <option value>全部</option>
                     <option value="1">待审批</option>
                     <option value="2">审批中</option>
@@ -24,7 +52,11 @@
                     <option value="4">审批不通过</option>
                 </select>
                 状态:
-                <select v-model="filter.status" class="f-14" @change="$refs.list.update(true);">
+                <select
+                    v-model="filter.status"
+                    class="f-14"
+                    @change="$refs.list.update(true);"
+                >
                     <option value>全部</option>
                     <option value="1">待办</option>
                     <option value="2">已办</option>
@@ -33,12 +65,19 @@
             <div class="flex-item"></div>
         </div>
         <div class="flex-item scroll-y">
-            <data-list ref="list" :page-size="15" :param="filter" url="/haolifa/finance/loanapply/getLoanList" method="post">
+            <data-list
+                ref="list"
+                :page-size="15"
+                :param="filter"
+                url="/haolifa/finance/loanapply/getLoanList"
+                method="post"
+            >
                 <tr slot="header">
                     <th style="width: 60px;">序号</th>
                     <th>编号</th>
                     <th>借款部门</th>
                     <th>借款人</th>
+                    <th>项目名称</th>
                     <th>借款金额</th>
                     <th>资金性质</th>
                     <th>借款日期</th>
@@ -51,14 +90,21 @@
                     <th>审批节点</th>
                     <th>付款状态</th>
                     <th>创建时间</th>
-                    <th class="t-right" style="width: 80px;">操作</th>
+                    <th
+                        class="t-right"
+                        style="width: 80px;"
+                    >操作</th>
                 </tr>
                 <!-- item: 当前行数据; index: 当前行数 -->
-                <template slot="item" slot-scope="{ item, index }">
+                <template
+                    slot="item"
+                    slot-scope="{ item, index }"
+                >
                     <td class="c-a">{{ index }}</td>
                     <td>{{ item.serialNo }}</td>
                     <td>{{ item.deptName }}</td>
                     <td>{{ item.loanUserName }}</td>
+                    <td>{{ item.projectCodeName }}</td>
                     <td>{{ item.amount }}</td>
                     <td>{{ item.amountTypeCN }}</td>
                     <td>{{ item.loanDate}}</td>
@@ -72,26 +118,60 @@
                     <td>{{ item.payStatusCN }}</td>
                     <td>{{ item.createTime}}</td>
                     <td class="t-right">
-                        <a href="javascript:;" v-if="item.canPay" class="blue" @click="payment(item)">出纳付款</a>
+                        <a
+                            href="javascript:;"
+                            v-if="item.canPay"
+                            class="blue"
+                            @click="payment(item)"
+                        >出纳付款</a>
                     </td>
                 </template>
             </data-list>
         </div>
-        <layer v-if="layer" :title="出纳付款" width="50%">
-            <div class="layer-text" style="padding-bottom: 50px;">
+        <layer
+            v-if="layer"
+            :title="出纳付款"
+            width="50%"
+        >
+            <div
+                class="layer-text"
+                style="padding-bottom: 50px;"
+            >
                 <div class="flex">
-                    <select-box v-model="form.payAccount" class="flex-item mr-20" :list="accountList" label="付款账户"></select-box>
+                    <select-box
+                        v-model="form.payAccount"
+                        class="flex-item mr-20"
+                        :list="accountList"
+                        label="付款账户"
+                    ></select-box>
                 </div>
                 <div class="flex">
-                    <input-box v-model="form.payCompany" class="flex-item mr-20" label="付款单位"></input-box>
+                    <input-box
+                        v-model="form.payCompany"
+                        class="flex-item mr-20"
+                        label="付款单位"
+                    ></input-box>
                 </div>
                 <div class="flex">
-                    <select-box v-model="form.billNature" class="flex-item mr-20" :list="amountTypeList" label="记账方式"></select-box>
+                    <select-box
+                        v-model="form.billNature"
+                        class="flex-item mr-20"
+                        :list="amountTypeList"
+                        label="记账方式"
+                    ></select-box>
                 </div>
             </div>
             <div class="layer-btns">
-                <btn flat color="#008eff" @click="save">保存</btn>
-                <btn flat color="#008eff" @click="close">关闭</btn>
+                <btn
+                    flat
+                    color="#008eff"
+                    @click="save"
+                >保存</btn>
+                <btn
+                    flat
+                    color="#008eff"
+                    @click="close"
+                >关闭</btn>
             </div>
         </layer>
     </div>
@@ -112,7 +192,7 @@ export default {
                 payStatus: "",
                 serialNo: "",
                 status: "",
-                type: "2"
+                type: "2",
             },
             layer: false,
             layer2: false,
@@ -120,16 +200,16 @@ export default {
                 billNature: "",
                 id: "",
                 payAccount: "",
-                payCompany: "山西好利阀机械制造有限公司"
+                payCompany: "山西好利阀机械制造有限公司",
             },
             typeList: [
                 { text: "收款", value: "1" },
-                { text: "付款", value: "2" }
+                { text: "付款", value: "2" },
             ],
             amountTypeList: [
                 { text: "现金", value: "1" },
                 { text: "支票", value: "2" },
-                { text: "其他货币", value: "3" }
+                { text: "其他货币", value: "3" },
             ],
             statusList: [],
             acceptList: [],
@@ -141,9 +221,9 @@ export default {
                 { text: "汇票", value: "汇票" },
                 { text: "现金", value: "现金" },
                 { text: "其它", value: "其它" },
-                { text: "承兑", value: "承兑" }
+                { text: "承兑", value: "承兑" },
             ],
-            accountList: []
+            accountList: [],
         };
     },
     mounted() {
@@ -162,7 +242,7 @@ export default {
                 payStatus: "",
                 serialNo: "",
                 status: "",
-                type: "2"
+                type: "2",
             };
             this.$refs.list.update(true);
         },
@@ -170,21 +250,21 @@ export default {
         getPayType() {
             this.$http
                 .get(`/haolifa/sys-dict/getDictListByType/PAYMENT_TYPE`)
-                .then(res => {
-                    res.map(item => {
+                .then((res) => {
+                    res.map((item) => {
                         this.statusList.push({
                             text: item.desc,
-                            value: item.code
+                            value: item.code,
                         });
                     });
                 })
-                .catch(e => {
+                .catch((e) => {
                     this.$toast(e.msg || e.message);
                 });
         },
         getPayName(value) {
             let str = "";
-            this.statusList.map(item => {
+            this.statusList.map((item) => {
                 if (item.value == value) {
                     str = item.text;
                 }
@@ -195,21 +275,21 @@ export default {
         getAcceptType() {
             this.$http
                 .get(`/haolifa/sys-dict/getDictListByType/COLLECTION_TYPE`)
-                .then(res => {
-                    res.map(item => {
+                .then((res) => {
+                    res.map((item) => {
                         this.acceptList.push({
                             text: item.desc,
-                            value: item.code
+                            value: item.code,
                         });
                     });
                 })
-                .catch(e => {
+                .catch((e) => {
                     this.$toast(e.msg || e.message);
                 });
         },
         getAccName(value) {
             let str = "";
-            this.acceptList.map(item => {
+            this.acceptList.map((item) => {
                 if (item.value == value) {
                     str = item.text;
                 }
@@ -220,31 +300,29 @@ export default {
         getDeptList() {
             this.$http
                 .get(`/haolifa/dept/list`)
-                .then(res => {
-                    res.map(item => {
+                .then((res) => {
+                    res.map((item) => {
                         this.deptList.push({
                             text: item.deptName,
-                            value: item.id + ""
+                            value: item.id + "",
                         });
                     });
                     console.log(this.deptList);
                 })
-                .catch(e => {
+                .catch((e) => {
                     this.$toast(e.msg || e.message);
                 });
         },
         getAccount() {
             this.accountList = [];
-            this.$http
-                .get("/haolifa/sys-dict/getDictListByType/PAY_ACCOUNT")
-                .then(res => {
-                    res.map(item => {
-                        this.accountList.push({
-                            text: item.desc,
-                            value: item.desc
-                        });
+            this.$http.get("/haolifa/sys-dict/getDictListByType/PAY_ACCOUNT").then((res) => {
+                res.map((item) => {
+                    this.accountList.push({
+                        text: item.desc,
+                        value: item.desc,
                     });
                 });
+            });
         },
         payment(item) {
             this.layer = true;
@@ -253,12 +331,12 @@ export default {
         save() {
             this.$http
                 .post("/haolifa/finance/loanapply/pay", this.form)
-                .then(res => {
+                .then((res) => {
                     this.close();
                     this.$toast("保存成功");
                     this.$refs.list.update(true);
                 })
-                .catch(e => {
+                .catch((e) => {
                     this.$toast(e.msg || e.message);
                 });
         },
@@ -268,10 +346,10 @@ export default {
                 billNature: "",
                 id: "",
                 payAccount: "",
-                payCompany: "山西好利阀机械制造有限公司"
+                payCompany: "山西好利阀机械制造有限公司",
             };
-        }
-    }
+        },
+    },
 };
 </script>
 

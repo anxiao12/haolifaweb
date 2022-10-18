@@ -62,6 +62,15 @@
                                         {{form.remark}}
                                     </el-descriptions-item>
                                     <el-descriptions-item>
+                                        <template slot="label">附件</template>
+                                        <a
+                                            :href="item.fileUrl"
+                                            target="_blank"
+                                            v-for="(item,i) in form.fileUrlList"
+                                            :key="i"
+                                        >{{item.fileName}}</a>
+                                    </el-descriptions-item>
+                                    <el-descriptions-item>
                                         <template slot="label">报销方式</template>
                                         {{form.reimburseType=="1"?"普通报销":"借款冲抵"}}
                                     </el-descriptions-item>
