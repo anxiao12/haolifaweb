@@ -39,6 +39,18 @@
                     <option value="1">差旅报销</option>
                     <option value="2">费用报销</option>
                 </select>
+                <a
+                    class="b ml-10"
+                    style="color:#008eff"
+                    target="_blank"
+                    href="/haolifa/finance/reimburseapply/printEmptyBX"
+                >下载费用报销情况说明模板</a>
+                <a
+                    class="b ml-10"
+                    style="color:#008eff"
+                    target="_blank"
+                    href="/haolifa/finance/reimburseapply/printEmptyCL"
+                >下载出差报告模板</a>
             </div>
             <div class="flex-item"></div>
             <btn
