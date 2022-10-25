@@ -161,7 +161,7 @@
             >
                 <div class="flex">
                     <select-box
-                        v-model="form.postName"
+                        v-model="form.postId"
                         class="flex-item mr-20"
                         :list="postList"
                         label="岗位名称"
@@ -313,6 +313,8 @@ export default {
                 price: "",
                 project: "",
                 workType: "",
+                departId: "",
+                postId: "",
             },
             banList: [],
             postList: [],
@@ -333,6 +335,8 @@ export default {
         selectClick(data) {
             if (data) {
                 this.form.dept = data.name;
+                this.form.departId = data.id;
+                console.log(data);
             }
             this.deptFlag = false;
         },
@@ -356,6 +360,7 @@ export default {
         edit(item) {
             for (let key in this.form) this.form[key] = item[key];
             this.layer = true;
+            this.form.postId = this.form.postId + "";
         },
         handleRemove(file, fileList) {
             console.log(file, fileList);
@@ -405,6 +410,13 @@ export default {
         save() {
             this.loading = true;
             let url = this.form.id ? "/haolifa/pay-manager_cal/edit" : "/haolifa/pay-manager_cal/save";
+            if (this.form.postId) {
+                this.postList.forEach((item) => {
+                    if (item.value == this.form.postId) {
+                        this.form.postName = item.text;
+                    }
+                });
+            }
             this.$http
                 .post(url, this.form)
                 .then((res) => {
@@ -430,6 +442,8 @@ export default {
                 price: "",
                 project: "",
                 workType: "",
+                departId: "",
+                postId: "",
             };
         },
         getBanList() {
@@ -471,7 +485,7 @@ export default {
                     res.map((item) => {
                         this.postList.push({
                             text: item.postName,
-                            value: item.postName,
+                            value: item.id + "",
                         });
                     });
                 })
@@ -514,7 +528,7 @@ export default {
                     res.map((item) => {
                         this.userList.push({
                             text: item.userName,
-                            value: item.userName,
+                            value: item.postId,
                         });
                     });
                 })

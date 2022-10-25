@@ -531,7 +531,7 @@ export default {
             loading: false,
         };
     },
-    mounted() {
+    activated() {
         this.getBanList();
         this.getDeptList();
         this.getUsers();
@@ -771,6 +771,7 @@ export default {
             };
         },
         getBanList() {
+            this.banList = [];
             this.$http
                 .post("/haolifa/pay-team/getAllList")
                 .then((res) => {
@@ -786,6 +787,7 @@ export default {
                 });
         },
         getDeptList() {
+            this.deptList = [];
             this.$http
                 .get("/haolifa/dept/list")
                 .then((res) => {
@@ -801,13 +803,14 @@ export default {
                 });
         },
         getPostList() {
+            this.postList = [];
             this.$http
                 .post("/haolifa/pay-production-work-shop/getAllList")
                 .then((res) => {
                     res.map((item) => {
                         this.postList.push({
                             text: item.postName,
-                            value: item.id,
+                            value: item.id + "",
                         });
                     });
                 })
@@ -816,6 +819,7 @@ export default {
                 });
         },
         getUsers() {
+            this.userArr = [];
             this.$http
                 .get("/haolifa/dictionaries/getUserType")
                 .then((res) => {
@@ -831,6 +835,7 @@ export default {
                 });
         },
         getAllUsers() {
+            this.userList = [];
             this.$http
                 .post("/haolifa/pay-user/getAllList", {
                     departName: "",
@@ -850,7 +855,7 @@ export default {
                     res.map((item) => {
                         this.userList.push({
                             text: item.userName,
-                            value: item.id,
+                            value: item.id + "",
                         });
                     });
                 })
