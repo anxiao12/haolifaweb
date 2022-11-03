@@ -350,9 +350,20 @@
                                 </tr>
                                 <tr>
                                     <td
-                                        colspan="17"
+                                        colspan="4"
                                         class="b"
                                     >技术清单</td>
+                                    <td colspan="13">
+                                <a
+                                    v-if="orderInfo.orderTechnicalDetaileds.length"
+                                    target="_blank"
+                                    :href="'/haolifa/export/order-technical-detailed?orderNo='+orderInfo.orderNo"
+                                >导出</a>
+                                <a
+                                    href="javascript:;"
+                                    v-else
+                                >无</a>
+                            </td>
                                 </tr>
 
                                 <tr>
