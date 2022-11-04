@@ -1,8 +1,14 @@
 <template>
     <div class="page-invoice-list">
-        <i class="icon icon-abs" @click="flush">autorenew</i>
+        <i
+            class="icon icon-abs"
+            @click="flush"
+        >autorenew</i>
         <div class="flex-v-center tool-bar">
-            <div class="flex-v-center search-bar" style="margin-right: 20px;">
+            <div
+                class="flex-v-center search-bar"
+                style="margin-right: 20px;"
+            >
                 <i class="icon f-20 c-8">search</i>
                 状态:
                 <select
@@ -16,7 +22,12 @@
                 </select>
             </div>
             <div class="flex-item"></div>
-            <btn class="b" flat color="#008eff" @click="add">新增</btn>
+            <btn
+                class="b"
+                flat
+                color="#008eff"
+                @click="add"
+            >新增</btn>
         </div>
         <div class="flex-item scroll-y">
             <data-list
@@ -35,10 +46,16 @@
                     <th>备注</th>
                     <th>创建时间</th>
                     <th>更新时间</th>
-                    <th class="t-right" style="width: 80px;">操作</th>
+                    <th
+                        class="t-right"
+                        style="width: 80px;"
+                    >操作</th>
                 </tr>
                 <!-- item: 当前行数据; index: 当前行数 -->
-                <template slot="item" slot-scope="{ item, index }">
+                <template
+                    slot="item"
+                    slot-scope="{ item, index }"
+                >
                     <td class="c-a">{{ index }}</td>
                     <td>{{ item.applyTime }}</td>
                     <td>{{ item.applyPayCompany }}</td>
@@ -48,15 +65,27 @@
                     <td>{{ item.createTime }}</td>
                     <td>{{ item.updateTime }}</td>
                     <td class="t-right">
-                        <a href="javascript:;" class="blue" @click="edit(item)">编辑 |&nbsp;</a>
-                        <a href="javascript:;" class="blue" @click="detail(item)">详情 |&nbsp;</a>
+                        <a
+                            href="javascript:;"
+                            class="blue"
+                            @click="edit(item)"
+                        >编辑 |&nbsp;</a>
+                        <a
+                            href="javascript:;"
+                            class="blue"
+                            @click="detail(item)"
+                        >详情 |&nbsp;</a>
                         <a
                             href="javascript:;"
                             v-if="item.status == 1 || item.status==4"
                             class="blue"
                             @click="startFinance(item.id)"
                         >发起审批 |&nbsp;</a>
-                        <a href="javascript:;" class="blue" @click="approveProgress(item)">审批进度</a>
+                        <a
+                            href="javascript:;"
+                            class="blue"
+                            @click="approveProgress(item)"
+                        >审批进度</a>
                         <a
                             href="javascript:;"
                             v-if="item.status == 1 || item.status==4"
@@ -67,12 +96,28 @@
                 </template>
             </data-list>
         </div>
-        <layer v-if="layer" :title="form.id ?'编辑':'新增' " width="70%">
-            <div class="layer-text" style="padding-bottom: 50px;">
+        <layer
+            v-if="layer"
+            :title="form.id ?'编辑':'新增' "
+            width="70%"
+        >
+            <div
+                class="layer-text"
+                style="padding-bottom: 50px;"
+            >
                 <div class="flex">
-                    <el-button class="mr-20" size="mini" type="primary" @click="addItem">选择合同</el-button>
+                    <el-button
+                        class="mr-20"
+                        size="mini"
+                        type="primary"
+                        @click="addItem"
+                    >选择合同</el-button>
                 </div>
-                <div v-for="(item,i) in form.applyDetailAddDTOList" :key="i" style="margin:0 30px;">
+                <div
+                    v-for="(item,i) in form.applyDetailAddDTOList"
+                    :key="i"
+                    style="margin:0 30px;"
+                >
                     <div class="flex">
                         <input-box
                             v-model="item.purchaseOrderNo"
@@ -103,7 +148,11 @@
                         ></input-box>
                     </div>
                     <div class="flex">
-                        <input-box v-model="item.remark" class="flex-item mr-20" label="备注"></input-box>
+                        <input-box
+                            v-model="item.remark"
+                            class="flex-item mr-20"
+                            label="备注"
+                        ></input-box>
                         <el-button
                             class="mr-20"
                             type="warning"
@@ -115,10 +164,18 @@
                     <hr style="border: 1px dashed #409EFF">
                 </div>
                 <div class="flex">
-                    <input-box v-model="form.totalPrice" class="flex-item mr-20" label="总计"></input-box>
+                    <input-box
+                        v-model="form.totalPrice"
+                        class="flex-item mr-20"
+                        label="总计"
+                    ></input-box>
                 </div>
                 <div class="flex">
-                    <input-box v-model="form.remark" class="flex-item mr-20" label="备注"></input-box>
+                    <input-box
+                        v-model="form.remark"
+                        class="flex-item mr-20"
+                        label="备注"
+                    ></input-box>
                 </div>
             </div>
             <div class="layer-btns">
@@ -129,12 +186,23 @@
                     type="primary"
                     @click="save"
                 >保存</el-button>
-                <el-button class="mr-20" size="mini" @click="close">关闭</el-button>
+                <el-button
+                    class="mr-20"
+                    size="mini"
+                    @click="close"
+                >关闭</el-button>
             </div>
         </layer>
-        <layer v-if="layerTable" title="数据列表" width="90%">
+        <layer
+            v-if="layerTable"
+            title="数据列表"
+            width="90%"
+        >
             <div class="flex-v-center tool-bar">
-                <div class="flex-v-center search-bar" style="margin-right: 20px;">
+                <div
+                    class="flex-v-center search-bar"
+                    style="margin-right: 20px;"
+                >
                     采购合同号:
                     <input
                         type="text"
@@ -154,19 +222,29 @@
                         @change="$refs.listOne.update(true);getDataOneNum();"
                     >
                     订单状态:
-                    <select v-model="tableForm.status" class="f-14">
+                    <select
+                        v-model="tableForm.status"
+                        class="f-14"
+                    >
                         <option
                             v-for="item in statusList"
                             :value="item.status"
                             v-bind:key="item.status"
                         >{{item.name}}</option>
                     </select>
-                    <el-button type="primary" size="mini" @click="getTableData(1)">查询</el-button>
+                    <el-button
+                        type="primary"
+                        size="mini"
+                        @click="getTableData(1)"
+                    >查询</el-button>
                     <el-link class="ml-20">选择采购合同金额总计：{{selectedAmount}}</el-link>
                     <el-link class="ml-20">材料费预算余额：{{balanceNum}}</el-link>
                 </div>
             </div>
-            <div class="layer-text" style="padding-bottom: 50px;">
+            <div
+                class="layer-text"
+                style="padding-bottom: 50px;"
+            >
                 <el-table
                     ref="multipleTable"
                     :data="tableData"
@@ -175,23 +253,59 @@
                     style="width: 100%"
                     @selection-change="handleSelectionChange"
                 >
-                    <el-table-column type="selection" width="55"></el-table-column>
-                    <el-table-column prop="purchaseOrderNo" label="采购合同号"></el-table-column>
-                    <el-table-column prop="supplierName" label="供方单位"></el-table-column>
-                    <el-table-column prop="demander" label="采购单位"></el-table-column>
-                    <el-table-column prop="paidAccount" label="已付款金额"></el-table-column>
-                    <el-table-column prop="invoiceAccount" label="已开票金额"></el-table-column>
-                    <el-table-column prop="totalPrice" label="采购金额"></el-table-column>
-                    <el-table-column prop="deliveryTime" width="110" label="采购完成日期"></el-table-column>
-                    <el-table-column prop="totalCount" width="100" label="采购总数量"></el-table-column>
-                    <el-table-column prop="qualifiedNumber" width="110" label="检验合格数量"></el-table-column>
+                    <el-table-column
+                        type="selection"
+                        width="55"
+                    ></el-table-column>
+                    <el-table-column
+                        prop="purchaseOrderNo"
+                        label="采购合同号"
+                    ></el-table-column>
+                    <el-table-column
+                        prop="supplierName"
+                        label="供方单位"
+                    ></el-table-column>
+                    <el-table-column
+                        prop="demander"
+                        label="采购单位"
+                    ></el-table-column>
+                    <el-table-column
+                        prop="paidAccount"
+                        label="已付款金额"
+                    ></el-table-column>
+                    <el-table-column
+                        prop="invoiceAccount"
+                        label="已开票金额"
+                    ></el-table-column>
+                    <el-table-column
+                        prop="totalPrice"
+                        label="采购金额"
+                    ></el-table-column>
+                    <el-table-column
+                        prop="deliveryTime"
+                        width="110"
+                        label="采购完成日期"
+                    ></el-table-column>
+                    <el-table-column
+                        prop="totalCount"
+                        width="100"
+                        label="采购总数量"
+                    ></el-table-column>
+                    <el-table-column
+                        prop="qualifiedNumber"
+                        width="110"
+                        label="检验合格数量"
+                    ></el-table-column>
                     <el-table-column
                         prop="status"
                         label="订单状态"
                         width="80"
                         :formatter="statusFormatter"
                     ></el-table-column>
-                    <el-table-column prop="payType" label="付款方式"></el-table-column>
+                    <el-table-column
+                        prop="payType"
+                        label="付款方式"
+                    ></el-table-column>
                 </el-table>
             </div>
             <el-pagination
@@ -202,12 +316,28 @@
                 :total="total"
             ></el-pagination>
             <div class="layer-btns">
-                <el-button class="mr-20" size="mini" type="primary" @click="saveSelect">保存</el-button>
-                <el-button class="mr-20" size="mini" @click="layerTable=false;">关闭</el-button>
+                <el-button
+                    class="mr-20"
+                    size="mini"
+                    type="primary"
+                    @click="saveSelect"
+                >保存</el-button>
+                <el-button
+                    class="mr-20"
+                    size="mini"
+                    @click="layerTable=false;"
+                >关闭</el-button>
             </div>
         </layer>
-        <layer v-if="layerDetail" title="详情" width="70%">
-            <div class="layer-text" style="padding-bottom: 50px;">
+        <layer
+            v-if="layerDetail"
+            title="详情"
+            width="70%"
+        >
+            <div
+                class="layer-text"
+                style="padding-bottom: 50px;"
+            >
                 <div class="form-content metalwork-info">
                     <table class="f-14 order-info">
                         <tr>
@@ -218,22 +348,40 @@
                             <td style="width: 20%;"></td>
                         </tr>
                         <tr>
-                            <td colspan="5" class="b">付款单位 : {{info.applyPayCompany}}</td>
+                            <td
+                                colspan="5"
+                                class="b"
+                            >付款单位 : {{info.applyPayCompany}}</td>
                         </tr>
                         <tr>
-                            <td colspan="5" class="b">付款金额 : {{info.totalPrice}}</td>
+                            <td
+                                colspan="5"
+                                class="b"
+                            >付款金额 : {{info.totalPrice}}</td>
                         </tr>
                         <tr>
-                            <td colspan="5" class="b">付款日期 : {{info.applyTime}}</td>
+                            <td
+                                colspan="5"
+                                class="b"
+                            >付款日期 : {{info.applyTime}}</td>
                         </tr>
                         <tr>
-                            <td colspan="5" class="b">备注 : {{info.remark}}</td>
+                            <td
+                                colspan="5"
+                                class="b"
+                            >备注 : {{info.remark}}</td>
                         </tr>
                         <tr>
-                            <td colspan="5" class="b">创建日期 : {{info.createTime}}</td>
+                            <td
+                                colspan="5"
+                                class="b"
+                            >创建日期 : {{info.createTime}}</td>
                         </tr>
                         <tr>
-                            <td colspan="5" class="b">更新日期 : {{info.updateTime}}</td>
+                            <td
+                                colspan="5"
+                                class="b"
+                            >更新日期 : {{info.updateTime}}</td>
                         </tr>
                         <tr>
                             <th>订单号</th>
@@ -242,7 +390,10 @@
                             <th>付款单位</th>
                             <th>备注</th>
                         </tr>
-                        <tr v-for="(val,index) in info.applyDetailRSDTOList" :key="index">
+                        <tr
+                            v-for="(val,index) in info.applyDetailRSDTOList"
+                            :key="index"
+                        >
                             <td colspan="1">{{val.purchaseOrderNo}}</td>
                             <td colspan="1">{{val.price}}</td>
                             <td colspan="1">{{val.applyCollectionCompany}}</td>
@@ -253,7 +404,11 @@
                 </div>
             </div>
             <div class="layer-btns">
-                <btn flat color="#008eff" @click="layerDetail = false">关闭</btn>
+                <btn
+                    flat
+                    color="#008eff"
+                    @click="layerDetail = false"
+                >关闭</btn>
             </div>
         </layer>
     </div>
@@ -267,7 +422,7 @@ export default {
     data() {
         return {
             filter: {
-                status: "0"
+                status: "0",
             },
             layer: false,
             form: {
@@ -283,12 +438,12 @@ export default {
                     // }
                 ],
                 remark: "",
-                totalPrice: 0
+                totalPrice: 0,
             },
             tableForm: {
                 orderNo: "",
                 supplierName: "",
-                status: "5"
+                status: "5",
             },
             loading: false,
             layerTable: false,
@@ -296,19 +451,22 @@ export default {
             multipleSelection: [],
             pageNum: 1,
             total: 0,
-            statusList: [{ status: "3", name: "采购中" }, { status: "5", name: "采购完成" }],
+            statusList: [
+                { status: "3", name: "采购中" },
+                { status: "5", name: "采购完成" },
+            ],
             layerDetail: false,
             info: {},
             selectedAmount: 0,
             statusArr: ["", "待审批", "审批中", "付款中", "审批不通过", "付款完成"],
-            balanceNum: 0
+            balanceNum: 0,
         };
     },
     mounted() {},
     methods: {
         flush() {
             this.filter = {
-                status: "0"
+                status: "0",
             };
             this.$refs.list.update(true);
         },
@@ -326,7 +484,7 @@ export default {
         approveProgress(item) {
             this.$router.push({
                 path: `/purchsemanage-purchase/approveProgress?`,
-                query: { formNo: item.id, formId: "" }
+                query: { formNo: item.id, formId: "" },
             });
         },
         remove(item) {
@@ -338,14 +496,14 @@ export default {
                 yes: () => {
                     this.$http
                         .get(`/haolifa/finance/payapply/delete/${item.id}`)
-                        .then(res => {
+                        .then((res) => {
                             this.$toast("删除成功");
                             this.$refs.list.update(true);
                         })
-                        .catch(e => {
+                        .catch((e) => {
                             this.$toast(e.msg || e.message);
                         });
-                }
+                },
             });
         },
         addItem() {
@@ -361,21 +519,21 @@ export default {
         startFinance(id) {
             this.$http
                 .get(`/haolifa/finance/payapply/approve/${id}`)
-                .then(res => {
+                .then((res) => {
                     this.$toast("审批发起成功");
                     this.$refs.list.update(true);
                 })
-                .catch(e => {
+                .catch((e) => {
                     this.$toast(e.msg || e.message);
                 });
         },
         getBalanceNum() {
             this.$http
                 .get(`/haolifa/finance/payapply/subjects/getCurUserClfSubjectsBudget`)
-                .then(res => {
+                .then((res) => {
                     this.balanceNum = res.balanceAmount;
                 })
-                .catch(e => {
+                .catch((e) => {
                     this.$toast(e.msg || e.message);
                 });
         },
@@ -395,7 +553,7 @@ export default {
         handleSelectionChange(val) {
             this.selectedAmount = 0;
             this.multipleSelection = val;
-            val.map(item => {
+            val.map((item) => {
                 this.selectedAmount += item.totalPrice;
             });
             this.selectedAmount = Math.floor(this.selectedAmount * 100) / 100;
@@ -405,7 +563,7 @@ export default {
                 this.$toast("请选择数据");
                 return;
             }
-            this.multipleSelection.map(item => {
+            this.multipleSelection.map((item) => {
                 this.form.applyDetailAddDTOList.push({
                     applyCollectionCompany: item.supplierName,
                     applyPayCompany: item.demander,
@@ -413,7 +571,7 @@ export default {
                     price: item.totalPrice,
                     purchaseOrderId: item.id,
                     purchaseOrderNo: item.purchaseOrderNo,
-                    remark: ""
+                    remark: "",
                 });
                 this.form.totalPrice += item.totalPrice;
             });
@@ -422,7 +580,7 @@ export default {
         },
         amountChange(index) {
             this.form.totalPrice = 0;
-            this.form.applyDetailAddDTOList.forEach(item => {
+            this.form.applyDetailAddDTOList.forEach((item) => {
                 this.form.totalPrice += +item.price;
             });
             this.form.totalPrice = Math.floor(this.form.totalPrice * 100) / 100;
@@ -437,20 +595,20 @@ export default {
             this.tableData = [];
             this.loading = true;
             this.$http
-                 .post("/haolifa/purchase-order/payPlanlist", {
+                .post("/haolifa/purchase-order/payPlanlist", {
                     pageSize: 50,
-                    pageNum: 1,
+                    pageNum: this.pageNum,
                     orderType: 0,
                     orderNo: this.tableForm.orderNo,
                     supplierName: this.tableForm.supplierName,
-                    status: this.tableForm.status
+                    status: this.tableForm.status,
                 })
-                .then(res => {
+                .then((res) => {
                     this.loading = false;
                     this.tableData = res.list;
                     this.total = res.total;
                 })
-                .catch(e => {
+                .catch((e) => {
                     this.loading = false;
                     this.$toast(e.msg || e.message);
                 });
@@ -460,14 +618,14 @@ export default {
             let url = this.form.id ? "/haolifa/finance/payapply/updatePayApp" : "/haolifa/finance/payapply/savePayApp";
             this.$http
                 .post(url, this.form)
-                .then(res => {
+                .then((res) => {
                     this.layer = false;
                     this.$toast("保存成功");
                     this.close();
                     this.$refs.list.update(true);
                     this.loading = false;
                 })
-                .catch(e => {
+                .catch((e) => {
                     this.loading = false;
                     this.$toast(e.msg || e.message);
                 });
@@ -477,10 +635,10 @@ export default {
             this.form = {
                 applyDetailAddDTOList: [],
                 remark: "",
-                totalPrice: 0
+                totalPrice: 0,
             };
-        }
-    }
+        },
+    },
 };
 </script>
 
