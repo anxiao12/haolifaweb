@@ -1,16 +1,40 @@
 <template>
     <div class="page-material-list">
-        <i class="icon icon-abs" @click="flush">autorenew</i>
+        <i
+            class="icon icon-abs"
+            @click="flush"
+        >autorenew</i>
         <div class="flex-v-center tool-bar">
-            <div class="flex-v-center search-bar" style="margin-right: 20px;">
+            <div
+                class="flex-v-center search-bar"
+                style="margin-right: 20px;"
+            >
                 <i class="icon f-20 c-8">search</i>
                 状态：
-                <select v-model="filter.status" class="f-14" @change="$refs.list.update(true)">
-                    <option v-for="item in statusList" :value="item.status" v-bind:key="item.id">{{item.name}}</option>
+                <select
+                    v-model="filter.status"
+                    class="f-14"
+                    @change="$refs.list.update(true)"
+                >
+                    <option
+                        v-for="item in statusList"
+                        :value="item.status"
+                        v-bind:key="item.id"
+                    >{{item.name}}</option>
                 </select>
                 <i class="icon f-20 c-8">search</i>
-                <input type="text" class="flex-item" v-model="filter.sprayNo" @change="$refs.list.update(true)" placeholder="喷涂加工号" style="width: 200px;">
-                <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
+                <input
+                    type="text"
+                    class="flex-item"
+                    v-model="filter.sprayNo"
+                    @change="$refs.list.update(true)"
+                    placeholder="喷涂加工号"
+                    style="width: 200px;"
+                >
+                <i
+                    class="icon"
+                    style="margin-left: -20px;pointer-events:none;"
+                >arrow_drop_down</i>
             </div>
             <div class="flex-item"></div>
             <!-- <router-link to="/spray/add?sprayNo=">
@@ -18,7 +42,13 @@
             </router-link>-->
         </div>
         <div class="flex-item scroll-y">
-            <data-list ref="list" :page-size="15" :param="filter" url="/haolifa/spray/forms" method="post">
+            <data-list
+                ref="list"
+                :page-size="15"
+                :param="filter"
+                url="/haolifa/spray/forms"
+                method="post"
+            >
                 <tr slot="header">
                     <th style="width: 60px;">序号</th>
                     <th>喷涂加工单号</th>
@@ -32,10 +62,16 @@
                     <th>状态</th>
                     <th>质检状态</th>
                     <th>发起时间</th>
-                    <th class="t-right" style="width: 80px;">操作</th>
+                    <th
+                        class="t-right"
+                        style="width: 80px;"
+                    >操作</th>
                 </tr>
                 <!-- item: 当前行数据; index: 当前行数 -->
-                <template slot="item" slot-scope="{ item, index }">
+                <template
+                    slot="item"
+                    slot-scope="{ item, index }"
+                >
                     <td class="c-a">{{index}}</td>
                     <td>{{item.sprayNo}}</td>
                     <td>{{item.planner}}</td>
@@ -49,15 +85,32 @@
                     <td>{{inspectStatusList[item.inspectStatus]}}</td>
                     <td>{{item.createTime}}</td>
                     <td class="t-right">
-                        <a href="javascript:;" class="blue" @click="updateTask(item.sprayNo)" style="margin-right: 3px;">任务分配 |</a>
-                        <a href="javascript:;" style="margin-right: 3px" class="blue" @click="sprayInfo(item)">查看</a>
+                        <a
+                            href="javascript:;"
+                            class="blue"
+                            @click="updateTask(item.sprayNo)"
+                            style="margin-right: 3px;"
+                        >任务分配 |</a>
+                        <a
+                            href="javascript:;"
+                            style="margin-right: 3px"
+                            class="blue"
+                            @click="sprayInfo(item)"
+                        >查看</a>
                     </td>
                 </template>
             </data-list>
         </div>
 
-        <layer v-if="layer" title="详情" width="70%">
-            <div class="layer-text" style="padding-bottom: 50px;">
+        <layer
+            v-if="layer"
+            title="详情"
+            width="70%"
+        >
+            <div
+                class="layer-text"
+                style="padding-bottom: 50px;"
+            >
                 <div class="form-content page-supplier-info">
                     <table class="f-14">
                         <tr>
@@ -74,7 +127,12 @@
                             <td style="width: 10%;"></td>
                         </tr>
                         <tr>
-                            <td style="border: none;" colspan="11" class="b" align="center">喷涂加工单</td>
+                            <td
+                                style="border: none;"
+                                colspan="11"
+                                class="b"
+                                align="center"
+                            >喷涂加工单</td>
                         </tr>
                         <tr>
                             <th colspan="11">喷涂单号：{{spray.sprayNo}}</th>
@@ -84,19 +142,56 @@
                             <td colspan="6">日 期：{{spray.createTime}}</td>
                         </tr>
                         <tr style="border:thin">
-                            <td colspan="1" class="b">序号</td>
-                            <td colspan="1" class="b">零件名称</td>
-                            <td colspan="1" class="b">零件图号</td>
-                            <td colspan="1" class="b">型号</td>
-                            <td colspan="1" class="b">规格</td>
-                            <td colspan="1" class="b">材质</td>
-                            <td colspan="1" class="b">数量</td>
-                            <td colspan="1" class="b">喷涂颜色</td>
-                            <td colspan="1" class="b">特殊要求</td>
-                            <td colspan="1" class="b">完成时间</td>
-                            <td colspan="1" class="b">备注</td>
+                            <td
+                                colspan="1"
+                                class="b"
+                            >序号</td>
+                            <td
+                                colspan="1"
+                                class="b"
+                            >零件名称</td>
+                            <td
+                                colspan="1"
+                                class="b"
+                            >零件图号</td>
+                            <td
+                                colspan="1"
+                                class="b"
+                            >型号</td>
+                            <td
+                                colspan="1"
+                                class="b"
+                            >规格</td>
+                            <td
+                                colspan="1"
+                                class="b"
+                            >材质</td>
+                            <td
+                                colspan="1"
+                                class="b"
+                            >数量</td>
+                            <td
+                                colspan="1"
+                                class="b"
+                            >喷涂颜色</td>
+                            <td
+                                colspan="1"
+                                class="b"
+                            >特殊要求</td>
+                            <td
+                                colspan="1"
+                                class="b"
+                            >完成时间</td>
+                            <td
+                                colspan="1"
+                                class="b"
+                            >备注</td>
                         </tr>
-                        <tr style="border:thin" v-for="(item,i) in spray.items" :key="i">
+                        <tr
+                            style="border:thin"
+                            v-for="(item,i) in spray.items"
+                            :key="i"
+                        >
                             <td colspan="1">{{i+1}}</td>
                             <td colspan="1">{{item.materialName}}</td>
                             <td colspan="1">{{item.materialGraphNo}}</td>
@@ -111,11 +206,24 @@
                         </tr>
                     </table>
                 </div>
-                <div class="mt-15 ml-20 mr-20" v-if="inspectHistory.length" style="overflow-x: auto">
-                    <div class="b f-18 flex-v-center ml-20" style="margin-bottom: 20px;">
-                        <div class="flex-item" style="text-align: center;line-height: 24px;">质检记录</div>
+                <div
+                    class="mt-15 ml-20 mr-20"
+                    v-if="inspectHistory.length"
+                    style="overflow-x: auto"
+                >
+                    <div
+                        class="b f-18 flex-v-center ml-20"
+                        style="margin-bottom: 20px;"
+                    >
+                        <div
+                            class="flex-item"
+                            style="text-align: center;line-height: 24px;"
+                        >质检记录</div>
                     </div>
-                    <div class="flex-item scroll-y page-supplier-info" style="overflow-x: auto">
+                    <div
+                        class="flex-item scroll-y page-supplier-info"
+                        style="overflow-x: auto"
+                    >
                         <table class="data-table">
                             <tr style="display:none">
                                 <td style="width: 11%;"></td>
@@ -140,7 +248,10 @@
                                 <th>处理意见</th>
                                 <th>不合格现象描述</th>
                             </tr>
-                            <tr v-for="(item, i) in inspectHistory" :key="i">
+                            <tr
+                                v-for="(item, i) in inspectHistory"
+                                :key="i"
+                            >
                                 <td>{{item.sprayNo}}</td>
                                 <td>{{item.materialGraphName}}</td>
                                 <td>{{item.originalGraphNo}}</td>
@@ -156,28 +267,75 @@
                 </div>
             </div>
             <div class="layer-btns">
-                <btn flat color="#008eff" @click="layer=false">关闭</btn>
+                <btn
+                    flat
+                    color="#008eff"
+                    @click="layer=false"
+                >关闭</btn>
             </div>
         </layer>
-        <layer v-if="layerTable" title="任务分配" width="90%">
-            <div class="layer-text" style="padding-bottom: 50px;">
-                <el-table :data="tableData" v-loading="loading" tooltip-effect="dark" style="width: 100%">
-                    <el-table-column prop="orderNo" label="订单号"></el-table-column>
-                    <el-table-column prop="postCapability" label="岗位能力名称"></el-table-column>
-                    <el-table-column prop="postName" label="岗位(工序)名称"></el-table-column>
-                    <el-table-column prop="postCode" label="岗位(工序)代码"></el-table-column>
+        <layer
+            v-if="layerTable"
+            title="任务分配"
+            width="90%"
+        >
+            <div
+                class="layer-text"
+                style="padding-bottom: 50px;"
+            >
+                <el-table
+                    :data="tableData"
+                    v-loading="loading"
+                    tooltip-effect="dark"
+                    style="width: 100%"
+                >
+                    <el-table-column
+                        prop="orderNo"
+                        label="订单号"
+                    ></el-table-column>
+                    <el-table-column
+                        prop="postCapability"
+                        label="岗位能力名称"
+                    ></el-table-column>
+                    <el-table-column
+                        prop="postName"
+                        label="岗位(工序)名称"
+                    ></el-table-column>
+                    <el-table-column
+                        prop="postCode"
+                        label="岗位(工序)代码"
+                    ></el-table-column>
                     <el-table-column label="人员选择">
                         <template slot-scope="scope">
-                            <el-select size="mini" multiple v-model="form.payOrderUserRelationProcedureList[scope.row.number].userId" clearable>
-                                <el-option v-for="(item,i) in scope.row.userList" :key="i" :label="item.userName" :value="item.userId"></el-option>
+                            <el-select
+                                size="mini"
+                                v-model="form.payOrderUserRelationProcedureList[scope.row.number].userId"
+                                clearable
+                            >
+                                <el-option
+                                    v-for="(item,i) in scope.row.userList"
+                                    :key="i"
+                                    :label="item.userName"
+                                    :value="item.userId"
+                                ></el-option>
                             </el-select>
                         </template>
                     </el-table-column>
                 </el-table>
             </div>
             <div class="layer-btns">
-                <el-button class="mr-20" size="mini" :loading="saveLoading" type="primary" @click="saveSelect">保存</el-button>
-                <el-button class="mr-20" size="mini" @click="layerTable=false">关闭</el-button>
+                <el-button
+                    class="mr-20"
+                    size="mini"
+                    :loading="saveLoading"
+                    type="primary"
+                    @click="saveSelect"
+                >保存</el-button>
+                <el-button
+                    class="mr-20"
+                    size="mini"
+                    @click="layerTable=false"
+                >关闭</el-button>
             </div>
         </layer>
     </div>
@@ -193,14 +351,14 @@ export default {
             layer: false,
             filter: {
                 status: "1",
-                type: 0
+                type: 0,
             },
             rowStatusList: [
                 { status: 0, name: "待加工" },
                 { status: 1, name: "加工中" },
                 { status: 2, name: "质检完成" },
                 { status: 3, name: "加工完成" },
-                { status: 4, name: "暂停加工" }
+                { status: 4, name: "暂停加工" },
             ],
             busTypeList: ["未选择", "订单需求", "生产库存"],
             inspectStatusList: { 0: "待质检", 1: "质检中", 2: "质检完成" },
@@ -210,26 +368,26 @@ export default {
                 { status: 2, name: "质检完成" },
                 { status: 3, name: "加工完成" },
                 { status: 4, name: "暂停加工" },
-                { status: -1, name: "全部" }
+                { status: -1, name: "全部" },
             ],
             inspectHistory: [],
             spray: {
                 planner: "",
                 sprayNo: "",
                 createTime: "",
-                items: []
+                items: [],
             },
             layerTable: false,
             tableData: [],
             form: { payOrderUserRelationProcedureList: [] },
-            saveLoading: false
+            saveLoading: false,
         };
     },
     methods: {
         flush() {
             this.filter = {
                 status: 1,
-                type: 0
+                type: 0,
             };
             this.$refs.list.update(true);
         },
@@ -240,7 +398,7 @@ export default {
         editForm(item) {
             this.$router.push({
                 path: `/spray/edit?`,
-                query: { sprayNo: item.sprayNo }
+                query: { sprayNo: item.sprayNo },
             });
         },
         updateTask(orderNo) {
@@ -249,11 +407,8 @@ export default {
             this.tableData = [];
             this.form = { payOrderUserRelationProcedureList: [] };
             this.$http
-                .get(
-                    `/haolifa/pay-working-procedure/assignTask?type=2&orderNo=` +
-                        orderNo
-                )
-                .then(res => {
+                .get(`/haolifa/pay-working-procedure/assignTask?type=2&orderNo=` + orderNo)
+                .then((res) => {
                     this.loading = false;
                     if (!res) {
                         return;
@@ -263,13 +418,13 @@ export default {
                         item.number = index;
                         this.form.payOrderUserRelationProcedureList.push({
                             id: item.id,
-                            userId: item.userId ? item.userId : [],
+                            userId: item.userId ? item.userId[0] : "",
                             productId: item.productId,
-                            orderId: item.orderNo
+                            orderId: item.orderNo,
                         });
                     });
                 })
-                .catch(e => {
+                .catch((e) => {
                     this.loading = false;
                     this.$toast(e.msg || e.message);
                 });
@@ -286,15 +441,23 @@ export default {
                 return;
             } */
             this.saveLoading = true;
+            let param = JSON.parse(JSON.stringify(this.form));
+            param.payOrderUserRelationProcedureList.forEach((item) => {
+                let arr = [];
+                if (item.userId) {
+                    arr.push(item.userId);
+                }
+                item.userId = arr;
+            });
             this.$http
-                .post(`/haolifa/pay-working-procedure/saveTask`, this.form)
-                .then(res => {
+                .post(`/haolifa/pay-working-procedure/saveTask`, param)
+                .then((res) => {
                     this.layerTable = false;
                     this.saveLoading = false;
                     this.$toast("保存成功");
                     this.$refs.list.update(true);
                 })
-                .catch(e => {
+                .catch((e) => {
                     this.$toast(e.msg || e.message);
                 });
         },
@@ -302,10 +465,10 @@ export default {
         deleteInfo(item) {
             this.$http
                 .delete(`/haolifa/spray/form/${item.sprayNo}`)
-                .then(res => {
+                .then((res) => {
                     this.$refs.list.update(true);
                 })
-                .catch(e => {
+                .catch((e) => {
                     this.$toast(e.msg || e.message);
                 });
         },
@@ -333,29 +496,26 @@ export default {
                         let count = item.totalNumber - item.qualifiedNumber;
                         this.$confirm({
                             title: "继续确认",
-                            text:
-                                "订单显示还有(" +
-                                count +
-                                ")个零件未完成，是否继续？",
+                            text: "订单显示还有(" + count + ")个零件未完成，是否继续？",
                             color: "red",
                             btns: ["取消", "确认"],
                             yes: () => {
                                 this.updateStatus(item.sprayNo, 3);
-                            }
+                            },
                         });
                     } else {
                         this.updateStatus(item.sprayNo, 3);
                     }
-                }
+                },
             });
         },
         updateStatus(sprayNo, status) {
             this.$http
                 .put(`/haolifa/spray/status/${sprayNo}/${status}`)
-                .then(res => {
+                .then((res) => {
                     this.$refs.list.update(true);
                 })
-                .catch(e => {
+                .catch((e) => {
                     this.$toast(e.msg || e.message);
                 });
         },
@@ -364,24 +524,24 @@ export default {
             // 查询详情：
             this.$http
                 .get(`/haolifa/spray/form/${item.sprayNo}`)
-                .then(res => {
+                .then((res) => {
                     this.spray = res;
                 })
-                .catch(e => {
+                .catch((e) => {
                     this.$toast(e.msg || e.message);
                 });
             // 质检记录列表；
             this.$http
                 .get(`/haolifa/spray/inspect/list/${item.sprayNo}`)
-                .then(res => {
+                .then((res) => {
                     this.inspectHistory = res;
                 })
-                .catch(e => {
+                .catch((e) => {
                     this.$toast(e.msg || e.message);
                 });
             this.layer = true;
-        }
-    }
+        },
+    },
 };
 </script>
 

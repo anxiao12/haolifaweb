@@ -579,7 +579,6 @@
                         <template slot-scope="scope">
                             <el-select
                                 size="mini"
-                                multiple
                                 v-model="form.payOrderUserRelationProcedureList[scope.row.number].userId"
                                 clearable
                             >
@@ -704,7 +703,7 @@ export default {
                         item.number = index;
                         this.form.payOrderUserRelationProcedureList.push({
                             id: item.id,
-                            userId: item.userId ? item.userId : [],
+                            userId: item.userId ? item.userId[0] : "",
                             productId: item.productId,
                             orderId: item.orderNo,
                         });
@@ -727,8 +726,17 @@ export default {
                 return;
             } */
             this.saveLoading = true;
+            let param = "";
+            param = JSON.parse(JSON.stringify(this.form));
+            param.payOrderUserRelationProcedureList.forEach((item) => {
+                let arr = [];
+                if (item.userId) {
+                    arr.push(item.userId + "");
+                }
+                item.userId = arr;
+            });
             this.$http
-                .post(`/haolifa/pay-working-procedure/saveTask`, this.form)
+                .post(`/haolifa/pay-working-procedure/saveTask`, param)
                 .then((res) => {
                     this.layerTable = false;
                     this.saveLoading = false;

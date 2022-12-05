@@ -37,6 +37,10 @@
                                     border
                                 >
                                     <el-descriptions-item>
+                                        <template slot="label">项目预算</template>
+                                        {{form.projectCodeName}}
+                                    </el-descriptions-item>
+                                    <el-descriptions-item>
                                         <template slot="label">报销金额</template>
                                         {{form.amount}}
                                     </el-descriptions-item>
@@ -137,7 +141,7 @@
                                         ></el-table-column>
                                         <el-table-column
                                             label="项目"
-                                            prop="projectType"
+                                            prop="projectTypeCN"
                                         ></el-table-column>
                                         <el-table-column
                                             label="出发地"

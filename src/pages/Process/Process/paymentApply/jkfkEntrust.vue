@@ -43,6 +43,13 @@
                                             <td
                                                 colspan="2"
                                                 class="b"
+                                            >项目名称 :</td>
+                                            <td colspan="3">{{info.projectCodeName}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td
+                                                colspan="2"
+                                                class="b"
                                             >借款人 :</td>
                                             <td colspan="3">{{info.loanUserName}}</td>
                                         </tr>
