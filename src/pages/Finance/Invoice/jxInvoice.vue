@@ -295,6 +295,7 @@ export default {
         },
         edit(item) {
             for (let key in this.form) this.form[key] = item[key];
+            this.form.id = item.id;
             this.layer = true;
         },
         vertify() {
@@ -329,6 +330,7 @@ export default {
         },
         cancel() {
             this.form = {
+                id: "",
                 invoiceNo: "",
                 orderNo: "",
                 status: 2,

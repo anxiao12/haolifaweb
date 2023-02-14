@@ -4,9 +4,27 @@
         <div class="flex-v-center tool-bar">采购报表统计图</div>
         <div style="width:98%;margin:20px auto;display:flex;padding-left:1%">
             <div style="line-height: 28px;">开始时间:</div>
-            <el-date-picker size="mini" v-model="yearDate" :clearable="false" type="month" value-format="yyyy-MM" @change="getBuyOne" :editable="false" placeholder="选择年月"></el-date-picker>
+            <el-date-picker
+                size="mini"
+                v-model="yearDate"
+                :clearable="false"
+                type="month"
+                value-format="yyyy-MM"
+                @change="getBuyOne"
+                :editable="false"
+                placeholder="选择年月"
+            ></el-date-picker>
             <div style="line-height: 28px;margin-left:10px;">结束时间:</div>
-            <el-date-picker size="mini" v-model="yearDate2" :clearable="false" type="month" value-format="yyyy-MM" @change="getBuyOne" :editable="false" placeholder="选择年月"></el-date-picker>
+            <el-date-picker
+                size="mini"
+                v-model="yearDate2"
+                :clearable="false"
+                type="month"
+                value-format="yyyy-MM"
+                @change="getBuyOne"
+                :editable="false"
+                placeholder="选择年月"
+            ></el-date-picker>
             <el-button size="mini" style="margin-left:10px;" type="primary" @click="getDetail()">数据显示</el-button>
         </div>
         <div style="width:98%;margin:20px auto;display:flex;padding-left:1%">
@@ -29,7 +47,16 @@
         </div>
 
         <div style="width:98%;margin:20px auto;display:flex;padding-left:1%">
-            <el-date-picker v-model="yearMonthDate" size="mini" :clearable="false" type="month" value-format="yyyy-MM" @change="getByMonth" :editable="false" placeholder="选择年月"></el-date-picker>
+            <el-date-picker
+                v-model="yearMonthDate"
+                size="mini"
+                :clearable="false"
+                type="month"
+                value-format="yyyy-MM"
+                @change="getByMonth"
+                :editable="false"
+                placeholder="选择年月"
+            ></el-date-picker>
         </div>
         <div style="width:98%;margin:0 auto;display:flex">
             <div style="display: flex;padding-left: 20px; margin-left: 12px;color:#008eff;font-size:22px;">
@@ -43,7 +70,17 @@
             <div id="byMonth" style="width:100%;height:600px;margin:0 auto"></div>
         </div>
         <div style="width:98%;margin:20px auto;display:flex;padding-left:1%">
-            <el-date-picker v-model="threeYearDate" size="mini" :clearable="false" type="year" style="margin-top:50px" value-format="yyyy" @change="getBuyThree" :editable="false" placeholder="选择年月"></el-date-picker>
+            <el-date-picker
+                v-model="threeYearDate"
+                size="mini"
+                :clearable="false"
+                type="year"
+                style="margin-top:50px"
+                value-format="yyyy"
+                @change="getBuyThree"
+                :editable="false"
+                placeholder="选择年月"
+            ></el-date-picker>
         </div>
         <div style="height:500px;width:90%;margin:20px auto;">
             <div id="buyThree" style="width:100%;height:600px;margin:0 auto"></div>
@@ -53,20 +90,34 @@
             <div class="flex-v-center tool-bar">
                 <div class="flex-v-center search-bar" style="margin-right: 20px;">
                     供应商名称:
-                    <input type="text" class="flex-item" v-model="form.supplierName" placeholder style="width: 150px;" @change="$refs.list.update(true);getFourTj()">
+                    <input
+                        type="text"
+                        class="flex-item"
+                        v-model="form.supplierName"
+                        placeholder
+                        style="width: 150px;"
+                        @change="$refs.list.update(true);getFourTj()"
+                    />
                     合同编号:
-                    <input type="text" class="flex-item" v-model="form.purchaseOrderNo" placeholder style="width: 150px;" @change="$refs.list.update(true);getFourTj()">
+                    <input
+                        type="text"
+                        class="flex-item"
+                        v-model="form.purchaseOrderNo"
+                        placeholder
+                        style="width: 150px;"
+                        @change="$refs.list.update(true);getFourTj()"
+                    />
                     <el-button type="primary" size="mini" @click="$refs.list.update(true);getFourTj()">查询</el-button>
                 </div>
             </div>
             <div class="flex-v-center tool-bar">
                 <div class="flex-v-center search-bar" style="margin-right: 20px;">
-                    <el-button :underline="false" type="text" style="margin-left:20px;font-size:20px;">合同金额: {{formObj.total}}元</el-button>
-                    <el-button :underline="false" type="text" style="margin-left:20px;font-size:20px;">入账金额: {{formObj.registered}}元</el-button>
-                    <el-button :underline="false" type="text" style="margin-left:20px;font-size:20px;">付款金额: {{formObj.payTotal}}元</el-button>
-                    <el-button :underline="false" type="text" style="margin-left:20px;font-size:20px;">欠款金额: {{formObj.unpay}}元</el-button>
-                    <el-button :underline="false" type="text" style="margin-left:20px;font-size:20px;">回票金额: {{formObj.returnTicketAmount}}元</el-button>
-                    <el-button :underline="false" type="text" style="margin-left:20px;font-size:20px;">上账未开票: {{formObj.unTicketAmount}}元</el-button>
+                    <el-button :underline="false" type="text" style="margin-left:20px;font-size:13px;">合同金额: {{formObj.total}}元</el-button>
+                    <el-button :underline="false" type="text" style="margin-left:20px;font-size:13px;">入账金额: {{formObj.registered}}元</el-button>
+                    <el-button :underline="false" type="text" style="margin-left:20px;font-size:13px;">付款金额: {{formObj.payTotal}}元</el-button>
+                    <el-button :underline="false" type="text" style="margin-left:20px;font-size:13px;">欠款金额: {{formObj.unpay}}元</el-button>
+                    <el-button :underline="false" type="text" style="margin-left:20px;font-size:13px;">回票金额: {{formObj.returnTicketAmount}}元</el-button>
+                    <el-button :underline="false" type="text" style="margin-left:20px;font-size:13px;">上账未开票: {{formObj.unTicketAmount}}元</el-button>
                 </div>
             </div>
             <div class="flex-item scroll-y">
@@ -603,9 +654,7 @@ export default {
         getBuyThree() {
             this.$http
                 .get(
-                    `/haolifa/report/purchase/getAllPurchase?year=${
-                        this.threeYearDate
-                    }`
+                    `/haolifa/report/purchase/getAllPurchase?year=${this.threeYearDate}`
                 )
                 .then(res => {
                     let xData = [],
