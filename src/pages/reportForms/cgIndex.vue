@@ -108,6 +108,7 @@
                         @change="$refs.list.update(true);getFourTj()"
                     />
                     <el-button type="primary" size="mini" @click="$refs.list.update(true);getFourTj()">查询</el-button>
+                    <el-button type="warning" size="mini" @click="download()">数据明细导出</el-button>
                 </div>
             </div>
             <div class="flex-v-center tool-bar">
@@ -649,6 +650,17 @@ export default {
                     };
                     chart.setOption(option);
                 });
+        },
+        download() {
+            const a = document.createElement("a"); // 创建a标签
+            a.setAttribute("download", ""); // download属性
+            a.setAttribute(
+                "href",
+                `/haolifa/report-extend/report-purchase-list-export?purchaseOrderNo=${
+                    this.form.purchaseOrderNo
+                }&supplierName=${this.form.supplierName}`
+            );
+            a.click();
         },
         //采购报表--按月查询采购物资
         getBuyThree() {

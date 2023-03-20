@@ -216,7 +216,7 @@
                 <btn flat color="#008eff" @click="flag2=false">关闭</btn>
             </div>
         </layer>
-        <layer v-if="flag3" title="数据列表" width="95%">
+        <layer v-if="flag3" title="按需方统计数据列表" width="95%">
             <div class="flex-v-center tool-bar">
                 <div class="flex-v-center search-bar" style="margin-right: 20px;">
                     客户名称:
@@ -224,6 +224,7 @@
                     订单号:
                     <input type="text" class="flex-item" v-model="form3.orderNo" placeholder style="width: 150px;" @change="$refs.listThree.update(true);getSaleData()">
                     <el-button type="primary" size="mini" @click="$refs.listThree.update(true);getSaleData()">查询</el-button>
+                    <el-button type="warning" size="mini" @click="download2()">数据明细导出</el-button>
                 </div>
             </div>
             <div class="flex-v-center tool-bar">
@@ -1287,6 +1288,17 @@ export default {
             );
             a.click();
             this.exportLayer = false;
+        },
+        download2() {
+            const a = document.createElement("a"); // 创建a标签
+            a.setAttribute("download", ""); // download属性
+            a.setAttribute(
+                "href",
+                `/haolifa/report-extend/report-sale-demand-list-export?demandName=${
+                    this.form3.demandName
+                }&orderNo=${this.form3.orderNo}`
+            );
+            a.click();
         }
     }
 };
