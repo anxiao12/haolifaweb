@@ -15,16 +15,27 @@
                     class="flex-item"
                     v-model="filter.deptName"
                     @change="
-            $refs.list.update(true)"
+            $refs.list.update(true);init()"
                     placeholder="借款部门"
                     style="width: 200px;"
                 >
                 <input
                     type="text"
                     class="flex-item"
+                    v-model="filter.accountName"
+                    @change="
+            $refs.list.update(true);init()
+            init();
+          "
+                    placeholder="户名"
+                    style="width: 150px"
+                />
+                <input
+                    type="text"
+                    class="flex-item"
                     v-model="filter.loanUserName"
                     @change="
-            $refs.list.update(true)"
+            $refs.list.update(true);init()"
                     placeholder="借款人"
                     style="width: 200px;"
                 >
@@ -32,7 +43,7 @@
                 <select
                     v-model="filter.payStatus"
                     class="f-14"
-                    @change="$refs.list.update(true);"
+                    @change="$refs.list.update(true);init()"
                 >
                     <option value>全部</option>
                     <option value="1">未付款</option>
@@ -43,7 +54,7 @@
                 <select
                     v-model="filter.applyStatus"
                     class="f-14"
-                    @change="$refs.list.update(true);"
+                    @change="$refs.list.update(true);init()"
                 >
                     <option value>全部</option>
                     <option value="1">待审批</option>
@@ -55,7 +66,7 @@
                 <select
                     v-model="filter.status"
                     class="f-14"
-                    @change="$refs.list.update(true);"
+                    @change="$refs.list.update(true);init()"
                 >
                     <option value>全部</option>
                     <option value="1">待办</option>
@@ -69,6 +80,18 @@
                 color="#008eff"
                 @click="add()"
             >新增</btn>
+        </div>
+        <div>
+            <btn
+                class="b"
+                flat
+                color="#008eff"
+            >借款金额(元)：{{ amountSum }}</btn>
+            <btn
+                class="b"
+                flat
+                color="#008eff"
+            >余欠金额(元)：{{ owedAmountSum }}</btn>
         </div>
         <div class="flex-item scroll-y">
             <data-list
@@ -372,6 +395,7 @@ export default {
                 serialNo: "",
                 status: "",
                 type: "1",
+                accountName: "",
             },
             layer: false,
             layer2: false,
@@ -432,6 +456,8 @@ export default {
             ],
             balanceQuota: null,
             loading: false,
+            amountSum: "",
+            owedAmountSum: "",
         };
     },
     activated() {
@@ -442,6 +468,7 @@ export default {
         this.getUserList();
         this.getProList();
         this.getCompanyList();
+        this.init();
     },
     methods: {
         selectClick(data) {
@@ -470,8 +497,21 @@ export default {
                 serialNo: "",
                 status: "",
                 type: "1",
+                accountName: "",
             };
             this.$refs.list.update(true);
+            this.init();
+        },
+        init() {
+            this.$http
+                .post("/haolifa/finance/loanapply/list-summary", this.filter)
+                .then((res) => {
+                    this.owedAmountSum = res.owedAmountSum;
+                    this.amountSum = res.amountSum;
+                })
+                .catch((e) => {
+                    this.$toast(e.msg || e.message);
+                });
         },
         payTypeChange() {
             this.form.bankOfDeposit = this.form.cardNumber = this.form.accountName = this.userId = this.companyCode = "";

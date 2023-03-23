@@ -293,9 +293,10 @@
                     <el-descriptions-item v-if="form.reimburseType==2">
                         <template slot="label">借款</template>
                         <el-select
-                            v-model="form.loanId"
+                            v-model="form.loanIdList"
                             size="mini"
                             clearable
+                            multiple
                         >
                             <el-option
                                 v-for="(item,i) in borrowerList"
@@ -799,7 +800,7 @@ export default {
                 bankOfDeposit: "",
                 cardNumber: "",
                 deptId: 0,
-                loanId: "",
+                loanIdList: [],
                 offsetAmount: 0,
                 reimburseCostDetailAddDTOList: [
                     {
@@ -1132,7 +1133,7 @@ export default {
                         bankOfDeposit: res.bankOfDeposit,
                         cardNumber: res.cardNumber,
                         deptId: res.deptId,
-                        loanId: res.loanId,
+                        loanIdList: res.loanIdList,
                         offsetAmount: res.offsetAmount,
                         reimburseCostDetailAddDTOList: [
                             {
@@ -1332,7 +1333,7 @@ export default {
                 bankOfDeposit: "",
                 cardNumber: "",
                 deptId: 0,
-                loanId: "",
+                loanIdList: [],
                 offsetAmount: 0,
                 reimburseCostDetailAddDTOList: [
                     {
@@ -1403,7 +1404,7 @@ export default {
                 bankOfDeposit: "",
                 cardNumber: "",
                 deptId: 0,
-                loanId: "",
+                loanIdList: [],
                 offsetAmount: 0,
                 reimburseCostDetailAddDTOList: [
                     {
