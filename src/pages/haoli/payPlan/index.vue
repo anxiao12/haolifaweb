@@ -139,9 +139,9 @@
                     <td>{{ item.bookingTypeList.toString() }}</td>
                     <td>{{ dataStatusArr[item.dataStatus] }}</td>
                     <td class="t-right">
+                        <!-- v-if="item.isCN && item.status == 0" -->
                         <a
                             href="javascript:;"
-                            v-if="item.isCN && item.status == 0"
                             class="blue"
                             @click="payClick(item)"
                         >付 款</a>
@@ -198,12 +198,12 @@
                         class="flex-item mr-20"
                         label="付款单位"
                     ></input-box>
-                    <select-box
+                    <!-- <select-box
                         v-model="form.payAccount"
                         class="flex-item mr-20"
                         :list="accountList"
                         label="付款账号"
-                    ></select-box>
+                    ></select-box> -->
                 </div>
                 <div
                     class="flex mt-20 mb-20"
@@ -221,6 +221,12 @@
                         type="number"
                         @blur="changeBalance(i)"
                     ></input-box>
+                    <select-box
+                        v-model="item.payAccount"
+                        class="flex-item mr-20"
+                        :list="accountList"
+                        label="付款账号"
+                    ></select-box>
                     <select-box
                         v-model="item.bookingType"
                         class="flex-item mr-20"
@@ -325,13 +331,13 @@ export default {
                 applyAmount: 0,
                 applyPayCompany: "",
                 id: "",
-                payAccount: "",
                 payCompany: "",
                 payDate: "",
                 payWayList: [
                     {
                         amount: 0,
                         bookingType: "",
+                        payAccount: "",
                         bookingTypeList: [
                             { text: "现金日记账", value: "cash_bill" },
                             { text: "银行日记账", value: "bank_bill" },
@@ -502,6 +508,7 @@ export default {
                     {
                         amount: 0,
                         bookingType: "",
+                        payAccount: "",
                         bookingTypeList: [
                             { text: "现金日记账", value: "cash_bill" },
                             { text: "银行日记账", value: "bank_bill" },
@@ -519,6 +526,7 @@ export default {
             this.form.payWayList.push({
                 amount: 0,
                 bookingType: "",
+                payAccount: "",
                 bookingTypeList: [
                     { text: "现金日记账", value: "cash_bill" },
                     { text: "银行日记账", value: "bank_bill" },

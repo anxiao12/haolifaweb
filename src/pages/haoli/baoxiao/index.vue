@@ -1289,10 +1289,10 @@ export default {
             this.layer = true;
         },
         save() {
-            if (!this.form.projectCode) {
-                this.$toast("请选择经费项目");
-                return;
-            }
+            // if (!this.form.projectCode) {
+            //     this.$toast("请选择经费项目");
+            //     return;
+            // }
             if (!this.form.payType) {
                 this.$toast("请选择支付类型");
                 return;
