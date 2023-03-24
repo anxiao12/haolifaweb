@@ -330,6 +330,8 @@
                                 <el-input
                                     v-model="scope.row.amount"
                                     size="mini"
+                                    type="number"
+                                    @change="amountChange"
                                 ></el-input>
                             </template>
                         </el-table-column>
@@ -435,6 +437,8 @@
                                 <el-input
                                     v-model="scope.row.projectAmount"
                                     size="mini"
+                                    type="number"
+                                    @change="amountChange"
                                 ></el-input>
                             </template>
                         </el-table-column>
@@ -866,6 +870,15 @@ export default {
             fileList: [],
         };
     },
+    watch: {
+        "form.type": {
+            handler(newVal, oldVal) {
+                this.amountChange();
+            },
+            deep: true,
+            immediate: true,
+        },
+    },
     activated() {
         // console.log(this.$store.state.account);
         this.getPayType();
@@ -890,6 +903,19 @@ export default {
             };
             this.getPayType();
             this.$refs.list.update(true);
+        },
+        amountChange() {
+            this.form.amount = 0;
+            if (this.form.type == 2) {
+                //费用报销明细
+                this.form.reimburseCostDetailAddDTOList.forEach((item) => {
+                    this.form.amount += +item.amount;
+                });
+            } else {
+                this.form.reimburseTravelDetailAddDTOList.forEach((item) => {
+                    this.form.amount += +item.projectAmount;
+                });
+            }
         },
         delCost(type, index) {
             if (type == 1) {
