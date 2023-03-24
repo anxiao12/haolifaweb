@@ -139,9 +139,9 @@
                     <td>{{ item.bookingTypeList.toString() }}</td>
                     <td>{{ dataStatusArr[item.dataStatus] }}</td>
                     <td class="t-right">
-                        <!-- v-if="item.isCN && item.status == 0" -->
                         <a
                             href="javascript:;"
+                            v-if="item.isCN && item.status == 0"
                             class="blue"
                             @click="payClick(item)"
                         >付 款</a>
