@@ -226,7 +226,9 @@
                         <el-input
                             v-model="form.amount"
                             :disabled="true"
-                        ></el-input>
+                        > <template slot="append" >
+                            <el-button slot="append" @click="amountChange" >计算</el-button>
+                            </template></el-input> 
                     </el-descriptions-item>
                     <el-descriptions-item>
                         <template slot="label">户名</template>
@@ -288,7 +290,7 @@
                     </el-descriptions-item>
                     <el-descriptions-item v-if="form.reimburseType==2">
                         <template slot="label">冲抵金额</template>
-                        <el-input v-model="form.offsetAmount"></el-input>
+                        <el-input v-model="form.offsetAmount" type="number"></el-input>
                     </el-descriptions-item>
                     <el-descriptions-item v-if="form.reimburseType==2">
                         <template slot="label">借款</template>
@@ -331,7 +333,6 @@
                                     v-model="scope.row.amount"
                                     size="mini"
                                     type="number"
-                                    @change="amountChange"
                                 ></el-input>
                             </template>
                         </el-table-column>
@@ -438,7 +439,6 @@
                                     v-model="scope.row.projectAmount"
                                     size="mini"
                                     type="number"
-                                    @change="amountChange"
                                 ></el-input>
                             </template>
                         </el-table-column>
@@ -446,6 +446,7 @@
                             <template slot-scope="scope">
                                 <el-input
                                     v-model="scope.row.projectDocNum"
+                                    type="number"
                                     size="mini"
                                 ></el-input>
                             </template>
@@ -508,6 +509,7 @@
                             <template slot-scope="scope">
                                 <el-input
                                     v-model="scope.row.travelDays"
+                                    type="number"
                                     size="mini"
                                 ></el-input>
                             </template>
@@ -516,6 +518,7 @@
                             <template slot-scope="scope">
                                 <el-input
                                     v-model="scope.row.travelSubsidyAmount"
+                                    type="number"
                                     size="mini"
                                 ></el-input>
                             </template>
@@ -540,6 +543,7 @@
                             <template slot-scope="scope">
                                 <el-input
                                     v-model="scope.row.vehicleAmount"
+                                    type="number"
                                     size="mini"
                                 ></el-input>
                             </template>
@@ -870,15 +874,6 @@ export default {
             fileList: [],
         };
     },
-    watch: {
-        "form.type": {
-            handler(newVal, oldVal) {
-                this.amountChange();
-            },
-            deep: true,
-            immediate: true,
-        },
-    },
     activated() {
         // console.log(this.$store.state.account);
         this.getPayType();
@@ -911,10 +906,16 @@ export default {
                 this.form.reimburseCostDetailAddDTOList.forEach((item) => {
                     this.form.amount += +item.amount;
                 });
+                if(this.form.reimburseType==2){
+                    this.form.amount = this.form.amount - +this.form.offsetAmount
+                }
             } else {
                 this.form.reimburseTravelDetailAddDTOList.forEach((item) => {
-                    this.form.amount += +item.projectAmount;
+                    this.form.amount += +item.projectAmount + +item.travelSubsidyAmount * +item.travelDays + +item.vehicleAmount;
                 });
+                if(this.form.reimburseType==2){
+                    this.form.amount = this.form.amount - +this.form.offsetAmount
+                }
             }
         },
         delCost(type, index) {

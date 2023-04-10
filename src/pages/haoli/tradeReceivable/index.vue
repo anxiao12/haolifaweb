@@ -25,16 +25,7 @@
                     v-model="filter.demandName"
                     @change="
             $refs.list.update(true)"
-                    placeholder="需求方名称"
-                    style="width: 200px;"
-                >
-                <input
-                    type="text"
-                    class="flex-item"
-                    v-model="filter.supplyAgentName"
-                    @change="
-            $refs.list.update(true)"
-                    placeholder="供应方责任人"
+                    placeholder="客户名称"
                     style="width: 200px;"
                 >
                 订单状态:
@@ -53,6 +44,7 @@
             </div>
             <div class="flex-item"></div>
         </div>
+        <div><btn class="b" flat color="#008eff" >应收款合计(元)：{{total}}</btn></div>
         <div class="flex-item scroll-y">
             <data-list
                 ref="list"
@@ -77,6 +69,9 @@
                     <th>已开发票</th>-->
                     <th>已发货数</th>
                     <th>已发货金额</th>
+                    <th>已开票</th>
+                    <th>应收款</th>
+                    <th>已收款</th>
                     <!-- <th>合同状态</th> -->
                     <th
                         class="t-right"
@@ -103,6 +98,9 @@
                     <td>{{ item.}}</td>-->
                     <td>{{ item.deliveredNumber}}</td>
                     <td>{{ item.signBoard}}</td>
+                    <td>{{ item.invoicedAmount}}</td>
+                    <td>{{ item.receivableAmount}}</td>
+                    <td>{{ item.receivedAccount}}</td>
                     <!-- <td>{{ item.orderNo}}</td> -->
                     <td class="t-right">
                         <a
@@ -512,11 +510,11 @@ export default {
     data() {
         return {
             filter: {
-                contractSignDate: "",
                 demandName: "",
                 orderNo: "",
                 orderStatus: "",
-                supplyAgentName: "",
+                startTime:"",
+                endTime:""
             },
             orderStatusList: [
                 { value: 0, text: "创建" },
@@ -546,19 +544,33 @@ export default {
                 3: "流程初始化",
                 4: "未审核",
             },
+            total:null
         };
     },
-    mounted() {},
+    mounted() {
+        this.getTotal();
+    },
     methods: {
         flush() {
             this.filter = {
-                contractSignDate: "",
                 demandName: "",
                 orderNo: "",
                 orderStatus: "",
-                supplyAgentName: "",
+                startTime:"",
+                endTime:""
             };
             this.$refs.list.update(true);
+            this.getTotal();
+        },
+        getTotal(){
+             this.$http
+                .post(`/haolifa/finance/receivable/listSummary`,this.filter)
+                .then((res) => {
+                    this.total = res;
+                })
+                .catch((e) => {
+                    this.$toast(e.msg || e.message);
+                });
         },
         detail(item) {
             this.layer = true;
