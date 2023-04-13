@@ -44,7 +44,13 @@
             </div>
             <div class="flex-item"></div>
         </div>
-        <div><btn class="b" flat color="#008eff" >应收款合计(元)：{{total}}</btn></div>
+        <div>
+            <btn
+                class="b"
+                flat
+                color="#008eff"
+            >应收款合计(元)：{{total}}</btn>
+        </div>
         <div class="flex-item scroll-y">
             <data-list
                 ref="list"
@@ -59,6 +65,7 @@
                     <th>客户名称</th>
                     <!-- <th>供方单位</th> -->
                     <th>签订日期</th>
+                    <th>合同总额</th>
                     <!-- <th>责任人</th>
                     <th>归属部门</th>
                     <th>发货时间</th>
@@ -88,6 +95,7 @@
                     <td>{{ item.demandName }}</td>
                     <!-- <td>{{ item.supplyName }}</td> -->
                     <td>{{ item.contractSignDate }}</td>
+                    <td>{{ item.totalPrice }}</td>
                     <!-- <td>{{ item. }}</td>
                     <td>{{ item. }}</td>
                     <td>{{ item. }}</td>
@@ -97,7 +105,7 @@
                     <td>{{ item.}}</td>
                     <td>{{ item.}}</td>-->
                     <td>{{ item.deliveredNumber}}</td>
-                    <td>{{ item.signBoard}}</td>
+                    <td>{{ item.deliveryAmount}}</td>
                     <td>{{ item.invoicedAmount}}</td>
                     <td>{{ item.receivableAmount}}</td>
                     <td>{{ item.receivedAccount}}</td>
@@ -513,8 +521,8 @@ export default {
                 demandName: "",
                 orderNo: "",
                 orderStatus: "",
-                startTime:"",
-                endTime:""
+                startTime: "",
+                endTime: "",
             },
             orderStatusList: [
                 { value: 0, text: "创建" },
@@ -544,7 +552,7 @@ export default {
                 3: "流程初始化",
                 4: "未审核",
             },
-            total:null
+            total: null,
         };
     },
     mounted() {
@@ -556,15 +564,15 @@ export default {
                 demandName: "",
                 orderNo: "",
                 orderStatus: "",
-                startTime:"",
-                endTime:""
+                startTime: "",
+                endTime: "",
             };
             this.$refs.list.update(true);
             this.getTotal();
         },
-        getTotal(){
-             this.$http
-                .post(`/haolifa/finance/receivable/listSummary`,this.filter)
+        getTotal() {
+            this.$http
+                .post(`/haolifa/finance/receivable/listSummary`, this.filter)
                 .then((res) => {
                     this.total = res;
                 })
