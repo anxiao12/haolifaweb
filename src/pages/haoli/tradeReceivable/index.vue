@@ -15,7 +15,7 @@
                     class="flex-item"
                     v-model="filter.orderNo"
                     @change="
-            $refs.list.update(true)"
+            $refs.list.update(true);getTotal()"
                     placeholder="订单号"
                     style="width: 200px;"
                 >
@@ -24,7 +24,7 @@
                     class="flex-item"
                     v-model="filter.demandName"
                     @change="
-            $refs.list.update(true)"
+            $refs.list.update(true);getTotal()"
                     placeholder="客户名称"
                     style="width: 200px;"
                 >
@@ -32,7 +32,7 @@
                 <select
                     v-model="filter.orderStatus"
                     class="f-14"
-                    @change="$refs.list.update(true)"
+                    @change="$refs.list.update(true);getTotal()"
                 >
                     <option value>全部</option>
                     <option

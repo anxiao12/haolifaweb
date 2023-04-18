@@ -469,7 +469,7 @@ export default {
             this.form.payWayList.map((item) => {
                 this.balance = this.balance - item.amount;
             });
-            this.balance = Math.floor(this.balance * 100) / 100;
+            this.balance = Math.round(this.balance * 100) / 100;
         },
         save() {
             if (this.balance < 0) {
