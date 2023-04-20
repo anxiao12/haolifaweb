@@ -61,13 +61,13 @@
                     <td>{{item.remark}}</td>
                     <td>{{item.createTime}}</td>
                     <td class="t-right">
-                        <a
+                        <!-- <a
                             href="javascript:;"
                             v-if="item.canAudit"
                             class="blue"
                             @click="edit(item)"
                             style="margin-right: 3px;"
-                        >审核 |</a>
+                        >审核 |</a> -->
                         <a
                             href="javascript:;"
                             class="blue"
@@ -572,6 +572,12 @@ export default {
     activated() {
         // this.filter.billId = this.$route.query.id;
         // this.filter.billType = this.$route.query.billType;
+        this.filter = {
+            billId: this.$route.query.id,
+            billType: this.$route.query.billType,
+            orderId: "",
+            orderNo: "",
+        };
         this.$refs.list.update(true);
         this.getPayType();
     },
