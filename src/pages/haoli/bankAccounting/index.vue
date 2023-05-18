@@ -75,6 +75,12 @@
                 color="#008eff"
                 @click="add('2')"
             >付款新增</btn>
+            <btn
+                class="b"
+                flat
+                color="#008eff"
+                @click="pay"
+            >内部转账</btn>
         </div>
         <div class="flex-item scroll-y">
             <data-list
@@ -251,6 +257,7 @@
                 >关闭</btn>
             </div>
         </layer>
+
         <layer
             v-if="layer2"
             :title="form.id ? '付款编辑' : '付款新增'"
@@ -382,6 +389,63 @@
                 >关闭</btn>
             </div>
         </layer>
+        <layer
+            v-if="payFlag"
+            title="内部转账"
+            width="50%"
+        >
+            <div
+                class="layer-text"
+                style="padding-bottom: 50px"
+            >
+                <div class="flex">
+                    <select-box
+                        v-model="payForm.sourceAccount"
+                        class="flex-item mr-20"
+                        :list="accountList"
+                        label="付款账户"
+                        hint="必填"
+                    ></select-box>
+                </div>
+                <div class="flex">
+                    <select-box
+                        v-model="payForm.targetAccount"
+                        class="flex-item mr-20"
+                        :list="accountList"
+                        label="收款账户"
+                        hint="必填"
+                    ></select-box>
+                </div>
+                <div class="flex">
+                    <input-box
+                        v-model="payForm.payment"
+                        class="flex-item mr-20"
+                        type="number"
+                        label="转账金额"
+                        hint="必填"
+                    ></input-box>
+                </div>
+                <div class="flex">
+                    <input-box
+                        v-model="payForm.remark"
+                        class="flex-item mr-20"
+                        label="备注摘要"
+                    ></input-box>
+                </div>
+            </div>
+            <div class="layer-btns">
+                <btn
+                    flat
+                    color="#008eff"
+                    @click="paySave"
+                >保存</btn>
+                <btn
+                    flat
+                    color="#008eff"
+                    @click="payClose"
+                >关闭</btn>
+            </div>
+        </layer>
     </div>
 </template>
 
@@ -447,6 +511,13 @@ export default {
             projectList: [], //项目
             subjectList: [], //一级科目费用类别
             subjectList2: [], //二级科目费用类别
+            payFlag: false,
+            payForm: {
+                sourceAccount: "",
+                targetAccount: "",
+                payment: "",
+                remark: "",
+            },
         };
     },
     mounted() {
@@ -664,6 +735,9 @@ export default {
                 this.form.collectCompany = "";
             }
         },
+        pay() {
+            this.payFlag = true;
+        },
         save() {
             // if (
             //     !this.form.operateDate ||
@@ -722,6 +796,31 @@ export default {
                 type: "",
                 subject: "",
                 projectCode: "",
+            };
+        },
+        paySave() {
+            if (!this.payForm.payment || !this.payForm.sourceAccount || !this.payForm.targetAccount) {
+                this.$toast("请输入必填项");
+                return;
+            }
+            this.$http
+                .post("/haolifa/finance/bankbill/transfer", this.payForm)
+                .then((res) => {
+                    this.payClose();
+                    this.$toast("内部转账成功");
+                    this.$refs.list.update(true);
+                })
+                .catch((e) => {
+                    this.$toast(e.msg || e.message);
+                });
+        },
+        payClose() {
+            this.payFlag = false;
+            this.payForm = {
+                sourceAccount: "",
+                targetAccount: "",
+                payment: "",
+                remark: "",
             };
         },
     },
