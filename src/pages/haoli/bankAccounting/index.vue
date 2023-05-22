@@ -426,6 +426,15 @@
                     ></input-box>
                 </div>
                 <div class="flex">
+                    <select-box
+                        v-model="payForm.transferType"
+                        class="flex-item mr-20"
+                        :list="transferTypeList"
+                        label="转出方式"
+                        hint="必填"
+                    ></select-box>
+                </div>
+                <div class="flex">
                     <input-box
                         v-model="payForm.remark"
                         class="flex-item mr-20"
@@ -517,7 +526,13 @@ export default {
                 targetAccount: "",
                 payment: "",
                 remark: "",
+                transferType: "",
             },
+            transferTypeList: [
+                { text: "现金", value: "1" },
+                { text: "电汇", value: "2" },
+                { text: "其它货币", value: "3" },
+            ],
         };
     },
     mounted() {
@@ -799,7 +814,7 @@ export default {
             };
         },
         paySave() {
-            if (!this.payForm.payment || !this.payForm.sourceAccount || !this.payForm.targetAccount) {
+            if (!this.payForm.payment || !this.payForm.sourceAccount || !this.payForm.targetAccount || !this.payForm.transferType) {
                 this.$toast("请输入必填项");
                 return;
             }
@@ -821,6 +836,7 @@ export default {
                 targetAccount: "",
                 payment: "",
                 remark: "",
+                transferType: "",
             };
         },
     },
