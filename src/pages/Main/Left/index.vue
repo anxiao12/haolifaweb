@@ -833,7 +833,7 @@ export default {
                 ],
             },
             {
-                name: "好利财务",
+                name: "账目管理",
                 id: "parent-hlcw",
                 children: [
                     {
@@ -927,7 +927,7 @@ export default {
                         id: "xshthztj",
                     },
                     {
-                        name: "公司单位",
+                        name: "对公账号管理",
                         url: "/companyList",
                         id: "gsdw",
                     },

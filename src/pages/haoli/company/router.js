@@ -6,7 +6,7 @@ export default [
       import(/* webpackChunkName: "suppliermanage" */ './index.vue'),
     meta: {
       level: 2,
-      title: '公司单位',
+      title: '对公账号管理',
       open: false,
       id: 'gsdw'
     }
