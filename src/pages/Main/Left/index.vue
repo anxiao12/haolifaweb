@@ -634,6 +634,11 @@ export default {
                         url: "/xzfzwtjg/add-list",
                         id: "xzfzwtjg",
                     },
+                    {
+                        name: "生产日计划",
+                        url: "/scrjhList",
+                        id: "scrjh",
+                    },
                 ],
             },
             {
