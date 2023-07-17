@@ -345,41 +345,52 @@
                 </div> -->
                 <div class="home-tab flex-v-center">
                     <a class="home-tab-item a on">生产日计划</a>
+                    <div style="width:90%;margin:20px auto;display:flex;position: relative;z-index:20">
+                        <el-date-picker
+                            size="mini"
+                            v-model="filter.planDate"
+                            type="date"
+                            value-format="yyyy-MM-dd"
+                            @change="$refs.list.update(true)"
+                            placeholder="选择计划日期"
+                        ></el-date-picker>
+                    </div>
                 </div>
-                <div class="home-list flex-item scroll-y">
-                    <div class="home-list-item a flex-v-center">
-                        <i class="icon f-16 c-a">hourglass_full</i>
-                        <div class="flex-item text-ellipsis">计划日期</div>
-                        <div class="flex-item text-ellipsis">订单号</div>
-                        <div class="flex-item text-ellipsis">订单数量</div>
-                        <div class="flex-item text-ellipsis">已完成数量</div>
-                        <div class="flex-item text-ellipsis">发货日期</div>
-                        <div class="flex-item text-ellipsis">计划完成时间</div>
-                        <div class="flex-item text-ellipsis">实际完成时间</div>
-                        <div class="flex-item text-ellipsis">备注</div>
-                    </div>
-                    <div
-                        class="home-list-item a flex-v-center"
-                        v-for="item in planList"
-                        :key="item.id"
+                <div class="flex-item scroll-y">
+                    <data-list
+                        ref="list"
+                        :page-size="15"
+                        :param="filter"
+                        url="/haolifa/production-daily-plan/page"
+                        method="post"
+                        :borderFlag="true"
                     >
-                        <i class="icon f-16 c-a">hourglass_full</i>
-                        <div class="flex-item text-ellipsis">{{item.planDate}}</div>
-                        <div class="flex-item text-ellipsis">{{item.orderNo}}</div>
-                        <div class="flex-item text-ellipsis">{{item.orderNumber}}</div>
-                        <div class="flex-item text-ellipsis">{{item.finishNumber}}</div>
-                        <div class="flex-item text-ellipsis">{{item.deliveryDate}}</div>
-                        <div class="flex-item text-ellipsis">{{item.planFinishDate}}</div>
-                        <div class="flex-item text-ellipsis">{{item.actualFinishDate}}</div>
-                        <div class="flex-item text-ellipsis">{{item.remark}}</div>
-                    </div>
-                    <div
-                        v-if="!planList.length"
-                        style="pointer-events:none;"
-                        class="flex-item flex-center"
-                    >
-                        <no-data></no-data>
-                    </div>
+                        <tr slot="header">
+                            <th style="width: 60px;">序号</th>
+                            <th>计划日期</th>
+                            <th>订单号</th>
+                            <th>订单数量</th>
+                            <th>已完成数量</th>
+                            <th>发货日期</th>
+                            <th>计划完成日期</th>
+                            <th>实际完成日期</th>
+                            <th>备注</th>
+                        </tr>
+                        <template
+                            slot="item"
+                            slot-scope="{ item,index }"
+                        >
+                            <td class="c-a">{{ index }}</td>
+                            <td>{{item.planDate}}</td>
+                            <td>{{item.orderNo}}</td>
+                            <td>{{item.orderNumber}}</td>
+                            <td>{{item.finishNumber}}</td>
+                            <td>{{item.deliveryDate}}</td>
+                            <td>{{item.planFinishDate}}</td>
+                            <td>{{item.actualFinishDate}}</td>
+                            <td>{{item.remark}}</td>
+                        </template>
+                    </data-list>
                 </div>
             </div>
         </div>
@@ -511,6 +522,10 @@
                     <el-descriptions-item>
                         <template slot="label">占比</template>
                         {{initInfo.manageCostRatio}}
+                    </el-descriptions-item>
+                    <el-descriptions-item>
+                        <template slot="label">库存周转率</template>
+                        {{initInfo.inventoryTurnoverRate}}
                     </el-descriptions-item>
                 </el-descriptions>
             </div>
@@ -737,10 +752,20 @@ export default {
             yearDate3: new Date().getFullYear() + "",
             roleFlag: false,
             planList: [],
+            filter: {
+                orderNo: "",
+                planDate: "",
+                planFinishDate: "",
+                planStatus: "",
+            },
         };
     },
     components: { DataList },
     activated() {
+        if (!this.filter.planDate) {
+            this.filter.planDate = this.getToday();
+        }
+        this.$refs.list.update(true);
         let roleList = this.$store.state.account.roles;
         roleList.map((item) => {
             if (item.role === "ROLE_ZJL") {
@@ -761,10 +786,17 @@ export default {
             this.getQuickStart();
             this.getOrderStatusList();
             this.getOrderList();
-            this.getPlanList();
+            // this.getPlanList();
         }
     },
     methods: {
+        getToday() {
+            let date = new Date();
+            return date.getFullYear() + "-" + this.addZero(date.getMonth() + 1) + "-" + this.addZero(date.getDate());
+        },
+        addZero(val) {
+            return val < 10 ? "0" + val : val;
+        },
         flush() {
             let roleList = this.$store.state.account.roles;
             roleList.map((item) => {
@@ -772,6 +804,8 @@ export default {
                     this.roleFlag = true;
                 }
             });
+            this.filter.planDate = this.getToday();
+            this.$refs.list.update(true);
             this.getTodo();
             this.getDone();
             if (this.roleFlag) {
@@ -789,7 +823,7 @@ export default {
                 this.getQuickStart();
                 this.getOrderStatusList();
                 this.getOrderList();
-                this.getPlanList();
+                // this.getPlanList();
             }
         },
 
@@ -843,11 +877,11 @@ export default {
                     this.orderList = res.list;
                 });
         },
-        getPlanList() {
-            this.$http.post("/haolifa/production-daily-plan/home-page-list", {}).then((res) => {
-                this.planList = res;
-            });
-        },
+        // getPlanList() {
+        //     this.$http.post("/haolifa/production-daily-plan/page", {}).then((res) => {
+        //         this.planList = res;
+        //     });
+        // },
         getOrderStatusList() {
             this.$http.get("/haolifa/order-product/order-status-list").then((res) => {
                 this.orderStatusList = res.map((item) => {
