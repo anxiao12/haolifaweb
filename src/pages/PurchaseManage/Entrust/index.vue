@@ -4,8 +4,8 @@
         <div class="flex-v-center tool-bar">
             <div class="flex-v-center search-bar" style="margin-right: 20px;">
                 <i class="icon f-20 c-8">search</i>
-                <input type="text" class="flex-item" v-model="filter.orderNo" @change="$refs.list.update(true)" placeholder="机加工合同号" style="width: 200px;">
-                <input type="text" class="flex-item" v-model="filter.supplierName" @change="$refs.list.update(true)" placeholder="供方单位" style="width: 200px;">
+                <input type="text" class="flex-item" v-model="filter.orderNo" @change="$refs.list.update(true)" placeholder="机加工合同号" style="width: 200px;" />
+                <input type="text" class="flex-item" v-model="filter.supplierName" @change="$refs.list.update(true)" placeholder="供方单位" style="width: 200px;" />
                 <select v-model="filter.status" class="f-14" @change="$refs.list.update(true)">
                     <option value="0">合同状态</option>
                     <option v-for="item in statusList" :value="item.status" v-bind:key="item.id">{{item.name}}</option>
@@ -27,7 +27,8 @@
                     <th>订单总数量</th>
                     <th>订单状态</th>
                     <th>创建人</th>
-                    <th>创建日期</th>
+                    <th>计划下达日期</th>
+                    <th>计划完成时间</th>
                     <th class="t-right" style="width: 80px;">操作</th>
                 </tr>
                 <template slot="item" slot-scope="{ item, index }">
@@ -39,6 +40,7 @@
                     <td>{{statusList[item.status-1].name}}</td>
                     <td>{{item.createUserId}}</td>
                     <td>{{item.createTime}}</td>
+                    <td>{{item.planCompleteTime}}</td>
                     <td class="t-right">
                         <a href="javascript:;" style="margin-right: 3px" class="blue" @click="getInfo(item.id)">查看</a>
                         <!-- <a href="javascript:;" style="margin-right: 3px" v-if="item.status == 1" class="blue" @click="approve(item.purchaseOrderNo)">发起审批</a>
@@ -167,7 +169,7 @@
                         <tr>
                             <td colspan="12">
                                 <span class="b">4、付款条件</span>交货验收合格后，本公司于收到发票之日起60日内结清货款，每月25日以后交付货品拨归次月账项，
-                                <br>请于本月30日前将对账单快递至本公司采购部，逾期送单将延至次月对账；
+                                <br />请于本月30日前将对账单快递至本公司采购部，逾期送单将延至次月对账；
                             </td>
                         </tr>
                         <tr>
@@ -325,9 +327,7 @@ export default {
         },
         approveProgress(item) {
             this.$router.push(
-                `/purchsemanage-entrust/approveProgress?formNo=${
-                    item.purchaseOrderNo
-                }&formId=0`
+                `/purchsemanage-entrust/approveProgress?formNo=${item.purchaseOrderNo}&formId=0`
             );
         },
         approve: function(orderNo) {

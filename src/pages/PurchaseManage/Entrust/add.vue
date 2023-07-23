@@ -24,6 +24,7 @@
             <div class="flex">
                 <input-box v-model="form.orderNo" class="flex-item" label="加工合同编号"></input-box>
                 <input-box v-model="form.payType" class="flex-item" label="付款方式"></input-box>
+                <date-picker v-model="form.planCompleteTime" class="flex-item" label="计划完成时间"></date-picker>
             </div>
 
             <div class="b" style="margin: 20px 0 10px;">加工物料项</div>
@@ -90,6 +91,7 @@ export default {
                 supplierName: "",
                 supplierNo: "",
                 payType: "",
+                planCompleteTime: "",
                 itemList: [
                     {
                         id: "",
@@ -129,6 +131,7 @@ export default {
             supplierName: "",
             supplierNo: "",
             payType: "",
+            planCompleteTime: "",
             itemList: [
                 {
                     id: "",
@@ -175,6 +178,8 @@ export default {
                         (this.form.supplierName = res.order.supplierName),
                         (this.form.supplierNo = res.order.supplierNo),
                         (this.form.payType = res.order.payType),
+                        (this.form.planCompleteTime =
+                            res.order.planCompleteTime),
                         (this.form.orderNo = res.order.purchaseOrderNo);
                     this.form.confirmTime = res.order.confirmTime.substring(
                         0,

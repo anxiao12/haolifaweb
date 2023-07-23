@@ -9,7 +9,7 @@
                     <option v-for="item in statusList" :value="item.status" v-bind:key="item.id">{{item.name}}</option>
                 </select>
                 <i class="icon f-20 c-8">search</i>
-                <input type="text" class="flex-item" v-model="filter.sprayNo" @change="$refs.list.update(true)" placeholder="喷涂加工号" style="width: 200px;">
+                <input type="text" class="flex-item" v-model="filter.sprayNo" @change="$refs.list.update(true)" placeholder="喷涂加工号" style="width: 200px;" />
                 <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
             </div>
             <div class="flex-item"></div>
@@ -31,7 +31,8 @@
                     <th>类别</th>
                     <th>状态</th>
                     <th>质检状态</th>
-                    <th>发起时间</th>
+                    <th>计划下达日期</th>
+                    <th>计划完成日期</th>
                     <th class="t-right" style="width: 80px;">操作</th>
                 </tr>
                 <!-- item: 当前行数据; index: 当前行数 -->
@@ -48,13 +49,22 @@
                     <td>{{rowStatusList[item.status].name}}</td>
                     <td>{{inspectStatusList[item.inspectStatus]}}</td>
                     <td>{{item.createTime}}</td>
+                    <td>{{item.planCompleteTime}}</td>
+                    <td>{{item.actualCompleteTime}}</td>
+                    <th>实际完成日期</th>
                     <td class="t-right">
                         <a href="javascript:;" style="margin-right: 3px" class="blue" @click="sprayInfo(item)">查看</a>
                         <!--<a href="javascript:;" v-if="item.status == 0"  style="margin-right: 3px" class="blue" @click="editForm(item)">编辑</a>-->
                         <!--<a href="javascript:;" v-if="item.status == 0" style="margin-right: 3px" class="blue" @click="deleteInfo(item)">删除</a>-->
                         <a href="javascript:;" v-if="item.status == 0 || item.status == 4" style="margin-right: 3px" class="blue" @click="machine(item)">开始加工</a>
                         <!--<a href="javascript:;" v-if="item.status == 1" style="margin-right: 3px" class="blue" @click="stopMachine(item)">暂停</a>-->
-                        <a href="javascript:;" v-if="item.status == 1 || item.status == 2" style="margin-right: 3px" class="blue" @click="completeMachine(item)">加工完成</a>
+                        <a
+                            href="javascript:;"
+                            v-if="item.status == 1 || item.status == 2"
+                            style="margin-right: 3px"
+                            class="blue"
+                            @click="completeMachine(item)"
+                        >加工完成</a>
                         <a :href="`/haolifa/export/spray/excel/${item.sprayNo}`" download style="margin-right: 3px" class="blue">下载委托单</a>
                     </td>
                 </template>

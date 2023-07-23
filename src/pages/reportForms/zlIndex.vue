@@ -3,10 +3,13 @@
         <i class="icon icon-abs" @click="flush">autorenew</i>
         <div class="flex-v-center tool-bar">质量报表统计图</div>
         <div style="width:90%;margin:20px auto;display:flex;padding-left:9%">
-            <el-date-picker v-model="oneYearDate" :clearable="false" type="year" value-format="yyyy" @change="getBuyOne" placeholder="选择年月"></el-date-picker>
+            <el-date-picker v-model="oneYearDate" :clearable="false" type="year" value-format="yyyy" @change="getBuyOne();getTen()" placeholder="选择年月"></el-date-picker>
         </div>
         <div style="height:500px;width:90%;margin:20px auto;">
             <div id="buyOnee" style="width:100%;height:600px;margin:0 auto"></div>
+        </div>
+        <div style="height:500px;width:90%;margin:50px auto;">
+            <div id="ten" style="width:100%;height:600px;margin:0 auto"></div>
         </div>
         <div style="width:90%;display:flex;margin:30px auto">
             <div id="chartOne" style="width:50%;height:300px;margin-top:20px;"></div>
@@ -51,6 +54,7 @@ export default {
         this.getBuyOne();
         this.getChartEight();
         this.getChartNine();
+        this.getTen();
     },
     methods: {
         flush() {
@@ -66,6 +70,7 @@ export default {
             this.getBuyOne();
             this.getChartEight();
             this.getChartNine();
+            this.getTen();
         },
         getChartOne() {
             let nameArr = [],
@@ -293,6 +298,80 @@ export default {
                 })
                 .catch(e => {
                     this.$toast(e.msg || e.message);
+                });
+        },
+
+        getTen() {
+            this.$http
+                .get(
+                    `/haolifa/report/quality/getQualityInspectHistoryReport?year=${this.oneYearDate}`
+                )
+                .then(res => {
+                    let xData = [],
+                        gfNumberArr = [], //工费
+                        lfNumberArr = []; //料费
+                    res.forEach(item => {
+                        xData.push(item.createTime);
+                        gfNumberArr.push(item.gfNumber);
+                        lfNumberArr.push(item.lfNumber);
+                    });
+                    let that = this;
+                    let chart = this.$echarts.init(
+                        document.getElementById("ten")
+                    );
+                    const option = {
+                        title: {
+                            text: "机加工产品不合格类别统计图",
+                            x: "left"
+                        },
+                        tooltip: {
+                            trigger: "axis",
+                            axisPointer: {
+                                // 坐标轴指示器，坐标轴触发有效
+                                type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
+                            }
+                        },
+                        legend: {
+                            data: ["工费", "料费"]
+                        },
+                        grid: {
+                            left: "3%",
+                            right: "4%",
+                            bottom: "10%",
+                            containLabel: true
+                        },
+                        xAxis: [
+                            {
+                                type: "category",
+                                data: xData
+                                // axisLabel: {
+                                //     rotate: 60
+                                // }
+                            }
+                        ],
+                        yAxis: [
+                            {
+                                type: "value"
+                                // min: 30
+                            }
+                        ],
+                        series: [
+                            {
+                                name: "工费",
+                                type: "bar",
+                                barWidth: "10%",
+                                data: gfNumberArr
+                            },
+                            {
+                                name: "料费",
+                                type: "bar",
+                                color: "#3398DB",
+                                barWidth: "10%",
+                                data: lfNumberArr
+                            }
+                        ]
+                    };
+                    chart.setOption(option);
                 });
         },
         getOption(title, nameArr, dataArr) {
@@ -803,9 +882,7 @@ export default {
         getBuyOne() {
             this.$http
                 .get(
-                    `/haolifa/report/quality/getAllQuality?year=${
-                        this.oneYearDate
-                    }`
+                    `/haolifa/report/quality/getAllQuality?year=${this.oneYearDate}`
                 )
                 .then(res => {
                     let xData = [],

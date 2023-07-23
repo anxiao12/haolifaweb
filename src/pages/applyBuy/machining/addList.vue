@@ -4,7 +4,7 @@
         <div class="flex-v-center tool-bar">
             <div class="flex-v-center search-bar" style="margin-right: 20px;">
                 <i class="icon f-20 c-8">search</i>
-                <input type="text" class="flex-item" v-model="filter.entrustNo" @change="$refs.list.update(true)" placeholder="机加工单号" style="width: 200px;">
+                <input type="text" class="flex-item" v-model="filter.entrustNo" @change="$refs.list.update(true)" placeholder="机加工单号" style="width: 200px;" />
                 状态：
                 <select v-model="filter.status" class="f-14" @change="$refs.list.update(true)">
                     <option v-for="item in statusList" :value="item.status" v-bind:key="item.id">{{item.name}}</option>
@@ -32,7 +32,8 @@
                     <th>规格</th>
                     <th>型号</th>
                     <th>数量</th>
-                    <th>发起时间</th>
+                    <th>计划下达日期</th>
+                    <th>计划完成日期</th>
                     <th>状态</th>
                     <th class="t-right" style="width: 80px;">操作</th>
                 </tr>
@@ -53,9 +54,16 @@
                     <td>{{item.model}}</td>
                     <td>{{item.number}}</td>
                     <td>{{item.createTime}}</td>
+                    <td>{{item.planCompleteTime}}</td>
                     <td>{{statusList[item.status+1].name}}</td>
                     <td class="t-right">
-                        <a href="javascript:;" v-if="item.workshopType == '2' && (item.status == 2 ||item.status == 6 )" style="margin-right: 3px" class="blue" @click="machining(item.entrustNo, 4)">处理完成</a>
+                        <a
+                            href="javascript:;"
+                            v-if="item.workshopType == '2' && (item.status == 2 ||item.status == 6 )"
+                            style="margin-right: 3px"
+                            class="blue"
+                            @click="machining(item.entrustNo, 4)"
+                        >处理完成</a>
                         <a href="javascript:;" v-if="item.status == 0 || item.status==5" style="margin-right: 3px" class="blue" @click="remove(item)">删除</a>
                         <a href="javascript:;" v-if="item.status == 0" style="margin-right: 3px" class="blue" @click="initApprove(item.entrustNo, 1)">发起审批</a>
                     </td>

@@ -27,7 +27,9 @@
                     <th>型号</th>
                     <th>数量</th>
                     <th>检验合格数</th>
-                    <th>发起时间</th>
+                    <th>计划下达日期</th>
+                    <th>计划完成日期</th>
+                    <th>实际完成日期</th>
                     <th>状态</th>
                     <!--<th>质检状态</th>-->
                     <th class="t-right" style="width: 80px;">操作</th>
@@ -48,6 +50,8 @@
                     <td>{{item.number}}</td>
                     <td>{{item.qualifiedNumber}}</td>
                     <td>{{item.createTime}}</td>
+                    <td>{{item.planCompleteTime}}</td>
+                    <td>{{item.actualCompleteTime}}</td>
                     <td>{{rowStatusList[item.status-1].name}}</td>
                     <!--<td>{{inspectStatusList[item.inspectStatus]}}</td>-->
                     <td class="t-right">

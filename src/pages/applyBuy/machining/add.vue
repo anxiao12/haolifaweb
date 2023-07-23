@@ -12,7 +12,8 @@
             </div>
             <!-- style="margin-right: 20px;width: 240px;" style="margin-right: 20px;width: 240px;"-->
             <div class="flex">
-                <!--<input-box v-model="form.batchNumber" class="flex-item mr-20 " label="批次号"></input-box>-->
+                <!-- <input-box v-model="form.batchNumber" class="flex-item mr-20 " label="批次号"></input-box> -->
+                <date-picker v-model="form.planCompleteTime" class="flex-item mr-20" label="计划完成时间"></date-picker>
                 <input-box v-model="form.processedGraphNo" class="flex-item mr-20" label="加工后图号"></input-box>
                 <select-box class="flex-item mr-20" :list="batchNumberList" v-model="form.batchNumber" label="批次号"></select-box>
                 <select-box class="flex-item mr-20" :list="busTypeList" v-model="form.busType" label="类别"></select-box>
@@ -43,6 +44,7 @@ export default {
                 number: 0,
                 actionType: 1,
                 processedGraphNo: "",
+                planCompleteTime: "",
                 batchNumber: "",
                 busType: "1",
                 model: "",
@@ -70,6 +72,7 @@ export default {
             number: 0,
             actionType: 1,
             processedGraphNo: "",
+            planCompleteTime: "",
             batchNumber: "",
             busType: "1",
             model: "",
