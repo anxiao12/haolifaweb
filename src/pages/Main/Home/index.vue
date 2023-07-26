@@ -361,7 +361,7 @@
                         ref="list"
                         :page-size="15"
                         :param="filter"
-                        url="/haolifa/production-daily-plan/page"
+                        url="/haolifa/production-daily-plan/detail/page"
                         method="post"
                         :borderFlag="true"
                     >

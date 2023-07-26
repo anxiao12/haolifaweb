@@ -6,7 +6,6 @@ module.exports = {
     proxy: {
       '/haolifa': {
         target: 'http://127.0.0.1/',
-        // target: 'http://47.105.36.56:8080/',
         // target: 'http://110.41.14.123:8080/',
         changeOrigin: true
       }
