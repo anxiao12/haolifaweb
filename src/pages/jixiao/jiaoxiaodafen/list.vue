@@ -1,44 +1,100 @@
 <template>
     <div class="page-invoice-list">
-        <i class="icon icon-abs" @click="flush">autorenew</i>
+        <i
+            class="icon icon-abs"
+            @click="flush"
+        >autorenew</i>
         <div class="flex-v-center tool-bar">
             <div class="flex-item"></div>
             <!-- <btn class="b" flat color="#008eff" @click="add">新增</btn> -->
         </div>
         <div class="flex-item scroll-y">
-            <data-list ref="list" :page-size="15" :param="filter" url="/haolifa/pay-assessment-score/getList" method="post">
+            <data-list
+                ref="list"
+                :page-size="15"
+                :param="filter"
+                url="/haolifa/pay-assessment-score/getList"
+                method="post"
+            >
                 <tr slot="header">
                     <th style="width: 60px;">序号</th>
                     <th>人员</th>
                     <!-- <th>考核指标</th> -->
+                    <th>年份</th>
+                    <th>月份</th>
                     <th>分数</th>
-                    <th class="t-right" style="width: 80px;">操作</th>
+                    <th
+                        class="t-right"
+                        style="width: 80px;"
+                    >操作</th>
                 </tr>
                 <!-- item: 当前行数据; index: 当前行数 -->
-                <template slot="item" slot-scope="{ item, index }">
+                <template
+                    slot="item"
+                    slot-scope="{ item, index }"
+                >
                     <td class="c-a">{{ index }}</td>
                     <td>{{ item.userName }}</td>
                     <!-- <td>{{ item.assessmentName }}</td> -->
+                    <td>{{ item.scoreYear }}</td>
+                    <td>{{ item.scoreMonth }}</td>
                     <td>{{ item.score }}</td>
                     <td class="t-right">
-                        <a href="javascript:;" class="blue" @click="detail(item)">详情</a>
+                        <a
+                            href="javascript:;"
+                            class="blue"
+                            @click="detail(item)"
+                        >详情</a>
                     </td>
                 </template>
             </data-list>
         </div>
-        <layer v-if="layer" title="详情" width="70%">
-            <div class="layer-text" style="padding-bottom: 50px;">
-                <el-table :data="tableData" border style="width: 100%">
-                    <el-table-column prop="quotaContent" label="指标内容"></el-table-column>
-                    <el-table-column prop="quotaName" label="考核指标"></el-table-column>
-                    <el-table-column prop="standard" label="考核标准"></el-table-column>
-                    <el-table-column prop="score" label="扣分"></el-table-column>
-                    <el-table-column prop="remark" label="说明"></el-table-column>
-                    <el-table-column prop="createTime" label="打分日期"></el-table-column>
+        <layer
+            v-if="layer"
+            title="详情"
+            width="70%"
+        >
+            <div
+                class="layer-text"
+                style="padding-bottom: 50px;"
+            >
+                <el-table
+                    :data="tableData"
+                    border
+                    style="width: 100%"
+                >
+                    <el-table-column
+                        prop="quotaContent"
+                        label="指标内容"
+                    ></el-table-column>
+                    <el-table-column
+                        prop="quotaName"
+                        label="考核指标"
+                    ></el-table-column>
+                    <el-table-column
+                        prop="standard"
+                        label="考核标准"
+                    ></el-table-column>
+                    <el-table-column
+                        prop="score"
+                        label="扣分"
+                    ></el-table-column>
+                    <el-table-column
+                        prop="remark"
+                        label="说明"
+                    ></el-table-column>
+                    <el-table-column
+                        prop="createTime"
+                        label="打分日期"
+                    ></el-table-column>
                 </el-table>
             </div>
             <div class="layer-btns">
-                <el-button class="mr-20" size="mini" @click="layer = false;">关闭</el-button>
+                <el-button
+                    class="mr-20"
+                    size="mini"
+                    @click="layer = false;"
+                >关闭</el-button>
             </div>
         </layer>
     </div>
@@ -58,10 +114,10 @@ export default {
                 assessmentId: "",
                 score: "",
                 scoreTime: "",
-                userId: ""
+                userId: "",
             },
             loading: false,
-            tableData: []
+            tableData: [],
         };
     },
     mounted() {},
@@ -85,14 +141,14 @@ export default {
                 yes: () => {
                     this.$http
                         .get(`/haolifa/pay-assessment-score/del/${item.id}`)
-                        .then(res => {
+                        .then((res) => {
                             this.$toast("删除成功");
                             this.$refs.list.update(true);
                         })
-                        .catch(e => {
+                        .catch((e) => {
                             this.$toast(e.msg || e.message);
                         });
-                }
+                },
             });
         },
         detail(item) {
@@ -100,10 +156,10 @@ export default {
             this.tableData = [];
             this.$http
                 .get("/haolifa/pay-assessment-score/info/" + item.id)
-                .then(res => {
+                .then((res) => {
                     this.tableData = res;
                 })
-                .catch(e => {
+                .catch((e) => {
                     this.$toast(e.msg || e.message);
                 });
         },
@@ -125,18 +181,16 @@ export default {
                 return;
             }
             this.loading = true;
-            let url = this.form.id
-                ? "/haolifa/pay-production-work-shop/edit"
-                : "/haolifa/pay-production-work-shop/save";
+            let url = this.form.id ? "/haolifa/pay-production-work-shop/edit" : "/haolifa/pay-production-work-shop/save";
             this.$http
                 .post(url, this.form)
-                .then(res => {
+                .then((res) => {
                     this.close();
                     this.$toast("保存成功");
                     this.$refs.list.update(true);
                     this.loading = false;
                 })
-                .catch(e => {
+                .catch((e) => {
                     this.loading = false;
                     this.$toast(e.msg || e.message);
                 });
@@ -148,10 +202,10 @@ export default {
                 postCode: "",
                 postName: "",
                 workType: "",
-                departName: ""
+                departName: "",
             };
-        }
-    }
+        },
+    },
 };
 </script>
 

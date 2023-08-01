@@ -301,7 +301,7 @@ export default {
                 remark: "",
             };
             this.info.standard = "";
-            this.info.info.score = "";
+            this.info.score = "";
         },
         getAllUsers() {
             this.$http
