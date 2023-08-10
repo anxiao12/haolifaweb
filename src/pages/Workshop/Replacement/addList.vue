@@ -4,7 +4,8 @@
         <div class="flex-v-center tool-bar">
             <div class="flex-v-center search-bar" style="margin-right: 20px;margin-left: 80px;">
                 <i class="icon f-20 c-8">search</i>
-                <input type="text" class="flex-item" v-model="filter.orderNo" @change="$refs.list.update(true)" placeholder="订单号" style="width: 200px;">
+                <input type="text" class="flex-item" v-model="filter.orderNo" @change="$refs.list.update(true)"
+                    placeholder="订单号" style="width: 200px;">
                 <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
             </div>
             <div class="flex-item"></div>
@@ -23,25 +24,29 @@
                     <th>零件数量</th>
                     <th>更换原因</th>
                     <th>责任人</th>
+                    <th>不合格类型</th>
                     <th>审核状态</th>
                     <th>创建时间</th>
                     <th class="t-right" style="width: 80px;">操作</th>
                 </tr>
                 <template slot="item" slot-scope="{ item, index }">
-                    <td>{{index}}</td>
-                    <td>{{item.orderNo}}</td>
-                    <td>{{item.materialGraphNo}}</td>
-                    <td>{{item.materialName}}</td>
-                    <td>{{item.materialUnit}}</td>
-                    <td>{{item.materialCount}}</td>
-                    <td>{{item.replaceReason}}</td>
-                    <td>{{item.responsiblePerson}}</td>
-                    <td>{{statusList[item.auditResult].name}}</td>
-                    <td>{{item.createTime}}</td>
+                    <td>{{ index }}</td>
+                    <td>{{ item.orderNo }}</td>
+                    <td>{{ item.materialGraphNo }}</td>
+                    <td>{{ item.materialName }}</td>
+                    <td>{{ item.materialUnit }}</td>
+                    <td>{{ item.materialCount }}</td>
+                    <td>{{ item.replaceReason }}</td>
+                    <td>{{ item.responsiblePerson }}</td>
+                    <td>{{ item.unqualifiedTypeCN }}</td>
+                    <td>{{ statusList[item.auditResult].name }}</td>
+                    <td>{{ item.createTime }}</td>
                     <td class="t-right">
                         <!-- <a href="javascript:;" style="margin-right: 3px" class="blue" @click="info(item.id)">详情</a> | -->
-                        <a href="javascript:;" v-if="item.auditResult == 0" style="margin-right: 3px" class="blue" @click="edit(item)">编辑 |</a>
-                        <a href="javascript:;" v-if="item.auditResult == 0" style="margin-right: 3px" class="blue" @click="remove(item)">删除</a>
+                        <a href="javascript:;" v-if="item.auditResult == 0" style="margin-right: 3px" class="blue"
+                            @click="edit(item)">编辑 |</a>
+                        <a href="javascript:;" v-if="item.auditResult == 0" style="margin-right: 3px" class="blue"
+                            @click="remove(item)">删除</a>
                     </td>
                 </template>
             </data-list>
@@ -106,6 +111,7 @@ export default {
 
 <style lang="less">
 .page-contract {
+
     // height: 100%;
     select {
         background: none;
@@ -114,5 +120,4 @@ export default {
         padding: 5px 20px 5px 10px;
         appearance: none;
     }
-}
-</style>
+}</style>

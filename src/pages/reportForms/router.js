@@ -58,5 +58,17 @@ export default [
       open: false,
       id: 'cbbb'
     }
+  },
+  {
+    path: '/report-forms/yjList',
+    name: 'yjreport-forms',
+    component: () =>
+      import(/* webpackChunkName: "suppliermanage" */ './yjIndex.vue'),
+    meta: {
+      level: 2,
+      title: '业绩指标统计',
+      open: false,
+      id: 'yjtjzb'
+    }
   }
 ];
