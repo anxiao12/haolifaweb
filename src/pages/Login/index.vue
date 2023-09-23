@@ -104,6 +104,7 @@ export default {
             this.$http
                 .post("/haolifa/login", fd)
                 .then(res => {
+                  console.log('res11',res)
                     res.menus.push("home");
                     this.errorMsgFlag = false;
                     this.$store.commit("LOGIN", res);

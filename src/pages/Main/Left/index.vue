@@ -10,7 +10,7 @@
             <div v-if="item.open" class="openMenu">
                 <router-link class="nav-item flex-v-center c-6" v-for="m in item.children" v-if="menus.includes(m.id)"
                     :key="m.id" :title="m.name" :to="m.url"
-                    :class="{ 'on': $route.meta.id === m.id }">{{ m.name }}</router-link>
+                    :class="{ 'on': $route.meta.id === m.id }">{{ m.name }} </router-link>
             </div>
         </div>
     </div>
@@ -246,6 +246,11 @@ export default {
                 name: "配套管理",
                 id: "parent-ptgl",
                 children: [
+                   {
+                        name: "整机设置",
+                        url: "/machineSet",
+                        id: "zjsz",
+                    },
                     {
                         name: "零件设置",
                         url: "/part",
@@ -261,6 +266,7 @@ export default {
                         url: "/parttype",
                         id: "ljflsz",
                     },
+
                 ],
             },
             {
@@ -930,10 +936,12 @@ export default {
                 ],
             },
         ];
+        console.log('menus',menus)
         menu.forEach((m) => {
             m.children = m.children.filter((item) => menus.includes(item.id));
         });
         this.list = menu.filter((m) => m.children.length);
+        console.log('list',this.list)
         // 默认展开对应的菜单
         let id = this.$route.meta.id;
         this.list.forEach((group) => {
@@ -952,6 +960,7 @@ export default {
                     item.open = false;
                 });
                 this.list = res;
+                console.log('list',res)
             });
         },
     },

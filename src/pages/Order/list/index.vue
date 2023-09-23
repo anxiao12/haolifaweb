@@ -96,6 +96,8 @@
                     <th>订单编号</th>
                     <th>需方</th>
                     <!-- <th style="width:50px;">订单合同URL</th> -->
+                    <th>类别</th>
+                    <th>地区</th>
                     <th>发货日期</th>
                     <th>订单数量</th>
                     <th>发货状态</th>
@@ -117,6 +119,8 @@
                     <!-- <td>
                         <a class="fixed-length" :href="item.orderContractExtendUrl" :title="item.orderContractExtendUrl">{{item.orderContractExtendUrl}}</a>
                     </td>-->
+                    <td>{{showOrderType(item.isCheckMaterial)}}</td>
+                    <td>{{item.location}}</td>
                     <td :class="new Date(item.deliveryDate).getTime()<new Date().getTime() ?'cell-color':''">{{item.deliveryDate}}</td>
                     <td :class="new Date(item.deliveryDate).getTime()<new Date().getTime() ?'cell-color':''">{{item.totalCount}}</td>
                     <td :class="new Date(item.deliveryDate).getTime()<new Date().getTime() ?'cell-color':''">{{deliverStatusList[item.deliverStatus].text}}</td>
@@ -755,6 +759,15 @@ export default {
     },
     // activated(){}
     methods: {
+      showOrderType(type){
+        if(type===0){
+          return '不走核料'
+        }else if(type === 1){
+          return '走核料'
+        }else{
+          return '整机订单'
+        }
+      },
         flush() {
             this.filter = {
                 orderNo: "",
