@@ -4,9 +4,11 @@
         <div class="flex-v-center tool-bar">
             <div class="flex-v-center search-bar" style="margin-right: 20px;">
                 <i class="icon f-20 c-8">search</i>
-                <input type="text" class="flex-item" v-model="filter.materialName" @change="$refs.list.update(true)" placeholder="名称" style="width: 200px;">
-                <input type="text" class="flex-item" v-model="filter.materialGraphNo" @change="$refs.list.update(true)" placeholder="图号" style="width: 200px;">
-                <input type="text" class="flex-item" v-model="filter.orderNo" @change="$refs.list.update(true)" placeholder="订单号" style="width: 200px;">
+                <input type="text" class="flex-item" v-model="filter.productModel" @change="$refs.list.update(true)" placeholder="成品型号" style="width: 200px;">
+                <input type="text" class="flex-item" v-model="filter.productName" @change="$refs.list.update(true)" placeholder="成品名称" style="width: 200px;">
+                <input type="text" class="flex-item" v-model="filter.productNo" @change="$refs.list.update(true)" placeholder="成品编号" style="width: 200px;">
+                <input type="text" class="flex-item" v-model="filter.productOrderNo" @change="$refs.list.update(true)" placeholder="生产订单编号" style="width: 200px;">
+                <!-- <input type="text" class="flex-item" v-model="filter.status" @change="$refs.list.update(true)" placeholder="状态" style="width: 200px;"> -->
 
                 <select v-model="filter.status" class="f-14" @change="$refs.list.update(true)">
                     <option v-for="item in allStatus" :value="item.value" v-bind:key="item.id">{{item.text}}</option>
@@ -26,9 +28,7 @@
                     <th>成品编号</th>
                     <th>生产订单编号</th>
                     <th>状态</th>
-                    <!-- <th>到货时间</th>
-                    <th>状态</th>
-                    <th class="t-right" style="width: 80px;">操作</th> -->
+                    <th class="t-right" style="width: 80px;">操作</th>
                 </tr>
                 <!-- item: 当前行数据; index: 当前行数 -->
                 <template slot="item" slot-scope="{ item, index,i }">
@@ -44,10 +44,10 @@
                     <td>{{allStatus[item.status].text}}</td>
                     <!-- <td>{{dealStatus(item.status)}}</td>
                     <td>{{item.arrivalTime}}</td>
-                    <td>{{allStatus[item.status].text}}</td>
+                    <td>{{allStatus[item.status].text}}</td> -->
                     <td class="t-right">
                         <a href="javascript:;" v-if="item.status==2" style="margin-right: 3px" class="blue" @click="dealApplyBuy(item.id)">处理完成</a>
-                    </td> -->
+                    </td>
                 </template>
             </data-list>
         </div>
@@ -62,19 +62,25 @@ export default {
     data() {
         return {
             filter: {
-                type: 0,
-                status: -1,
-                materialName: "",
-                orderNo: "",
-                materialGraphNo: ""
+              productModel:'',
+              productName:'',
+              productNo:'',
+              productOrderNo:'',
+              status:'3',
+                // type: 0,
+                // status: -1,
+                // materialName: "",
+                // orderNo: "",
+                // materialGraphNo: ""
             },
+             // 0未处理 1 待审批 2 待采购 3 已处理 4 审批不通过
             allStatus: [
                 { value: 0, text: "未处理" },
                 { value: 1, text: "待审批" },
                 { value: 2, text: "待采购" },
                 { value: 3, text: "已处理" },
                 { value: 4, text: "审批不通过" },
-                { value: -1, text: "全部" }
+                { value: '', text: "全部" }
             ],
             all: false
         };
@@ -96,11 +102,16 @@ export default {
       },
         flush() {
             this.filter = {
-                type: 0,
-                status: -1,
-                materialName: "",
-                orderNo: "",
-                materialGraphNo: ""
+                productModel:'',
+                productName:'',
+                productNo:'',
+                productOrderNo:'',
+                status:'',
+                // type: 0,
+                // status: -1,
+                // materialName: "",
+                // orderNo: "",
+                // materialGraphNo: ""
             };
             this.$refs.list.update(true);
         },

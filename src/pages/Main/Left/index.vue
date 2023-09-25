@@ -309,6 +309,11 @@ export default {
                         url: "/machineToPurchase-order",
                         id: "zjdcglb",
                     },
+                     {
+                        name: "整机采购列表",
+                        url: "/machinePurchased-order/list",
+                        id: "zjcglb",
+                    },
                     {
                         name: "零件报检单",
                         url: "/applyBuy-material",
