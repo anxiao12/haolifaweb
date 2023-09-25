@@ -11,12 +11,16 @@ Router.prototype.push = function push(location) {
 };
 
 function createRoutesFromFiles(routeFiles) {
+  // console.log('routeFiles',routeFiles.kes())
   let _routes = [];
   routeFiles.keys().forEach(key => {
+    // console.log('key',key)
     let item = routeFiles(key).default;
+
     if (item instanceof Array) item.forEach(route => _routes.push(route));
     else _routes.push(item);
   });
+  // console.log('_routes',_routes)
   return _routes;
 }
 

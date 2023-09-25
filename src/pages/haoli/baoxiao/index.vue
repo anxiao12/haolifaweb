@@ -228,7 +228,7 @@
                             :disabled="true"
                         > <template slot="append" >
                             <el-button slot="append" @click="amountChange" >计算</el-button>
-                            </template></el-input> 
+                            </template></el-input>
                     </el-descriptions-item>
                     <el-descriptions-item>
                         <template slot="label">户名</template>
