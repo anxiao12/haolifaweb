@@ -31,7 +31,7 @@
                     <th>需方地址</th>
                     <th>需方联系人</th>
                     <th>方联系人电话</th>
-                    <th>主键id</th>
+                    <!-- <th>主键id</th> -->
                     <th>经办日期</th>
                     <th>订单经办人</th>
                     <th>付款方式</th>
@@ -63,7 +63,7 @@
                     <td>{{item.demanderAddr}}</td>
                     <td>{{item.demanderLinkman}}</td>
                     <td>{{item.demanderPhone}}</td>
-                    <td>{{item.id}}</td>
+                    <!-- <td>{{item.id}}</td> -->
                     <td>{{item.operateTime}}</td>
                     <td>{{item.operatorUserName}}</td>
                     <td>{{item.payType}}</td>
@@ -87,18 +87,17 @@
                     <td>{{item.wreckReason}}</td>
                       <td class="t-right">
                         <a href="javascript:;" style="margin-right: 3px" class="blue" @click="getInfo(item.id)">查看</a>
+                        <a href="javascript:;" style="margin-right: 3px" v-if="item.status == '3'" class="blue" @click="completePurchase(item.id)">采购完成</a>
                         <a href="javascript:;" style="margin-right: 3px" v-if="item.status == 1" class="blue" @click="approve(item.purchaseOrderNo)">发起审批</a>
                         <a href="javascript:;" style="margin-right: 3px" v-if="item.status == 4" class="blue" @click="approve(item.purchaseOrderNo)">重新发起审批</a>
-                        <a href="javascript:;" style="margin-right: 3px" v-if="item.status == 3" class="blue" @click="createInspect(item.id)">生成报检单</a>
                         <a href="javascript:;" style="margin-right: 3px" v-if="item.status == 1 || item.status==4" class="blue" @click="updatePurchase(item.id)">编辑</a>
                         <a href="javascript:;" style="margin-right: 3px" v-if="item.status == 2" class="blue" @click="approveProgress(item)">审批进度</a>
                         <a href="javascript:;" v-if="item.status == 1 ||item.status == 4" class="blue" @click="deletePurchase(item.id)">删除</a>
-                        <!-- <a href="javascript:;" v-if="item.status == 3" class="blue" @click="completePurchase(item.purchaseOrderNo)">采购完成</a> -->
                     </td>
                 </template>
             </data-list>
         </div>
-        <layer v-if="completeLayer" :title="'订单折损'" width="450px">
+        <!-- <layer v-if="completeLayer" :title="'订单折损'" width="450px">
             <div class="flex">
                 <input-box v-model="wreck.wreckAmount" class="flex-item mr-20" label="折损金额"></input-box>
                 <input-box v-model="wreck.wreckReason" class="flex-item mr-20" label="折损原因"></input-box>
@@ -107,7 +106,7 @@
                 <btn flat @click="completeLayer=false">取消</btn>
                 <btn flat color="#008eff" @click="complete()">保存</btn>
             </div>
-        </layer>
+        </layer> -->
         <layer v-if="layer" title="详情" width="70%">
             <div class="layer-text" style="padding-bottom: 50px;">
                 <div class="form-content metalwork-info">
@@ -155,15 +154,15 @@
                             <td colspan="6">需方：{{info.demander}}</td>
                         </tr>
                         <tr>
-                            <th colspan="6">联系人：{{info.supplierLinkman}}</th>
-                            <td colspan="6">联系人：{{info.demanderLinkman}}</td>
+                            <th colspan="6">供方联系人：{{info.supplierLinkman}}</th>
+                            <td colspan="6">需方联系人：{{info.demanderLinkman}}</td>
                         </tr>
                         <tr>
-                            <th colspan="6">联系电话：{{info.suppilerPhone}}</th>
-                            <td colspan="6">联系电话：{{info.demanderPhone}}</td>
+                            <th colspan="6">供方联系人电话：{{info.supplierPhone}}</th>
+                            <td colspan="6">需方联系人电话：{{info.demanderPhone}}</td>
                         </tr>
                         <tr>
-                            <th colspan="6">供方地址：{{info.suppilerAddr}}</th>
+                            <th colspan="6">供方地址：{{info.supplierAddr}}</th>
                             <td colspan="6">需方地址：{{info.demanderAddr}}</td>
                         </tr>
                         <tr>
@@ -185,16 +184,16 @@
                         </tr>
                         <tr v-for="(item,i) in itemList" :key="item.id">
                             <td colspan="1">{{i}}</td>
-                            <td colspan="1">{{item.materialName}}</td>
-                            <td colspan="1">{{item.materialGraphNo}}</td>
+                            <td colspan="1">{{item.productName}}</td>
+                            <td colspan="1">{{item.productNo}}</td>
                             <td colspan="1">{{item.specification}}</td>
                             <td colspan="1">{{item.material}}</td>
                             <td colspan="1">{{item.unit}}</td>
-                            <td colspan="1">{{item.number}}</td>
+                            <td colspan="1">{{item.productNumber}}</td>
                             <td colspan="1">{{item.unitWeight}}</td>
                             <td colspan="1">{{item.totalWeight}}</td>
                             <td colspan="1">{{item.unitPrice}}</td>
-                            <td colspan="1">{{item.totalAmount}}</td>
+                            <td colspan="1">{{item.totalPrice}}</td>
                             <td colspan="1">{{item.remark}}</td>
                         </tr>
                         <tr>
@@ -376,35 +375,36 @@ export default {
             this.$refs.list.update(true);
         },
         getInfo(formId) {
-            this.layer = true;
-            // this.orderUrl = "/haolifa/export/purchaseOrder/" + formId;
-            this.info.id = formId;
+            // this.info.id = formId;
             this.$http
-                .get(`/haolifa/purchase-order/info/${formId}`)
+                .get(`/haolifa/wholeMachinePurchaseOrder/detail/${formId}`)
                 .then(res => {
-                    this.info = res.order;
-                    this.itemList = res.items;
-                    this.orderUrl = res.order.fileUrl;
-                    this.info.operateTime = res.order.operateTime.substring(
-                        0,
-                        10
-                    );
-                    this.info.confirmTime = res.order.confirmTime.substring(
-                        0,
-                        10
-                    );
-                    this.info.createTime = res.order.createTime.substring(
-                        0,
-                        10
-                    );
-                    this.info.deliveryTime = res.order.deliveryTime.substring(
-                        0,
-                        10
-                    );
-                    this.info.updateTime = res.order.updateTime.substring(
-                        0,
-                        10
-                    );
+                    this.info = res;
+                    console.log('info',res.result)
+                    this.itemList = res.itemList;
+                    this.layer = true;
+
+                    // this.orderUrl = res.order.fileUrl;
+                    // this.info.operateTime = res.order.operateTime.substring(
+                    //     0,
+                    //     10
+                    // );
+                    // this.info.confirmTime = res.order.confirmTime.substring(
+                    //     0,
+                    //     10
+                    // );
+                    // this.info.createTime = res.order.createTime.substring(
+                    //     0,
+                    //     10
+                    // );
+                    // this.info.deliveryTime = res.order.deliveryTime.substring(
+                    //     0,
+                    //     10
+                    // );
+                    // this.info.updateTime = res.order.updateTime.substring(
+                    //     0,
+                    //     10
+                    // );
                     console.log("info", this.info);
                     console.log("itemList", this.itemList);
                 })
@@ -467,12 +467,10 @@ export default {
             this.$router.push(`/machinePurchased-order/add?formId=${orderId}`);
         },
         completePurchase: function(orderNo) {
-            this.completeLayer = true;
-            this.wreck.orderNo = orderNo;
-        },
-        complete: function() {
-            this.$http
-                .post("/haolifa/purchase-order/complete", this.wreck)
+            // this.completeLayer = true;
+            // this.wreck.orderNo = orderNo;
+             this.$http
+                .post(`/haolifa/wholeMachinePurchaseOrder/finish/${orderNo}`)
                 .then(res => {
                     this.completeLayer = false;
                     this.$refs.list.update(true);
@@ -481,6 +479,17 @@ export default {
                     this.$toast(e.msg || e.message);
                 });
         },
+        // complete: function() {
+        //     this.$http
+        //         .post("/haolifa/purchase-order/complete", this.wreck)
+        //         .then(res => {
+        //             this.completeLayer = false;
+        //             this.$refs.list.update(true);
+        //         })
+        //         .catch(e => {
+        //             this.$toast(e.msg || e.message);
+        //         });
+        // },
         deletePurchase: function(id) {
             this.$confirm({
                 title: "删除确认",
