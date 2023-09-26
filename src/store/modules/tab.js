@@ -23,6 +23,7 @@ const mutations = {
     },
     DELMENUTABS(state, url) {
         let index;
+        console.log('state',state)
         state.menuTabs.map((item, i) => {
             if (item.url == url) {
                 index = i;

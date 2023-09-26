@@ -5,6 +5,7 @@
             <div class="flex-v-center search-bar" style="margin-right: 20px;">
                 <i class="icon f-20 c-8">search</i>
                 <input type="text" class="flex-item" v-model="filter.purchaseOrderNo" @change="$refs.list.update(true)" placeholder="订单编号" style="width: 200px;">
+                <input type="text" class="flex-item" v-model="filter.productOrderNo" @change="$refs.list.update(true)" placeholder="销售订单号" style="width: 200px;">
                 <input type="text" class="flex-item" v-model="filter.supplierName" @change="$refs.list.update(true)" placeholder="供应商名称" style="width: 200px;">
                 <input type="text" class="flex-item" v-model="filter.supplierNo" @change="$refs.list.update(true)" placeholder="供应商编号" style="width: 200px;">
                 <select v-model="filter.status" class="f-14" @change="$refs.list.update(true)">
@@ -14,9 +15,9 @@
                 <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
             </div>
             <div class="flex-item"></div>
-            <!-- <router-link to="/purchsemanage-purchase/add">
+            <router-link to="/machinePurchased-order/add">
                 <btn class="b" flat color="#008eff">新增采购</btn>
-            </router-link>-->
+            </router-link>
         </div>
         <div class="flex-item scroll-y">
             <data-list ref="list" method="post" :page-size="15" :param="filter" url="/haolifa/wholeMachinePurchaseOrder/pageList">
@@ -84,13 +85,14 @@
                     <td>{{item.updateUser}}</td>
                     <td>{{item.wreckAmount}}</td>
                     <td>{{item.wreckReason}}</td>
-                    <td class="t-right">
+                      <td class="t-right">
                         <a href="javascript:;" style="margin-right: 3px" class="blue" @click="getInfo(item.id)">查看</a>
-                        <!-- <a href="javascript:;" style="margin-right: 3px" v-if="item.status == 1" class="blue" @click="approve(item.purchaseOrderNo)">发起审批</a> -->
-                        <!-- <a href="javascript:;" style="margin-right: 3px" v-if="item.status == 3" class="blue" @click="createInspect(item.id)">生成报检单</a> -->
-                        <!-- <a href="javascript:;" style="margin-right: 3px" v-if="item.status == 1" class="blue" @click="updatePurchase(item.id)">编辑</a> -->
+                        <a href="javascript:;" style="margin-right: 3px" v-if="item.status == 1" class="blue" @click="approve(item.purchaseOrderNo)">发起审批</a>
+                        <a href="javascript:;" style="margin-right: 3px" v-if="item.status == 4" class="blue" @click="approve(item.purchaseOrderNo)">重新发起审批</a>
+                        <a href="javascript:;" style="margin-right: 3px" v-if="item.status == 3" class="blue" @click="createInspect(item.id)">生成报检单</a>
+                        <a href="javascript:;" style="margin-right: 3px" v-if="item.status == 1 || item.status==4" class="blue" @click="updatePurchase(item.id)">编辑</a>
                         <a href="javascript:;" style="margin-right: 3px" v-if="item.status == 2" class="blue" @click="approveProgress(item)">审批进度</a>
-                        <!-- <a href="javascript:;" v-if="item.status == 1 ||item.status == 4" class="blue" @click="deletePurchase(item.purchaseOrderNo)">删除</a> -->
+                        <a href="javascript:;" v-if="item.status == 1 ||item.status == 4" class="blue" @click="deletePurchase(item.id)">删除</a>
                         <!-- <a href="javascript:;" v-if="item.status == 3" class="blue" @click="completePurchase(item.purchaseOrderNo)">采购完成</a> -->
                     </td>
                 </template>
@@ -270,7 +272,7 @@
                 <btn flat color="#008eff" @click="layer=false">关闭</btn>
             </div>
         </layer>
-        <layer v-if="numLayer" title="详情" width="70%">
+        <!-- <layer v-if="numLayer" title="详情" width="70%">
             <div class="layer-text" style="padding-bottom: 50px;">
                 <div class="form-content metalwork-info">
                     <table class="f-14">
@@ -307,7 +309,7 @@
             <div class="layer-btns">
                 <btn flat color="#008eff" @click="numLayer=false">关闭</btn>
             </div>
-        </layer>
+        </layer> -->
     </div>
 </template>
 
@@ -462,7 +464,7 @@ export default {
             });
         },
         updatePurchase: function(orderId) {
-            this.$router.push(`/purchsemanage-purchase/add?formId=${orderId}`);
+            this.$router.push(`/machinePurchased-order/add?formId=${orderId}`);
         },
         completePurchase: function(orderNo) {
             this.completeLayer = true;
@@ -479,7 +481,7 @@ export default {
                     this.$toast(e.msg || e.message);
                 });
         },
-        deletePurchase: function(purchaseOrderNo) {
+        deletePurchase: function(id) {
             this.$confirm({
                 title: "删除确认",
                 text: `您确定要删除该订单么？`,
@@ -487,8 +489,8 @@ export default {
                 btns: ["取消", "删除"],
                 yes: () => {
                     this.$http
-                        .get(
-                            `/haolifa/purchase-order/delete/${purchaseOrderNo}`
+                        .delete(
+                            `/haolifa/wholeMachinePurchaseOrder/remove/${id}`
                         )
                         .then(res => {
                             this.$toast("删除成功");

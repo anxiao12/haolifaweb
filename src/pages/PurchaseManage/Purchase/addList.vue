@@ -22,6 +22,7 @@
                 <tr slot="header">
                     <th style="width: 60px;">序号</th>
                     <th>采购合同号</th>
+                    <th>销售订单号</th>
                     <th>供方单位</th>
                     <th>采购完成日期</th>
                     <th>采购总数量</th>
@@ -37,6 +38,7 @@
                     <!--<router-link class="c-4" :to="'/supplier/'+item.id">{{item.suppilerName}}</router-link>-->
                     <!--</td>-->
                     <td>{{item.purchaseOrderNo}}</td>
+                    <td>{{item.productOrderNo}}</td>
                     <td>{{item.supplierName}}</td>
                     <td>{{item.deliveryTime}}</td>
                     <td>{{item.totalCount}}</td>
