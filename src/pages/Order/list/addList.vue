@@ -928,13 +928,26 @@ export default {
         },
         progress(item) {
             let id = "";
+            let flowId;
+            let summary;
+            if(item.isCheckMaterial === 0){
+              flowId = 6
+              summary='不核料订单审批'
+            }else if(item.isCheckMaterial === 2){
+              flowId = 13
+              summary='整机订单流程'
+            }else{
+              flowId = 1
+              summary='生产订单审批'
+            }
+
             this.$http
                 .post("/haolifa/flowInstance/create", {
-                    flowId: item.isCheckMaterial == 0 ? 6 : 1,
+                    flowId: flowId,
                     formId: item.id,
                     formType: 1,
                     formNo: item.orderNo,
-                    summary: item.isCheckMaterial == 0 ? "不核料订单审批" : "生产订单审批",
+                    summary: summary
                 })
                 .then((res) => {
                     id = res.instanceId;
