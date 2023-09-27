@@ -42,9 +42,6 @@
                     <td>{{item.productNo}}</td>
                     <td>{{item.productOrderNo}}</td>
                     <td>{{allStatus[item.status].text}}</td>
-                    <!-- <td>{{dealStatus(item.status)}}</td>
-                    <td>{{item.arrivalTime}}</td>
-                    <td>{{allStatus[item.status].text}}</td> -->
                     <td class="t-right">
                         <a href="javascript:;" v-if="item.status==2" style="margin-right: 3px" class="blue" @click="dealApplyBuy(item.id)">处理完成</a>
                     </td>
