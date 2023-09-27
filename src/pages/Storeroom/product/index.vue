@@ -6,6 +6,11 @@
                 <i class="icon f-20 c-8">search</i>
                 <input type="text" class="flex-item" v-model="filter.orderNo" @change="$refs.list.update(true)" placeholder="订单号">
                 <input type="text" class="flex-item" v-model="filter.productNo" @change="$refs.list.update(true)" placeholder="成品ID">
+                <span>区域：</span>
+                  <select v-model="filter.location" class="f-14" @change="$refs.list.update(true)">
+                    <option value="shanxi">山西</option>
+                    <option value="beijing">北京</option>
+                </select>
                 <select v-model="filter.operationType" class="f-14" @change="$refs.list.update(true)">
                     <option value="0">全部</option>
                     <option value="1">出库</option>
@@ -28,6 +33,7 @@
                     <th>数量</th>
                     <th>单价</th>
                     <th>创建时间</th>
+                    <th>区域</th>
                     <th class="t-right" style="width: 80px;">操作</th>
                 </tr>
                 <template slot="item" slot-scope="{ item, index }">
@@ -40,6 +46,7 @@
                     <td>{{item.quantity}}</td>
                     <td>{{item.price}}</td>
                     <td>{{item.createTime}}</td>
+                    <td>{{item.location === 'shanxi' ? '山西' :'北京'}}</td>
                     <td class="t-right">
                         <a href="javascript:;" class="blue" v-if="item.operationType==2 && item.execute == 0" @click="outProduct(item)">出库</a>
                     </td>
@@ -103,6 +110,7 @@ export default {
             filter: {
                 orderNo: "",
                 productNo: "",
+                location:"",
                 operationType: "0",
                 type: "1"
             },
@@ -144,6 +152,7 @@ export default {
                 orderNo: "",
                 productNo: "",
                 operationType: "0",
+                location:"",
                 type: "1"
             };
             this.$refs.list.update(true);
