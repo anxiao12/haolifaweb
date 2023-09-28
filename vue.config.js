@@ -1,5 +1,6 @@
 module.exports = {
   baseUrl: '/',
+  // publicPath:'/',
   lintOnSave: false,
   devServer: {
     port: 8082,

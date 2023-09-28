@@ -538,7 +538,7 @@
                                             <th>零件图号</th>
                                             <th>采购数量</th>
                                         </tr>
-                                        <tr v-for="(item, i) in purchaseList">
+                                        <tr :key="i" v-for="(item, i) in purchaseList">
                                             <td>{{item.productOrderNo}}</td>
                                             <td>{{item.materialName}}</td>
                                             <td>{{item.materialGraphNo}}</td>
