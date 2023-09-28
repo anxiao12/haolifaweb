@@ -81,6 +81,12 @@
                             class="c-8 date-time"
                             @click="$router.push({path:'/baoxiaoEntrust',query:{instanceId:item.instanceId,stepId:item.stepId}})"
                         >发起人：{{item.createUserRealName}}</div>
+                         <div
+                            style="width:145px"
+                            v-if="item.flowId == 13"
+                            class="c-8 date-time"
+                            @click="$router.push({path:'/produce',query:{instanceId:item.instanceId,stepId:item.stepId}})"
+                        >发起人：{{item.createUserRealName}}</div>
                         <div
                             class="c-8 date-time text-ellipsis"
                             style="width:145px"
@@ -153,6 +159,12 @@
                             v-if="item.flowId == 11"
                             class="c-8 date-time"
                             @click="$router.push({path:'/baoxiaoEntrust',query:{instanceId:item.instanceId,stepId:item.stepId}})"
+                        >发起人：{{item.createUserRealName}}</div>
+                          <div
+                            style="width:145px"
+                            v-if="item.flowId == 13"
+                            class="c-8 date-time"
+                            @click="$router.push({path:'/produce',query:{instanceId:item.instanceId,stepId:item.stepId}})"
                         >发起人：{{item.createUserRealName}}</div>
                         <div
                             class="c-8 date-time text-ellipsis"
