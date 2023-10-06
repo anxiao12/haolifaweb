@@ -23,68 +23,73 @@
                 <tr slot="header">
                     <th style="width: 60px;">序号</th>
                     <th>类别</th>
-                    <th>连接方式</th>
-                    <th>创建时间</th>
-                    <th>驱动形式</th>
-                    <th>面价</th>
-                    <th>好利型号</th>
-                    <th>产品ID</th>
-                    <th>介质</th>
-                    <th>修改时间</th>
-                    <th>公称压力</th>
-                    <th>其他</th>
-                    <th>产品等级</th>
-                    <th>产品编号</th>
-                    <th>产品型号</th>
                     <th>产品名称</th>
-                    <th>采购价</th>
-                    <th>备注</th>
-                    <th>密封材质</th>
-                    <th>销售底价</th>
+                    <th>产品型号</th>
                     <th>系列</th>
                     <th>规格</th>
-                    <th>结构形式</th>
-                    <th>供应商代号</th>
-                    <th>供应商颜色</th>
-                    <th>供应商名称</th>
-                    <th>温度</th>
+                    <th>公称压力</th>
                     <th>阀体材质</th>
                     <th>阀芯材质</th>
+                    <th>密封材质</th>
                     <th>阀轴</th>
+                    <th>驱动形式</th>
+                    <th>结构形式</th>
+                    <th>连接方式</th>
+                    <th>供应商颜色</th>
+                    <th>介质</th>
+                    <th>温度</th>
+                    <th>备注</th>
+                    <th>供应商名称</th>
+                    <th>供应商代号</th>
+                    <th>产品等级</th>
+                    <th>采购价</th>
+                    <th>销售底价</th>
+                    <th>面价</th>
+                    <th>好利型号</th>
+                    <th>其他</th>
+                    <th>创建时间</th>
+                    <th>修改时间</th>
+                    <th>是否标准产品</th>
+                  <!--
+                    <th>产品ID</th>
+                    <th>产品编号</th> -->
+
                     <th class="t-right" style="width: 80px;">操作</th>
                 </tr>
                 <!-- item: 当前行数据; index: 当前行数 -->
                 <template slot="item" slot-scope="{ item, index }">
                     <td class="c-a">{{index}}</td>
                     <td>{{item.category}}</td>
-                    <td>{{item.connectionMethod}}</td>
-                    <td>{{item.createTime}}</td>
-                    <td>{{item.driveForm}}</td>
-                    <td>{{item.facePrice}}</td>
-                    <td>{{item.goodModel}}</td>
-                    <td>{{item.id}}</td>
-                    <td>{{item.medium}}</td>
-                    <td>{{item.modifyTime}}</td>
-                    <td>{{item.nominalPressure}}</td>
-                    <td>{{item.other}}</td>
-                    <td>{{item.productGrade}}</td>
-                    <td>{{item.productId}}</td>
-                    <td>{{item.productModel}}</td>
                     <td>{{item.productName}}</td>
-                    <td>{{item.purchasePrice}}</td>
-                    <td>{{item.remarks}}</td>
-                    <td>{{item.sealingMaterial}}</td>
-                    <td>{{item.sellingBottomPrice}}</td>
+                    <td>{{item.productModel}}</td>
                     <td>{{item.series}}</td>
                     <td>{{item.specification}}</td>
-                    <td>{{item.structureForm}}</td>
-                    <td>{{item.supplierCode}}</td>
-                    <td>{{item.supplierColor}}</td>
-                    <td>{{item.supplierName}}</td>
-                    <td>{{item.temperature}}</td>
+                    <td>{{item.nominalPressure}}</td>
                     <td>{{item.valveBodyMaterial}}</td>
                     <td>{{item.valveCoreMaterial}}</td>
+                    <td>{{item.sealingMaterial}}</td>
                     <td>{{item.valveShaft}}</td>
+                    <td>{{item.driveForm}}</td>
+                    <td>{{item.structureForm}}</td>
+                    <td>{{item.connectionMethod}}</td>
+                    <td>{{item.supplierColor}}</td>
+                    <td>{{item.medium}}</td>
+                    <td>{{item.temperature}}</td>
+                    <td>{{item.remarks}}</td>
+                    <td>{{item.supplierName}}</td>
+                    <td>{{item.supplierCode}}</td>
+                    <td>{{item.productGrade}}</td>
+                    <td>{{item.purchasePrice}}</td>
+                    <td>{{item.sellingBottomPrice}}</td>
+                    <td>{{item.facePrice}}</td>
+                    <td>{{item.goodModel}}</td>
+                    <td>{{item.other}}</td>
+                    <td>{{item.createTime}}</td>
+                    <td>{{item.modifyTime}}</td>
+                    <td>{{item.modifyTime}}</td>
+<!--
+                    <td>{{item.id}}</td>
+                    <td>{{item.productId}}</td> -->
                     <td class="t-right">
                         <a href="javascript:;" class="blue" @click="edit(item)" style="margin-right: 3px;">编辑</a> |
                         <a href="javascript:;" class="red" @click="remove(item)" style="margin-right: 3px;">删除</a>

@@ -23,68 +23,69 @@
             <data-list ref="list" method="post" :page-size="15" :param="filter" url="/haolifa/wholeMachinePurchaseOrder/pageList">
                 <tr slot="header">
                     <th style="width: 60px;">序号</th>
-                    <th>确认时间</th>
                     <th>创建时间</th>
-                    <th>创建者</th>
+                    <th>采购合同号</th>
+                    <th>销售订单号</th>
+                    <th>供应商名称</th>
                     <td>交货日期</td>
+                    <th>合同采购总数量</th>
+                    <th>合同总金额</th>
+                    <th>检验合格数量</th>
+                    <th>订单状态</th>
+                    <th>创建者</th>
+                    <th class="t-right" style="width: 80px;">操作</th>
+
+
+
+<!--
+                    <th>确认时间</th>
                     <th>需方</th>
                     <th>需方地址</th>
                     <th>需方联系人</th>
                     <th>方联系人电话</th>
-                    <!-- <th>主键id</th> -->
                     <th>经办日期</th>
                     <th>订单经办人</th>
                     <th>付款方式</th>
                     <th>订单编号</th>
-                    <th>检验合格数量</th>
-                    <th>订单状态</th>
                     <th>供方地址</th>
                     <th>供方确认人</th>
                     <th>供方联系人</th>
-                    <th>供应商名称</th>
                     <th>供应商编号</th>
                     <th>供方联系人电话</th>
-                    <th>合同采购总数量</th>
-                    <th>合同总金额</th>
                     <th>更新时间</th>
                     <th>更新者</th>
                     <th>折损金额</th>
-                    <th>折损原因</th>
-                    <th class="t-right" style="width: 80px;">操作</th>
+                    <th>折损原因</th> -->
                 </tr>
                 <template slot="item" slot-scope="{ item, index }">
                     <td>{{index}}</td>
-                    <td>{{item.confirmTime}}</td>
                     <td>{{item.createTime}}</td>
-                    <td>{{item.createUser}}</td>
+                    <td>{{item.purchaseOrderNo}}</td>
+                    <td>{{item.productOrderNo}}</td>
+                    <td>{{item.supplierName}}</td>
                     <td>{{item.deliveryTime}}</td>
-
+                    <td>{{item.totalCount}}</td>
+                    <td>{{item.totalPrice}}</td>
+                    <td>{{item.qualifiedNumber}}</td>
+                    <td>{{statusList[item.status-1].name}}</td>
+                    <td>{{item.createUser}}</td>
+                    <!-- <td>{{item.confirmTime}}</td>
                     <td>{{item.demander}}</td>
                     <td>{{item.demanderAddr}}</td>
                     <td>{{item.demanderLinkman}}</td>
                     <td>{{item.demanderPhone}}</td>
-                    <!-- <td>{{item.id}}</td> -->
                     <td>{{item.operateTime}}</td>
                     <td>{{item.operatorUserName}}</td>
                     <td>{{item.payType}}</td>
-                     <!-- <td>
-                        <a href="javascript:;" class="blue" @click="numClick(item.id)">{{item.purchaseOrderNo}}</a>
-                    </td> -->
-                    <td>{{item.purchaseOrderNo}}</td>
-                    <td>{{item.qualifiedNumber}}</td>
-                    <td>{{statusList[item.status-1].name}}</td>
                     <td>{{item.supplierAddr}}</td>
                     <td>{{item.supplierConfirmer}}</td>
                     <td>{{item.supplierLinkman}}</td>
-                    <td>{{item.supplierName}}</td>
                     <td>{{item.supplierNo}}</td>
                     <td>{{item.supplierPhone}}</td>
-                    <td>{{item.totalCount}}</td>
-                    <td>{{item.totalPrice}}</td>
                     <td>{{item.updateTime}}</td>
                     <td>{{item.updateUser}}</td>
                     <td>{{item.wreckAmount}}</td>
-                    <td>{{item.wreckReason}}</td>
+                    <td>{{item.wreckReason}}</td> -->
                       <td class="t-right">
                         <a href="javascript:;" style="margin-right: 3px" class="blue" @click="getInfo(item.id)">查看</a>
                         <a href="javascript:;" style="margin-right: 3px" v-if="item.status == '3'" class="blue" @click="completePurchase(item.id)">采购完成</a>

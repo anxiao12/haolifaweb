@@ -4,51 +4,52 @@
             <div class="title b f-18">{{form.id ? '编辑' : '新增'}}整机设置</div>
             <div class="flex-v-center">
                 <input-box v-model="form.category" class="mr-10" label="类别" style="width: 35%"></input-box>
+                <input-box v-model="form.productName" class="mr-10" label="产品名称" style="width: 30%"></input-box>
+                <input-box v-model="form.productModel" class="mr-10" label="产品型号" style="width: 30%"></input-box>
                 <!-- <select-box v-model="form.materialClassifyName" @change="typeId" :list="parttypeList" style="width: 25%" label="分类名称"></select-box> -->
-                <input-box v-model="form.connectionMethod" class="mr-10" label="连接方式" style="width: 30%"></input-box>
-                <input-box v-model="form.id" class="mr-10" label="产品ID" style="width: 30%"></input-box>
+            </div>
+              <div class="flex-v-center">
+                <input-box v-model="form.series" class="mr-10" label="系列" style="width: 35%"></input-box>
+                <input-box v-model="form.specification" class="mr-10" label="规格" style="width: 30%"></input-box>
+                <input-box v-model="form.nominalPressure" class="mr-10" label="公称压力" style="width: 35%"></input-box>
+            </div>
+               <div class="flex-v-center">
+                <input-box v-model="form.valveBodyMaterial" class="mr-10" label="阀体材质" style="width: 35%"></input-box>
+                <input-box v-model="form.valveCoreMaterial" class="mr-10" label="阀芯材质" style="width: 30%"></input-box>
+                <input-box v-model="form.sealingMaterial" class="mr-10" label="密封材质" style="width: 30%"></input-box>
+            </div>
+               <div class="flex-v-center">
+                <input-box v-model="form.valveShaft" class="mr-10" label="阀轴" style="width: 35%"></input-box>
+                <input-box v-model="form.driveForm" class="mr-10" label="驱动形式" style="width: 30%"></input-box>
+                <input-box v-model="form.structureForm" class="mr-10" label="结构形式" style="width: 30%"></input-box>
+            </div>
+
+            <div class="flex-v-center">
+                <input-box v-model="form.connectionMethod" class="mr-10" label="连接方式" style="width: 35%"></input-box>
+                <input-box v-model="form.supplierColor" class="mr-10" label="供应商颜色" style="width: 30%"></input-box>
+                <input-box v-model="form.medium" class="mr-10" label="介质" style="width: 30%"></input-box>
+
             </div>
             <div class="flex-v-center">
-                <input-box v-model="form.driveForm" class="mr-10" label="驱动形式" style="width: 35%"></input-box>
+                <input-box v-model="form.temperature" class="mr-10" label="温度" style="width: 35%"></input-box>
+                <!-- <input-box v-model="form.remarks" class="mr-10" multi-line label="备注" style="width: 30%"></input-box> -->
+                <input-box v-model="form.remarks" class="mr-10"  label="备注" style="width: 30%"></input-box>
+                <input-box v-model="form.supplierName" class="mr-10" label="供应商名称" style="width: 30%"></input-box>
+            </div>
+             <div class="flex-v-center">
+                <input-box v-model="form.supplierCode" class="mr-10" label="供应商代号" style="width: 35%"></input-box>
+                <input-box v-model="form.productGrade" class="mr-10" label="产品等级" style="width: 30%"></input-box>
+                <input-box v-model="form.purchasePrice" class="mr-10" label="采购价" style="width: 30%"></input-box>
+            </div>
+              <div class="flex-v-center">
+                <input-box v-model="form.sellingBottomPrice" class="mr-10" label="销售底价" style="width: 35%"></input-box>
                 <input-box v-model="form.facePrice" class="mr-10" label="面价" style="width: 30%"></input-box>
                 <input-box v-model="form.goodModel" class="mr-10" label="好利型号" style="width: 30%"></input-box>
             </div>
             <div class="flex-v-center">
-                <input-box v-model="form.nominalPressure" class="mr-10" label="公称压力" style="width: 35%"></input-box>
-                <input-box v-model="form.other" class="mr-10" label="其他" style="width: 30%"></input-box>
-                <input-box v-model="form.productGrade" class="mr-10" label="产品等级" style="width: 30%"></input-box>
+                <input-box v-model="form.other" class="mr-10" label="其他" style="width: 35%"></input-box>
             </div>
             <div class="flex-v-center">
-                <input-box v-model="form.productId" class="mr-10" label="产品编号" style="width: 35%"></input-box>
-                <input-box v-model="form.productModel" class="mr-10" label="产品型号" style="width: 30%"></input-box>
-                <input-box v-model="form.productName" class="mr-10" label="产品名称" style="width: 30%"></input-box>
-            </div>
-             <div class="flex-v-center">
-                <input-box v-model="form.purchasePrice" class="mr-10" label="采购价" style="width: 35%"></input-box>
-                <input-box v-model="form.sealingMaterial" class="mr-10" label="密封材质" style="width: 30%"></input-box>
-                <input-box v-model="form.sellingBottomPrice" class="mr-10" label="销售底价" style="width: 30%"></input-box>
-            </div>
-             <div class="flex-v-center">
-                <input-box v-model="form.series" class="mr-10" label="系列" style="width: 35%"></input-box>
-                <input-box v-model="form.specification" class="mr-10" label="规格" style="width: 30%"></input-box>
-                <input-box v-model="form.structureForm" class="mr-10" label="结构形式" style="width: 30%"></input-box>
-            </div>
-              <div class="flex-v-center">
-                <input-box v-model="form.supplierCode" class="mr-10" label="供应商代号" style="width: 35%"></input-box>
-                <input-box v-model="form.supplierColor" class="mr-10" label="供应商颜色" style="width: 30%"></input-box>
-                <input-box v-model="form.supplierName" class="mr-10" label="供应商名称" style="width: 30%"></input-box>
-            </div>
-              <div class="flex-v-center">
-                <input-box v-model="form.temperature" class="mr-10" label="温度" style="width: 35%"></input-box>
-                <input-box v-model="form.valveBodyMaterial" class="mr-10" label="阀体材质" style="width: 30%"></input-box>
-                <input-box v-model="form.valveCoreMaterial" class="mr-10" label="阀芯材质" style="width: 30%"></input-box>
-            </div>
-             <div class="flex-v-center">
-                <input-box v-model="form.valveShaft" class="mr-10" label="阀轴" style="width: 35%"></input-box>
-                <input-box v-model="form.medium" class="mr-10" label="介质" style="width: 30%"></input-box>
-            </div>
-            <div class="flex-v-center">
-                <input-box v-model="form.remarks" class="flex-item mr-10" multi-line label="备注"></input-box>
             </div>
             <div class="flex-v-center" style="margin: 20px 0;">
                 <btn big class="mr-20" @click="submit" :disabled="!canSubmit">提交</btn>

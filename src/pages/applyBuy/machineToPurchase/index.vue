@@ -6,7 +6,6 @@
                 <i class="icon f-20 c-8">search</i>
                 <input type="text" class="flex-item" v-model="filter.productModel" @change="$refs.list.update(true)" placeholder="成品型号" style="width: 200px;">
                 <input type="text" class="flex-item" v-model="filter.productName" @change="$refs.list.update(true)" placeholder="成品名称" style="width: 200px;">
-                <input type="text" class="flex-item" v-model="filter.productNo" @change="$refs.list.update(true)" placeholder="成品编号" style="width: 200px;">
                 <input type="text" class="flex-item" v-model="filter.productOrderNo" @change="$refs.list.update(true)" placeholder="生产订单编号" style="width: 200px;">
                 <!-- <input type="text" class="flex-item" v-model="filter.status" @change="$refs.list.update(true)" placeholder="状态" style="width: 200px;"> -->
 
@@ -25,7 +24,6 @@
                     </th>
                     <th>成品型号</th>
                     <th>成品名称</th>
-                    <th>成品编号</th>
                     <th>生产订单编号</th>
                     <th>状态</th>
                     <th class="t-right" style="width: 80px;">操作</th>
@@ -39,7 +37,6 @@
                     <td v-else></td>
                     <td>{{item.productModel}}</td>
                     <td>{{item.productName}}</td>
-                    <td>{{item.productNo}}</td>
                     <td>{{item.productOrderNo}}</td>
                     <td>{{allStatus[item.status].text}}</td>
                     <td class="t-right">
