@@ -921,6 +921,7 @@ export default {
                     if (res.dealStep) {
                         this.handleStep.stepId = res.dealStep.stepId;
                         this.dealStepId = res.dealStep.stepId;
+                        console.log('stepId',this.dealStepId)
                     }
                     //获取订单上传附件
                     this.$http
@@ -1068,7 +1069,14 @@ export default {
                             this.$http.post(`/haolifa/order-product/updateInfo`, this.updateInfo).then((res) => {
                                 this.updateInfo.assemblyGroup = null;
                             });
+                        }else if(this.dealStepId === 97){//97代表整机订单
+                          //isCheckMaterial=2 代表整机订单  1走核料  0不走核料
+                            if (this.orderInfo.isCheckMaterial == 2) { //整机订单
+                                status = 15;
+                            }
                         }
+
+                        //改变
                         if (this.dealStepId != 57) {
                             let updateStatus = {
                                 orderNo: this.data.formNo,

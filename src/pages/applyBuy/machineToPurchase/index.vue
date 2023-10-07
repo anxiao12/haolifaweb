@@ -31,7 +31,7 @@
                 <!-- item: 当前行数据; index: 当前行数 -->
                 <template slot="item" slot-scope="{ item, index,i }">
                     <td class="c-a">{{index}}</td>
-                    <td v-if="item.status==2">
+                    <td v-if="item.status==0">
                         <input type="checkbox" name="boxId" :value="i">
                     </td>
                     <td v-else></td>
@@ -153,8 +153,9 @@ export default {
                 dataArr = [];
             for (let i in arr) {
                 if (arr[i].checked) {
-                    if (!dataArr.includes(list[arr[i].value].materialGraphNo))
+                    if (!dataArr.includes(list[arr[i].value].materialGraphNo)){
                         dataArr.push(list[arr[i].value].materialGraphNo);
+                    }
                     //合并订单中图号一样的数据
                     if (
                         this.listHasName(
@@ -182,8 +183,9 @@ export default {
                 this.$toast("请至少选中一条数据!");
                 return;
             }
+            console.log('ids',ids)
             this.$http
-                .post("/haolifa/supplier/supplier-list", { graphNos: dataArr })
+                .post("/haolifa/wholeMachinePurchaseOrder/mergeAdd", { applyBuyIds: ids })
                 .then(res => {
                     if (res.length === 0) {
                         this.$toast("未找到供应商");

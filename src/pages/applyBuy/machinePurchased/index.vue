@@ -34,9 +34,6 @@
                     <th>订单状态</th>
                     <th>创建者</th>
                     <th class="t-right" style="width: 80px;">操作</th>
-
-
-
 <!--
                     <th>确认时间</th>
                     <th>需方</th>
