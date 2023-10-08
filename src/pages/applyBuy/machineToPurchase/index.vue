@@ -122,13 +122,21 @@ export default {
         },
         selectAll() {
             let arr = document.getElementsByName("boxId");
+            console.log('arr',arr.length)
             if (this.all) {
                 for (let i in arr) {
+                  console.log('i',i)
+                  if(Number(i) || i==0){
                     arr[i].checked = true;
+                  }
                 }
             } else {
                 for (let j in arr) {
+                  console.log('j',j)
+                  if(Number(j) || j ==0){
                     arr[j].checked = false;
+                  }
+
                 }
             }
         },
@@ -177,17 +185,17 @@ export default {
                     //     dataList.push(list[arr[i].value]);
                     // }
                     // ids.push(list[arr[i].value].id);
-                    console.log('list',list[arr[i].value])
                     let rowScope = list[arr[i].value]
-                    console.log('id',list[arr[i].value].id)
+                    if(rowScope){
+                        ids.push({
+                          productId:rowScope.id,
+                          category:rowScope.productSeries,
+                          series:rowScope.productSeries,
+                          productModel:rowScope.productModel,
+                          specification:rowScope.specifications
+                        })
+                    }
 
-                    ids.push({
-                        productId:rowScope.id,
-                        category:rowScope.productSeries,
-                        series:rowScope.productSeries,
-                        productModel:rowScope.productModel,
-                        specification:rowScope.specifications
-                    })
                 }
             }
             if (ids.length == 0) {
