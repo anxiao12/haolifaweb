@@ -69,7 +69,7 @@
 
 <script>
 export default {
-    name: "order-purchaseAdd",
+    name: "order-machine-purchaseAdd",
     data() {
         return {
             supplierInfoList: [],
@@ -174,7 +174,7 @@ export default {
         let supList = [];
         supList = this.$route.params.supList;
         this.supplierList = supList.map(item => {
-            return { value: item.suppilerNo, text: item.supplierName };
+            return { value: item.supplierCode, text: item.supplierName };
         });
         this.supplierInfoList = supList;
     },
@@ -208,7 +208,9 @@ export default {
         this.supplierInfoList = supList;
     },
     methods: {
-        changeSupplier: function() {
+        changeSupplier(callback) {
+          console.log('this.form.supplierNo',callback)
+          console.log('this.form.supplierNo',this.form.supplierNo)
             this.supplierInfoList.forEach((item, i) => {
                 if (item.suppilerNo == this.form.supplierNo) {
                     this.form.suppilerPhone = item.phone;
@@ -244,6 +246,7 @@ export default {
                 unitPrice: "单价",
                 unitWeight: "单重"
             };
+            console.log('this.form',this.form)
             if (!this.form.supplierNo) {
                 this.$toast("请选择供应商");
                 return;
@@ -261,26 +264,28 @@ export default {
                 return;
             }
             this.form.applyBuyIds = this.ids;
+
+            // applyBuyIds:[]
             this.$http
                 .post(
-                    "/haolifa/purchase-order/save/0/" + this.ids.toString(),
-                    this.form
+                    "/haolifa/wholeMachinePurchaseOrder/mergeAdd/",
+                    Object.assign({},this.form,{applyBuyIds:this.ids})
                 )
                 .then(res => {
                     this.$toast("创建成功");
                     this.$store.commit(
                         "DELMENUTABS",
-                        "/applyBuy-order/purchaseAdd"
+                        "/machineToPurchase-order/purchaseAdd"
                     );
-                    this.$router.push("/applyBuy-order");
+                    this.$router.push("/machineToPurchase-order");
                 })
                 .catch(e => {
                     this.$toast(e.message || e.msg);
                 });
         },
         goback() {
-            this.$store.commit("DELMENUTABS", "/applyBuy-order/purchaseAdd");
-            this.$router.push("/applyBuy-order");
+            this.$store.commit("DELMENUTABS", "/machineToPurchase-order/purchaseAdd");
+            this.$router.push("/machineToPurchase-order");
         }
     }
 };

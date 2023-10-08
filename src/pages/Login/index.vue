@@ -12,7 +12,7 @@
                         <div class="inputIcon t-user"></div>
                     </div>
                     <div class="t-inputWrap">
-                        <input type="password" v-model="password" autocomplete="off" @keydown.enter.native="login" placeholder="请输入密码" />
+                        <input type="password" v-model="password" autocomplete="off" @keydown.enter="login" placeholder="请输入密码" />
                         <div class="inputIcon t-password"></div>
                     </div>
                     <div class="t-inputWrap">

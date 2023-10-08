@@ -60,7 +60,7 @@ export default {
               productName:'',
               productNo:'',
               productOrderNo:'',
-              status:'3',
+              status:'',
                 // type: 0,
                 // status: -1,
                 // materialName: "",
@@ -148,55 +148,70 @@ export default {
         mergeData() {
             let list = JSON.parse(JSON.stringify(this.$refs.list.list));
             let arr = document.getElementsByName("boxId"),
-                dataList = [],
-                ids = [],
-                dataArr = [];
+            dataList = [],
+            ids = [],
+            dataArr = [];
             for (let i in arr) {
                 if (arr[i].checked) {
-                    if (!dataArr.includes(list[arr[i].value].materialGraphNo)){
-                        dataArr.push(list[arr[i].value].materialGraphNo);
-                    }
+                    // if (!dataArr.includes(list[arr[i].value].materialGraphNo)){
+                    //     dataArr.push(list[arr[i].value].materialGraphNo);
+                    // }
                     //合并订单中图号一样的数据
-                    if (
-                        this.listHasName(
-                            dataList,
-                            list[arr[i].value].materialGraphNo
-                        )
-                    ) {
-                        dataList.map(item => {
-                            if (
-                                item.materialGraphNo ==
-                                list[arr[i].value].materialGraphNo
-                            ) {
-                                item.purchaseNumber =
-                                    item.purchaseNumber +
-                                    list[arr[i].value].purchaseNumber;
-                            }
-                        });
-                    } else {
-                        dataList.push(list[arr[i].value]);
-                    }
-                    ids.push(list[arr[i].value].id);
+                    // if (
+                    //     this.listHasName(
+                    //         dataList,
+                    //         list[arr[i].value].materialGraphNo
+                    //     )
+                    // ) {
+                    //     dataList.map(item => {
+                    //         if (
+                    //             item.materialGraphNo ==
+                    //             list[arr[i].value].materialGraphNo
+                    //         ) {
+                    //             item.purchaseNumber =
+                    //                 item.purchaseNumber +
+                    //                 list[arr[i].value].purchaseNumber;
+                    //         }
+                    //     });
+                    // } else {
+                    //     dataList.push(list[arr[i].value]);
+                    // }
+                    // ids.push(list[arr[i].value].id);
+                    console.log('list',list[arr[i].value])
+                    let rowScope = list[arr[i].value]
+                    console.log('id',list[arr[i].value].id)
+
+                    ids.push({
+                        productId:rowScope.id,
+                        category:rowScope.productSeries,
+                        series:rowScope.productSeries,
+                        productModel:rowScope.productModel,
+                        specification:rowScope.specifications
+                    })
                 }
             }
-            if (dataArr.length == 0) {
+            if (ids.length == 0) {
                 this.$toast("请至少选中一条数据!");
                 return;
             }
             console.log('ids',ids)
+            let dealId=[]
+            ids.map(res =>{
+              dealId.push(res.productId)
+            })
             this.$http
-                .post("/haolifa/wholeMachinePurchaseOrder/mergeAdd", { applyBuyIds: ids })
+                .post("/haolifa/whole/machine/product/listSupplierByParam", { list: ids })
                 .then(res => {
                     if (res.length === 0) {
                         this.$toast("未找到供应商");
                         return;
                     } else {
                         this.$router.push({
-                            name: "order-purchaseAdd",
+                            name: "order-machine-purchaseAdd",
                             params: {
                                 list: dataList,
                                 supList: res,
-                                ids: ids
+                                ids: dealId
                             }
                         });
                     }

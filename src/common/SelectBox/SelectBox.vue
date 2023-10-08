@@ -123,7 +123,7 @@ export default {
             } else {
                 this.model = item[this.optionValue];
             }
-            this.$emit("change");
+            console.log('item')
         },
         dropDown() {
             this.show = !this.show;

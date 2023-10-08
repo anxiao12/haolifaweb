@@ -10,7 +10,7 @@ export default [{
   }
 }, {
   path: '/machineToPurchase-order/add',
-  name: 'order-add',
+  name: 'order-machine-add',
   component: () => import( /* webpackChunkName: "diliveryadd" */ './add.vue'),
   meta: {
     level: 3,
@@ -30,7 +30,7 @@ export default [{
   }
 }, {
   path: '/machineToPurchase-order/purchaseAdd',
-  name: 'order-purchaseAdd',
+  name: 'order-machine-purchaseAdd',
   component: () => import( /* webpackChunkName: "diliversyedit" */ './purchaseAdd.vue'),
   meta: {
     level: 3,
