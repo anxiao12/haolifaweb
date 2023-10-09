@@ -916,6 +916,7 @@ export default {
                 .then((res) => {
                     res.createTime = moment(res.createTime).format("YYYY-MM-DD HH:mm");
                     this.data = res;
+                    console.log('this.data',this.data)
                     this.data.historyInfos.accessory;
                     this.handleStep.id = res.instanceId;
                     if (res.dealStep) {
@@ -940,7 +941,10 @@ export default {
                         // this.technicalRequire = JSON.parse(
                         //     this.orderInfo.technicalRequire
                         // );
+                        if(this.orderInfo.orderTechnicalDetaileds){
                         this.technicalRequire = this.orderInfo.orderTechnicalDetaileds;
+
+                        }
                         if (this.dealStepId == 52 || this.dealStepId == 53) {
                             // 总工 核料 看到技术清单
                             this.updateInfo.technicalRequire = this.orderInfo.technicalRequire;

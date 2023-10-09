@@ -87,6 +87,12 @@
                             class="c-8 date-time"
                             @click="$router.push({path:'/machine',query:{instanceId:item.instanceId,stepId:item.stepId}})"
                         >发起人：{{item.createUserRealName}}</div>
+                          <div
+                            style="width:145px"
+                            v-if="item.flowId == 14"
+                            class="c-8 date-time"
+                            @click="$router.push({path:'/machine',query:{instanceId:item.instanceId,stepId:item.stepId}})"
+                        >发起人：{{item.createUserRealName}}</div>
                         <div
                             class="c-8 date-time text-ellipsis"
                             style="width:145px"
@@ -163,6 +169,12 @@
                           <div
                             style="width:145px"
                             v-if="item.flowId == 13"
+                            class="c-8 date-time"
+                            @click="$router.push({path:'/machine',query:{instanceId:item.instanceId,stepId:item.stepId}})"
+                        >发起人：{{item.createUserRealName}}</div>
+                         <div
+                            style="width:145px"
+                            v-if="item.flowId == 14"
                             class="c-8 date-time"
                             @click="$router.push({path:'/machine',query:{instanceId:item.instanceId,stepId:item.stepId}})"
                         >发起人：{{item.createUserRealName}}</div>
