@@ -942,8 +942,7 @@ export default {
                         //     this.orderInfo.technicalRequire
                         // );
                         if(this.orderInfo.orderTechnicalDetaileds){
-                        this.technicalRequire = this.orderInfo.orderTechnicalDetaileds;
-
+                          this.technicalRequire = this.orderInfo.orderTechnicalDetaileds;
                         }
                         if (this.dealStepId == 52 || this.dealStepId == 53) {
                             // 总工 核料 看到技术清单

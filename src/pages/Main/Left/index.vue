@@ -273,6 +273,11 @@ export default {
                 name: "供应商管理",
                 id: "parent-gysgl",
                 children: [
+                   {
+                        name: "整机供应商",
+                        url: "/machinesupplier/list",
+                        id: "zjcpkclb",
+                    },
                     {
                         name: "供应商管理",
                         url: "/supplier/list",
