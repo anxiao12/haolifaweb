@@ -4,15 +4,8 @@
         <div class="flex-v-center tool-bar">
             <div class="flex-v-center search-bar" style="margin-right: 20px;">
                 <i class="icon f-20 c-8">search</i>
-                <input type="text" class="flex-item" v-model="filter.purchaseOrderNo" @change="$refs.list.update(true)" placeholder="订单编号" style="width: 200px;">
-                <input type="text" class="flex-item" v-model="filter.productOrderNo" @change="$refs.list.update(true)" placeholder="销售订单号" style="width: 200px;">
-                <input type="text" class="flex-item" v-model="filter.supplierName" @change="$refs.list.update(true)" placeholder="供应商名称" style="width: 200px;">
-                <input type="text" class="flex-item" v-model="filter.supplierNo" @change="$refs.list.update(true)" placeholder="供应商编号" style="width: 200px;">
-                <select v-model="filter.status" class="f-14" @change="$refs.list.update(true)">
-                    <option value="0">合同状态</option>
-                    <option v-for="item in statusList" :value="item.status" v-bind:key="item.id">{{item.name}}</option>
-                </select>
-                <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
+                <input type="text" class="flex-item" v-model="filter.purchaseOrderNo" @change="$refs.list.update(true)" placeholder="公司名称" style="width: 200px;">
+                <input type="text" class="flex-item" v-model="filter.productOrderNo" @change="$refs.list.update(true)" placeholder="代号" style="width: 200px;">
             </div>
             <div class="flex-item"></div>
             <router-link to="/machinePurchased-order/add">
@@ -20,42 +13,24 @@
             </router-link>
         </div>
         <div class="flex-item scroll-y">
-            <data-list ref="list" method="post" :page-size="15" :param="filter" url="/haolifa/wholeMachinePurchaseOrder/pageList">
+            <data-list ref="list" method="post" :page-size="15" :param="filter" url="/haolifa/whole/machine/supplier/list">
                 <tr slot="header">
                     <th style="width: 60px;">序号</th>
+                     <th>
+                        <input type="checkbox" name v-model="all" @change="selectAll">
+                    </th>
+                    <th>公司名称</th>
+                    <th>代号</th>
+                    <th>等级</th>
+                    <th>电话</th>
+                    <td>备注</td>
                     <th>创建时间</th>
-                    <th>采购合同号</th>
-                    <th>销售订单号</th>
-                    <th>供应商名称</th>
-                    <td>交货日期</td>
-                    <th>合同采购总数量</th>
-                    <th>合同总金额</th>
-                    <th>检验合格数量</th>
-                    <th>订单状态</th>
-                    <th>创建者</th>
+                    <th>修改时间</th>
                     <th class="t-right" style="width: 80px;">操作</th>
-<!--
-                    <th>确认时间</th>
-                    <th>需方</th>
-                    <th>需方地址</th>
-                    <th>需方联系人</th>
-                    <th>方联系人电话</th>
-                    <th>经办日期</th>
-                    <th>订单经办人</th>
-                    <th>付款方式</th>
-                    <th>订单编号</th>
-                    <th>供方地址</th>
-                    <th>供方确认人</th>
-                    <th>供方联系人</th>
-                    <th>供应商编号</th>
-                    <th>供方联系人电话</th>
-                    <th>更新时间</th>
-                    <th>更新者</th>
-                    <th>折损金额</th>
-                    <th>折损原因</th> -->
                 </tr>
-                <template slot="item" slot-scope="{ item, index }">
+                <template slot="item" slot-scope="{ item, index ,i}">
                     <td>{{index}}</td>
+                    <input type="checkbox" name="boxId" :value="i">
                     <td>{{item.createTime}}</td>
                     <td>{{item.purchaseOrderNo}}</td>
                     <td>{{item.productOrderNo}}</td>
@@ -63,26 +38,6 @@
                     <td>{{item.deliveryTime}}</td>
                     <td>{{item.totalCount}}</td>
                     <td>{{item.totalPrice}}</td>
-                    <td>{{item.qualifiedNumber}}</td>
-                    <td>{{statusList[item.status-1].name}}</td>
-                    <td>{{item.createUser}}</td>
-                    <!-- <td>{{item.confirmTime}}</td>
-                    <td>{{item.demander}}</td>
-                    <td>{{item.demanderAddr}}</td>
-                    <td>{{item.demanderLinkman}}</td>
-                    <td>{{item.demanderPhone}}</td>
-                    <td>{{item.operateTime}}</td>
-                    <td>{{item.operatorUserName}}</td>
-                    <td>{{item.payType}}</td>
-                    <td>{{item.supplierAddr}}</td>
-                    <td>{{item.supplierConfirmer}}</td>
-                    <td>{{item.supplierLinkman}}</td>
-                    <td>{{item.supplierNo}}</td>
-                    <td>{{item.supplierPhone}}</td>
-                    <td>{{item.updateTime}}</td>
-                    <td>{{item.updateUser}}</td>
-                    <td>{{item.wreckAmount}}</td>
-                    <td>{{item.wreckReason}}</td> -->
                       <td class="t-right">
                         <a href="javascript:;" style="margin-right: 3px" class="blue" @click="getInfo(item.id)">查看</a>
                         <a href="javascript:;" style="margin-right: 3px" v-if="item.status == '3'" class="blue" @click="completePurchase(item.id)">采购完成</a>
@@ -318,6 +273,7 @@ export default {
     components: { DataList },
     data() {
         return {
+            all:'',
             natureList: ["国有", "三资", "集体", "联营", "私营"],
             statusList: [
                 { status: 1, name: "待审批" },
@@ -359,6 +315,25 @@ export default {
         }
     },
     methods: {
+       selectAll() {
+            let arr = document.getElementsByName("boxId");
+            if (this.all) {
+                for (let i in arr) {
+                  console.log('i',i)
+                  if(Number(i) || i==0){
+                    arr[i].checked = true;
+                  }
+                }
+            } else {
+                for (let j in arr) {
+                  console.log('j',j)
+                  if(Number(j) || j ==0){
+                    arr[j].checked = false;
+                  }
+
+                }
+            }
+        },
         flush() {
             this.filter = {
                purchaseOrderNo:'',
