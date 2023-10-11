@@ -83,7 +83,7 @@ export default {
     computed: {
         canSubmit() {
             const { form } = this;
-            return form.name && form.taxpayer;
+            return form.name && form.name && form.nickName;
         }
     },
     activated() {
@@ -109,13 +109,13 @@ export default {
                 remark:'',
         };
         let { editId } = this.$route.query;
-        if (editId !== undefined && this.$route.name === "machineSet-edit"){
+         if (editId  && this.$route.name === "machinesupplier-add"){
             this.getInfo(editId);
         }
     },
     created() {
         let { editId } = this.$route.query;
-        if (editId !== undefined && this.$route.name === "machineSet-edit"){
+        if (editId  && this.$route.name === "machinesupplier-add"){
             this.getInfo(editId);
         }
     },
@@ -125,7 +125,7 @@ export default {
       },
         getInfo(id) {
             this.$http
-                .get(`/haolifa/whole/machine/product/info/${id}`)
+                .get(`/haolifa/whole/machine/supplier/info/${id}`)
                 .then(res => {
                     for (let key in this.form) {
                         if (this.form[key] !== undefined)
@@ -152,7 +152,6 @@ export default {
         submit() {
             const { form } = this;
             this.loading = true;
-            // const url =  this.$route.query.editId ? "/machineSet/edit" : "/machineSet/add";
             let interfaceUrl = this.$route.query.editId ? "update" : "save"
             this.$http.post(
                 `/haolifa//whole/machine/supplier/${interfaceUrl}`,

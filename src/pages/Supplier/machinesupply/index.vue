@@ -9,8 +9,8 @@
             </div>
             <div class="flex-item"></div>
                 <router-link to="/machinesupplier/add"><el-button type="primary" class="b" small color="#008eff"> <el-icon class="el-icon-plus"></el-icon> 添加 </el-button> </router-link>
-                <router-link to="/machinesupplier/add"><el-button :disabled='initEditdisabled' class="b" small color="#008eff"> <el-icon class="el-icon-edit"></el-icon> 修改</el-button></router-link>
-                <el-button :disabled='initDisabled' type="danger" class="b" small color="#008eff"> <el-icon class="el-icon-close"></el-icon>删除</el-button>
+                <el-button  :disabled='initEditdisabled' @click="editline"  class="b" small color="#008eff"> <el-icon class="el-icon-edit"></el-icon> 修改</el-button>
+                <el-button  :disabled='initDisabled' @click="deleteChecked" type="danger" class="b" small color="#008eff"> <el-icon class="el-icon-close"></el-icon>删除</el-button>
 
         </div>
         <div class="flex-item scroll-y">
@@ -31,7 +31,7 @@
                 </tr>
                 <template slot="item" slot-scope="{ item, index ,i}">
                     <td>{{index}}</td>
-                    <input type="checkbox" @change="lineSelect" name="boxId" :value="i">
+                    <input type="checkbox" @change="chooseCheckbox"  name="boxId" :value="i">
                     <td>{{item.name}}</td>
                     <td>{{item.nickName}}</td>
                     <td>{{item.supplierLevel}}</td>
@@ -274,6 +274,8 @@ export default {
     data() {
         return {
             initDisabled:true,
+            initEditdisabled:true,
+            choosedId:'',
             all:'',
             natureList: ["国有", "三资", "集体", "联营", "私营"],
             statusList: [
@@ -316,21 +318,74 @@ export default {
       }
     },
     methods: {
-      lineSelect(){
+      chooseCheckbox(){
+          let list = JSON.parse(JSON.stringify(this.$refs.list.list));
+            let arr = document.getElementsByName("boxId");
+            let  ids = []
+             for (let i in arr) {
+                 if (arr[i].checked) {
+                    let rowScope = list[arr[i].value]
+                    if(rowScope){
+                      ids.push(rowScope)
+                    }
+                 }
+             }
+             if(ids.length===1){
+              this.initDisabled=false
+              this.initEditdisabled=false
+             }else{
+              this.initDisabled=true
+              this.initEditdisabled=true
+             }
+             this.choosedId = ids[0].id
 
+      },
+      editline(){
+            let list = JSON.parse(JSON.stringify(this.$refs.list.list));
+            let arr = document.getElementsByName("boxId");
+            let  ids = []
+             for (let i in arr) {
+                 if (arr[i].checked) {
+                    let rowScope = list[arr[i].value]
+                    if(rowScope){
+                      ids.push(rowScope)
+                    }
+                 }
+             }
+             if(ids.length===0){
+                this.$toast('请选择一条数据进行编辑')
+               return
+             }
+             if(ids.length>=2){
+                this.$toast('仅支持选择一条数据')
+                return false;
+             }
+             this.$router.push({
+              path:'/machinesupplier/add',
+              query:{
+                editId:ids[0].id
+              }
+             })
+
+      },
+      deleteChecked(){
+          this.deletePurchase(this.choosedId)
+          this.initDisabled=true
+          this.initEditdisabled=true
+      },
+      lineSelect(val){
+        console.log('val',val.target)
       },
        selectAll() {
             let arr = document.getElementsByName("boxId");
             if (this.all) {
                 for (let i in arr) {
-                  console.log('i',i)
                   if(Number(i) || i==0){
                     arr[i].checked = true;
                   }
                 }
             } else {
                 for (let j in arr) {
-                  console.log('j',j)
                   if(Number(j) || j ==0){
                     arr[j].checked = false;
                   }

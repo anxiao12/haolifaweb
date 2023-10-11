@@ -202,7 +202,6 @@ export default {
                 this.$toast("请至少选中一条数据!");
                 return;
             }
-            console.log('ids',ids)
             let dealId=[]
             ids.map(res =>{
               dealId.push(res.productId)
