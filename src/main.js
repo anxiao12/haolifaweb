@@ -28,7 +28,8 @@ import {
   Link,
   Checkbox,
   Loading,
-  Upload
+  Upload,
+  Icon
 } from 'element-ui';
 import './common';
 
@@ -53,6 +54,7 @@ Vue.use(FormItem);
 Vue.use(Descriptions);
 Vue.use(DescriptionsItem);
 Vue.use(Upload);
+Vue.use(Icon);
 Vue.config.productionTip = false;
 Vue.prototype.$echarts = echarts;
 Vue.prototype.$http = axios;

@@ -41,26 +41,12 @@
                     <td>{{item.updateTime}}</td>
                       <td class="t-right">
                         <a href="javascript:;" style="margin-right: 3px"  class="blue" @click="getInfo(item.id)">查看</a>
-                        <a href="javascript:;" style="margin-right: 3px"  class="blue" @click="completePurchase(item.id)">采购完成</a>
-                        <a href="javascript:;" style="margin-right: 3px"  class="blue" @click="approve(item.purchaseOrderNo)">发起审批</a>
-                        <a href="javascript:;" style="margin-right: 3px"  class="blue" @click="approve(item.purchaseOrderNo)">重新发起审批</a>
                         <a href="javascript:;" style="margin-right: 3px"  class="blue" @click="updatePurchase(item.id)">编辑</a>
-                        <a href="javascript:;" style="margin-right: 3px"  class="blue" @click="approveProgress(item)">审批进度</a>
                         <a href="javascript:;" class="blue" @click="deletePurchase(item.id)">删除</a>
                     </td>
                 </template>
             </data-list>
         </div>
-        <!-- <layer v-if="completeLayer" :title="'订单折损'" width="450px">
-            <div class="flex">
-                <input-box v-model="wreck.wreckAmount" class="flex-item mr-20" label="折损金额"></input-box>
-                <input-box v-model="wreck.wreckReason" class="flex-item mr-20" label="折损原因"></input-box>
-            </div>
-            <div class="layer-btns">
-                <btn flat @click="completeLayer=false">取消</btn>
-                <btn flat color="#008eff" @click="complete()">保存</btn>
-            </div>
-        </layer> -->
         <layer v-if="layer" title="详情" width="70%">
             <div class="layer-text" style="padding-bottom: 50px;">
                 <div class="form-content metalwork-info">
@@ -81,22 +67,6 @@
                             <td colspan="6" class="b">采购订单</td>
                             <td colspan="6" class="b">
                                 <a class="a" flat style="color: #008eff;margin-right:10px;" :href="orderUrl">合同下载</a>
-                                <!-- <a
-                                    target="_blank"
-                                    v-if="(orderUrl).match('\.(pdf|jpe?g|png|bmp)$') "
-                                    class="a"
-                                    flat
-                                    style="color: #008eff"
-                                    :href="orderUrl"
-                                >合同预览</a>
-                                <a
-                                    target="_blank"
-                                    v-if="!(orderUrl).match('\.(pdf|jpe?g|png|bmp)$')"
-                                    class="a"
-                                    flat
-                                    style="color: #008eff"
-                                    :href="'http://view.officeapps.live.com/op/view.aspx?src='+ orderUrl"
-                                >合同预览</a>-->
                             </td>
                         </tr>
                         <tr>
@@ -225,7 +195,7 @@
                 <btn flat color="#008eff" @click="layer=false">关闭</btn>
             </div>
         </layer>
-        <!-- <layer v-if="numLayer" title="详情" width="70%">
+        <layer v-if="numLayer" title="详情" width="70%">
             <div class="layer-text" style="padding-bottom: 50px;">
                 <div class="form-content metalwork-info">
                     <table class="f-14">
@@ -262,7 +232,7 @@
             <div class="layer-btns">
                 <btn flat color="#008eff" @click="numLayer=false">关闭</btn>
             </div>
-        </layer> -->
+        </layer>
     </div>
 </template>
 
@@ -303,19 +273,17 @@ export default {
     },
     created() {
         if(this.$route.query.name){
-            this.filter.supplierName = this.$route.query.name
+            this.filter.name = this.$route.query.name
             this.$refs.list.update(true);
         }
     },
     activated() {
         if(this.$route.query.name){
-            this.filter.supplierName = this.$route.query.name
+            this.filter.name = this.$route.query.name
             this.$refs.list.update(true);
         }
     },
     computed:{
-      initEditdisabled(){
-      }
     },
     methods: {
       chooseCheckbox(){
@@ -373,9 +341,6 @@ export default {
           this.initDisabled=true
           this.initEditdisabled=true
       },
-      lineSelect(val){
-        console.log('val',val.target)
-      },
        selectAll() {
             let arr = document.getElementsByName("boxId");
             if (this.all) {
@@ -395,44 +360,19 @@ export default {
         },
         flush() {
             this.filter = {
-              supplierName:'',
-              supplierNo:'',
+               name:'',
+              nickName:'',
             };
             this.$refs.list.update(true);
         },
         getInfo(formId) {
-            // this.info.id = formId;
             this.$http
-                .get(`/haolifa/wholeMachinePurchaseOrder/detail/${formId}`)
+                .get(`/haolifa/whole/machine/supplier/info/${formId}`)
                 .then(res => {
                     this.info = res;
-                    console.log('info',res.result)
                     this.itemList = res.itemList;
-                    this.layer = true;
-
-                    // this.orderUrl = res.order.fileUrl;
-                    // this.info.operateTime = res.order.operateTime.substring(
-                    //     0,
-                    //     10
-                    // );
-                    // this.info.confirmTime = res.order.confirmTime.substring(
-                    //     0,
-                    //     10
-                    // );
-                    // this.info.createTime = res.order.createTime.substring(
-                    //     0,
-                    //     10
-                    // );
-                    // this.info.deliveryTime = res.order.deliveryTime.substring(
-                    //     0,
-                    //     10
-                    // );
-                    // this.info.updateTime = res.order.updateTime.substring(
-                    //     0,
-                    //     10
-                    // );
-                    console.log("info", this.info);
-                    console.log("itemList", this.itemList);
+                    // this.layer = true;
+                    this.numLayer = true;
                 })
                 .catch(e => {
                     this.$toast(e.msg);
@@ -446,76 +386,14 @@ export default {
                     this.$toast(e.msg);
                 });
         },
-        createInspect: function(formId) {
-            this.$http
-                .get(`/haolifa/purchase-order/createInspect/${formId}`)
-                .then(res => {
-                    console.log("报检单号", res);
-                    this.$confirm({
-                        title: "完善报检单",
-                        text: "现在去完善报检单？",
-                        color: "blue",
-                        btns: ["稍后再说", "现在完善"],
-                        yes: () => {
-                            this.$router.push(
-                                `/applyBuy-material/edit?id=${res}`
-                            );
-                        }
-                    });
-                });
-        },
-        approveProgress(item) {
-            this.$router.push({
-                path: `/purchsemanage-purchase/approveProgress?`,
-                query: { formNo: item.purchaseOrderNo, formId: 0 }
-            });
-        },
-        approve: function(orderNo) {
-            this.$confirm({
-                title: "发起审批",
-                text: "确定发起审批？",
-                color: "blue",
-                btns: ["取消", "确认"],
-                yes: () => {
-                    this.$http
-                        .get(`/haolifa/purchase-order/approve/${orderNo}/0`)
-                        .then(res => {
-                            this.$toast("发起成功");
-                            this.$refs.list.update(true);
-                        })
-                        .catch(e => {
-                            this.$toast(e.msg || e.message);
-                        });
-                }
-            });
-        },
         updatePurchase: function(orderId) {
-            this.$router.push(`/machinePurchased-order/add?formId=${orderId}`);
+           this.$router.push({
+              path:'/machinesupplier/add',
+              query:{
+                editId:orderId
+              }
+             })
         },
-        completePurchase: function(orderNo) {
-            // this.completeLayer = true;
-            // this.wreck.orderNo = orderNo;
-             this.$http
-                .post(`/haolifa/wholeMachinePurchaseOrder/finish/${orderNo}`)
-                .then(res => {
-                    this.completeLayer = false;
-                    this.$refs.list.update(true);
-                })
-                .catch(e => {
-                    this.$toast(e.msg || e.message);
-                });
-        },
-        // complete: function() {
-        //     this.$http
-        //         .post("/haolifa/purchase-order/complete", this.wreck)
-        //         .then(res => {
-        //             this.completeLayer = false;
-        //             this.$refs.list.update(true);
-        //         })
-        //         .catch(e => {
-        //             this.$toast(e.msg || e.message);
-        //         });
-        // },
         deletePurchase: function(id) {
             this.$confirm({
                 title: "删除确认",
