@@ -35,7 +35,7 @@
                         <input type="checkbox" name="boxId" :value="i">
                     </td>
                     <td v-else></td>
-                    <td>{{item.productModel}}</td>
+                    <td>{{item.productNo}}</td>
                     <td>{{item.productName}}</td>
                     <td>{{item.productOrderNo}}</td>
                     <td>{{allStatus[item.status].text}}</td>
