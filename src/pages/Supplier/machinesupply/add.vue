@@ -15,7 +15,8 @@
                <div class="flex-v-center">
                 <input-box v-model="form.email" class="mr-10" label="Email" style="width: 35%"></input-box>
                 <input-box v-model="form.siteUrl" class="mr-10" label="网址" style="width: 30%"></input-box>
-                <select-box v-model="form.ownerId" @change="changeSupplierLevel" :list="parttypeList" style="width: 30%" label="负责人"></select-box>
+                <input-box v-model="form.ownerId" class="mr-10" label="负责人" style="width: 30%"></input-box>
+                <!-- <select-box v-model="form.ownerId" @change="changeSupplierLevel" :list="parttypeList" style="width: 30%" label="负责人"></select-box> -->
             </div>
                <div class="flex-v-center">
                 <input-box v-model="form.contact" class="mr-10" label="联系人" style="width: 35%"></input-box>
