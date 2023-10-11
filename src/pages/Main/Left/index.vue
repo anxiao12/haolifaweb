@@ -276,7 +276,7 @@ export default {
                    {
                         name: "整机供应商",
                         url: "/machinesupplier/list",
-                        id: "zjcpkclb",
+                        id: "zjgys",
                     },
                     {
                         name: "供应商管理",

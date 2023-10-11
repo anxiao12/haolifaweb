@@ -450,7 +450,7 @@ export default {
                 btns: ["取消", "确认"],
                 yes: () => {
                     this.$http
-                        .get(`/haolifa/purchase-order/approve/${orderNo}/0`)
+                        .get(`/haolifa/wholeMachinePurchaseOrder/approve/${orderNo}/0`)
                         .then(res => {
                             this.$toast("发起成功");
                             this.$refs.list.update(true);

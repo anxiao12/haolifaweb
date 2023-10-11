@@ -4,13 +4,14 @@
         <div class="flex-v-center tool-bar">
             <div class="flex-v-center search-bar" style="margin-right: 20px;">
                 <i class="icon f-20 c-8">search</i>
-                <input type="text" class="flex-item" v-model="filter.purchaseOrderNo" @change="$refs.list.update(true)" placeholder="公司名称" style="width: 200px;">
-                <input type="text" class="flex-item" v-model="filter.productOrderNo" @change="$refs.list.update(true)" placeholder="代号" style="width: 200px;">
+                <input type="text" class="flex-item" v-model="filter.name" @change="$refs.list.update(true)" placeholder="公司名称" style="width: 200px;">
+                <input type="text" class="flex-item" v-model="filter.nickName" @change="$refs.list.update(true)" placeholder="代号" style="width: 200px;">
             </div>
             <div class="flex-item"></div>
-            <router-link to="/machinePurchased-order/add">
-                <btn class="b" flat color="#008eff">新增采购</btn>
-            </router-link>
+                <router-link to="/machinesupplier/add"><el-button type="primary" class="b" small color="#008eff"> <el-icon class="el-icon-plus"></el-icon> 添加 </el-button> </router-link>
+                <router-link to="/machinesupplier/add"><el-button :disabled='initEditdisabled' class="b" small color="#008eff"> <el-icon class="el-icon-edit"></el-icon> 修改</el-button></router-link>
+                <el-button :disabled='initDisabled' type="danger" class="b" small color="#008eff"> <el-icon class="el-icon-close"></el-icon>删除</el-button>
+
         </div>
         <div class="flex-item scroll-y">
             <data-list ref="list" method="post" :page-size="15" :param="filter" url="/haolifa/whole/machine/supplier/list">
@@ -30,22 +31,22 @@
                 </tr>
                 <template slot="item" slot-scope="{ item, index ,i}">
                     <td>{{index}}</td>
-                    <input type="checkbox" name="boxId" :value="i">
+                    <input type="checkbox" @change="lineSelect" name="boxId" :value="i">
+                    <td>{{item.name}}</td>
+                    <td>{{item.nickName}}</td>
+                    <td>{{item.supplierLevel}}</td>
+                    <td>{{item.telephone}}</td>
+                    <td>{{item.remark}}</td>
                     <td>{{item.createTime}}</td>
-                    <td>{{item.purchaseOrderNo}}</td>
-                    <td>{{item.productOrderNo}}</td>
-                    <td>{{item.supplierName}}</td>
-                    <td>{{item.deliveryTime}}</td>
-                    <td>{{item.totalCount}}</td>
-                    <td>{{item.totalPrice}}</td>
+                    <td>{{item.updateTime}}</td>
                       <td class="t-right">
-                        <a href="javascript:;" style="margin-right: 3px" class="blue" @click="getInfo(item.id)">查看</a>
-                        <a href="javascript:;" style="margin-right: 3px" v-if="item.status == '3'" class="blue" @click="completePurchase(item.id)">采购完成</a>
-                        <a href="javascript:;" style="margin-right: 3px" v-if="item.status == 1" class="blue" @click="approve(item.purchaseOrderNo)">发起审批</a>
-                        <a href="javascript:;" style="margin-right: 3px" v-if="item.status == 4" class="blue" @click="approve(item.purchaseOrderNo)">重新发起审批</a>
-                        <a href="javascript:;" style="margin-right: 3px" v-if="item.status == 1 || item.status==4" class="blue" @click="updatePurchase(item.id)">编辑</a>
-                        <a href="javascript:;" style="margin-right: 3px" v-if="item.status == 2" class="blue" @click="approveProgress(item)">审批进度</a>
-                        <a href="javascript:;" v-if="item.status == 1 ||item.status == 4" class="blue" @click="deletePurchase(item.id)">删除</a>
+                        <a href="javascript:;" style="margin-right: 3px"  class="blue" @click="getInfo(item.id)">查看</a>
+                        <a href="javascript:;" style="margin-right: 3px"  class="blue" @click="completePurchase(item.id)">采购完成</a>
+                        <a href="javascript:;" style="margin-right: 3px"  class="blue" @click="approve(item.purchaseOrderNo)">发起审批</a>
+                        <a href="javascript:;" style="margin-right: 3px"  class="blue" @click="approve(item.purchaseOrderNo)">重新发起审批</a>
+                        <a href="javascript:;" style="margin-right: 3px"  class="blue" @click="updatePurchase(item.id)">编辑</a>
+                        <a href="javascript:;" style="margin-right: 3px"  class="blue" @click="approveProgress(item)">审批进度</a>
+                        <a href="javascript:;" class="blue" @click="deletePurchase(item.id)">删除</a>
                     </td>
                 </template>
             </data-list>
@@ -267,12 +268,12 @@
 
 <script>
 import DataList from "@/components/datalist";
-// import obj2FormData from '@/utils/obj2FormData'
 export default {
-    name: "purchsemanage-purchase",
+    name: "machinesupply-list",
     components: { DataList },
     data() {
         return {
+            initDisabled:true,
             all:'',
             natureList: ["国有", "三资", "集体", "联营", "私营"],
             statusList: [
@@ -283,10 +284,8 @@ export default {
                 { status: 5, name: "采购完成" }
             ],
             filter: {
-              purchaseOrderNo:'',
-              status:1,
-              supplierName:'',
-              supplierNo:''
+              name:'',
+              nickName:'',
             },
             wreck: { orderNo: "", wreckAmount: 0, wreckReason: "" },
             completeLayer: false,
@@ -301,20 +300,25 @@ export default {
         };
     },
     created() {
-        this.filter.createUserId = 0;
         if(this.$route.query.name){
             this.filter.supplierName = this.$route.query.name
             this.$refs.list.update(true);
         }
     },
     activated() {
-        this.filter.createUserId = 0;
         if(this.$route.query.name){
             this.filter.supplierName = this.$route.query.name
             this.$refs.list.update(true);
         }
     },
+    computed:{
+      initEditdisabled(){
+      }
+    },
     methods: {
+      lineSelect(){
+
+      },
        selectAll() {
             let arr = document.getElementsByName("boxId");
             if (this.all) {
@@ -336,14 +340,8 @@ export default {
         },
         flush() {
             this.filter = {
-               purchaseOrderNo:'',
-              status:'',
               supplierName:'',
               supplierNo:'',
-                // orderNo: "",
-                // status: 0,
-                // supplierName: "",
-                // createUserId: 0
             };
             this.$refs.list.update(true);
         },
@@ -471,8 +469,8 @@ export default {
                 btns: ["取消", "删除"],
                 yes: () => {
                     this.$http
-                        .delete(
-                            `/haolifa/wholeMachinePurchaseOrder/remove/${id}`
+                        .get(
+                            `/haolifa/whole/machine/supplier/delete/${id}`
                         )
                         .then(res => {
                             this.$toast("删除成功");
@@ -503,6 +501,9 @@ export default {
 </script>
 
 <style lang="less">
+.b{
+  margin-right: 10px;
+}
 .purchaseadd {
     // height: 100%;
     select {

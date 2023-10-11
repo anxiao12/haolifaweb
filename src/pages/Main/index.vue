@@ -21,7 +21,7 @@
                     </el-tabs>
                 </div>
                 <transition name="slide-y">
-                    <keep-alive exclude="page-machineSet-list,machineToPurchase-order-list">
+                    <keep-alive exclude="page-machineSet-list,machineToPurchase-order-list,machinesupply-list">
                         <router-view style="top:36px"/>
                     </keep-alive>
                 </transition>

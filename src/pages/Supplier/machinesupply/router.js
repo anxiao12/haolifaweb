@@ -8,19 +8,19 @@ export default [
       level: 2,
       title: '整机供应商列表',
       open: false,
-      id: 'zjcpkclb'
+      id: 'zjgys'
     }
   },
   {
-    path: '/machinePurchased-order/add',
-    name: 'machinePurchased-orderadd',
+    path: '/machinesupplier/add',
+    name: 'machinesupplier-add',
     component: () =>
       import(/* webpackChunkName: "suppliermanage" */ './add.vue'),
     meta: {
       level: 2,
-      title: '新增整机采购',
+      title: '添加整机供应商',
       open: false,
-      id: 'zjcglb'
+      id: 'zjgys'
     }
   },
   {
