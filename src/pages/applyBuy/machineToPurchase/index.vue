@@ -22,22 +22,34 @@
                     <th>
                         <input type="checkbox" name v-model="all" @change="selectAll">
                     </th>
-                    <th>成品型号</th>
-                    <th>成品名称</th>
                     <th>生产订单编号</th>
+                    <th>成品名称</th>
+                    <th>成品型号</th>
+                    <th>系列</th>
+                    <th>规格</th>
+                    <th>颜色</th>
+                    <th>材质说明</th>
+                    <th>回货时间</th>
+                    <th>产品备注</th>
                     <th>状态</th>
                     <th class="t-right" style="width: 80px;">操作</th>
                 </tr>
                 <!-- item: 当前行数据; index: 当前行数 -->
                 <template slot="item" slot-scope="{ item, index,i }">
                     <td class="c-a">{{index}}</td>
-                    <td v-if="item.status==0">
+                     <td v-if="item.status==0">
                         <input type="checkbox" name="boxId" :value="i">
                     </td>
                     <td v-else></td>
-                    <td>{{item.productNo}}</td>
-                    <td>{{item.productName}}</td>
                     <td>{{item.productOrderNo}}</td>
+                    <td>{{item.productName}}</td>
+                    <td>{{item.productNo}}</td>
+                    <td>{{item.productSeries}}</td>
+                    <td>{{item.specifications}}</td>
+                    <td>{{item.productColor}}</td>
+                    <td>{{item.materialDescription}}</td>
+                    <td>{{item.returnDate}}</td>
+                    <td>{{item.productRemark}}</td>
                     <td>{{allStatus[item.status].text}}</td>
                     <td class="t-right">
                         <a href="javascript:;" v-if="item.status==2" style="margin-right: 3px" class="blue" @click="dealApplyBuy(item.id)">处理完成</a>
@@ -61,11 +73,6 @@ export default {
               productNo:'',
               productOrderNo:'',
               status:'',
-                // type: 0,
-                // status: -1,
-                // materialName: "",
-                // orderNo: "",
-                // materialGraphNo: ""
             },
              // 0未处理 1 待审批 2 待采购 3 已处理 4 审批不通过
             allStatus: [
@@ -101,11 +108,6 @@ export default {
                 productNo:'',
                 productOrderNo:'',
                 status:'',
-                // type: 0,
-                // status: -1,
-                // materialName: "",
-                // orderNo: "",
-                // materialGraphNo: ""
             };
             this.$refs.list.update(true);
         },
@@ -156,43 +158,16 @@ export default {
         mergeData() {
             let list = JSON.parse(JSON.stringify(this.$refs.list.list));
             let arr = document.getElementsByName("boxId"),
-            dataList = [],
-            ids = [],
-            dataArr = [];
+            ids = []
             for (let i in arr) {
                 if (arr[i].checked) {
-                    // if (!dataArr.includes(list[arr[i].value].materialGraphNo)){
-                    //     dataArr.push(list[arr[i].value].materialGraphNo);
-                    // }
-                    //合并订单中图号一样的数据
-                    // if (
-                    //     this.listHasName(
-                    //         dataList,
-                    //         list[arr[i].value].materialGraphNo
-                    //     )
-                    // ) {
-                    //     dataList.map(item => {
-                    //         if (
-                    //             item.materialGraphNo ==
-                    //             list[arr[i].value].materialGraphNo
-                    //         ) {
-                    //             item.purchaseNumber =
-                    //                 item.purchaseNumber +
-                    //                 list[arr[i].value].purchaseNumber;
-                    //         }
-                    //     });
-                    // } else {
-                    //     dataList.push(list[arr[i].value]);
-                    // }
-                    // ids.push(list[arr[i].value].id);
                     let rowScope = list[arr[i].value]
                     if(rowScope){
                         ids.push({
-                          productId:rowScope.id,
-                          category:rowScope.productSeries,
-                          series:rowScope.productSeries,
                           productModel:rowScope.productModel,
-                          specification:rowScope.specifications
+                          productNo:rowScope.productNo,
+                          specification:rowScope.specifications,//规格
+                          productSeries:rowScope.productSeries
                         })
                     }
 
@@ -202,10 +177,6 @@ export default {
                 this.$toast("请至少选中一条数据!");
                 return;
             }
-            let dealId=[]
-            ids.map(res =>{
-              dealId.push(res.productId)
-            })
             this.$http
                 .post("/haolifa/whole/machine/product/listSupplierByParam", { list: ids })
                 .then(res => {
@@ -214,11 +185,10 @@ export default {
                         return;
                     } else {
                         this.$router.push({
-                            name: "order-machine-purchaseAdd",
-                            params: {
-                                list: dataList,
-                                supList: res,
-                                ids: dealId
+                            name: "machinePurchased-orderadd",
+                            query: {
+                                supList:JSON.stringify(res) ,
+                                pageType:'edit',
                             }
                         });
                     }

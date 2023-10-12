@@ -168,45 +168,52 @@
                         </tr>
                         <tr>
                             <td colspan="1" class="b">序号</td>
-                            <td colspan="1" class="b">产品名称</td>
-                            <td colspan="1" class="b">图号</td>
+                            <td colspan="1" class="b">产品型号</td>
+                            <td colspan="1" class="b">名称</td>
+                            <td colspan="1" class="b">系列</td>
                             <td colspan="1" class="b">规格</td>
-                            <td colspan="1" class="b">材质</td>
-                            <td colspan="1" class="b">单位</td>
+                            <td colspan="1" class="b">颜色</td>
                             <td colspan="1" class="b">数量</td>
-                            <td colspan="1" class="b">单重</td>
-                            <td colspan="1" class="b">总重</td>
                             <td colspan="1" class="b">单价</td>
-                            <td colspan="1" class="b">金额</td>
+                            <td colspan="1" class="b">合计</td>
+                            <td colspan="1" class="b">材质</td>
                             <td colspan="1" class="b">备注</td>
                         </tr>
                         <tr v-for="(item,i) in itemList" :key="item.id">
                             <td colspan="1">{{i}}</td>
+                            <td colspan="1">{{item.productModel}}</td>
                             <td colspan="1">{{item.productName}}</td>
-                            <td colspan="1">{{item.productNo}}</td>
+                            <td colspan="1">{{item.productSeries}}</td>
                             <td colspan="1">{{item.specification}}</td>
-                            <td colspan="1">{{item.material}}</td>
-                            <td colspan="1">{{item.unit}}</td>
-                            <td colspan="1">{{item.productNumber}}</td>
-                            <td colspan="1">{{item.unitWeight}}</td>
-                            <td colspan="1">{{item.totalWeight}}</td>
+                            <td colspan="1">{{item.productColor}}</td>
+                            <td colspan="1">{{item.itemAmount}}</td>
                             <td colspan="1">{{item.unitPrice}}</td>
-                            <td colspan="1">{{item.totalPrice}}</td>
+                            <td colspan="1">{{item.unitPrice*item.itemAmount}}</td>
+                            <td colspan="1">材质</td>
                             <td colspan="1">{{item.remark}}</td>
                         </tr>
-                        <tr>
-                            <th colspan="6">总计</th>
-                            <td colspan="1">{{info.orderNumber}}</td>
+                          <tr>
+                            <th colspan="4">合计</th>
                             <td colspan="1"></td>
-                            <td colspan="1">{{info.totalWeight}}</td>
                             <td colspan="1"></td>
-                            <td colspan="1">{{info.totalPrice}}</td>
+                            <td colspan="1">xxxx</td>
+                            <td colspan="1"></td>
+                            <td colspan="1">llll</td>
                             <td colspan="1"></td>
                         </tr>
                         <tr>
-                            <th colspan="6">人民币大写</th>
+                            <th colspan="4">优惠后价格</th>
+                            <td colspan="1"></td>
+                            <td colspan="1"></td>
+                            <td colspan="1"></td>
+                            <td colspan="1"></td>
+                            <td colspan="1">mmmm</td>
+                            <td colspan="1"></td>
+                        </tr>
+                        <!-- <tr>
+                            <th colspan="4">人民币大写</th>
                             <td colspan="6">{{info.totalPriceCN}}</td>
-                        </tr>
+                        </tr> -->
                         <tr>
                             <td colspan="12">
                                 <span class="b">1、交货日期</span>
@@ -345,66 +352,41 @@ export default {
         };
     },
     created() {
-        this.filter.createUserId = 0;
         if(this.$route.query.name){
             this.filter.supplierName = this.$route.query.name
             this.$refs.list.update(true);
         }
     },
     activated() {
-        this.filter.createUserId = 0;
         if(this.$route.query.name){
             this.filter.supplierName = this.$route.query.name
             this.$refs.list.update(true);
         }
     },
+    mounted(){
+      this.flush()
+    },
+    created(){
+      this.flush()
+    },
     methods: {
         flush() {
             this.filter = {
-               purchaseOrderNo:'',
-              status:'',
-              supplierName:'',
-              supplierNo:'',
-                // orderNo: "",
-                // status: 0,
-                // supplierName: "",
-                // createUserId: 0
+                purchaseOrderNo:'',
+                status:'',
+                supplierName:'',
+                supplierNo:'',
             };
             this.$refs.list.update(true);
         },
         getInfo(formId) {
-            // this.info.id = formId;
             this.$http
                 .get(`/haolifa/wholeMachinePurchaseOrder/detail/${formId}`)
                 .then(res => {
                     this.info = res;
-                    console.log('info',res.result)
                     this.itemList = res.itemList;
                     this.layer = true;
-
-                    // this.orderUrl = res.order.fileUrl;
-                    // this.info.operateTime = res.order.operateTime.substring(
-                    //     0,
-                    //     10
-                    // );
-                    // this.info.confirmTime = res.order.confirmTime.substring(
-                    //     0,
-                    //     10
-                    // );
-                    // this.info.createTime = res.order.createTime.substring(
-                    //     0,
-                    //     10
-                    // );
-                    // this.info.deliveryTime = res.order.deliveryTime.substring(
-                    //     0,
-                    //     10
-                    // );
-                    // this.info.updateTime = res.order.updateTime.substring(
-                    //     0,
-                    //     10
-                    // );
-                    console.log("info", this.info);
-                    console.log("itemList", this.itemList);
+                    this.orderUrl = res.fileUrl;
                 })
                 .catch(e => {
                     this.$toast(e.msg);

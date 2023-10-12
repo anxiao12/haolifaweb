@@ -8,27 +8,30 @@ export default [{
     open: false,
     id: 'zjdcglb'
   }
-}, {
-  path: '/machineToPurchase-order/add',
-  name: 'order-machine-add',
-  component: () => import( /* webpackChunkName: "diliveryadd" */ './add.vue'),
-  meta: {
-    level: 3,
-    title: '新增采购单',
-    open: false,
-    id: 'zjdcglb'
-  }
-}, {
-  path: '/machineToPurchase-order/edit',
-  name: 'order-edit',
-  component: () => import( /* webpackChunkName: "diliversyedit" */ './add.vue'),
-  meta: {
-    level: 3,
-    title: '编辑采购单',
-    open: false,
-    id: 'zjdcglb'
-  }
-}, {
+},
+// {
+//   path: '/machineToPurchase-order/add',
+//   name: 'order-machine-add',
+//   component: () => import( /* webpackChunkName: "diliveryadd" */ './add.vue'),
+//   meta: {
+//     level: 3,
+//     title: '新增采购单',
+//     open: false,
+//     id: 'zjdcglb'
+//   }
+// },
+// {
+//   path: '/machineToPurchase-order/edit',
+//   name: 'order-edit',
+//   component: () => import( /* webpackChunkName: "diliversyedit" */ './add.vue'),
+//   meta: {
+//     level: 3,
+//     title: '编辑采购单',
+//     open: false,
+//     id: 'zjdcglb'
+//   }
+// },
+{
   path: '/machineToPurchase-order/purchaseAdd',
   name: 'order-machine-purchaseAdd',
   component: () => import( /* webpackChunkName: "diliversyedit" */ './purchaseAdd.vue'),
