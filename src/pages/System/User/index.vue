@@ -51,6 +51,7 @@
                 <select-box v-model="form.userNo" class="flex-item mr-20" :list="userList" label="人员选择"></select-box>
                 <input-box v-model="form.username" class="flex-item mr-10" label="用户名"></input-box>
                 <input-box v-model="form.password" class="flex-item" label="密码"></input-box>
+                <select-box v-model="form.location" class="flex-item mr-20" :list="locationList" label="地区选择"></select-box>
             </div>
             <div class="layer-btns">
                 <btn flat @click="cancel">取消</btn>
@@ -71,7 +72,18 @@ export default {
             layer: false,
             userLayer: false,
             roles: [],
+            location:"",
             userList: [],
+            locationList:[
+              {
+                text:'北京',
+                value:'北京'
+              },
+               {
+                text:'山西',
+                value:'山西'
+              },
+            ],
             roleIds: [],
             roleId: "",
             id: "",
@@ -79,6 +91,7 @@ export default {
                 id: "",
                 username: "",
                 password: "",
+                location:"",
                 realName: "",
                 userNo: "",
                 sex: 0,
@@ -157,7 +170,7 @@ export default {
         },
         userSubmit() {
             if (
-                !this.form.userNo ||
+                !this.form.location ||
                 !this.form.username ||
                 !this.form.password
             ) {

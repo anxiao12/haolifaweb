@@ -146,7 +146,7 @@ export default {
                 btns: ["取消", "离开"],
                 yes: () => {
                     this.$store.commit("DELMENUTABS", url);
-                    this.$router.push("/machineSet");
+                    this.$router.push("/machinesupplier/list");
                 }
             });
         },

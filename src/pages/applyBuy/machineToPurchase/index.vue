@@ -124,17 +124,14 @@ export default {
         },
         selectAll() {
             let arr = document.getElementsByName("boxId");
-            console.log('arr',arr.length)
             if (this.all) {
                 for (let i in arr) {
-                  console.log('i',i)
                   if(Number(i) || i==0){
                     arr[i].checked = true;
                   }
                 }
             } else {
                 for (let j in arr) {
-                  console.log('j',j)
                   if(Number(j) || j ==0){
                     arr[j].checked = false;
                   }

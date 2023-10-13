@@ -8,8 +8,17 @@
                 <input-box v-model="form.demanderLinkman" class="flex-item mr-10" label="需方联系人" style="margin-right: 20px;"></input-box>
             </div>
              <div class="flex">
-                <select-box :list="supplierList" v-model="form.supplierNo" @change="changeSupplier()" label="供应商编号" style="margin-right: 20px;width: 240px;"></select-box>
-                <!-- <input-box v-model="form.supplierNo" class="flex-item mr-10" label="供应商编号"></input-box> -->
+              <div class="flex-item mr-10" >
+                  <el-select @change="chooseSupply" style="width:100%" placeholder='供应商编号' v-model="form.supplierNo" filterable >
+                    <el-option
+                      v-for="(item,index) in supplierList"
+                      :key="index"
+                      :label="item.text"
+                      :value="item.value">
+                    </el-option>
+                  </el-select>
+              </div>
+                <!-- <select-box :list="supplierList" v-model="form.supplierNo" @change="changeSupplier()" label="供应商编号" style="margin-right: 20px;width: 240px;"></select-box> -->
                 <input-box v-model="form.supplierAddr" class="flex-item mr-10" label="供方地址" style="margin-right: 20px;"></input-box>
                 <input-box v-model="form.supplierLinkman" class="flex-item mr-10" label="供方联系人" style="margin-right: 20px;"></input-box>
                 <input-box v-model="form.supplierPhone" class="flex-item mr-10" label="供方联系人电话"></input-box>
@@ -29,18 +38,11 @@
             <div class="flex">
                 <input-box v-model="form.productOrderNo" class="flex-item mr-10" label="销售订单号" style="margin-right: 20px;"></input-box>
             </div>
-            <div class="b" style="margin: 20px 0 10px;">采购物料项</div>
+            <div class="b" style="margin: 20px 0 10px;">采购整机项</div>
                 <!-- 产品名称，型号，规格，系列，压力，数量，采购价，分项金额，阀体，阀芯，密封材质，驱动形式，链接方式，阀轴材质，备注 -->
             <div class="card flex" style="margin-top: 0;" v-for="(item, i) in form.itemList" :key="i">
                 <div class="flex-item">
                     <div class="flex">
-                        <!-- <select-box :list="nameList" v-model="item.materialName" label="产品名称" class="flex-item mr-10"></select-box> -->
-                        <!-- <select-box :list="tuhaoList" :filterable="true" :onchange="materialInfo(item)" v-model="item.materialGraphNo" label="物料图号" class="flex-item mr-10"></select-box> -->
-                        <!-- <el-select class="flex-item mr-10 mycs" v-model="item.materialGraphNo" filterable @change="materialInfo(item)" placeholder="物料图号选择">
-                            <el-option v-for="(obj,j) in tuhaoList" :key="j" :label="obj.text" :value="obj.value"></el-option>
-                        </el-select> -->
-                        <!-- <input-box v-model="item.materialName" class="flex-item mr-10" label="物料名称"></input-box>
-                        <input-box v-model="item.materialGraphNo" class="flex-item mr-10" label="物料图号"></input-box>-->
                         <input-box v-model="item.productName"  class="flex-item mr-10" label="产品名称"></input-box>
                         <input-box v-model="item.productModel"  class="flex-item mr-10" label="型号"></input-box>
                         <input-box v-model="item.specification" class="flex-item mr-10" label="规格"></input-box>
@@ -71,7 +73,7 @@
             <div class="card a flex-center" @click="addItem()">
                 <div class="flex-v-center">
                     <i class="icon mr-10">add</i>
-                    <span>添加采购物料项</span>
+                    <span>添加采购整机项</span>
                 </div>
             </div>
             <div class="flex">
@@ -207,12 +209,14 @@ export default {
         }
     },
     mounted() {
-        let { formId ,pageType} = this.$route.query;
-        this.supplierList = JSON.parse(this.$route.query.supList).map(res =>{
-          return {
-            value: res.supplierCode, text: res.supplierName
-          }
+        let { formId ,pageType,supList} = this.$route.query;
+        if(supList){
+          this.supplierList = JSON.parse(this.$route.query.supList).map(res =>{
+            return {
+              value: res.supplierCode, text: res.supplierName
+            }
         })
+        }
         console.log('supplierList',this.supplierList)
         if(!pageType){
            this.$http.post("/haolifa/whole/machine/supplier/listAll").then(res => {
@@ -234,55 +238,61 @@ export default {
         }
     },
     methods: {
-      cancel(){
-        this.$store.commit('DELMENUTABS', '/machinePurchased-order/add');
-        this.$router.push('/machinePurchased-order/list')
+      chooseSupply(val){
+        this.getListCascadeBySupplierNo(val)
       },
-        materialInfo: function(item) {
-            // this.$http.get(`/haolifa/price/material/getInfo/0?materialGraphNo=${item.materialGraphNo}`).then(res=>{
-            //    item.specifications = res.specifications;
-            //    item.material = res.material;
-            //
-            // });
-        },
-        changeSupplier: function() {
-            this.supplierInfoList.forEach((item, i) => {
-                if (item.suppilerNo == this.form.supplierNo) {
-                    this.form.suppilerPhone = item.phone;
-                    this.form.supplierAddr = item.address;
-                    this.form.supplierLinkman = item.responsiblePerson;
-                    this.form.supplierName = item.suppilerName;
-                }
-            });
-            this.nameList = this.tuhaoList = [];
-            if (!this.form.supplierNo) return;
-            let params = {
-                pageNum: 1,
-                pageSize: 500,
-                supplierNo: this.form.supplierNo
-            };
-            this.$http
-                .post(`/haolifa/supplier-pro/list`, params)
+      getListCascadeBySupplierNo(supplierNo){
+          this.$http
+                .get(`/haolifa//whole/machine/product/listCascadeBySupplierNo/${supplierNo}`, )
                 .then(res => {
-                    let list = res.list;
-                    this.nameList = list.map(item => {
-                        return {
-                            value: item.materialName,
-                            text: item.materialName
-                        };
-                    });
-
-                    this.tuhaoList = list.map(item => {
-                        return {
-                            value: item.materialGraphNo,
-                            text: item.materialGraphNo
-                        };
-                    });
+                  console.log('res',res)
                 })
                 .catch(e => {
                     this.$toast(e.msg || e.message);
                 });
-        },
+      },
+      cancel(){
+        this.$store.commit('DELMENUTABS', '/machinePurchased-order/add');
+        this.$router.push('/machinePurchased-order/list')
+      },
+        // changeSupplier: function() {
+        //     this.supplierInfoList.forEach((item, i) => {
+        //         if (item.suppilerNo == this.form.supplierNo) {
+        //             this.form.suppilerPhone = item.phone;
+        //             this.form.supplierAddr = item.address;
+        //             this.form.supplierLinkman = item.responsiblePerson;
+        //             this.form.supplierName = item.suppilerName;
+        //         }
+        //     });
+        //     this.nameList = this.tuhaoList = [];
+        //     if (!this.form.supplierNo) return;
+        //     let params = {
+        //         pageNum: 1,
+        //         pageSize: 500,
+        //         supplierNo: this.form.supplierNo
+        //     };
+        //     this.$http
+        //         .post(`/haolifa/supplier-pro/list`, params)
+        //         .then(res => {
+        //             let list = res.list;
+        //             this.nameList = list.map(item => {
+        //                 return {
+        //                     value: item.materialName,
+        //                     text: item.materialName
+        //                 };
+        //             });
+
+        //             this.tuhaoList = list.map(item => {
+        //                 return {
+        //                     value: item.materialGraphNo,
+        //                     text: item.materialGraphNo
+        //                 };
+        //             });
+        //         })
+        //         .catch(e => {
+        //             this.$toast(e.msg || e.message);
+        //         });
+        // },
         addItem() {
             this.form.itemList.push({
                productName:'',
