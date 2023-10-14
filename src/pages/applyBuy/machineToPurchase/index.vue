@@ -156,16 +156,21 @@ export default {
             let list = JSON.parse(JSON.stringify(this.$refs.list.list));
             let arr = document.getElementsByName("boxId"),
             ids = []
+            let paramsList=[]
+            let dataList=[]
             for (let i in arr) {
                 if (arr[i].checked) {
                     let rowScope = list[arr[i].value]
                     if(rowScope){
-                        ids.push({
+                        paramsList.push({
                           productModel:rowScope.productModel,
                           productNo:rowScope.productNo,
                           specification:rowScope.specifications,//规格
                           productSeries:rowScope.productSeries
                         })
+                        ids.push(list[arr[i].value].id);
+                        // console.log('list',list[arr[i]].value)
+                        dataList.push(list[arr[i].value]);
                     }
 
                 }
@@ -175,7 +180,7 @@ export default {
                 return;
             }
             this.$http
-                .post("/haolifa/whole/machine/product/listSupplierByParam", { list: ids })
+                .post("/haolifa/whole/machine/product/listSupplierByParam", { list:paramsList })
                 .then(res => {
                     if (res.length === 0) {
                         this.$toast("未找到供应商");
@@ -186,12 +191,14 @@ export default {
                             query: {
                                 supList:JSON.stringify(res) ,
                                 pageType:'edit',
+                                dataList:JSON.stringify(dataList),
+                                ids: JSON.stringify(ids),
                             }
                         });
                     }
                 })
                 .catch(e => {
-                    this.$toast("处理失败");
+                    this.$toast(e.message);
                 });
         }
     }

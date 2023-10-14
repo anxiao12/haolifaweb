@@ -162,6 +162,7 @@ export default {
                 this.$toast("请至少选中一条数据!");
                 return;
             }
+            console.log('dataList',dataList)
             this.$http
                 .post("/haolifa/supplier/supplier-list", { graphNos: dataArr })
                 .then(res => {

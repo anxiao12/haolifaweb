@@ -200,7 +200,7 @@ export default {
             this.form.itemList[i].materialName = item.materialName;
             this.form.itemList[i].number = item.purchaseNumber;
         });
-        let supList = [];
+        let supList = [];//供应商列表
         supList = this.$route.params.supList;
         this.supplierList = supList.map(item => {
             return { value: item.suppilerNo, text: item.supplierName };

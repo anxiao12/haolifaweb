@@ -44,10 +44,56 @@
                 <div class="flex-item">
                     <div class="flex">
                         <input-box v-model="item.productName"  class="flex-item mr-10" label="产品名称"></input-box>
-                        <input-box v-model="item.productModel"  class="flex-item mr-10" label="型号"></input-box>
+                        <!-- <input-box v-model="item.productModel"  class="flex-item mr-10" label="型号"></input-box>
                         <input-box v-model="item.specification" class="flex-item mr-10" label="规格"></input-box>
-                        <input-box v-model="item.series" class="flex-item mr-10" label="系列"></input-box>
-                    </div>
+                        <input-box v-model="item.series" class="flex-item mr-10" label="系列"></input-box> -->
+                  <div>
+                    {{i}}
+                      <label for="productModel">型号:</label>
+                      <el-select v-model="item.productModel" @change="onProductModelChange(i)">
+                          <el-option
+                              label="请选择型号"
+                              value=""
+                          ></el-option>
+                          <el-option
+                              v-for="model in item.productModels"
+                              :key="model.code"
+                              :label="model.code"
+                              :value="model"
+                          ></el-option>
+                      </el-select>
+                  </div>
+                  <div>
+                      <label for="specification">规格:</label>
+                      <el-select v-model="item.specification" @change="onSpecificationChange(i)">
+                          <el-option
+                              label="请选择规格"
+                              value=""
+                          ></el-option>
+                          <el-option
+                              v-for="spec in item.specifications"
+                              :key="spec.code"
+                              :label="spec.code"
+                              :value="spec"
+                          ></el-option>
+                      </el-select>
+                  </div>
+                  <div>
+                      <label for="series">系列:</label>
+                      <el-select v-model="item.series">
+                          <el-option
+                              label="请选择系列"
+                              value=""
+                          ></el-option>
+                          <el-option
+                              v-for="seriesItem in item.seriesList"
+                              :key="seriesItem.code"
+                              :label="seriesItem.code"
+                              :value="seriesItem"
+                          ></el-option>
+                      </el-select>
+                  </div>
+                      </div>
                     <div class="flex">
                         <input-box v-model="item.nominalPressure" class="flex-item mr-10" label="压力"></input-box>
                         <input-box v-model="item.productNumber" class="flex-item mr-10" label="数量"></input-box>
@@ -89,8 +135,57 @@ export default {
     name: "purchsemanage-purchaseadd",
     data() {
         return {
-            supplierInfoList: [],
-            supplierList: [],
+              products: [
+                {
+                  name: "Product 1",
+                  models: [
+                    {
+                      name: "Model A",
+                      specs: [
+                        {
+                          name: "Spec 1",
+                          series: ["Series X", "Series Y"]
+                        },
+                        {
+                          name: "Spec 2",
+                          series: ["Series Z"]
+                        }
+                      ]
+                    },
+                    {
+                      name: "Model B",
+                      specs: [
+                        {
+                          name: "Spec 3",
+                          series: ["Series W"]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  name: "Product 2",
+                  models: [
+                    {
+                      name: "Model C",
+                      specs: [
+                        {
+                          name: "Spec 4",
+                          series: ["Series V"]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              selectedModel: null,
+              selectedSpec: null,
+              selectedSeries: null,
+              supplierInfoList: [],
+              supplierList: [],
+              supList:[],
+              ids:[],
+              dataList:[],
             form: {
                 id:'',
                 deliveryTime:'',
@@ -126,9 +221,76 @@ export default {
                         valveShaft:'',
                         itemAmount:'',
                         remark:'',
+                        productModels:[
+                            {
+                                code: "D41X3T-150LBQ",
+                                child: [
+                                    {
+                                        code: "DN50",
+                                        child: [
+                                            {
+                                                code: "Series A",
+                                                child: ""
+                                            },
+                                            {
+                                                code: "Series B",
+                                                child: ""
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        code: "DN60",
+                                        child: [
+                                            {
+                                                code: "Series X",
+                                                child: ""
+                                            },
+                                            {
+                                                code: "Series Y",
+                                                child: ""
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                             {
+                                code: "xxxxxxxxx",
+                                child: [
+                                    {
+                                        code: "DN50xxx",
+                                        child: [
+                                            {
+                                                code: "Series A",
+                                                child: ""
+                                            },
+                                            {
+                                                code: "Series B",
+                                                child: ""
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        code: "DN60xxxx",
+                                        child: [
+                                            {
+                                                code: "Series X",
+                                                child: ""
+                                            },
+                                            {
+                                                code: "Series Y",
+                                                child: ""
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ],
+                        specifications: [],
+                        seriesList: []
                     }
                 ]
             },
+
             isAdd: true,
             nameList: [],
             tuhaoList: [],
@@ -182,12 +344,105 @@ export default {
                     valveShaft:'',
                     itemAmount:'',
                     remark:'',
+                    productModels:[
+                            {
+                                code: "D41X3T-150LBQ",
+                                child: [
+                                    {
+                                        code: "DN50",
+                                        child: [
+                                            {
+                                                code: "Series A",
+                                                child: ""
+                                            },
+                                            {
+                                                code: "Series B",
+                                                child: ""
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        code: "DN60",
+                                        child: [
+                                            {
+                                                code: "Series X",
+                                                child: ""
+                                            },
+                                            {
+                                                code: "Series Y",
+                                                child: ""
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                             {
+                                code: "xxxxxxxxx",
+                                child: [
+                                    {
+                                        code: "DN50xxx",
+                                        child: [
+                                            {
+                                                code: "Series A",
+                                                child: ""
+                                            },
+                                            {
+                                                code: "Series B",
+                                                child: ""
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        code: "DN60xxxx",
+                                        child: [
+                                            {
+                                                code: "Series X",
+                                                child: ""
+                                            },
+                                            {
+                                                code: "Series Y",
+                                                child: ""
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ],
+                        specifications: [],
+                        seriesList: []
                 }
             ]
         };
-        let { formId,pageType } = this.$route.query;
-        this.form.id = formId;
-        if(!pageType){
+        let { ids,pageType,supList,dataList} = this.$route.query;
+        if(supList){
+          this.supList = JSON.parse(supList)//供应商
+        }
+        if(ids){
+          this.ids = JSON.parse(ids)//每一行数据的id
+        }
+        if(dataList){
+          this.dataList = JSON.parse(dataList)//每一行选中的数据带过来
+        }
+        for (let i = 1; i < this.dataList.length; i++) {
+            this.form.itemList.push({
+                    productName:this.dataList[i].productName,
+                    productModel:'',
+                    specification:'',
+                    series:'',
+                    nominalPressure:this.dataList[i].nominalPressure,
+                    productNumber:this.dataList[i].productNumber,
+                    unitPrice:this.dataList[i].unitPrice,
+                    valveBodyMaterial:this.dataList[i].valveBodyMaterial,
+                    valveCoreMaterial:this.dataList[i].valveCoreMaterial,
+                    sealingMaterial:this.dataList[i].sealingMaterial,
+                    driveForm:this.dataList[i].driveForm,
+                    connectionMethod:this.dataList[i].connectionMethod,
+                    valveShaft:this.dataList[i].valveShaft,
+                    itemAmount:this.dataList[i].itemAmount,
+                    remark:this.dataList[i].remark,
+            });
+        }
+        if(!pageType){//新增，加载全部供应商
            this.$http.post("/haolifa/whole/machine/supplier/listAll").then(res => {
               this.supplierList = res.map(item => {
                   return { value: item.nickName, text: item.name };
@@ -195,30 +450,45 @@ export default {
               this.supplierInfoList = res;
          });
         }
-        if (formId) {
-            // 加载详情
-            this.isAdd = false;
-            this.$http
-                .get(`/haolifa/wholeMachinePurchaseOrder/detail/${formId}`)
-                .then(res => {
-                  console.log(res)
-                     this.form = res;
-                     this.form.itemList = res.itemList
-
-                });
-        }
-    },
-    mounted() {
-        let { formId ,pageType,supList} = this.$route.query;
-        if(supList){
+         if(supList){//加载选中的供应商
           this.supplierList = JSON.parse(this.$route.query.supList).map(res =>{
             return {
-              value: res.supplierCode, text: res.supplierName
+              value: res.supplierCode, text: res.supplierName,address:res.address,contact:res.contact,telephone:res.telephone
             }
         })
         }
-        console.log('supplierList',this.supplierList)
-        if(!pageType){
+    },
+    mounted() {
+        let { ids,pageType,supList,dataList} = this.$route.query;
+        if(supList){
+          this.supList = JSON.parse(supList)//供应商
+        }
+        if(ids){
+          this.ids = JSON.parse(ids)//每一行数据的id
+        }
+        if(dataList){
+          this.dataList = JSON.parse(dataList)//每一行选中的数据带过来
+        }
+        for (let i = 1; i < this.dataList.length; i++) {
+            this.form.itemList.push({
+                    productName:this.dataList[i].productName,
+                    productModel:'',
+                    specification:'',
+                    series:'',
+                    nominalPressure:this.dataList[i].nominalPressure,
+                    productNumber:this.dataList[i].productNumber,
+                    unitPrice:this.dataList[i].unitPrice,
+                    valveBodyMaterial:this.dataList[i].valveBodyMaterial,
+                    valveCoreMaterial:this.dataList[i].valveCoreMaterial,
+                    sealingMaterial:this.dataList[i].sealingMaterial,
+                    driveForm:this.dataList[i].driveForm,
+                    connectionMethod:this.dataList[i].connectionMethod,
+                    valveShaft:this.dataList[i].valveShaft,
+                    itemAmount:this.dataList[i].itemAmount,
+                    remark:this.dataList[i].remark,
+            });
+        }
+        if(!pageType){//新增，加载全部供应商
            this.$http.post("/haolifa/whole/machine/supplier/listAll").then(res => {
               this.supplierList = res.map(item => {
                   return { value: item.nickName, text: item.name };
@@ -226,26 +496,43 @@ export default {
               this.supplierInfoList = res;
          });
         }
-        if (formId) {
-            // 加载详情
-            this.isAdd = false;
-            this.$http
-                .get(`/haolifa/wholeMachinePurchaseOrder/detail/${formId}`)
-                .then(res => {
-                   this.form = res;
-                     this.form.itemList = res.itemList
-                });
+        if(supList){//加载选中的供应商
+          this.supplierList = JSON.parse(this.$route.query.supList).map(res =>{
+            return {
+              value: res.supplierCode, text: res.supplierName,address:res.address,contact:res.contact,telephone:res.telephone
+            }
+        })
         }
+
     },
     methods: {
+       onProductModelChange(formIndex) {
+            const selectedProductModel = this.form.itemList[formIndex].productModel;
+            this.form.itemList[formIndex].specifications = selectedProductModel.child;
+            this.form.itemList[formIndex].seriesList = [];
+            this.form.itemList[formIndex].specification = '';
+            this.form.itemList[formIndex].series = '';
+        },
+        onSpecificationChange(formIndex) {
+            const selectedSpecification = this.form.itemList[formIndex].specification;
+            this.form.itemList[formIndex].seriesList = selectedSpecification.child;
+            this.form.itemList[formIndex].series = '';
+        },
       chooseSupply(val){
+        let choosedObj= this.supplierList.filter(res => res.value === val)[0]
+        this.form.supplierAddr = choosedObj.address;
+        this.form.supplierLinkman = choosedObj.contact;
+        this.form.supplierPhone = choosedObj.telephone;
         this.getListCascadeBySupplierNo(val)
       },
       getListCascadeBySupplierNo(supplierNo){
           this.$http
                 .get(`/haolifa//whole/machine/product/listCascadeBySupplierNo/${supplierNo}`, )
                 .then(res => {
-                  console.log('res',res)
+                  //  this.form.itemList.forEach(item =>{
+                  //    item.productModels = res
+                  //  })
+                  // this.products = res;
                 })
                 .catch(e => {
                     this.$toast(e.msg || e.message);
@@ -255,47 +542,9 @@ export default {
         this.$store.commit('DELMENUTABS', '/machinePurchased-order/add');
         this.$router.push('/machinePurchased-order/list')
       },
-        // changeSupplier: function() {
-        //     this.supplierInfoList.forEach((item, i) => {
-        //         if (item.suppilerNo == this.form.supplierNo) {
-        //             this.form.suppilerPhone = item.phone;
-        //             this.form.supplierAddr = item.address;
-        //             this.form.supplierLinkman = item.responsiblePerson;
-        //             this.form.supplierName = item.suppilerName;
-        //         }
-        //     });
-        //     this.nameList = this.tuhaoList = [];
-        //     if (!this.form.supplierNo) return;
-        //     let params = {
-        //         pageNum: 1,
-        //         pageSize: 500,
-        //         supplierNo: this.form.supplierNo
-        //     };
-        //     this.$http
-        //         .post(`/haolifa/supplier-pro/list`, params)
-        //         .then(res => {
-        //             let list = res.list;
-        //             this.nameList = list.map(item => {
-        //                 return {
-        //                     value: item.materialName,
-        //                     text: item.materialName
-        //                 };
-        //             });
-
-        //             this.tuhaoList = list.map(item => {
-        //                 return {
-        //                     value: item.materialGraphNo,
-        //                     text: item.materialGraphNo
-        //                 };
-        //             });
-        //         })
-        //         .catch(e => {
-        //             this.$toast(e.msg || e.message);
-        //         });
-        // },
         addItem() {
             this.form.itemList.push({
-               productName:'',
+                productName:'',
                 productModel:'',
                 specification:'',
                 series:'',
