@@ -18,7 +18,6 @@
                     </el-option>
                   </el-select>
               </div>
-                <!-- <select-box :list="supplierList" v-model="form.supplierNo" @change="changeSupplier()" label="供应商编号" style="margin-right: 20px;width: 240px;"></select-box> -->
                 <input-box v-model="form.supplierAddr" class="flex-item mr-10" label="供方地址" style="margin-right: 20px;"></input-box>
                 <input-box v-model="form.supplierLinkman" class="flex-item mr-10" label="供方联系人" style="margin-right: 20px;"></input-box>
                 <input-box v-model="form.supplierPhone" class="flex-item mr-10" label="供方联系人电话"></input-box>
@@ -44,10 +43,7 @@
                 <div class="flex-item">
                     <div class="flex">
                         <input-box v-model="item.productName"  class="flex-item mr-10" label="产品名称"></input-box>
-                        <!-- <input-box v-model="item.productModel"  class="flex-item mr-10" label="型号"></input-box>
-                        <input-box v-model="item.specification" class="flex-item mr-10" label="规格"></input-box>
-                        <input-box v-model="item.series" class="flex-item mr-10" label="系列"></input-box> -->
-                      <el-select filterable placeholder="型号" class="flex-item mr-10 mycs" v-model="item.productModel" @change="onProductModelChange(i)">
+                        <el-select filterable placeholder="型号" class="flex-item mr-10 mycs" v-model="item.productModel" @change="onProductModelChange(i)">
                           <el-option
                               v-for="model in item.productModels"
                               :key="model.code"
@@ -233,7 +229,7 @@ export default {
         if(dataList){
           this.dataList = JSON.parse(dataList)//每一行选中的数据带过来
         }
-        for (let i = 1; i < this.dataList.length; i++) {
+        for (let i = 0; i < this.dataList.length; i++) {
             this.form.itemList.push({
                     productName:this.dataList[i].productName,
                     productModel:'',
@@ -279,7 +275,7 @@ export default {
         if(dataList){
           this.dataList = JSON.parse(dataList)//每一行选中的数据带过来
         }
-        for (let i = 1; i < this.dataList.length; i++) {
+        for (let i = 0; i < this.dataList.length; i++) {
             this.form.itemList.push({
                     productName:this.dataList[i].productName,
                     productModel:'',
@@ -316,11 +312,30 @@ export default {
 
     },
     methods: {
-      getProductMessage(params){
+      getProductMessage(params,index){
+      console.log('index',index)
          this.$http
-                .post(`/haolifa/whole/machine/product/listProductByParam`, params)
+                .post(`/haolifa/whole/machine/product/listProductByParam`, {'list':params})
                 .then(res => {
-                  console.log('res',res)
+                  this.$nextTick(() =>{
+                     //  this.form.itemList[index].productNumber = res[index].productNumber//采购数量
+                    //  this.form.itemList[index].itemAmount = res[index].itemAmount//分项金额
+                    //  this.form.itemList[index].unitPrice = res[index].unitPrice//采购价
+                     this.form.itemList[index].productName = res[0].productName
+                     this.form.itemList[index].nominalPressure = res[0].nominalPressure//压力
+                     this.form.itemList[index].valveBodyMaterial = res[0].valveBodyMaterial
+                     this.form.itemList[index].valveCoreMaterial = res[0].valveCoreMaterial
+                     this.form.itemList[index].sealingMaterial = res[0].sealingMaterial
+                     this.form.itemList[index].driveForm = res[0].driveForm
+                     this.form.itemList[index].connectionMethod = res[0].connectionMethod
+                     this.form.itemList[index].valveShaft = res[0].valveShaft
+                     this.form.itemList[index].remark = res[0].remark
+
+                    console.log('res',res[index])
+                    console.log('res2222',this.form.itemList)
+                  })
+
+
                 })
                 .catch(e => {
                     this.$toast(e.msg || e.message);
@@ -347,7 +362,7 @@ export default {
               "productSeries": this.selectedSeries,
               "specifications": this.selectedSpecification
             }]
-            this.getProductMessage(message)
+            this.getProductMessage(message,formIndex)
         },
         onSeriesChange(formIndex){
             const selectedSeries = this.form.itemList[formIndex].series;
@@ -358,7 +373,7 @@ export default {
               "productSeries": this.selectedSeries,
               "specifications": this.selectedSpecification
             }]
-            this.getProductMessage(message)
+            this.getProductMessage(message,formIndex)
         },
       chooseSupply(val){
         this.supplierNumber=val;
@@ -367,6 +382,14 @@ export default {
         this.form.supplierLinkman = choosedObj.contact;
         this.form.supplierPhone = choosedObj.telephone;
         this.getListCascadeBySupplierNo(val)
+        this.form.itemList.forEach(res =>{
+           Object.keys(res).map(item =>{
+            if(!Array.isArray(item)){
+                res[item] = ''
+            }
+           })
+          console.log('res',res)
+        })
       },
       getListCascadeBySupplierNo(supplierNo){
           this.$http
@@ -402,6 +425,7 @@ export default {
                 itemAmount:'',
                 remark:'',
             });
+             this.getListCascadeBySupplierNo(this.supplierNumber)
             this.$forceUpdate();
         },
         submit() {
