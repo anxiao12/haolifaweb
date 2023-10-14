@@ -1,14 +1,14 @@
 <template>
     <div class="apply-buy-add">
         <div class="content">
-            <div class="title b f-18 mb-10">{{isAdd ? '新增' : '编辑'}}采购订单111</div>
+            <div class="title b f-18 mb-10">{{isAdd ? '新增' : '编辑'}}采购订单</div>
             <div class="flex">
                 <input-box v-model="form.demander" class="flex-item mr-10" label="需方" style="margin-right: 20px;"></input-box>
                 <input-box v-model="form.demanderAddr" class="flex-item mr-10" label="需方地址" style="margin-right: 20px;"></input-box>
                 <input-box v-model="form.demanderLinkman" class="flex-item mr-10" label="需方联系人" style="margin-right: 20px;"></input-box>
             </div>
              <div class="flex">
-              <div class="flex-item mr-10" >
+              <div class="flex-item mr-10 mycswhite" >
                   <el-select @change="chooseSupply" style="width:100%" placeholder='供应商编号' v-model="form.supplierNo" filterable >
                     <el-option
                       v-for="(item,index) in supplierList"
@@ -47,52 +47,30 @@
                         <!-- <input-box v-model="item.productModel"  class="flex-item mr-10" label="型号"></input-box>
                         <input-box v-model="item.specification" class="flex-item mr-10" label="规格"></input-box>
                         <input-box v-model="item.series" class="flex-item mr-10" label="系列"></input-box> -->
-                  <div>
-                    {{i}}
-                      <label for="productModel">型号:</label>
-                      <el-select v-model="item.productModel" @change="onProductModelChange(i)">
-                          <el-option
-                              label="请选择型号"
-                              value=""
-                          ></el-option>
+                      <el-select filterable placeholder="型号" class="flex-item mr-10 mycs" v-model="item.productModel" @change="onProductModelChange(i)">
                           <el-option
                               v-for="model in item.productModels"
                               :key="model.code"
                               :label="model.code"
-                              :value="model"
+                              :value="model.code"
                           ></el-option>
                       </el-select>
-                  </div>
-                  <div>
-                      <label for="specification">规格:</label>
-                      <el-select v-model="item.specification" @change="onSpecificationChange(i)">
-                          <el-option
-                              label="请选择规格"
-                              value=""
-                          ></el-option>
+                      <el-select filterable placeholder="规格"  class="flex-item mr-10 mycs" v-model="item.specification" @change="onSpecificationChange(i)">
                           <el-option
                               v-for="spec in item.specifications"
                               :key="spec.code"
                               :label="spec.code"
-                              :value="spec"
+                              :value="spec.code"
                           ></el-option>
                       </el-select>
-                  </div>
-                  <div>
-                      <label for="series">系列:</label>
-                      <el-select v-model="item.series">
-                          <el-option
-                              label="请选择系列"
-                              value=""
-                          ></el-option>
+                      <el-select filterable placeholder="系列"  class="flex-item mr-10 mycs" v-model="item.series" @change="onSeriesChange(i)">
                           <el-option
                               v-for="seriesItem in item.seriesList"
                               :key="seriesItem.code"
                               :label="seriesItem.code"
-                              :value="seriesItem"
+                              :value="seriesItem.code"
                           ></el-option>
                       </el-select>
-                  </div>
                       </div>
                     <div class="flex">
                         <input-box v-model="item.nominalPressure" class="flex-item mr-10" label="压力"></input-box>
@@ -135,58 +113,16 @@ export default {
     name: "purchsemanage-purchaseadd",
     data() {
         return {
-              products: [
-                {
-                  name: "Product 1",
-                  models: [
-                    {
-                      name: "Model A",
-                      specs: [
-                        {
-                          name: "Spec 1",
-                          series: ["Series X", "Series Y"]
-                        },
-                        {
-                          name: "Spec 2",
-                          series: ["Series Z"]
-                        }
-                      ]
-                    },
-                    {
-                      name: "Model B",
-                      specs: [
-                        {
-                          name: "Spec 3",
-                          series: ["Series W"]
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  name: "Product 2",
-                  models: [
-                    {
-                      name: "Model C",
-                      specs: [
-                        {
-                          name: "Spec 4",
-                          series: ["Series V"]
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ],
-              selectedModel: null,
-              selectedSpec: null,
-              selectedSeries: null,
+              selectedProductModel:'',
+              selectedSpecification:'',
+              supplierNumber:'',
+              selectedSeries:'',
               supplierInfoList: [],
               supplierList: [],
               supList:[],
               ids:[],
               dataList:[],
-            form: {
+              form: {
                 id:'',
                 deliveryTime:'',
                 demander:'山西好利阀机械制造有限公司',
@@ -221,70 +157,7 @@ export default {
                         valveShaft:'',
                         itemAmount:'',
                         remark:'',
-                        productModels:[
-                            {
-                                code: "D41X3T-150LBQ",
-                                child: [
-                                    {
-                                        code: "DN50",
-                                        child: [
-                                            {
-                                                code: "Series A",
-                                                child: ""
-                                            },
-                                            {
-                                                code: "Series B",
-                                                child: ""
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        code: "DN60",
-                                        child: [
-                                            {
-                                                code: "Series X",
-                                                child: ""
-                                            },
-                                            {
-                                                code: "Series Y",
-                                                child: ""
-                                            }
-                                        ]
-                                    }
-                                ]
-                            },
-                             {
-                                code: "xxxxxxxxx",
-                                child: [
-                                    {
-                                        code: "DN50xxx",
-                                        child: [
-                                            {
-                                                code: "Series A",
-                                                child: ""
-                                            },
-                                            {
-                                                code: "Series B",
-                                                child: ""
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        code: "DN60xxxx",
-                                        child: [
-                                            {
-                                                code: "Series X",
-                                                child: ""
-                                            },
-                                            {
-                                                code: "Series Y",
-                                                child: ""
-                                            }
-                                        ]
-                                    }
-                                ]
-                            }
-                        ],
+                        productModels:[],
                         specifications: [],
                         seriesList: []
                     }
@@ -344,72 +217,9 @@ export default {
                     valveShaft:'',
                     itemAmount:'',
                     remark:'',
-                    productModels:[
-                            {
-                                code: "D41X3T-150LBQ",
-                                child: [
-                                    {
-                                        code: "DN50",
-                                        child: [
-                                            {
-                                                code: "Series A",
-                                                child: ""
-                                            },
-                                            {
-                                                code: "Series B",
-                                                child: ""
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        code: "DN60",
-                                        child: [
-                                            {
-                                                code: "Series X",
-                                                child: ""
-                                            },
-                                            {
-                                                code: "Series Y",
-                                                child: ""
-                                            }
-                                        ]
-                                    }
-                                ]
-                            },
-                             {
-                                code: "xxxxxxxxx",
-                                child: [
-                                    {
-                                        code: "DN50xxx",
-                                        child: [
-                                            {
-                                                code: "Series A",
-                                                child: ""
-                                            },
-                                            {
-                                                code: "Series B",
-                                                child: ""
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        code: "DN60xxxx",
-                                        child: [
-                                            {
-                                                code: "Series X",
-                                                child: ""
-                                            },
-                                            {
-                                                code: "Series Y",
-                                                child: ""
-                                            }
-                                        ]
-                                    }
-                                ]
-                            }
-                        ],
-                        specifications: [],
-                        seriesList: []
+                    productModels:[],
+                    specifications: [],
+                    seriesList: []
                 }
             ]
         };
@@ -506,19 +316,52 @@ export default {
 
     },
     methods: {
+      getProductMessage(params){
+         this.$http
+                .post(`/haolifa/whole/machine/product/listProductByParam`, params)
+                .then(res => {
+                  console.log('res',res)
+                })
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
+
+      },
        onProductModelChange(formIndex) {
             const selectedProductModel = this.form.itemList[formIndex].productModel;
-            this.form.itemList[formIndex].specifications = selectedProductModel.child;
-            this.form.itemList[formIndex].seriesList = [];
-            this.form.itemList[formIndex].specification = '';
-            this.form.itemList[formIndex].series = '';
+            this.selectedProductModel=selectedProductModel
+            this.form.itemList[formIndex].specifications = this.form.itemList[formIndex].productModels.filter(res => res.code === selectedProductModel)[0].child;
+            this.form.itemList[formIndex].seriesList = [];//系列
+            this.form.itemList[formIndex].specification = '';//规格
+            this.form.itemList[formIndex].series = '';//系列值
         },
         onSpecificationChange(formIndex) {
             const selectedSpecification = this.form.itemList[formIndex].specification;
-            this.form.itemList[formIndex].seriesList = selectedSpecification.child;
+            this.selectedSpecification = selectedSpecification;
+            let choosedSpecification = this.form.itemList[formIndex].specifications.filter(res => res.code === selectedSpecification)[0].child
+            this.form.itemList[formIndex].seriesList = choosedSpecification;
             this.form.itemList[formIndex].series = '';
+            let message = [{
+              "supplierNo": this.supplierNumber,
+              "productModel":this.selectedProductModel,
+              "productSeries": this.selectedSeries,
+              "specifications": this.selectedSpecification
+            }]
+            this.getProductMessage(message)
+        },
+        onSeriesChange(formIndex){
+            const selectedSeries = this.form.itemList[formIndex].series;
+            this.selectedSeries = selectedSeries
+            let message = [{
+              "supplierNo": this.supplierNumber,
+              "productModel":this.selectedProductModel,
+              "productSeries": this.selectedSeries,
+              "specifications": this.selectedSpecification
+            }]
+            this.getProductMessage(message)
         },
       chooseSupply(val){
+        this.supplierNumber=val;
         let choosedObj= this.supplierList.filter(res => res.value === val)[0]
         this.form.supplierAddr = choosedObj.address;
         this.form.supplierLinkman = choosedObj.contact;
@@ -529,10 +372,9 @@ export default {
           this.$http
                 .get(`/haolifa//whole/machine/product/listCascadeBySupplierNo/${supplierNo}`, )
                 .then(res => {
-                  //  this.form.itemList.forEach(item =>{
-                  //    item.productModels = res
-                  //  })
-                  // this.products = res;
+                   this.form.itemList.forEach(item =>{
+                     item.productModels = res
+                   })
                 })
                 .catch(e => {
                     this.$toast(e.msg || e.message);
@@ -611,6 +453,14 @@ export default {
             border-bottom: 1px solid rgba(0, 0, 0, 0.2);
             border-radius: 0;
             background: #f5f5f5;
+            margin-top: 4px;
+        }
+    }
+    .mycswhite {
+        input {
+            border: 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+            border-radius: 0;
             margin-top: 4px;
         }
     }
