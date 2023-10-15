@@ -41,6 +41,20 @@
                 <!-- 产品名称，型号，规格，系列，压力，数量，采购价，分项金额，阀体，阀芯，密封材质，驱动形式，链接方式，阀轴材质，备注 -->
             <div class="card flex" style="margin-top: 0;" v-for="(item, i) in form.itemList" :key="i">
                 <div class="flex-item">
+                  <!-- {{item.chooseBtn}}
+                  <div class="flex">
+                    <el-select filterable placeholder="型号" class="flex-item mr-10 mycs" v-model="item.mulitiProduct" @change="onProductModelChange(i)">
+                          <el-option
+                              v-for="model in item.mulitiProducts"
+                              :key="model.code"
+                              :label="model.code"
+                              :value="model.code"
+                          ></el-option>
+                      </el-select>
+                      <div class="flex-item mr-10"></div>
+                      <div class="flex-item mr-10"></div>
+                      <div class="flex-item mr-10"></div>
+                  </div> -->
                     <div class="flex">
                         <input-box v-model="item.productName"  class="flex-item mr-10" label="产品名称"></input-box>
                         <el-select filterable placeholder="型号" class="flex-item mr-10 mycs" v-model="item.productModel" @change="onProductModelChange(i)">
@@ -138,6 +152,7 @@ export default {
                 supplierPhone:'',
                 itemList: [
                     {
+                        mulitiProduct:'',
                         productName:'',
                         productModel:'',
                         specification:'',
@@ -155,7 +170,8 @@ export default {
                         remark:'',
                         productModels:[],
                         specifications: [],
-                        seriesList: []
+                        seriesList: [],
+                        mulitiProducts:[]
                     }
                 ]
             },
@@ -198,6 +214,7 @@ export default {
             supplierPhone:'',
             itemList: [
                 {
+                    mulitiProduct:'',
                     productName:'',
                     productModel:'',
                     specification:'',
@@ -215,7 +232,8 @@ export default {
                     remark:'',
                     productModels:[],
                     specifications: [],
-                    seriesList: []
+                    seriesList: [],
+                    mulitiProducts:[],
                 }
             ]
         };
@@ -229,6 +247,17 @@ export default {
         }
         if(dataList){
           this.dataList = JSON.parse(dataList)//每一行选中的数据带过来
+           let fetchParams =  this.dataList.map((res,i) =>{
+            return {
+                productModel:res.productModel,
+                specification:res.specification,
+                series:res.series,
+                supplierNo:this.supList[i].supplierCode
+            }
+         })
+         fetchParams.map((res,index) =>{
+           this.initGetProductMessage([res],index)
+         })
         }
         console.log('this.dataList',this.dataList)
         if(dataList){
@@ -285,7 +314,7 @@ export default {
           this.dataList = JSON.parse(dataList)//每一行选中的数据带过来
         }
         if(dataList){
-         this.form.itemList.splice(0,1)
+          this.form.itemList.splice(0,1)
           let fetchParams =  this.dataList.map((res,i) =>{
             return {
                 productModel:res.productModel,
@@ -294,7 +323,10 @@ export default {
                 supplierNo:this.supList[i].supplierCode
             }
          })
-         this.initGetProductMessage(fetchParams)
+         console.log('fetchParams',fetchParams)
+         fetchParams.map((res,index) =>{
+           this.initGetProductMessage([res],index)
+         })
         }
          if(formId){//编辑页面查询详情
           this.getInfo(formId)
@@ -343,7 +375,6 @@ export default {
             this.$http
                 .get(`/haolifa/wholeMachinePurchaseOrder/detail/${formId}`)
                 .then(res => {
-                  console.log('res',res)
                     this.form = res;
                     this.form.itemList = res.itemList;
                 })
@@ -366,8 +397,6 @@ export default {
                      this.form.itemList[index].connectionMethod = res[0].connectionMethod
                      this.form.itemList[index].valveShaft = res[0].valveShaft
                      this.form.itemList[index].remark = res[0].remark
-                    console.log('res',res[index])
-                    console.log('res2222',this.form.itemList)
                   })
                 })
                 .catch(e => {
@@ -379,6 +408,13 @@ export default {
          this.$http
                 .post(`/haolifa/whole/machine/product/listProductByParam`, {'list':params})
                 .then(res => {
+                  if(res.length>2){
+                    this.form.itemList[index].chooseBtn = true
+                  }else{
+                    this.form.itemList[index].chooseBtn = false
+                  }
+                  this.form.itemList[index].mulitiProducts = res;
+                  console.log('this.form',this.form.itemList)
                     //  this.form.itemList[index].unitPrice = res[index].unitPrice//采购价
                     //  this.form.itemList[index].productName = res[index].productName
                     //  this.form.itemList[index].nominalPressure = res[index].nominalPressure//压力
@@ -389,7 +425,6 @@ export default {
                     //  this.form.itemList[index].connectionMethod = res[index].connectionMethod
                     //  this.form.itemList[index].valveShaft = res[index].valveShaft
                     //  this.form.itemList[index].remark = res[index].remark
-                    console.log('res',res)
                 })
                 .catch(e => {
                     this.$toast(e.msg || e.message);
