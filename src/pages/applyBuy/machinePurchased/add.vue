@@ -35,7 +35,7 @@
                 <input-box v-model="form.supplierName" class="flex-item mr-10" label="提供方" style="margin-right: 20px;"></input-box>
             </div>
             <div class="flex">
-                <input-box v-model="form.productOrderNo" class="flex-item mr-10" label="销售订单号" style="margin-right: 20px;"></input-box>
+                <input-box v-model="form.productOrderNo" class="flex-item mr-10" label="销售订单号" style="margin-right: 20px;width:25%"></input-box>
             </div>
             <div class="b" style="margin: 20px 0 10px;">采购整机项</div>
                 <!-- 产品名称，型号，规格，系列，压力，数量，采购价，分项金额，阀体，阀芯，密封材质，驱动形式，链接方式，阀轴材质，备注 -->
@@ -219,7 +219,8 @@ export default {
                 }
             ]
         };
-        let { ids,pageType,supList,dataList} = this.$route.query;
+        let { ids,pageType,supList,dataList ,isAdd,formId} = this.$route.query;
+        this.isAdd = isAdd
         if(supList){
           this.supList = JSON.parse(supList)//供应商
         }
@@ -229,12 +230,17 @@ export default {
         if(dataList){
           this.dataList = JSON.parse(dataList)//每一行选中的数据带过来
         }
+        console.log('this.dataList',this.dataList)
+        if(dataList){
+          this.form.itemList.splice(0,1)
+        }
+        let productOrderNoArr=[]
         for (let i = 0; i < this.dataList.length; i++) {
             this.form.itemList.push({
                     productName:this.dataList[i].productName,
-                    productModel:'',
-                    specification:'',
-                    series:'',
+                    productModel:this.dataList[i].productModel,
+                    specification:this.dataList[i].specification,
+                    series:this.dataList[i].series,
                     nominalPressure:this.dataList[i].nominalPressure,
                     productNumber:this.dataList[i].productNumber,
                     unitPrice:this.dataList[i].unitPrice,
@@ -247,7 +253,9 @@ export default {
                     itemAmount:this.dataList[i].itemAmount,
                     remark:this.dataList[i].remark,
             });
+             productOrderNoArr.push(this.dataList[i].productOrderNo)
         }
+        this.form.productOrderNo= productOrderNoArr.join(',')
         if(!pageType){//新增，加载全部供应商
            this.$http.post("/haolifa/whole/machine/supplier/listAll").then(res => {
               this.supplierList = res.map(item => {
@@ -265,7 +273,8 @@ export default {
         }
     },
     mounted() {
-        let { ids,pageType,supList,dataList} = this.$route.query;
+        let { ids,pageType,supList,dataList,isAdd,formId} = this.$route.query;
+        this.isAdd = isAdd;
         if(supList){
           this.supList = JSON.parse(supList)//供应商
         }
@@ -275,12 +284,28 @@ export default {
         if(dataList){
           this.dataList = JSON.parse(dataList)//每一行选中的数据带过来
         }
+        if(dataList){
+         this.form.itemList.splice(0,1)
+          let fetchParams =  this.dataList.map((res,i) =>{
+            return {
+                productModel:res.productModel,
+                specification:res.specification,
+                series:res.series,
+                supplierNo:this.supList[i].supplierCode
+            }
+         })
+         this.initGetProductMessage(fetchParams)
+        }
+         if(formId){//编辑页面查询详情
+          this.getInfo(formId)
+         }
+        let productOrderNoArr=[]
         for (let i = 0; i < this.dataList.length; i++) {
             this.form.itemList.push({
                     productName:this.dataList[i].productName,
-                    productModel:'',
-                    specification:'',
-                    series:'',
+                    productModel:this.dataList[i].productModel,
+                    specification:this.dataList[i].specification,
+                    series:this.dataList[i].series,
                     nominalPressure:this.dataList[i].nominalPressure,
                     productNumber:this.dataList[i].productNumber,
                     unitPrice:this.dataList[i].unitPrice,
@@ -293,7 +318,9 @@ export default {
                     itemAmount:this.dataList[i].itemAmount,
                     remark:this.dataList[i].remark,
             });
+            productOrderNoArr.push(this.dataList[i].productOrderNo)
         }
+        this.form.productOrderNo= productOrderNoArr.join(',')
         if(!pageType){//新增，加载全部供应商
            this.$http.post("/haolifa/whole/machine/supplier/listAll").then(res => {
               this.supplierList = res.map(item => {
@@ -312,14 +339,23 @@ export default {
 
     },
     methods: {
+       getInfo(formId) {
+            this.$http
+                .get(`/haolifa/wholeMachinePurchaseOrder/detail/${formId}`)
+                .then(res => {
+                  console.log('res',res)
+                    this.form = res;
+                    this.form.itemList = res.itemList;
+                })
+                .catch(e => {
+                    this.$toast(e.msg);
+                });
+        },
       getProductMessage(params,index){
-      console.log('index',index)
          this.$http
                 .post(`/haolifa/whole/machine/product/listProductByParam`, {'list':params})
                 .then(res => {
                   this.$nextTick(() =>{
-                     //  this.form.itemList[index].productNumber = res[index].productNumber//采购数量
-                    //  this.form.itemList[index].itemAmount = res[index].itemAmount//分项金额
                     //  this.form.itemList[index].unitPrice = res[index].unitPrice//采购价
                      this.form.itemList[index].productName = res[0].productName
                      this.form.itemList[index].nominalPressure = res[0].nominalPressure//压力
@@ -330,12 +366,30 @@ export default {
                      this.form.itemList[index].connectionMethod = res[0].connectionMethod
                      this.form.itemList[index].valveShaft = res[0].valveShaft
                      this.form.itemList[index].remark = res[0].remark
-
                     console.log('res',res[index])
                     console.log('res2222',this.form.itemList)
                   })
+                })
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
 
-
+      },
+       initGetProductMessage(params,index){
+         this.$http
+                .post(`/haolifa/whole/machine/product/listProductByParam`, {'list':params})
+                .then(res => {
+                    //  this.form.itemList[index].unitPrice = res[index].unitPrice//采购价
+                    //  this.form.itemList[index].productName = res[index].productName
+                    //  this.form.itemList[index].nominalPressure = res[index].nominalPressure//压力
+                    //  this.form.itemList[index].valveBodyMaterial = res[index].valveBodyMaterial
+                    //  this.form.itemList[index].valveCoreMaterial = res[index].valveCoreMaterial
+                    //  this.form.itemList[index].sealingMaterial = res[index].sealingMaterial
+                    //  this.form.itemList[index].driveForm = res[index].driveForm
+                    //  this.form.itemList[index].connectionMethod = res[index].connectionMethod
+                    //  this.form.itemList[index].valveShaft = res[index].valveShaft
+                    //  this.form.itemList[index].remark = res[index].remark
+                    console.log('res',res)
                 })
                 .catch(e => {
                     this.$toast(e.msg || e.message);
@@ -393,7 +447,7 @@ export default {
       },
       getListCascadeBySupplierNo(supplierNo){
           this.$http
-                .get(`/haolifa//whole/machine/product/listCascadeBySupplierNo/${supplierNo}`, )
+                .get(`/haolifa/whole/machine/product/listCascadeBySupplierNo/${supplierNo}`, )
                 .then(res => {
                    this.form.itemList.forEach(item =>{
                      item.productModels = res
@@ -425,7 +479,9 @@ export default {
                 itemAmount:'',
                 remark:'',
             });
-             this.getListCascadeBySupplierNo(this.supplierNumber)
+            if(this.supplierNumber){
+              this.getListCascadeBySupplierNo(this.supplierNumber)
+            }
             this.$forceUpdate();
         },
         submit() {

@@ -27,6 +27,7 @@
                     <th>成品型号</th>
                     <th>系列</th>
                     <th>规格</th>
+                    <th>数量</th>
                     <th>颜色</th>
                     <th>材质说明</th>
                     <th>回货时间</th>
@@ -46,6 +47,7 @@
                     <td>{{item.productNo}}</td>
                     <td>{{item.productSeries}}</td>
                     <td>{{item.specifications}}</td>
+                    <td>{{item.productNumber}}</td>
                     <td>{{item.productColor}}</td>
                     <td>{{item.materialDescription}}</td>
                     <td>{{item.returnDate}}</td>

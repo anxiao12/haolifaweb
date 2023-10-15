@@ -18,6 +18,7 @@
                     <th>部门</th>
                     <th>岗位</th>
                     <th>角色</th>
+                    <th>地区</th>
                     <!-- <th>状态</th> -->
                     <th class="t-right" style="width: 100px;">操作</th>
                 </tr>
@@ -28,6 +29,7 @@
                     <td>{{item.departName}}</td>
                     <td>{{item.postName}}</td>
                     <td>{{item.roles.map(item => item.description).toString() || '-'}}</td>
+                    <td>{{item.location}}</td>
                     <!-- <td>{{item.username}}</td> -->
                     <td class="t-right">
                         <a href="javascript:;" style="margin-right: 3px" class="blue" @click="edit(item)">编辑</a> |

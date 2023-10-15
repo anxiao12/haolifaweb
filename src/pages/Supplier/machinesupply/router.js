@@ -24,8 +24,8 @@ export default [
     }
   },
   {
-    path: '/machinePurchased-order/info',
-    name: 'machinePurchased-orderinfo',
+    path: '/machinesupplier/info',
+    name: 'machinesupplier-orderinfo',
     component: () =>
       import(/* webpackChunkName: "suppliermanage" */ './info.vue'),
     meta: {
@@ -36,8 +36,8 @@ export default [
     }
   },
   {
-    path: '/machinePurchased-order/approveProgress',
-    name: 'machinePurchased-orderapproveProgress',
+    path: '/machinesupplier/approveProgress',
+    name: 'machinesupplier-orderapproveProgress',
     component: () =>
       import(/* webpackChunkName: "suppliermanage" */ './approveProgress.vue'),
     meta: {

@@ -540,6 +540,8 @@ export default {
                 { value: 12, text: "申请发货" },
                 { value: 13, text: "发货完成" },
                 { value: 14, text: "审核不通过" },
+                { value: 15, text: "采购中" },
+
             ],
             processList: [],
             accessoryList: [],

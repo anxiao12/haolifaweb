@@ -15,9 +15,11 @@
                 <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
             </div>
             <div class="flex-item"></div>
-            <router-link to="/machinePurchased-order/add">
+            <div @click="addPurchase()">
                 <btn class="b" flat color="#008eff">新增采购</btn>
-            </router-link>
+
+            </div>
+
         </div>
         <div class="flex-item scroll-y">
             <data-list ref="list" method="post" :page-size="15" :param="filter" url="/haolifa/wholeMachinePurchaseOrder/pageList">
@@ -34,25 +36,6 @@
                     <th>订单状态</th>
                     <th>创建者</th>
                     <th class="t-right" style="width: 80px;">操作</th>
-<!--
-                    <th>确认时间</th>
-                    <th>需方</th>
-                    <th>需方地址</th>
-                    <th>需方联系人</th>
-                    <th>方联系人电话</th>
-                    <th>经办日期</th>
-                    <th>订单经办人</th>
-                    <th>付款方式</th>
-                    <th>订单编号</th>
-                    <th>供方地址</th>
-                    <th>供方确认人</th>
-                    <th>供方联系人</th>
-                    <th>供应商编号</th>
-                    <th>供方联系人电话</th>
-                    <th>更新时间</th>
-                    <th>更新者</th>
-                    <th>折损金额</th>
-                    <th>折损原因</th> -->
                 </tr>
                 <template slot="item" slot-scope="{ item, index }">
                     <td>{{index}}</td>
@@ -66,23 +49,6 @@
                     <td>{{item.qualifiedNumber}}</td>
                     <td>{{statusList[item.status-1].name}}</td>
                     <td>{{item.createUser}}</td>
-                    <!-- <td>{{item.confirmTime}}</td>
-                    <td>{{item.demander}}</td>
-                    <td>{{item.demanderAddr}}</td>
-                    <td>{{item.demanderLinkman}}</td>
-                    <td>{{item.demanderPhone}}</td>
-                    <td>{{item.operateTime}}</td>
-                    <td>{{item.operatorUserName}}</td>
-                    <td>{{item.payType}}</td>
-                    <td>{{item.supplierAddr}}</td>
-                    <td>{{item.supplierConfirmer}}</td>
-                    <td>{{item.supplierLinkman}}</td>
-                    <td>{{item.supplierNo}}</td>
-                    <td>{{item.supplierPhone}}</td>
-                    <td>{{item.updateTime}}</td>
-                    <td>{{item.updateUser}}</td>
-                    <td>{{item.wreckAmount}}</td>
-                    <td>{{item.wreckReason}}</td> -->
                       <td class="t-right">
                         <a href="javascript:;" style="margin-right: 3px" class="blue" @click="getInfo(item.id)">查看</a>
                         <a href="javascript:;" style="margin-right: 3px" v-if="item.status == '3'" class="blue" @click="completePurchase(item.id)">采购完成</a>
@@ -175,7 +141,7 @@
                             <td colspan="1" class="b">颜色</td>
                             <td colspan="1" class="b">数量</td>
                             <td colspan="1" class="b">单价</td>
-                            <td colspan="1" class="b">合计</td>
+                            <!-- <td colspan="1" class="b">合计</td> -->
                             <td colspan="1" class="b">材质</td>
                             <td colspan="1" class="b">备注</td>
                         </tr>
@@ -186,19 +152,19 @@
                             <td colspan="1">{{item.productSeries}}</td>
                             <td colspan="1">{{item.specification}}</td>
                             <td colspan="1">{{item.productColor}}</td>
-                            <td colspan="1">{{item.itemAmount}}</td>
+                            <td colspan="1">{{item.productNumber}}</td>
                             <td colspan="1">{{item.unitPrice}}</td>
-                            <td colspan="1">{{item.unitPrice*item.itemAmount}}</td>
-                            <td colspan="1">材质</td>
+                            <!-- <td colspan="1">{{item.unitPrice*item. productNumber}}</td> -->
+                            <td colspan="1">{{item.sealingMaterial}}</td>
                             <td colspan="1">{{item.remark}}</td>
                         </tr>
                           <tr>
                             <th colspan="4">合计</th>
                             <td colspan="1"></td>
                             <td colspan="1"></td>
-                            <td colspan="1">xxxx</td>
+                            <td colspan="1">{{reduceTotal(itemList)}}</td>
                             <td colspan="1"></td>
-                            <td colspan="1">llll</td>
+                            <td colspan="1"></td>
                             <td colspan="1"></td>
                         </tr>
                         <tr>
@@ -207,7 +173,7 @@
                             <td colspan="1"></td>
                             <td colspan="1"></td>
                             <td colspan="1"></td>
-                            <td colspan="1">mmmm</td>
+                            <td colspan="1"></td>
                             <td colspan="1"></td>
                         </tr>
                         <!-- <tr>
@@ -370,6 +336,14 @@ export default {
       this.flush()
     },
     methods: {
+      addPurchase(){
+        this.$router.push({
+          path:'/machinePurchased-order/add',
+          query:{
+            isAdd:true
+          }
+        })
+      },
         flush() {
             this.filter = {
                 purchaseOrderNo:'',
@@ -378,6 +352,14 @@ export default {
                 supplierNo:'',
             };
             this.$refs.list.update(true);
+        },
+        reduceTotal(itemList){
+          let totalNumber =  itemList.reduce((pre,cur) =>{
+            return pre + cur.productNumber
+          },0)
+          console.log('totalNumber',totalNumber)
+          return totalNumber
+
         },
         getInfo(formId) {
             this.$http

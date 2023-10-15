@@ -132,6 +132,7 @@ export default {
                         if (this.form[key] !== undefined)
                             this.form[key] = res[key];
                     }
+                    console.log('this.form',this.form)
                 })
                 .catch(e => {
                     this.$toast(e.msg || e.message);
@@ -154,9 +155,15 @@ export default {
             const { form } = this;
             this.loading = true;
             let interfaceUrl = this.$route.query.editId ? "update" : "save"
+            let params = {}
+            if(this.$route.query.editId){
+              params = Object.assign({},form,{id: this.$route.query.editId})
+            }else{
+              params = form
+            }
             this.$http.post(
                 `/haolifa//whole/machine/supplier/${interfaceUrl}`,
-                form
+                params
             )
                 .then(res => {
                     this.loading = false;

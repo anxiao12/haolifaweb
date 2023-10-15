@@ -169,7 +169,9 @@ export default {
                 { value: 11, text: "已入库" },
                 { value: 12, text: "申请发货" },
                 { value: 13, text: "发货完成" },
-                { value: 14, text: "审核不通过" }
+                { value: 14, text: "审核不通过" },
+                { value: 15, text: "采购中" },
+
             ],
             scStatusList: [
                 { value: 7, text: "生产中" },

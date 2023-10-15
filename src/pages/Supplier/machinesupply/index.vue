@@ -208,12 +208,29 @@
                             <td style="width: 15%;"></td>
                         </tr>
                         <tr>
-                            <td colspan="1" class="b">序号</td>
-                            <td colspan="1" class="b">图号</td>
-                            <td colspan="1" class="b">零件名称</td>
-                            <td colspan="1" class="b">采购总数</td>
-                            <td colspan="1" class="b">报检总数</td>
-                            <td colspan="1" class="b">合格总数</td>
+                            <td colspan="1" class="b">产品名称</td>
+                            <td colspan="1" class="b">类别</td>
+                            <td colspan="1" class="b">系列</td>
+                            <td colspan="1" class="b">产品型号</td>
+                            <td colspan="1" class="b">好利型号</td>
+                            <td colspan="1" class="b">规格</td>
+                            <td colspan="1" class="b">公称压力</td>
+                            <td colspan="1" class="b">连接方式</td>
+                            <td colspan="1" class="b">结构形式</td>
+                            <td colspan="1" class="b">阀体材质</td>
+                            <td colspan="1" class="b">密封材质</td>
+                            <td colspan="1" class="b">阀芯材质</td>
+                            <td colspan="1" class="b">阀轴</td>
+                            <td colspan="1" class="b">驱动形式</td>
+                            <td colspan="1" class="b">产品等级</td>
+                            <td colspan="1" class="b">产品单价</td>
+                            <td colspan="1" class="b">面价</td>
+                            <td colspan="1" class="b">供应商代号</td>
+                            <td colspan="1" class="b">介质</td>
+                            <td colspan="1" class="b">温度</td>
+                            <td colspan="1" class="b">其他</td>
+                            <td colspan="1" class="b">备注</td>
+                            <td colspan="1" class="b">创建时间</td>
                         </tr>
                         <tr v-for="(item,i) in numList" :key="i">
                             <td colspan="1">{{i+1}}</td>
@@ -222,9 +239,21 @@
                             <td colspan="1">{{item.purchaseNumber}}</td>
                             <td colspan="1">{{item.deliveryNumber}}</td>
                             <td colspan="1">{{item.qualifiedNumber}}</td>
+                            <td colspan="1">{{item.qualifiedNumber}}</td>
+                            <td colspan="1">{{item.qualifiedNumber}}</td>
+                            <td colspan="1">{{item.qualifiedNumber}}</td>
+                            <td colspan="1">{{item.qualifiedNumber}}</td>
+                            <td colspan="1">{{item.qualifiedNumber}}</td>
+                            <td colspan="1">{{item.qualifiedNumber}}</td>
+                            <td colspan="1">{{item.qualifiedNumber}}</td>
+                            <td colspan="1">{{item.qualifiedNumber}}</td>
+                            <td colspan="1">{{item.qualifiedNumber}}</td>
+                            <td colspan="1">{{item.qualifiedNumber}}</td>
+                            <td colspan="1">{{item.qualifiedNumber}}</td>
+                            <td colspan="1">{{item.qualifiedNumber}}</td>
                         </tr>
                         <tr v-if="numList.length===0">
-                            <td colspan="6" style="text-align:center">无数据</td>
+                            <td colspan="24" style="text-align:center">无数据</td>
                         </tr>
                     </table>
                 </div>
@@ -365,18 +394,13 @@ export default {
             };
             this.$refs.list.update(true);
         },
-        getInfo(formId) {
-            this.$http
-                .get(`/haolifa/whole/machine/supplier/info/${formId}`)
-                .then(res => {
-                    this.info = res;
-                    this.itemList = res.itemList;
-                    // this.layer = true;
-                    this.numLayer = true;
-                })
-                .catch(e => {
-                    this.$toast(e.msg);
-                });
+        getInfo(orderId) {
+            this.$router.push({
+              path:'/machinesupplier/info',
+              query:{
+                editId:orderId
+              }
+             })
         },
         downloadOrder: function(id) {
             this.$http

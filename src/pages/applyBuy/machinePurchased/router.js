@@ -11,18 +11,6 @@ export default [
       id: 'zjcglb'
     }
   },
-  // {
-  //   path: '/machinePurchased-order/addList',
-  //   name: 'machinePurchased-orderaddlist',
-  //   component: () =>
-  //     import(/* webpackChunkName: "suppliermanage" */ './addList.vue'),
-  //   meta: {
-  //     level: 2,
-  //     title: '新增整机采购合同列表',
-  //     open: false,
-  //     id: 'xzcght'
-  //   }
-  // },
   {
     path: '/machinePurchased-order/add',
     name: 'machinePurchased-orderadd',
