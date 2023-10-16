@@ -41,20 +41,12 @@
                 <!-- 产品名称，型号，规格，系列，压力，数量，采购价，分项金额，阀体，阀芯，密封材质，驱动形式，链接方式，阀轴材质，备注 -->
             <div class="card flex" style="margin-top: 0;" v-for="(item, i) in form.itemList" :key="i">
                 <div class="flex-item">
-                  <!-- {{item.chooseBtn}}
                   <div class="flex">
-                    <el-select filterable placeholder="型号" class="flex-item mr-10 mycs" v-model="item.mulitiProduct" @change="onProductModelChange(i)">
-                          <el-option
-                              v-for="model in item.mulitiProducts"
-                              :key="model.code"
-                              :label="model.code"
-                              :value="model.code"
-                          ></el-option>
-                      </el-select>
+                     <el-button @click="jumpLayer(i)">选择产品</el-button>
                       <div class="flex-item mr-10"></div>
                       <div class="flex-item mr-10"></div>
                       <div class="flex-item mr-10"></div>
-                  </div> -->
+                  </div>
                     <div class="flex">
                         <input-box v-model="item.productName"  class="flex-item mr-10" label="产品名称"></input-box>
                         <el-select filterable placeholder="型号" class="flex-item mr-10 mycs" v-model="item.productModel" @change="onProductModelChange(i)">
@@ -85,7 +77,7 @@
                     <div class="flex">
                         <input-box v-model="item.nominalPressure" class="flex-item mr-10" label="压力"></input-box>
                         <input-box v-model="item.productNumber" class="flex-item mr-10" label="数量"></input-box>
-                        <input-box v-model="item.unitPrice" type="number" class="flex-item mr-10" label="采购价"></input-box>
+                        <input-box v-model="item.purchasePrice" type="number" class="flex-item mr-10" label="采购价"></input-box>
                         <input-box v-model="item.valveBodyMaterial" class="flex-item mr-10" label="阀体"></input-box>
                     </div>
                     <div class="flex">
@@ -110,6 +102,56 @@
                     <span>添加采购整机项</span>
                 </div>
             </div>
+             <layer v-if="layerFlag" title="产品" width="70%">
+                <data-list ref="list" method="post" :page-size="15" :param="{list:[filter[this.lineIndex]]}" url="/haolifa/whole/machine/product/listProductByParam">
+              <tr slot="header">
+                    <th>
+                      序号
+                    </th>
+                    <th></th>
+                    <th>产品名称</th>
+                    <th>型号</th>
+                    <th>规格</th>
+                    <th>系列</th>
+                    <th>压力</th>
+                    <th>数量</th>
+                    <th>采购价</th>
+                    <th>阀体</th>
+                    <th>阀芯</th>
+                    <th>密封材质</th>
+                    <th>驱动形式</th>
+                    <th>链接方式</th>
+                    <th>阀轴材质</th>
+                    <th>分项金额</th>
+                    <th>备注</th>
+                </tr>
+                <template slot="item" slot-scope="{ item,i }">
+                    <td class="c-a">{{i}}</td>
+                     <td>
+                        <input type="checkbox" name="boxId" :value="i">
+                    </td>
+                    <td>{{item.productName}}</td>
+                    <td>{{item.productModel}}</td>
+                    <td>{{item.specification}}</td>
+                    <td>{{item.series}}</td>
+                    <td>{{item.nominalPressure}}</td>
+                    <td>{{item.productNumber}}</td>
+                    <td>{{item.purchasePrice}}</td>
+                    <td>{{item.valveBodyMaterial}}</td>
+                    <td>{{item.valveCoreMaterial}}</td>
+                    <td>{{item.sealingMaterial}}</td>
+                    <td>{{item.driveForm}}</td>
+                    <td>{{item.connectionMethod}}</td>
+                    <td>{{item.valveShaft}}</td>
+                    <td>{{item.itemAmount}}</td>
+                    <td>{{item.remark}}</td>
+                </template>
+            </data-list>
+              <div class="layer-btns">
+                  <btn flat color="#008eff" @click="confirmProduct">确认选择</btn>
+                  <btn flat color="#008eff" @click="layerFlag=false">关闭</btn>
+              </div>
+            </layer>
             <div class="flex">
                 <btn big class="mr-20" @click="submit()">提交</btn>
                 <btn big flat @click="cancel()">取消</btn>
@@ -119,10 +161,21 @@
 </template>
 
 <script>
+import DataList from "@/components/datalist";
+
 export default {
+    components: { DataList },
     name: "purchsemanage-purchaseadd",
     data() {
         return {
+              lineIndex:0,
+              filter: [{
+                productModel:'',
+                specifications:'',
+                series:'',
+                supplierNo:'',
+              }],
+              layerFlag:false,
               selectedProductModel:'',
               selectedSpecification:'',
               supplierNumber:'',
@@ -159,7 +212,7 @@ export default {
                         series:'',
                         nominalPressure:'',
                         productNumber:'',
-                        unitPrice:'',
+                        purchasePrice:'',
                         valveBodyMaterial:'',
                         valveCoreMaterial:'',
                         sealingMaterial:'',
@@ -193,118 +246,120 @@ export default {
             ]
         };
     },
-    activated() {
-        this.form = {
-            id:'',
-            deliveryTime:'',
-            demander:'山西好利阀机械制造有限公司',
-            demanderAddr:'山西省侯马经济开发区旺旺北支路东侧',
-            demanderLinkman:'',
-            demanderPhone:'',
-            operateTime:'',
-            operatorUserName:'',
-            payType:'',
-            purchaseOrderNo:'',
-            productOrderNo:'',
-            supplierAddr:'',
-            supplierConfirmer:'',
-            supplierLinkman:'',
-            supplierName:'',
-            supplierNo:'',
-            supplierPhone:'',
-            itemList: [
-                {
-                    mulitiProduct:'',
-                    productName:'',
-                    productModel:'',
-                    specification:'',
-                    series:'',
-                    nominalPressure:'',
-                    productNumber:'',
-                    unitPrice:'',
-                    valveBodyMaterial:'',
-                    valveCoreMaterial:'',
-                    sealingMaterial:'',
-                    driveForm:'',
-                    connectionMethod:'',
-                    valveShaft:'',
-                    itemAmount:'',
-                    remark:'',
-                    productModels:[],
-                    specifications: [],
-                    seriesList: [],
-                    mulitiProducts:[],
-                }
-            ]
-        };
-        let { ids,pageType,supList,dataList ,isAdd,formId} = this.$route.query;
-        this.isAdd = isAdd
-        if(supList){
-          this.supList = JSON.parse(supList)//供应商
-        }
-        if(ids){
-          this.ids = JSON.parse(ids)//每一行数据的id
-        }
-        if(dataList){
-          this.dataList = JSON.parse(dataList)//每一行选中的数据带过来
-           let fetchParams =  this.dataList.map((res,i) =>{
-            console.log('this.supList',this.supList)
-            return {
-                productModel:res.productModel,
-                specification:res.specification,
-                series:res.series,
-                supplierNo:this.supList[0].supplierCode
-            }
-         })
-         fetchParams.map((res,index) =>{
-           this.initGetProductMessage([res],index)
-         })
-        }
-        if(dataList){
-          this.form.itemList.splice(0,1)
-        }
-        let productOrderNoArr=[]
-        for (let i = 0; i < this.dataList.length; i++) {
-            this.form.itemList.push({
-                    productName:this.dataList[i].productName,
-                    productModel:this.dataList[i].productModel,
-                    specification:this.dataList[i].specification,
-                    series:this.dataList[i].series,
-                    nominalPressure:this.dataList[i].nominalPressure,
-                    productNumber:this.dataList[i].productNumber,
-                    unitPrice:this.dataList[i].unitPrice,
-                    valveBodyMaterial:this.dataList[i].valveBodyMaterial,
-                    valveCoreMaterial:this.dataList[i].valveCoreMaterial,
-                    sealingMaterial:this.dataList[i].sealingMaterial,
-                    driveForm:this.dataList[i].driveForm,
-                    connectionMethod:this.dataList[i].connectionMethod,
-                    valveShaft:this.dataList[i].valveShaft,
-                    itemAmount:this.dataList[i].itemAmount,
-                    remark:this.dataList[i].remark,
-            });
-             productOrderNoArr.push(this.dataList[i].productOrderNo)
-        }
-        this.form.productOrderNo= productOrderNoArr.join(',')
-        if(!pageType){//新增，加载全部供应商
-           this.$http.post("/haolifa/whole/machine/supplier/listAll").then(res => {
-              this.supplierList = res.map(item => {
-                  return { value: item.nickName, text: item.name };
-              });
-              this.supplierInfoList = res;
-         });
-        }
-         if(supList){//加载选中的供应商
-          this.supplierList = JSON.parse(this.$route.query.supList).map(res =>{
-            return {
-              value: res.supplierCode, text: res.supplierName,address:res.address,contact:res.contact,telephone:res.telephone
-            }
-        })
-        this.form.supplierNo = this.supList[0].supplierCode;
-        this.chooseSupply(this.form.supplierNo)
+    // activated() {
+    //     this.form = {
+    //         id:'',
+    //         deliveryTime:'',
+    //         demander:'山西好利阀机械制造有限公司',
+    //         demanderAddr:'山西省侯马经济开发区旺旺北支路东侧',
+    //         demanderLinkman:'',
+    //         demanderPhone:'',
+    //         operateTime:'',
+    //         operatorUserName:'',
+    //         payType:'',
+    //         purchaseOrderNo:'',
+    //         productOrderNo:'',
+    //         supplierAddr:'',
+    //         supplierConfirmer:'',
+    //         supplierLinkman:'',
+    //         supplierName:'',
+    //         supplierNo:'',
+    //         supplierPhone:'',
+    //         itemList: [
+    //             {
+    //                 mulitiProduct:'',
+    //                 productName:'',
+    //                 productModel:'',
+    //                 specification:'',
+    //                 series:'',
+    //                 nominalPressure:'',
+    //                 productNumber:'',
+    //                 purchasePrice:'',
+    //                 valveBodyMaterial:'',
+    //                 valveCoreMaterial:'',
+    //                 sealingMaterial:'',
+    //                 driveForm:'',
+    //                 connectionMethod:'',
+    //                 valveShaft:'',
+    //                 itemAmount:'',
+    //                 remark:'',
+    //                 productModels:[],
+    //                 specifications: [],
+    //                 seriesList: [],
+    //                 mulitiProducts:[],
+    //             }
+    //         ]
+    //     };
+    //     let { ids,pageType,supList,dataList ,isAdd,formId} = this.$route.query;
+    //     this.isAdd = isAdd
+    //     if(supList){
+    //       this.supList = JSON.parse(supList)//供应商
+    //     }
+    //     if(ids){
+    //       this.ids = JSON.parse(ids)//每一行数据的id
+    //     }
+    //     if(dataList){
+    //       this.dataList = JSON.parse(dataList)//每一行选中的数据带过来
+    //        let fetchParams =  this.dataList.map((res,i) =>{
+    //         return {
+    //             productModel:res.productModel,
+    //             specification:res.specifications,
+    //             series:res.productSeries,
+    //             supplierNo:this.supList[0].supplierCode
+    //         }
+    //      })
+    //      fetchParams.map((res,index) =>{//请求每一行产品的数据
+    //         this.filter[index] = res;
+    //        this.initGetProductMessage([res],index)
+    //      })
+    //     }
+    //     if(dataList){
+    //       this.form.itemList.splice(0,1)
+    //     }
+    //     let productOrderNoArr=[]
+    //     for (let i = 0; i < this.dataList.length; i++) {
+    //         this.form.itemList.push({
+    //                 productName:this.dataList[i].productName,
+    //                 productModel:this.dataList[i].productModel,
+    //                 specification:this.dataList[i].specification,
+    //                 series:this.dataList[i].series,
+    //                 nominalPressure:this.dataList[i].nominalPressure,
+    //                 productNumber:this.dataList[i].productNumber,
+    //                 purchasePrice:this.dataList[i].purchasePrice,
+    //                 valveBodyMaterial:this.dataList[i].valveBodyMaterial,
+    //                 valveCoreMaterial:this.dataList[i].valveCoreMaterial,
+    //                 sealingMaterial:this.dataList[i].sealingMaterial,
+    //                 driveForm:this.dataList[i].driveForm,
+    //                 connectionMethod:this.dataList[i].connectionMethod,
+    //                 valveShaft:this.dataList[i].valveShaft,
+    //                 itemAmount:this.dataList[i].itemAmount,
+    //                 remark:this.dataList[i].remark,
+    //         });
+
+    //          productOrderNoArr.push(this.dataList[i].productOrderNo)
+    //     }
+    //     console.log('list',this.form.itemList)
+    //     this.form.productOrderNo= productOrderNoArr.join(',')
+    //     if(!pageType){//新增，加载全部供应商
+    //        this.$http.post("/haolifa/whole/machine/supplier/listAll").then(res => {
+    //           this.supplierList = res.map(item => {
+    //               return { value: item.nickName, text: item.name };
+    //           });
+    //           this.supplierInfoList = res;
+    //      });
+    //     }
+    //      if(supList){//加载选中的供应商
+    //       this.supplierList = JSON.parse(this.$route.query.supList).map(res =>{
+    //         return {
+    //           value: res.supplierCode, text: res.supplierName,address:res.address,contact:res.contact,telephone:res.telephone
+    //         }
+    //     })
+    //     this.form.supplierNo = this.supList[0].supplierCode;
+    //     this.chooseSupply(this.form.supplierNo)
 
 
-        }
-    },
+    //     }
+    // },
     mounted() {
         let { ids,pageType,supList,dataList,isAdd,formId} = this.$route.query;
         this.isAdd = isAdd;
@@ -322,13 +377,13 @@ export default {
           let fetchParams =  this.dataList.map((res,i) =>{
             return {
                 productModel:res.productModel,
-                specification:res.specification,
-                series:res.series,
+                specifications:res.specifications,
+                series:res.productSeries,
                 supplierNo:this.supList[0].supplierCode
             }
          })
-         console.log('fetchParams',fetchParams)
          fetchParams.map((res,index) =>{
+            this.filter[index] = res;
            this.initGetProductMessage([res],index)
          })
         }
@@ -336,26 +391,33 @@ export default {
           this.getInfo(formId)
          }
         let productOrderNoArr=[]
+        console.log('this.dataList',this.dataList)
         for (let i = 0; i < this.dataList.length; i++) {
-            this.form.itemList.push({
-                    productName:this.dataList[i].productName,
-                    productModel:this.dataList[i].productModel,
-                    specification:this.dataList[i].specification,
-                    series:this.dataList[i].series,
-                    nominalPressure:this.dataList[i].nominalPressure,
-                    productNumber:this.dataList[i].productNumber,
-                    unitPrice:this.dataList[i].unitPrice,
-                    valveBodyMaterial:this.dataList[i].valveBodyMaterial,
-                    valveCoreMaterial:this.dataList[i].valveCoreMaterial,
-                    sealingMaterial:this.dataList[i].sealingMaterial,
-                    driveForm:this.dataList[i].driveForm,
-                    connectionMethod:this.dataList[i].connectionMethod,
-                    valveShaft:this.dataList[i].valveShaft,
-                    itemAmount:this.dataList[i].itemAmount,
-                    remark:this.dataList[i].remark,
-            });
+          console.log('res',this.dataList[i])
+            // this.form.itemList.push({
+            //         productName:this.dataList[i].productName,
+            //         productModel:this.dataList[i].productModel,
+            //         specification:this.dataList[i].specification,
+            //         series:this.dataList[i].series,
+            //         nominalPressure:this.dataList[i].nominalPressure,
+            //         productNumber:this.dataList[i].productNumber,
+            //         purchasePrice:this.dataList[i].purchasePrice,
+            //         valveBodyMaterial:this.dataList[i].valveBodyMaterial,
+            //         valveCoreMaterial:this.dataList[i].valveCoreMaterial,
+            //         sealingMaterial:this.dataList[i].sealingMaterial,
+            //         driveForm:this.dataList[i].driveForm,
+            //         connectionMethod:this.dataList[i].connectionMethod,
+            //         valveShaft:this.dataList[i].valveShaft,
+            //         itemAmount:this.dataList[i].itemAmount,
+            //         remark:this.dataList[i].remark,
+            // });
+             this.form.itemList[i] = this.dataList[i]
             productOrderNoArr.push(this.dataList[i].productOrderNo)
         }
+
+
+          console.log('itemList', this.form.itemList)
+
         this.form.productOrderNo= productOrderNoArr.join(',')
         if(!pageType){//新增，加载全部供应商
            this.$http.post("/haolifa/whole/machine/supplier/listAll").then(res => {
@@ -377,6 +439,29 @@ export default {
 
     },
     methods: {
+      confirmProduct(){
+          let list = JSON.parse(JSON.stringify(this.$refs.list.list));
+            let arr = document.getElementsByName("boxId");
+            let dataList=[]
+            for (let i in arr) {
+                if (arr[i].checked) {
+                    let rowScope = list[arr[i].value]
+                    if(rowScope){
+                        dataList.push(list[arr[i].value]);
+                    }
+
+                }
+            }
+            if(dataList.length > 1){
+              this.$toast('只能选择一条数据，请重新选择');
+            }
+            this.form.itemList[this.lineIndex] = dataList[0]
+            this.layerFlag = false
+      },
+        jumpLayer(i){
+          this.layerFlag = true
+          this.lineIndex = i
+        },
        getInfo(formId) {
             this.$http
                 .get(`/haolifa/wholeMachinePurchaseOrder/detail/${formId}`)
@@ -388,12 +473,12 @@ export default {
                     this.$toast(e.msg);
                 });
         },
-      getProductMessage(params,index){
+      getProductMessage(params,index){//手动切换查询产品信息
          this.$http
                 .post(`/haolifa/whole/machine/product/listProductByParam`, {'list':params})
                 .then(res => {
                   this.$nextTick(() =>{
-                    //  this.form.itemList[index].unitPrice = res[index].unitPrice//采购价
+                     this.form.itemList[index].purchasePrice = res[0].purchasePrice//采购价
                      this.form.itemList[index].productName = res[0].productName
                      this.form.itemList[index].nominalPressure = res[0].nominalPressure//压力
                      this.form.itemList[index].valveBodyMaterial = res[0].valveBodyMaterial
@@ -420,8 +505,7 @@ export default {
                     this.form.itemList[index].chooseBtn = false
                   }
                   this.form.itemList[index].mulitiProducts = res;
-                  console.log('this.form',this.form.itemList)
-                    //  this.form.itemList[index].unitPrice = res[index].unitPrice//采购价
+                    //  this.form.itemList[index].purchasePrice = res[index].purchasePrice//采购价
                     //  this.form.itemList[index].productName = res[index].productName
                     //  this.form.itemList[index].nominalPressure = res[index].nominalPressure//压力
                     //  this.form.itemList[index].valveBodyMaterial = res[index].valveBodyMaterial
@@ -483,7 +567,6 @@ export default {
                 res[item] = ''
             }
            })
-          console.log('res',res)
         })
       },
       getListCascadeBySupplierNo(supplierNo){
@@ -510,7 +593,7 @@ export default {
                 series:'',
                 nominalPressure:'',
                 productNumber:'',
-                unitPrice:'',
+                purchasePrice:'',
                 valveBodyMaterial:'',
                 valveCoreMaterial:'',
                 sealingMaterial:'',

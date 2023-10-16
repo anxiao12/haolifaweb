@@ -76,7 +76,7 @@ export default {
             const path = method === "get" ? url + obj2QueryStr(params) : url;
             this.$http[method](path, params)
                 .then(res => {
-                    this.list = res.list || [];
+                    this.list = res.list || res || [];
                     this.pageNum = res.pageNum;
                     let query = this.$route.query;
                     query.page = res.pageNum;

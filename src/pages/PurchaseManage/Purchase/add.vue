@@ -24,7 +24,7 @@
             <div class="flex">
                 <input-box v-model="form.orderNo" class="flex-item" label="采购合同编号"></input-box>
                 <!-- <input-box v-model="form.payType" class="flex-item" label="付款方式"></input-box> -->
-                <select-box :list="payTypeList" v-model="form.payType" label="付款方式" class="flex-item"></select-box>
+                <select-box @change='changepay()' :list="payTypeList" v-model="form.payType" label="付款方式" class="flex-item"></select-box>
             </div>
 
             <div class="b" style="margin: 20px 0 10px;">采购物料项</div>
@@ -292,6 +292,9 @@ export default {
             //    item.material = res.material;
             //
             // });
+        },
+        changepay(){
+          console.log('pay')
         },
         changeSupplier: function() {
             this.supplierInfoList.forEach((item, i) => {

@@ -173,7 +173,6 @@ export default {
                           productSeries:rowScope.productSeries
                         })
                         ids.push(list[arr[i].value].id);
-                        // console.log('list',list[arr[i]].value)
                         dataList.push(list[arr[i].value]);
                     }
 
@@ -190,6 +189,7 @@ export default {
                         this.$toast("未找到供应商");
                         return;
                     } else {
+                      console.log('origin',dataList)
                         this.$router.push({
                             name: "machinePurchased-orderadd",
                             query: {
