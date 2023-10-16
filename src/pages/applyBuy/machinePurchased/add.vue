@@ -248,18 +248,18 @@ export default {
         if(dataList){
           this.dataList = JSON.parse(dataList)//每一行选中的数据带过来
            let fetchParams =  this.dataList.map((res,i) =>{
+            console.log('this.supList',this.supList)
             return {
                 productModel:res.productModel,
                 specification:res.specification,
                 series:res.series,
-                supplierNo:this.supList[i].supplierCode
+                supplierNo:this.supList[0].supplierCode
             }
          })
          fetchParams.map((res,index) =>{
            this.initGetProductMessage([res],index)
          })
         }
-        console.log('this.dataList',this.dataList)
         if(dataList){
           this.form.itemList.splice(0,1)
         }
@@ -299,6 +299,10 @@ export default {
               value: res.supplierCode, text: res.supplierName,address:res.address,contact:res.contact,telephone:res.telephone
             }
         })
+        this.form.supplierNo = this.supList[0].supplierCode;
+        this.chooseSupply(this.form.supplierNo)
+
+
         }
     },
     mounted() {
@@ -320,7 +324,7 @@ export default {
                 productModel:res.productModel,
                 specification:res.specification,
                 series:res.series,
-                supplierNo:this.supList[i].supplierCode
+                supplierNo:this.supList[0].supplierCode
             }
          })
          console.log('fetchParams',fetchParams)
@@ -361,12 +365,14 @@ export default {
               this.supplierInfoList = res;
          });
         }
-        if(supList){//加载选中的供应商
+        if(supList){//加载供应商
           this.supplierList = JSON.parse(this.$route.query.supList).map(res =>{
             return {
               value: res.supplierCode, text: res.supplierName,address:res.address,contact:res.contact,telephone:res.telephone
             }
         })
+        this.form.supplierNo = this.supList[0].supplierCode;
+        this.chooseSupply(this.form.supplierNo)
         }
 
     },
