@@ -39,10 +39,12 @@
             </div>
             <div class="b" style="margin: 20px 0 10px;">采购整机项</div>
                 <!-- 产品名称，型号，规格，系列，压力，数量，采购价，分项金额，阀体，阀芯，密封材质，驱动形式，链接方式，阀轴材质，备注 -->
+              {{form.itemList.mulitiProducts}}
+
             <div class="card flex" style="margin-top: 0;" v-for="(item, i) in form.itemList" :key="i">
                 <div class="flex-item">
                   <div v-if="!isAdd" class="flex">
-                     <el-button @click="jumpLayer(i)">选择产品</el-button>
+                     <el-button  @click="jumpLayer(i)">选择产品</el-button>
                       <div class="flex-item mr-10"></div>
                       <div class="flex-item mr-10"></div>
                       <div class="flex-item mr-10"></div>
@@ -224,7 +226,7 @@ export default {
                         productModels:[],
                         specifications: [],
                         seriesList: [],
-                        // mulitiProducts:[]
+                        mulitiProducts:[]
                     }
                 ]
             },
@@ -249,7 +251,6 @@ export default {
     watch: {
     'form.itemList': {
       handler(newValue) {
-        console.log('item111',newValue)
         newValue.forEach(item => {
           item.itemAmount = item.productNumber * item.purchasePrice;
         });
@@ -376,8 +377,8 @@ export default {
         return (item) => item.productNumber * item.purchasePrice;
       }
   },
-    mounted() {
-        let { ids,pageType,supList,dataList,isAdd,formId} = this.$route.query;
+  created(){
+         let { ids,pageType,supList,dataList,isAdd,formId} = this.$route.query;
         this.isAdd = isAdd;
         if(supList){
           this.supList = JSON.parse(supList)//供应商
@@ -394,6 +395,7 @@ export default {
             return {
                 productModel:res.productModel,
                 specifications:res.specifications,
+                // specification:res.specifications,
                 series:res.productSeries,
                 supplierNo:this.supList[0].supplierCode
             }
@@ -402,12 +404,9 @@ export default {
             this.filter[index] = res;
            this.initGetProductMessage([res],index)
          })
-           let productOrderNoArr=[]
-          for (let i = 0; i < JSON.parse(dataList).length; i++) {//合并采购，带进来产品数量等部分数据；
+          for (let i = 0; i < JSON.parse(dataList).length; i++) {//合并采购，带进来产品数量等部分数据,控制显示的条数
                 this.form.itemList[i] = JSON.parse(dataList)[i]
-                productOrderNoArr.push(this.dataList[i].productOrderNo)
           }
-          this.form.productOrderNo= productOrderNoArr.join(',')
         }
          if(formId){//编辑页面查询详情
           this.getInfo(formId)
@@ -430,6 +429,9 @@ export default {
         this.form.supplierNo = this.supList[0].supplierCode;
         // this.chooseSupply(this.form.supplierNo)
         }
+  },
+    mounted() {
+
 
     },
     methods: {
@@ -451,12 +453,9 @@ export default {
               return
             }
             this.form.itemList[this.lineIndex] = Object.assign({},dataList[0],{productNumber:this.dataList[this.lineIndex].productNumber})
-            let aaa = Object.assign({},dataList[0],{productNumber:this.dataList[this.lineIndex].productNumber})
-            console.log('aaa',aaa)
             this.form.itemList.forEach(res =>{//计算分项金额
               res.itemAmount = res.purchasePrice * res.productNumber
             })
-            console.log('formlist',this.form.itemList)
             this.layerFlag = false
       },
         jumpLayer(i){
@@ -500,27 +499,25 @@ export default {
          this.$http
                 .post(`/haolifa/whole/machine/product/listProductByParam`, {'list':params})
                 .then(res => {
-                  if(res.length>2){
-                    this.form.itemList[index].chooseBtn = true
-                  }else{
-                    this.form.itemList[index].chooseBtn = false
-                  }
                   if(res.length === 1){
-                    this.form.itemList[index] = res[0]
-                    console.log('res',res[0])
-                    console.log('his.form.itemList[',res[0])
+                   let { dataList } = this.$route.query;
+                     let productOrderNoArr=[]
+                    for (let i = 0; i < JSON.parse(dataList).length; i++) {//合并采购，带进来产品数量等部分数据；
+                          productOrderNoArr.push(this.dataList[i].productOrderNo)
+                    }
+                    this.form.productOrderNo= productOrderNoArr.join(',')
+                    this.form.itemList[index] =  Object.assign({},res[0],{productNumber:JSON.parse(dataList)[index].productNumber})
+                    this.form.itemList.forEach(res =>{//计算分项金额
+                        res.itemAmount = res.purchasePrice * res.productNumber
+                    })
                   }
-                  // this.form.itemList[index].mulitiProducts = res;
-                    //  this.form.itemList[index].purchasePrice = res[index].purchasePrice//采购价
-                    //  this.form.itemList[index].productName = res[index].productName
-                    //  this.form.itemList[index].nominalPressure = res[index].nominalPressure//压力
-                    //  this.form.itemList[index].valveBodyMaterial = res[index].valveBodyMaterial
-                    //  this.form.itemList[index].valveCoreMaterial = res[index].valveCoreMaterial
-                    //  this.form.itemList[index].sealingMaterial = res[index].sealingMaterial
-                    //  this.form.itemList[index].driveForm = res[index].driveForm
-                    //  this.form.itemList[index].connectionMethod = res[index].connectionMethod
-                    //  this.form.itemList[index].valveShaft = res[index].valveShaft
-                    //  this.form.itemList[index].remark = res[index].remark
+                   if(res.length >2){
+                    this.$nextTick(() =>{
+                      console.log('this.form.itemList',this.form.itemList)
+                      this.form.itemList[index].mulitiProducts = [{},{}]
+                    })
+
+                  }
                 })
                 .catch(e => {
                     this.$toast(e.msg || e.message);

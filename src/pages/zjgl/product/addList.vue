@@ -465,6 +465,7 @@
                                 <th>产品编号</th>
                                 <th>成品型号</th>
                                 <th>成品规格</th>
+                                <th>成品系列</th>
                                 <th>检测数量</th>
                                 <th>合格数量</th>
                                 <th>不合格数量</th>
@@ -480,6 +481,7 @@
                                 <td>{{item.productNo}}</td>
                                 <td>{{item.productModel}}</td>
                                 <td>{{item.productSpecifications}}</td>
+                                <td>{{item.series}}</td>
                                 <td>{{item.testingNumber}}</td>
                                 <td>{{item.qualifiedNumber}}</td>
                                 <td>{{item.unqualifiedNumber}}</td>
