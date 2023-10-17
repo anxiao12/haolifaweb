@@ -21,6 +21,7 @@
                     <th>产品编号</th>
                     <th>成品型号</th>
                     <th>成品规格</th>
+                    <th>成品系列</th>
                     <th>入库数量</th>
                     <th>状态</th>
                     <th class="t-right" style="width: 80px;">操作</th>
@@ -32,6 +33,7 @@
                     <td>{{item.productNo}}</td>
                     <td>{{item.productModel}}</td>
                     <td>{{item.productSpecifications}}</td>
+                    <td>{{item.series}}</td>
                     <td>{{item.qualifiedNumber}}</td>
                     <td>{{statusList[item.storageStatus].name}}</td>
                     <td class="t-right">
@@ -52,6 +54,7 @@
                 <div class="flex">
                     <input-box v-model="storeRoom.productModel" class="flex-item mr-10 ml-20" label="成品型号"></input-box>
                     <input-box v-model="storeRoom.productSpecifications" class="flex-item mr-10 ml-20" label="规格"></input-box>
+                    <input-box v-model="storeRoom.series" class="flex-item mr-10 ml-20" label="系列"></input-box>
                 </div>
                 <div class="flex">
                     <input-box v-model="storeRoom.quantity" type="number" class="flex-item ml-20 mr-10" disabled label="入库数量"></input-box>
@@ -106,6 +109,7 @@ export default {
                 productModel: "",
                 productNo: "",
                 productSpecifications: "",
+                series:"",
                 quantity: 0,
                 rackNo: "",
                 roomNo: ""
@@ -171,6 +175,7 @@ export default {
                 productModel: this.storeRoom.productModel,
                 productNo: this.storeRoom.productNo,
                 productSpecifications: this.storeRoom.productSpecifications,
+                series: this.storeRoom.series,
                 quantity: this.storeRoom.quantity,
                 rackNo: this.storeRoom.rackNo,
                 roomNo: this.storeRoom.roomNo
@@ -195,6 +200,7 @@ export default {
             this.storeRoom.productNo = item.productNo;
             this.storeRoom.productModel = item.productModel;
             this.storeRoom.productSpecifications = item.productSpecifications;
+            this.storeRoom.series = item.series;
             this.storeRoom.quantity = item.qualifiedNumber;
             this.storeRoom.id = item.id;
             this.$http

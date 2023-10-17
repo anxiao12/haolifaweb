@@ -347,6 +347,10 @@
                                 colspan="1"
                                 class="b"
                             >规格</td>
+                             <td
+                                colspan="1"
+                                class="b"
+                            >系列11</td>
                             <td
                                 colspan="2"
                                 class="b"
@@ -376,6 +380,7 @@
                             <td colspan="1">{{item.productNo}}</td>
                             <td colspan="2">{{item.productName}}</td>
                             <td colspan="1">{{item.productModel}}</td>
+                            <td colspan="1">{{item.productSeries}}</td>
                             <td colspan="1">{{item.lable}}</td>
                             <td colspan="1">{{item.specifications}}</td>
                             <td colspan="2">{{item.productColor}}</td>
@@ -522,6 +527,14 @@
                         :list="productSpecificationsList"
                         v-model="order.productSpecifications"
                         label="成品规格"
+                    ></select-box>
+                </div>
+                 <div class="flex">
+                    <select-box
+                        class="flex-item mr-20 ml-20"
+                        :list="productSeriesList"
+                        v-model="order.productSeries"
+                        label="成品系列"
                     ></select-box>
                 </div>
                 <div class="flex">
@@ -1125,10 +1138,12 @@ export default {
             productNoList: [],
             productModelList: [],
             productSpecificationsList: [],
+            productSeriesList:[],
             order: {
                 id: "",
                 orderNo: "",
                 productModel: "",
+                productSeries:"",
                 productNo: "",
                 productSpecifications: "",
                 qualifiedNumber: "",
@@ -1260,6 +1275,12 @@ export default {
                             value: item.specifications,
                         };
                     });
+                      this.productSeriesList = res.orderProductAssociates.map((item) => {
+                        return {
+                            text: item.series,
+                            value: item.series,
+                        };
+                    });
                 })
                 .catch((e) => {
                     this.$toast(e.msg || e.message);
@@ -1357,6 +1378,7 @@ export default {
                 id: "",
                 orderNo: "",
                 productModel: "",
+                productSeries:"",
                 productNo: "",
                 productSpecifications: "",
                 qualifiedNumber: "",
