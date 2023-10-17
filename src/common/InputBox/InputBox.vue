@@ -17,7 +17,7 @@
             @click="$emit('click')"
             @keypress="$emit('keypress')"
             @keydown="$emit('keydown')"
-            @keyup="$emit('keyup')"
+            @keyup="$emit('keyup',$event.target.value)"
             @onChange="$emit('onChange')"
         >
         <textarea

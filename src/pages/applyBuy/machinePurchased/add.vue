@@ -39,11 +39,9 @@
             </div>
             <div class="b" style="margin: 20px 0 10px;">采购整机项</div>
                 <!-- 产品名称，型号，规格，系列，压力，数量，采购价，分项金额，阀体，阀芯，密封材质，驱动形式，链接方式，阀轴材质，备注 -->
-              {{form.itemList.mulitiProducts}}
-
             <div class="card flex" style="margin-top: 0;" v-for="(item, i) in form.itemList" :key="i">
                 <div class="flex-item">
-                  <div v-if="!isAdd" class="flex">
+                  <div v-if="item.tableList && item.tableList.length>1" class="flex">
                      <el-button  @click="jumpLayer(i)">选择产品</el-button>
                       <div class="flex-item mr-10"></div>
                       <div class="flex-item mr-10"></div>
@@ -78,8 +76,8 @@
                       </div>
                     <div class="flex">
                         <input-box v-model="item.nominalPressure" class="flex-item mr-10" label="压力"></input-box>
-                        <input-box v-model="item.productNumber" class="flex-item mr-10" label="数量"></input-box>
-                        <input-box v-model="item.purchasePrice" type="number" class="flex-item mr-10" label="采购价"></input-box>
+                        <input-box @keyup="keydownAmount" v-model="item.productNumber" class="flex-item mr-10" label="数量"></input-box>
+                        <input-box @keyup="keydownPrice" v-model="item.purchasePrice" type="number" class="flex-item mr-10" label="采购价"></input-box>
                         <input-box v-model="item.valveBodyMaterial" class="flex-item mr-10" label="阀体"></input-box>
                     </div>
                     <div class="flex">
@@ -226,7 +224,8 @@ export default {
                         productModels:[],
                         specifications: [],
                         seriesList: [],
-                        mulitiProducts:[]
+                        mulitiProducts:[],
+                        tableList:[]
                     }
                 ]
             },
@@ -249,129 +248,21 @@ export default {
         };
     },
     watch: {
-    'form.itemList': {
-      handler(newValue) {
-        newValue.forEach(item => {
-          item.itemAmount = item.productNumber * item.purchasePrice;
+      'form.itemList': {
+      handler(newItemList) {
+        newItemList.forEach(item => {
+          const productNumber = parseFloat(item.productNumber);
+          const purchasePrice = parseFloat(item.purchasePrice);
+          if (!isNaN(productNumber) && !isNaN(purchasePrice)) {
+            item.itemAmount = (productNumber * purchasePrice).toFixed(2); // Round to 2 decimal places
+          } else {
+            item.itemAmount = ''; // Clear itemAmount if either field is empty or non-numeric
+          }
         });
       },
       deep: true
-    }
+      }
   },
-    // activated() {
-    //     this.form = {
-    //         id:'',
-    //         deliveryTime:'',
-    //         demander:'山西好利阀机械制造有限公司',
-    //         demanderAddr:'山西省侯马经济开发区旺旺北支路东侧',
-    //         demanderLinkman:'',
-    //         demanderPhone:'',
-    //         operateTime:'',
-    //         operatorUserName:'',
-    //         payType:'',
-    //         purchaseOrderNo:'',
-    //         productOrderNo:'',
-    //         supplierAddr:'',
-    //         supplierConfirmer:'',
-    //         supplierLinkman:'',
-    //         supplierName:'',
-    //         supplierNo:'',
-    //         supplierPhone:'',
-    //         itemList: [
-    //             {
-    //                 mulitiProduct:'',
-    //                 productName:'',
-    //                 productModel:'',
-    //                 specification:'',
-    //                 series:'',
-    //                 nominalPressure:'',
-    //                 productNumber:'',
-    //                 purchasePrice:'',
-    //                 valveBodyMaterial:'',
-    //                 valveCoreMaterial:'',
-    //                 sealingMaterial:'',
-    //                 driveForm:'',
-    //                 connectionMethod:'',
-    //                 valveShaft:'',
-    //                 itemAmount:'',
-    //                 remark:'',
-    //                 productModels:[],
-    //                 specifications: [],
-    //                 seriesList: [],
-    //                 mulitiProducts:[],
-    //             }
-    //         ]
-    //     };
-    //     let { ids,pageType,supList,dataList ,isAdd,formId} = this.$route.query;
-    //     this.isAdd = isAdd
-    //     if(supList){
-    //       this.supList = JSON.parse(supList)//供应商
-    //     }
-    //     if(ids){
-    //       this.ids = JSON.parse(ids)//每一行数据的id
-    //     }
-    //     if(dataList){
-    //       this.dataList = JSON.parse(dataList)//每一行选中的数据带过来
-    //        let fetchParams =  this.dataList.map((res,i) =>{
-    //         return {
-    //             productModel:res.productModel,
-    //             specification:res.specifications,
-    //             series:res.productSeries,
-    //             supplierNo:this.supList[0].supplierCode
-    //         }
-    //      })
-    //      fetchParams.map((res,index) =>{//请求每一行产品的数据
-    //         this.filter[index] = res;
-    //        this.initGetProductMessage([res],index)
-    //      })
-    //     }
-    //     if(dataList){
-    //       this.form.itemList.splice(0,1)
-    //     }
-    //     let productOrderNoArr=[]
-    //     for (let i = 0; i < this.dataList.length; i++) {
-    //         this.form.itemList.push({
-    //                 productName:this.dataList[i].productName,
-    //                 productModel:this.dataList[i].productModel,
-    //                 specification:this.dataList[i].specification,
-    //                 series:this.dataList[i].series,
-    //                 nominalPressure:this.dataList[i].nominalPressure,
-    //                 productNumber:this.dataList[i].productNumber,
-    //                 purchasePrice:this.dataList[i].purchasePrice,
-    //                 valveBodyMaterial:this.dataList[i].valveBodyMaterial,
-    //                 valveCoreMaterial:this.dataList[i].valveCoreMaterial,
-    //                 sealingMaterial:this.dataList[i].sealingMaterial,
-    //                 driveForm:this.dataList[i].driveForm,
-    //                 connectionMethod:this.dataList[i].connectionMethod,
-    //                 valveShaft:this.dataList[i].valveShaft,
-    //                 itemAmount:this.dataList[i].itemAmount,
-    //                 remark:this.dataList[i].remark,
-    //         });
-
-    //          productOrderNoArr.push(this.dataList[i].productOrderNo)
-    //     }
-    //     console.log('list',this.form.itemList)
-    //     this.form.productOrderNo= productOrderNoArr.join(',')
-    //     if(!pageType){//新增，加载全部供应商
-    //        this.$http.post("/haolifa/whole/machine/supplier/listAll").then(res => {
-    //           this.supplierList = res.map(item => {
-    //               return { value: item.nickName, text: item.name };
-    //           });
-    //           this.supplierInfoList = res;
-    //      });
-    //     }
-    //      if(supList){//加载选中的供应商
-    //       this.supplierList = JSON.parse(this.$route.query.supList).map(res =>{
-    //         return {
-    //           value: res.supplierCode, text: res.supplierName,address:res.address,contact:res.contact,telephone:res.telephone
-    //         }
-    //     })
-    //     this.form.supplierNo = this.supList[0].supplierCode;
-    //     this.chooseSupply(this.form.supplierNo)
-
-
-    //     }
-    // },
     computed: {
       calculateItemAmount() {
         return (item) => item.productNumber * item.purchasePrice;
@@ -405,7 +296,12 @@ export default {
            this.initGetProductMessage([res],index)
          })
           for (let i = 0; i < JSON.parse(dataList).length; i++) {//合并采购，带进来产品数量等部分数据,控制显示的条数
-                this.form.itemList[i] = JSON.parse(dataList)[i]
+                // this.form.itemList[i] = JSON.parse(dataList)[i]//切记，直接赋值是无法监听到变化的，所以需要用push，sort等方法,用this.$set
+                //是因为如果你在组件实例化之后添加了新的表单项，这些新的项可能不会被自动捕获，无法确保新添加的项是响应式的
+                this.form.itemList.push(JSON.parse(dataList)[i])
+                this.$set(this.form.itemList[i], 'productNumber', JSON.parse(dataList)[i].productNumber);
+                this.$set(this.form.itemList[i], 'purchasePrice', '');
+                this.$set(this.form.itemList[i], 'itemAmount', '');
           }
         }
          if(formId){//编辑页面查询详情
@@ -415,7 +311,7 @@ export default {
         if(!pageType){//新增，加载全部供应商
            this.$http.post("/haolifa/whole/machine/supplier/listAll").then(res => {
               this.supplierList = res.map(item => {
-                  return { value: item.nickName, text: item.name };
+                  return { value: item.nickName, text: item.name ,address:item.address,contact:item.contact,telephone:item.telephone};
               });
               this.supplierInfoList = res;
          });
@@ -427,11 +323,10 @@ export default {
             }
         })
         this.form.supplierNo = this.supList[0].supplierCode;
-        // this.chooseSupply(this.form.supplierNo)
+        this.chooseSupply(this.form.supplierNo)
         }
   },
     mounted() {
-
 
     },
     methods: {
@@ -452,7 +347,7 @@ export default {
               this.$toast('只能选择一条数据，请重新选择');
               return
             }
-            this.form.itemList[this.lineIndex] = Object.assign({},dataList[0],{productNumber:this.dataList[this.lineIndex].productNumber})
+            this.form.itemList[this.lineIndex] = Object.assign({},dataList[0],{productNumber:this.dataList[this.lineIndex].productNumber},{tableList:[{},{}]})
             this.form.itemList.forEach(res =>{//计算分项金额
               res.itemAmount = res.purchasePrice * res.productNumber
             })
@@ -513,11 +408,13 @@ export default {
                   }
                    if(res.length >2){
                     this.$nextTick(() =>{
-                      console.log('this.form.itemList',this.form.itemList)
-                      this.form.itemList[index].mulitiProducts = [{},{}]
+                      this.form.itemList.forEach(v =>{
+                        v.tableList = res
+                      })
                     })
 
                   }
+                  this.$forceUpdate()//
                 })
                 .catch(e => {
                     this.$toast(e.msg || e.message);
@@ -587,6 +484,12 @@ export default {
       cancel(){
         this.$store.commit('DELMENUTABS', '/machinePurchased-order/add');
         this.$router.push('/machinePurchased-order/list')
+      },
+      keydownAmount(val,i){
+          this.$forceUpdate()
+      },
+      keydownPrice(price){
+          this.$forceUpdate()
       },
         addItem() {
             this.form.itemList.push({
