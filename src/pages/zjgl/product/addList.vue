@@ -347,7 +347,10 @@
                                 colspan="1"
                                 class="b"
                             >规格</td>
-
+                             <td
+                                colspan="1"
+                                class="b"
+                            >系列11</td>
                             <td
                                 colspan="2"
                                 class="b"
