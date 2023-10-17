@@ -88,7 +88,7 @@
                     </div>
                     <div class="flex">
                         <input-box v-model="item.valveShaft" class="flex-item mr-10" label="阀轴材质"></input-box>
-                        <input-box v-model="item.itemAmount" type="number" class="flex-item mr-10" label="分项金额"></input-box>
+                        <input-box disabled v-model="item.itemAmount" type="number" class="flex-item mr-10" label="分项金额"></input-box>
                         <input-box v-model="item.remark" class="flex-item mr-10" label="备注"></input-box>
                     </div>
                 </div>
@@ -246,6 +246,17 @@ export default {
             ]
         };
     },
+    watch: {
+    'form.itemList': {
+      handler(newValue) {
+        console.log('item111',newValue)
+        newValue.forEach(item => {
+          item.itemAmount = item.productNumber * item.purchasePrice;
+        });
+      },
+      deep: true
+    }
+  },
     // activated() {
     //     this.form = {
     //         id:'',
@@ -391,16 +402,17 @@ export default {
             this.filter[index] = res;
            this.initGetProductMessage([res],index)
          })
+           let productOrderNoArr=[]
+          for (let i = 0; i < JSON.parse(dataList).length; i++) {//合并采购，带进来产品数量等部分数据；
+                this.form.itemList[i] = JSON.parse(dataList)[i]
+                productOrderNoArr.push(this.dataList[i].productOrderNo)
+          }
+          this.form.productOrderNo= productOrderNoArr.join(',')
         }
          if(formId){//编辑页面查询详情
           this.getInfo(formId)
          }
-        let productOrderNoArr=[]
-        for (let i = 0; i < JSON.parse(dataList).length; i++) {//合并采购，带进来产品数量等部分数据；
-              this.form.itemList[i] = JSON.parse(dataList)[i]
-              productOrderNoArr.push(this.dataList[i].productOrderNo)
-        }
-        this.form.productOrderNo= productOrderNoArr.join(',')
+
         if(!pageType){//新增，加载全部供应商
            this.$http.post("/haolifa/whole/machine/supplier/listAll").then(res => {
               this.supplierList = res.map(item => {
@@ -434,11 +446,17 @@ export default {
 
                 }
             }
-            if(dataList.length > 1){
+            if(dataList.length > 1 || dataList.length === 0){
               this.$toast('只能选择一条数据，请重新选择');
+              return
             }
-            console.log('dataList[0]',dataList[0])
-            this.form.itemList[this.lineIndex] = Object.assign({},{productNumber:this.form.itemList[this.lineIndex].productNumber},dataList[0])
+            this.form.itemList[this.lineIndex] = Object.assign({},dataList[0],{productNumber:this.dataList[this.lineIndex].productNumber})
+            let aaa = Object.assign({},dataList[0],{productNumber:this.dataList[this.lineIndex].productNumber})
+            console.log('aaa',aaa)
+            this.form.itemList.forEach(res =>{//计算分项金额
+              res.itemAmount = res.purchasePrice * res.productNumber
+            })
+            console.log('formlist',this.form.itemList)
             this.layerFlag = false
       },
         jumpLayer(i){
@@ -482,7 +500,6 @@ export default {
          this.$http
                 .post(`/haolifa/whole/machine/product/listProductByParam`, {'list':params})
                 .then(res => {
-                  console.log('res',res)
                   if(res.length>2){
                     this.form.itemList[index].chooseBtn = true
                   }else{
@@ -490,8 +507,9 @@ export default {
                   }
                   if(res.length === 1){
                     this.form.itemList[index] = res[0]
+                    console.log('res',res[0])
+                    console.log('his.form.itemList[',res[0])
                   }
-                  console.log('this.form',this.form.itemList)
                   // this.form.itemList[index].mulitiProducts = res;
                     //  this.form.itemList[index].purchasePrice = res[index].purchasePrice//采购价
                     //  this.form.itemList[index].productName = res[index].productName

@@ -164,7 +164,7 @@
                             <td colspan="1"></td>
                             <td colspan="1">{{reduceTotal(itemList)}}</td>
                             <td colspan="1"></td>
-                            <td colspan="1"></td>
+                            <td colspan="1">{{info.totalPrice}}</td>
                             <td colspan="1"></td>
                         </tr>
                         <tr>
