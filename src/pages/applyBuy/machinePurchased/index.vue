@@ -141,7 +141,7 @@
                             <td colspan="1" class="b">颜色</td>
                             <td colspan="1" class="b">数量</td>
                             <td colspan="1" class="b">单价</td>
-                            <!-- <td colspan="1" class="b">合计</td> -->
+                            <td colspan="1" class="b">分项金额</td>
                             <td colspan="1" class="b">材质</td>
                             <td colspan="1" class="b">备注</td>
                         </tr>
@@ -154,7 +154,7 @@
                             <td colspan="1">{{item.productColor}}</td>
                             <td colspan="1">{{item.productNumber}}</td>
                             <td colspan="1">{{item.unitPrice}}</td>
-                            <!-- <td colspan="1">{{item.unitPrice*item. productNumber}}</td> -->
+                            <td colspan="1">{{item.itemAmount}}</td>
                             <td colspan="1">{{item.sealingMaterial}}</td>
                             <td colspan="1">{{item.remark}}</td>
                         </tr>
@@ -357,7 +357,6 @@ export default {
           let totalNumber =  itemList.reduce((pre,cur) =>{
             return pre + cur.productNumber
           },0)
-          console.log('totalNumber',totalNumber)
           return totalNumber
 
         },

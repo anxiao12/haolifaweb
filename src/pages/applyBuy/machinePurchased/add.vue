@@ -224,7 +224,7 @@ export default {
                         productModels:[],
                         specifications: [],
                         seriesList: [],
-                        mulitiProducts:[]
+                        // mulitiProducts:[]
                     }
                 ]
             },
@@ -360,6 +360,11 @@ export default {
 
     //     }
     // },
+    computed: {
+      calculateItemAmount() {
+        return (item) => item.productNumber * item.purchasePrice;
+      }
+  },
     mounted() {
         let { ids,pageType,supList,dataList,isAdd,formId} = this.$route.query;
         this.isAdd = isAdd;
@@ -391,33 +396,10 @@ export default {
           this.getInfo(formId)
          }
         let productOrderNoArr=[]
-        console.log('this.dataList',this.dataList)
-        for (let i = 0; i < this.dataList.length; i++) {
-          console.log('res',this.dataList[i])
-            // this.form.itemList.push({
-            //         productName:this.dataList[i].productName,
-            //         productModel:this.dataList[i].productModel,
-            //         specification:this.dataList[i].specification,
-            //         series:this.dataList[i].series,
-            //         nominalPressure:this.dataList[i].nominalPressure,
-            //         productNumber:this.dataList[i].productNumber,
-            //         purchasePrice:this.dataList[i].purchasePrice,
-            //         valveBodyMaterial:this.dataList[i].valveBodyMaterial,
-            //         valveCoreMaterial:this.dataList[i].valveCoreMaterial,
-            //         sealingMaterial:this.dataList[i].sealingMaterial,
-            //         driveForm:this.dataList[i].driveForm,
-            //         connectionMethod:this.dataList[i].connectionMethod,
-            //         valveShaft:this.dataList[i].valveShaft,
-            //         itemAmount:this.dataList[i].itemAmount,
-            //         remark:this.dataList[i].remark,
-            // });
-             this.form.itemList[i] = this.dataList[i]
-            productOrderNoArr.push(this.dataList[i].productOrderNo)
+        for (let i = 0; i < JSON.parse(dataList).length; i++) {//合并采购，带进来产品数量等部分数据；
+              this.form.itemList[i] = JSON.parse(dataList)[i]
+              productOrderNoArr.push(this.dataList[i].productOrderNo)
         }
-
-
-          console.log('itemList', this.form.itemList)
-
         this.form.productOrderNo= productOrderNoArr.join(',')
         if(!pageType){//新增，加载全部供应商
            this.$http.post("/haolifa/whole/machine/supplier/listAll").then(res => {
@@ -434,7 +416,7 @@ export default {
             }
         })
         this.form.supplierNo = this.supList[0].supplierCode;
-        this.chooseSupply(this.form.supplierNo)
+        // this.chooseSupply(this.form.supplierNo)
         }
 
     },
@@ -455,7 +437,8 @@ export default {
             if(dataList.length > 1){
               this.$toast('只能选择一条数据，请重新选择');
             }
-            this.form.itemList[this.lineIndex] = dataList[0]
+            console.log('dataList[0]',dataList[0])
+            this.form.itemList[this.lineIndex] = Object.assign({},{productNumber:this.form.itemList[this.lineIndex].productNumber},dataList[0])
             this.layerFlag = false
       },
         jumpLayer(i){
@@ -499,12 +482,17 @@ export default {
          this.$http
                 .post(`/haolifa/whole/machine/product/listProductByParam`, {'list':params})
                 .then(res => {
+                  console.log('res',res)
                   if(res.length>2){
                     this.form.itemList[index].chooseBtn = true
                   }else{
                     this.form.itemList[index].chooseBtn = false
                   }
-                  this.form.itemList[index].mulitiProducts = res;
+                  if(res.length === 1){
+                    this.form.itemList[index] = res[0]
+                  }
+                  console.log('this.form',this.form.itemList)
+                  // this.form.itemList[index].mulitiProducts = res;
                     //  this.form.itemList[index].purchasePrice = res[index].purchasePrice//采购价
                     //  this.form.itemList[index].productName = res[index].productName
                     //  this.form.itemList[index].nominalPressure = res[index].nominalPressure//压力
@@ -569,7 +557,7 @@ export default {
            })
         })
       },
-      getListCascadeBySupplierNo(supplierNo){
+      getListCascadeBySupplierNo(supplierNo){//获取及联菜单
           this.$http
                 .get(`/haolifa/whole/machine/product/listCascadeBySupplierNo/${supplierNo}`, )
                 .then(res => {
@@ -612,8 +600,8 @@ export default {
             this.$http
                 .post(
                     this.isAdd
-                        ? "/haolifa//wholeMachinePurchaseOrder/add"
-                        : "/haolifa//wholeMachinePurchaseOrder/edit",
+                        ? "/haolifa/wholeMachinePurchaseOrder/add"
+                        : "/haolifa/wholeMachinePurchaseOrder/edit",
                     this.form
                 )
                 .then(res => {
