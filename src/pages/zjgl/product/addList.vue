@@ -326,7 +326,7 @@
                                 class="b"
                             >订单产品列表</td>
                         </tr>
-                        <tr>
+                       <tr>
                             <td
                                 colspan="1"
                                 class="b"
@@ -347,10 +347,10 @@
                                 colspan="1"
                                 class="b"
                             >规格</td>
-                             <td
+                            <td
                                 colspan="1"
                                 class="b"
-                            >系列11</td>
+                            >系列</td>
                             <td
                                 colspan="2"
                                 class="b"
@@ -382,7 +382,7 @@
                             <td colspan="1">{{item.productModel}}</td>
                             <td colspan="1">{{item.lable}}</td>
                             <td colspan="1">{{item.specifications}}</td>
-                            <td colspan="2">{{item.series}}</td>
+                            <td colspan="1">{{item.series}}</td>
                             <td colspan="2">{{item.productColor}}</td>
                             <td colspan="1">{{item.productNumber}}</td>
                             <!-- <td colspan="1">{{item.price}}</td> -->
@@ -533,7 +533,7 @@
                     <select-box
                         class="flex-item mr-20 ml-20"
                         :list="productSeriesList"
-                        v-model="order.productSeries"
+                        v-model="order.series"
                         label="成品系列"
                     ></select-box>
                 </div>
@@ -1143,7 +1143,7 @@ export default {
                 id: "",
                 orderNo: "",
                 productModel: "",
-                productSeries:"",
+                series:"",
                 productNo: "",
                 productSpecifications: "",
                 qualifiedNumber: "",
@@ -1378,7 +1378,7 @@ export default {
                 id: "",
                 orderNo: "",
                 productModel: "",
-                productSeries:"",
+                series:"",
                 productNo: "",
                 productSpecifications: "",
                 qualifiedNumber: "",
