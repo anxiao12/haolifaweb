@@ -347,10 +347,7 @@
                                 colspan="1"
                                 class="b"
                             >规格</td>
-                             <td
-                                colspan="1"
-                                class="b"
-                            >系列11</td>
+
                             <td
                                 colspan="2"
                                 class="b"
@@ -380,9 +377,9 @@
                             <td colspan="1">{{item.productNo}}</td>
                             <td colspan="2">{{item.productName}}</td>
                             <td colspan="1">{{item.productModel}}</td>
-                            <td colspan="1">{{item.productSeries}}</td>
                             <td colspan="1">{{item.lable}}</td>
                             <td colspan="1">{{item.specifications}}</td>
+                            <td colspan="2">{{item.series}}</td>
                             <td colspan="2">{{item.productColor}}</td>
                             <td colspan="1">{{item.productNumber}}</td>
                             <!-- <td colspan="1">{{item.price}}</td> -->
