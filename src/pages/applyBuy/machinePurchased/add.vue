@@ -41,8 +41,8 @@
                 <!-- 产品名称，型号，规格，系列，压力，数量，采购价，分项金额，阀体，阀芯，密封材质，驱动形式，链接方式，阀轴材质，备注 -->
             <div class="card flex" style="margin-top: 0;" v-for="(item, i) in form.itemList" :key="i">
                 <div class="flex-item">
-                  <div class="flex">
-                     <el-button  @click="jumpLayer(i)">选择产品</el-button>
+                  <div v-if="!isAdd" class="flex">
+                     <el-button   @click="jumpLayer(i)">选择产品</el-button>
                       <div class="flex-item mr-10"></div>
                       <div class="flex-item mr-10"></div>
                       <div class="flex-item mr-10"></div>
@@ -546,12 +546,21 @@ export default {
             this.$forceUpdate();
         },
         submit() {
+          console.log('form',this.form)
+            let { formId } = this.$route.query;
+            let params = {}
+            if(formId){
+                params = Object.assign({},this.form,{id:formId})
+            }else{
+              params = this.form
+            }
+            console.log('params',params)
             this.$http
                 .post(
-                    this.isAdd
-                        ? "/haolifa/wholeMachinePurchaseOrder/add"
-                        : "/haolifa/wholeMachinePurchaseOrder/edit",
-                    this.form
+                    formId
+                        ? "/haolifa/wholeMachinePurchaseOrder/edit "
+                        : "/haolifa/wholeMachinePurchaseOrder/add",
+                    params
                 )
                 .then(res => {
                     this.$toast(this.isAdd ? "创建成功" : "更新成功");
