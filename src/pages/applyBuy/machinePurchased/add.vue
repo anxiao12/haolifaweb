@@ -41,7 +41,7 @@
                 <!-- 产品名称，型号，规格，系列，压力，数量，采购价，分项金额，阀体，阀芯，密封材质，驱动形式，链接方式，阀轴材质，备注 -->
             <div class="card flex" style="margin-top: 0;" v-for="(item, i) in form.itemList" :key="i">
                 <div class="flex-item">
-                  <div v-if="item.tableList && item.tableList.length>1" class="flex">
+                  <div class="flex">
                      <el-button  @click="jumpLayer(i)">选择产品</el-button>
                       <div class="flex-item mr-10"></div>
                       <div class="flex-item mr-10"></div>
@@ -323,6 +323,7 @@ export default {
             }
         })
         this.form.supplierNo = this.supList[0].supplierCode;
+        console.log('supplierNo',this.supList[0].supplierCode)
         this.chooseSupply(this.form.supplierNo)
         }
   },
@@ -390,17 +391,28 @@ export default {
                 });
 
       },
+           removeDuplicates(originalArray) {
+              const uniqueSet = new Set();
+              return originalArray.filter(item => {
+                if (!uniqueSet.has(item.productOrderNo)) {
+                  uniqueSet.add(item.productOrderNo);
+                  return true;
+                }
+                return false;
+              });
+        },
        initGetProductMessage(params,index){
          this.$http
                 .post(`/haolifa/whole/machine/product/listProductByParam`, {'list':params})
                 .then(res => {
-                  if(res.length === 1){
-                   let { dataList } = this.$route.query;
+                    let { dataList } = this.$route.query;
                      let productOrderNoArr=[]
                     for (let i = 0; i < JSON.parse(dataList).length; i++) {//合并采购，带进来产品数量等部分数据；
                           productOrderNoArr.push(this.dataList[i].productOrderNo)
                     }
-                    this.form.productOrderNo= productOrderNoArr.join(',')
+                    console.log('productOrderNoArr',productOrderNoArr)
+                    this.form.productOrderNo= this.removeDuplicates(productOrderNoArr).join(',')
+                  if(res.length === 1){
                     this.form.itemList[index] =  Object.assign({},res[0],{productNumber:JSON.parse(dataList)[index].productNumber})
                     this.form.itemList.forEach(res =>{//计算分项金额
                         res.itemAmount = res.purchasePrice * res.productNumber

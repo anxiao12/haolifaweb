@@ -156,16 +156,16 @@ export default {
             });
             return flag;
         },
-         removeDuplicates(originalArray) {
-              const uniqueSet = new Set();
-              return originalArray.filter(item => {
-                if (!uniqueSet.has(item.productOrderNo)) {
-                  uniqueSet.add(item.productOrderNo);
-                  return true;
-                }
-                return false;
-              });
-        },
+        //  removeDuplicates(originalArray) {
+        //       const uniqueSet = new Set();
+        //       return originalArray.filter(item => {
+        //         if (!uniqueSet.has(item.productOrderNo)) {
+        //           uniqueSet.add(item.productOrderNo);
+        //           return true;
+        //         }
+        //         return false;
+        //       });
+        // },
         mergeData() {
             let list = JSON.parse(JSON.stringify(this.$refs.list.list));
             let arr = document.getElementsByName("boxId"),
@@ -200,14 +200,14 @@ export default {
                         this.$toast("未找到供应商");
                         return;
                     } else {
-                      console.log('origin',this.removeDuplicates(dataList))
-                      let dealDataList = this.removeDuplicates(dataList)
+                      // console.log('origin',this.removeDuplicates(dataList))
+                      // let dealDataList = this.removeDuplicates(dataList)
                         this.$router.push({
                             name: "machinePurchased-orderadd",
                             query: {
                                 supList:JSON.stringify(res) ,
                                 pageType:'edit',
-                                dataList:JSON.stringify(dealDataList),
+                                dataList:JSON.stringify(dataList),
                                 ids: JSON.stringify(ids),
                             }
                         });
