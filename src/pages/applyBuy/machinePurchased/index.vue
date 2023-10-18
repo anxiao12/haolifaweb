@@ -155,7 +155,7 @@
                             <td colspan="1">{{item.productNumber}}</td>
                             <td colspan="1">{{item.unitPrice}}</td>
                             <td colspan="1">{{item.itemAmount}}</td>
-                            <td colspan="1">{{item.sealingMaterial}}</td>
+                            <td colspan="1">{{item.materialQuality}}</td>
                             <td colspan="1">{{item.remark}}</td>
                         </tr>
                           <tr>
@@ -166,9 +166,11 @@
                             <td colspan="1"></td>
                             <td colspan="1">{{info.totalPrice}}</td>
                             <td colspan="1"></td>
+                            <td colspan="1"></td>
                         </tr>
                         <tr>
                             <th colspan="4">优惠后价格</th>
+                            <td colspan="1"></td>
                             <td colspan="1"></td>
                             <td colspan="1"></td>
                             <td colspan="1"></td>
