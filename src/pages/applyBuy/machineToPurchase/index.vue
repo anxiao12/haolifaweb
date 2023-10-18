@@ -180,7 +180,7 @@ export default {
                         paramsList.push({
                           productModel:rowScope.productModel,
                           productNo:rowScope.productNo,
-                          specification:rowScope.specifications,//规格
+                          specifications:rowScope.specifications,//规格
                           productSeries:rowScope.productSeries
                         })
                         ids.push(list[arr[i].value].id);

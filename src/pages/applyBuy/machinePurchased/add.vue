@@ -89,7 +89,7 @@
                     <div class="flex">
                         <input-box v-model="item.valveShaft" class="flex-item mr-10" label="阀轴材质"></input-box>
                         <input-box disabled v-model="item.itemAmount" type="number" class="flex-item mr-10" label="分项金额"></input-box>
-                        <input-box v-model="item.remark" class="flex-item mr-10" label="备注"></input-box>
+                        <input-box v-model="item.remarks" class="flex-item mr-10" label="备注"></input-box>
                     </div>
                 </div>
                 <div v-if="form.itemList.length > 1">
@@ -144,7 +144,7 @@
                     <td>{{item.connectionMethod}}</td>
                     <td>{{item.valveShaft}}</td>
                     <td>{{item.itemAmount}}</td>
-                    <td>{{item.remark}}</td>
+                    <td>{{item.remarks}}</td>
                 </template>
             </data-list>
               <div class="layer-btns">
@@ -220,7 +220,7 @@ export default {
                         connectionMethod:'',
                         valveShaft:'',
                         itemAmount:'',
-                        remark:'',
+                        remarks:'',
                         productModels:[],
                         specifications: [],
                         seriesList: [],
@@ -399,7 +399,7 @@ export default {
                      this.form.itemList[index].driveForm = res[0].driveForm
                      this.form.itemList[index].connectionMethod = res[0].connectionMethod
                      this.form.itemList[index].valveShaft = res[0].valveShaft
-                     this.form.itemList[index].remark = res[0].remark
+                     this.form.itemList[index].remarks = res[0].remarks
                   })
                   this.$forceUpdate()
                 })
@@ -546,7 +546,7 @@ export default {
                 connectionMethod:'',
                 valveShaft:'',
                 itemAmount:'',
-                remark:'',
+                remarks:'',
             });
             if(this.supplierNumber){
               this.getListCascadeBySupplierNo(this.supplierNumber)
@@ -554,22 +554,34 @@ export default {
             this.$forceUpdate();
         },
         submit() {
-            let { formId } = this.$route.query;
+            let { formId ,ids} = this.$route.query;
             this.form.itemList.forEach(v =>{
                 v.unitPrice = v.purchasePrice
             })
             let params = {}
-            if(formId){
+            if(formId){//如果是编辑
                 params = Object.assign({},this.form,{id:formId})
-            }else{
-              params = this.form
+            }else if(this.dataList.length>0){//如果是合并过来的
+              this.form.itemList.forEach(res =>{
+                delete res.id
+              })
+              params = Object.assign({},this.form,{applyBuyIds:JSON.parse(ids)})
+            }else{//新增
+              params = Object.assign({},this.form)
+            }
+            console.log('this.dataList',this.dataList)
+            let url = ''
+            if(this.dataList.length>0){//合并过来的
+              url = '/haolifa/wholeMachinePurchaseOrder/mergeAdd'
+            }else if(formId){//编辑
+              url = '/haolifa/wholeMachinePurchaseOrder/edit'
+            }else{//新增
+              url = '/haolifa/wholeMachinePurchaseOrder/add'
             }
             console.log('params',params)
             this.$http
                 .post(
-                    formId
-                        ? "/haolifa/wholeMachinePurchaseOrder/edit "
-                        : "/haolifa/wholeMachinePurchaseOrder/add",
+                    url,
                     params
                 )
                 .then(res => {

@@ -31,14 +31,15 @@ export default [{
 //     id: 'zjdcglb'
 //   }
 // },
-{
-  path: '/machineToPurchase-order/purchaseAdd',
-  name: 'order-machine-purchaseAdd',
-  component: () => import( /* webpackChunkName: "diliversyedit" */ './purchaseAdd.vue'),
-  meta: {
-    level: 3,
-    title: '新增合并采购单',
-    open: false,
-    id: 'zjdcglb'
-  }
-}]
+// {
+//   path: '/machineToPurchase-order/purchaseAdd',
+//   name: 'order-machine-purchaseAdd',
+//   component: () => import( /* webpackChunkName: "diliversyedit" */ './purchaseAdd.vue'),
+//   meta: {
+//     level: 3,
+//     title: '新增合并采购单',
+//     open: false,
+//     id: 'zjdcglb'
+//   }
+// }
+]
