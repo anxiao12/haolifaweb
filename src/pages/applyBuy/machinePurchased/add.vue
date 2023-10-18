@@ -302,6 +302,10 @@ export default {
                 this.$set(this.form.itemList[i], 'productNumber', JSON.parse(dataList)[i].productNumber);
                 this.$set(this.form.itemList[i], 'purchasePrice', '');
                 this.$set(this.form.itemList[i], 'itemAmount', '');
+                this.$set(this.form.itemList[i], 'productModel', '');
+                this.$set(this.form.itemList[i], 'productModels',[]);
+                this.$set(this.form.itemList[i], 'specifications',[]);
+                this.$set(this.form.itemList[i], 'seriesList',[]);
           }
         }
          if(formId){//编辑页面查询详情
@@ -323,8 +327,7 @@ export default {
             }
         })
         this.form.supplierNo = this.supList[0].supplierCode;
-        console.log('supplierNo',this.supList[0].supplierCode)
-        this.chooseSupply(this.form.supplierNo)
+        this.chooseSupply(this.form.supplierNo) //如果是合并过来的先不需要调用及联菜单
         }
   },
     mounted() {
@@ -348,10 +351,17 @@ export default {
               this.$toast('只能选择一条数据，请重新选择');
               return
             }
-            this.form.itemList[this.lineIndex] = Object.assign({},dataList[0],{productNumber:this.dataList[this.lineIndex].productNumber},{tableList:[{},{}]})
+            this.form.itemList[this.lineIndex] = Object.assign({},dataList[0],
+            {productNumber:this.dataList[this.lineIndex].productNumber})
+
             this.form.itemList.forEach(res =>{//计算分项金额
               res.itemAmount = res.purchasePrice * res.productNumber
             })
+            console.log('dataList[0]',dataList[0])
+            this.$set(this.form.itemList[this.lineIndex], 'productModel', dataList[0].productModel);
+            this.$set(this.form.itemList[this.lineIndex], 'specification', dataList[0].specification);
+            this.$set(this.form.itemList[this.lineIndex], 'series', dataList[0].series);
+            console.log('this.form.itemList',this.form.itemList)
             this.layerFlag = false
       },
         jumpLayer(i){
@@ -385,6 +395,7 @@ export default {
                      this.form.itemList[index].valveShaft = res[0].valveShaft
                      this.form.itemList[index].remark = res[0].remark
                   })
+                  this.$forceUpdate()
                 })
                 .catch(e => {
                     this.$toast(e.msg || e.message);
@@ -410,7 +421,6 @@ export default {
                     for (let i = 0; i < JSON.parse(dataList).length; i++) {//合并采购，带进来产品数量等部分数据；
                           productOrderNoArr.push(this.dataList[i].productOrderNo)
                     }
-                    console.log('productOrderNoArr',productOrderNoArr)
                     this.form.productOrderNo= this.removeDuplicates(productOrderNoArr).join(',')
                   if(res.length === 1){
                     this.form.itemList[index] =  Object.assign({},res[0],{productNumber:JSON.parse(dataList)[index].productNumber})
@@ -436,14 +446,17 @@ export default {
        onProductModelChange(formIndex) {
             const selectedProductModel = this.form.itemList[formIndex].productModel;
             this.selectedProductModel=selectedProductModel
+            this.form.itemList[formIndex].productModel = selectedProductModel
             this.form.itemList[formIndex].specifications = this.form.itemList[formIndex].productModels.filter(res => res.code === selectedProductModel)[0].child;
             this.form.itemList[formIndex].seriesList = [];//系列
             this.form.itemList[formIndex].specification = '';//规格
             this.form.itemList[formIndex].series = '';//系列值
+            this.$forceUpdate()
         },
         onSpecificationChange(formIndex) {
             const selectedSpecification = this.form.itemList[formIndex].specification;
             this.selectedSpecification = selectedSpecification;
+            this.form.itemList[formIndex].specification = selectedSpecification
             let choosedSpecification = this.form.itemList[formIndex].specifications.filter(res => res.code === selectedSpecification)[0].child
             this.form.itemList[formIndex].seriesList = choosedSpecification;
             this.form.itemList[formIndex].series = '';
@@ -454,6 +467,8 @@ export default {
               "specifications": this.selectedSpecification
             }]
             this.getProductMessage(message,formIndex)
+            this.$forceUpdate()
+
         },
         onSeriesChange(formIndex){
             const selectedSeries = this.form.itemList[formIndex].series;
@@ -465,6 +480,8 @@ export default {
               "specifications": this.selectedSpecification
             }]
             this.getProductMessage(message,formIndex)
+            this.$forceUpdate()
+
         },
       chooseSupply(val){
         this.supplierNumber=val;
@@ -472,22 +489,30 @@ export default {
         this.form.supplierAddr = choosedObj.address;
         this.form.supplierLinkman = choosedObj.contact;
         this.form.supplierPhone = choosedObj.telephone;
-        this.getListCascadeBySupplierNo(val)
         this.form.itemList.forEach(res =>{
            Object.keys(res).map(item =>{
             if(!Array.isArray(item)){
                 res[item] = ''
             }
+            if(Array.isArray(item)){
+              res[item] = []
+            }
            })
         })
+        this.getListCascadeBySupplierNo(val)
       },
-      getListCascadeBySupplierNo(supplierNo){//获取及联菜单
+      getListCascadeBySupplierNo(supplierNo){//获取及联菜单型号
+      console.log('cccccc')
           this.$http
                 .get(`/haolifa/whole/machine/product/listCascadeBySupplierNo/${supplierNo}`, )
                 .then(res => {
-                   this.form.itemList.forEach(item =>{
-                     item.productModels = res
-                   })
+                  this.$nextTick(() =>{
+                      this.form.itemList.forEach(item =>{
+                        item.productModels = res
+                      })
+                   console.log('itemlist',this.form.itemList)
+                  })
+               this.$forceUpdate()
                 })
                 .catch(e => {
                     this.$toast(e.msg || e.message);
