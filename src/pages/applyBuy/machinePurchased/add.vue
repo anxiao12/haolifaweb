@@ -76,8 +76,8 @@
                       </div>
                     <div class="flex">
                         <input-box v-model="item.nominalPressure" class="flex-item mr-10" label="压力"></input-box>
-                        <input-box @keyup="keydownAmount" v-model="item.productNumber" class="flex-item mr-10" label="数量"></input-box>
-                        <input-box @keyup="keydownPrice" v-model="item.purchasePrice" type="number" class="flex-item mr-10" label="采购价"></input-box>
+                        <input-box  v-model="item.productNumber" class="flex-item mr-10" label="数量"></input-box>
+                        <input-box  v-model="item.purchasePrice" type="number" class="flex-item mr-10" label="采购价"></input-box>
                         <input-box v-model="item.valveBodyMaterial" class="flex-item mr-10" label="阀体"></input-box>
                     </div>
                     <div class="flex">
@@ -484,12 +484,6 @@ export default {
       cancel(){
         this.$store.commit('DELMENUTABS', '/machinePurchased-order/add');
         this.$router.push('/machinePurchased-order/list')
-      },
-      keydownAmount(val,i){
-          this.$forceUpdate()
-      },
-      keydownPrice(price){
-          this.$forceUpdate()
       },
         addItem() {
             this.form.itemList.push({
