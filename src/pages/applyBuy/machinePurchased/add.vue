@@ -486,9 +486,11 @@ export default {
       chooseSupply(val){
         this.supplierNumber=val;
         let choosedObj= this.supplierList.filter(res => res.value === val)[0]
+        // console.log('choosedObj',choosedObj)
         this.form.supplierAddr = choosedObj.address;
         this.form.supplierLinkman = choosedObj.contact;
         this.form.supplierPhone = choosedObj.telephone;
+        this.form.supplierName =choosedObj.text;
         this.form.itemList.forEach(res =>{
            Object.keys(res).map(item =>{
             if(!Array.isArray(item)){
