@@ -373,7 +373,13 @@ export default {
                 .get(`/haolifa/wholeMachinePurchaseOrder/detail/${formId}`)
                 .then(res => {
                     this.form = res;
-                    this.form.itemList = res.itemList;
+                    let result = res.itemList.map(res =>{
+                      return {
+                        ...res,
+                        purchasePrice:res.unitPrice
+                      }
+                    })
+                    this.form.itemList = result;
                 })
                 .catch(e => {
                     this.$toast(e.msg);
@@ -548,8 +554,10 @@ export default {
             this.$forceUpdate();
         },
         submit() {
-          console.log('form',this.form)
             let { formId } = this.$route.query;
+            this.form.itemList.forEach(v =>{
+                v.unitPrice = v.purchasePrice
+            })
             let params = {}
             if(formId){
                 params = Object.assign({},this.form,{id:formId})
