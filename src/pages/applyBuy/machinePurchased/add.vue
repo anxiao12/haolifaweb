@@ -586,7 +586,8 @@ export default {
 
             let { formId ,ids} = this.$route.query;
             this.form.itemList.forEach(v =>{
-                v.unitPrice = v.purchasePrice
+                v.unitPrice = v.purchasePrice,
+                v.remark = v.remarks
             })
             let params = {}
             if(formId){//如果是编辑

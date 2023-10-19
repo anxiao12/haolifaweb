@@ -56,7 +56,7 @@
                     <td>{{item.productRemark}}</td>
                     <td>{{allStatus[item.status].text}}</td>
                     <td class="t-right">
-                        <a href="javascript:;" v-if="item.status==2" style="margin-right: 3px" class="blue" @click="dealApplyBuy(item.id)">处理完成</a>
+                        <a href="javascript:;" v-if="item.status==0" style="margin-right: 3px" class="blue" @click="dealApplyBuy(item.id)">处理完成</a>
                     </td>
                 </template>
             </data-list>
@@ -81,10 +81,10 @@ export default {
              // 0未处理 1 待审批 2 待采购 3 已处理 4 审批不通过
             allStatus: [
                 { value: 0, text: "未处理" },
-                { value: 1, text: "待审批" },
-                { value: 2, text: "待采购" },
-                { value: 3, text: "已处理" },
-                { value: 4, text: "审批不通过" },
+                { value: 1, text: "已处理" },
+                // { value: 2, text: "待采购" },
+                // { value: 3, text: "已处理" },
+                // { value: 4, text: "审批不通过" },
                 { value: '', text: "全部" }
             ],
             all: false
