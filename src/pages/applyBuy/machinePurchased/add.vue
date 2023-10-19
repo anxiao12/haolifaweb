@@ -48,7 +48,7 @@
                       <div class="flex-item mr-10"></div>
                   </div>
                     <div class="flex">
-                        <input-box v-model="item.productName"  class="flex-item mr-10" label="产品名称"></input-box>
+                        <input-box :disabled='isEdit ? true : false' v-model="item.productName"  class="flex-item mr-10" label="产品名称"></input-box>
                         <el-select filterable placeholder="型号" class="flex-item mr-10 mycs" v-model="item.productModel" @change="onProductModelChange(i)">
                           <el-option
                               v-for="model in item.productModels"
@@ -75,21 +75,21 @@
                       </el-select>
                       </div>
                     <div class="flex">
-                        <input-box v-model="item.nominalPressure" class="flex-item mr-10" label="压力"></input-box>
+                        <input-box :disabled='isEdit ? true : false' v-model="item.nominalPressure" class="flex-item mr-10" label="压力"></input-box>
                         <input-box  v-model="item.productNumber" class="flex-item mr-10" label="数量"></input-box>
                         <input-box  v-model="item.purchasePrice" type="number" class="flex-item mr-10" label="采购价"></input-box>
                         <input-box v-model="item.valveBodyMaterial" class="flex-item mr-10" label="阀体"></input-box>
                     </div>
                     <div class="flex">
-                        <input-box v-model="item.valveCoreMaterial" class="flex-item mr-10" label="阀芯"></input-box>
-                        <input-box v-model="item.sealingMaterial" class="flex-item mr-10" label="密封材质"></input-box>
-                        <input-box v-model="item.driveForm"  class="flex-item mr-10" label="驱动形式"></input-box>
-                        <input-box v-model="item.connectionMethod" class="flex-item mr-10" label="链接方式"></input-box>
+                        <input-box :disabled='isEdit ? true : false' v-model="item.valveCoreMaterial" class="flex-item mr-10" label="阀芯"></input-box>
+                        <input-box :disabled='isEdit ? true : false' v-model="item.sealingMaterial" class="flex-item mr-10" label="密封材质"></input-box>
+                        <input-box :disabled='isEdit ? true : false' v-model="item.driveForm"  class="flex-item mr-10" label="驱动形式"></input-box>
+                        <input-box :disabled='isEdit ? true : false' v-model="item.connectionMethod" class="flex-item mr-10" label="链接方式"></input-box>
                     </div>
                     <div class="flex">
-                        <input-box v-model="item.valveShaft" class="flex-item mr-10" label="阀轴材质"></input-box>
+                        <input-box :disabled='isEdit ? true : false' v-model="item.valveShaft" class="flex-item mr-10" label="阀轴材质"></input-box>
                         <input-box disabled v-model="item.itemAmount" type="number" class="flex-item mr-10" label="分项金额"></input-box>
-                        <input-box v-model="item.remarks" class="flex-item mr-10" label="备注"></input-box>
+                        <input-box :disabled='isEdit ? true : false' v-model="item.remarks" class="flex-item mr-10" label="备注"></input-box>
                     </div>
                 </div>
                 <div v-if="form.itemList.length > 1">
@@ -231,6 +231,7 @@ export default {
             },
 
             isAdd: true,
+            isEdit:false,
             nameList: [],
             tuhaoList: [],
             payTypeList: [
@@ -269,8 +270,14 @@ export default {
       }
   },
   created(){
-         let { ids,pageType,supList,dataList,isAdd,formId} = this.$route.query;
+         let { ids,pageType,supList,dataList,isAdd,formId } = this.$route.query;
+
         this.isAdd = isAdd;
+        if(formId){
+          this.isEdit = true
+        }else{
+          this.isEdit = false
+        }
         if(supList){
           this.supList = JSON.parse(supList)//供应商
         }
@@ -311,7 +318,6 @@ export default {
          if(formId){//编辑页面查询详情
           this.getInfo(formId)
          }
-
         if(!pageType){//新增，加载全部供应商
            this.$http.post("/haolifa/whole/machine/supplier/listAll").then(res => {
               this.supplierList = res.map(item => {
@@ -335,6 +341,8 @@ export default {
     },
     methods: {
       confirmProduct(){
+           this.$set(this.form.itemList[this.lineIndex], 'productNumber', '');
+            this.$set(this.form.itemList[this.lineIndex], 'purchasePrice', '');
           let list = JSON.parse(JSON.stringify(this.$refs.list.list));
             let arr = document.getElementsByName("boxId");
             let dataList=[]
@@ -351,18 +359,21 @@ export default {
               this.$toast('只能选择一条数据，请重新选择');
               return
             }
-            this.form.itemList[this.lineIndex] = Object.assign({},dataList[0],
-            {productNumber:this.dataList[this.lineIndex].productNumber})
+            // this.form.itemList[this.lineIndex] = Object.assign({},dataList[0],
+            // {productNumber:this.dataList.length>0 && this.dataList[this.lineIndex].productNumber || this.form.itemList[this.lineIndex].productNumber})
+
+           this.$set(this.form.itemList, this.lineIndex, Object.assign({}, dataList[0], {
+              productNumber: this.dataList.length > 0 && this.dataList[this.lineIndex].productNumber || this.form.itemList[this.lineIndex].productNumber
+            }));
 
             this.form.itemList.forEach(res =>{//计算分项金额
               res.itemAmount = res.purchasePrice * res.productNumber
             })
-            console.log('dataList[0]',dataList[0])
             this.$set(this.form.itemList[this.lineIndex], 'productModel', dataList[0].productModel);
             this.$set(this.form.itemList[this.lineIndex], 'specification', dataList[0].specification);
             this.$set(this.form.itemList[this.lineIndex], 'series', dataList[0].series);
-            console.log('this.form.itemList',this.form.itemList)
             this.layerFlag = false
+            this.$forceUpdate()
       },
         jumpLayer(i){
           this.layerFlag = true
@@ -373,6 +384,7 @@ export default {
                 .get(`/haolifa/wholeMachinePurchaseOrder/detail/${formId}`)
                 .then(res => {
                     this.form = res;
+                    console.log('res',res)
                     let result = res.itemList.map(res =>{
                       return {
                         ...res,
@@ -380,6 +392,14 @@ export default {
                       }
                     })
                     this.form.itemList = result;
+                    this.form.itemList.map((res,index) =>{
+                      this.filter[index] = {
+                            productModel:res.productModel,
+                            specifications:res.specification,
+                            series:res.productSeries,
+                            supplierNo: this.form.supplierNo,
+                      }
+                    })
                 })
                 .catch(e => {
                     this.$toast(e.msg);
@@ -442,7 +462,7 @@ export default {
                     })
 
                   }
-                  this.$forceUpdate()//
+                  this.$forceUpdate()
                 })
                 .catch(e => {
                     this.$toast(e.msg || e.message);
@@ -492,7 +512,6 @@ export default {
       chooseSupply(val){
         this.supplierNumber=val;
         let choosedObj= this.supplierList.filter(res => res.value === val)[0]
-        // console.log('choosedObj',choosedObj)
         this.form.supplierAddr = choosedObj.address;
         this.form.supplierLinkman = choosedObj.contact;
         this.form.supplierPhone = choosedObj.telephone;
@@ -510,7 +529,6 @@ export default {
         this.getListCascadeBySupplierNo(val)
       },
       getListCascadeBySupplierNo(supplierNo){//获取及联菜单型号
-      console.log('cccccc')
           this.$http
                 .get(`/haolifa/whole/machine/product/listCascadeBySupplierNo/${supplierNo}`, )
                 .then(res => {
@@ -518,7 +536,6 @@ export default {
                       this.form.itemList.forEach(item =>{
                         item.productModels = res
                       })
-                   console.log('itemlist',this.form.itemList)
                   })
                this.$forceUpdate()
                 })
@@ -554,6 +571,19 @@ export default {
             this.$forceUpdate();
         },
         submit() {
+            if(!this.form.demanderLinkman){
+              this.$toast('请输入需方联系人')
+              return false
+            }
+            if(!this.form.deliveryTime){
+              this.$toast('请选择交货日期')
+              return false
+            }
+            if(!this.form.purchaseOrderNo){
+              this.$toast('请输入采购订单号')
+              return false
+            }
+
             let { formId ,ids} = this.$route.query;
             this.form.itemList.forEach(v =>{
                 v.unitPrice = v.purchasePrice
@@ -578,7 +608,6 @@ export default {
             }else{//新增
               url = '/haolifa/wholeMachinePurchaseOrder/add'
             }
-            console.log('params',params)
             this.$http
                 .post(
                     url,
