@@ -117,7 +117,7 @@ export default {
         },
         dealApplyBuy(itemId) {
             this.$http
-                .post(`/haolifa/applyBuy/updateStatus/${itemId}`)
+                .post(`/haolifa/wholeMachineApplyBuy/updateHandled/${itemId}`)
                 .then(res => {
                     this.$toast("处理成功");
                     this.$refs.list.update(true);
