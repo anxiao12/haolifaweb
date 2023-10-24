@@ -293,7 +293,6 @@ export default {
             return {
                 productModel:res.productModel,
                 specifications:res.specifications,
-                // specification:res.specifications,
                 series:res.productSeries,
                 supplierNo:this.supList[0].supplierCode
             }
@@ -305,9 +304,7 @@ export default {
           for (let i = 0; i < JSON.parse(dataList).length; i++) {//合并采购，带进来产品数量等部分数据,控制显示的条数
                 // this.form.itemList[i] = JSON.parse(dataList)[i]//切记，直接赋值是无法监听到变化的，所以需要用push，sort等方法,用this.$set
                 //是因为如果你在组件实例化之后添加了新的表单项，这些新的项可能不会被自动捕获，无法确保新添加的项是响应式的
-              //  console.log('JSON.parse(dataList)[i]',JSON.parse(dataList)[i])
                this.form.itemList.push(JSON.parse(dataList)[i])
-                // console.log('this.form.itemList',this.form.itemList)
                 this.$set(this.form.itemList[i], 'productNumber', JSON.parse(dataList)[i].productNumber);
                 this.$set(this.form.itemList[i], 'purchasePrice', '');
                 this.$set(this.form.itemList[i], 'itemAmount', '');
@@ -359,7 +356,8 @@ export default {
               return
             }
            this.$set(this.form.itemList, this.lineIndex, Object.assign({}, dataList[0], {
-              productNumber: this.dataList.length > 0 && this.dataList[this.lineIndex].productNumber || this.form.itemList[this.lineIndex].productNumber
+              productNumber: this.dataList.length > 0 && this.dataList[this.lineIndex].productNumber || this.form.itemList[this.lineIndex].productNumber,
+              applyBuyIds:this.dataList.length > 0 && this.dataList[this.lineIndex].id || this.form.itemList[this.lineIndex].id,
             }));
 
             this.form.itemList.forEach(res =>{//计算分项金额
@@ -462,20 +460,19 @@ export default {
                     for (let i = 0; i < JSON.parse(dataList).length; i++) {//合并采购，带进来产品数量等部分数据；
                           productOrderNoArr.push(this.dataList[i].productOrderNo)
                     }
-                    this.form.productOrderNo= this.removeDuplicates(productOrderNoArr).join(',')
-                  if(res.length === 1){
-                    this.form.itemList[index] =  Object.assign({},res[0],{productNumber:JSON.parse(dataList)[index].productNumber})
-                    this.form.itemList.forEach(res =>{//计算分项金额
-                        res.itemAmount = res.purchasePrice * res.productNumber
-                    })
-                  }
+                    this.form.productOrderNo= this.removeDuplicates(productOrderNoArr).join(',')//去重复展示销售订单号
+                  // if(res.length === 1){//不管是否多条，默认展示一条数据出来
+                      this.form.itemList[index] =  Object.assign({},res[0],{productNumber:JSON.parse(dataList)[index].productNumber,applyBuyIds:JSON.parse(dataList)[index].id})
+                      this.form.itemList.forEach(res =>{//计算分项金额
+                          res.itemAmount = res.purchasePrice * res.productNumber
+                      })
+                  // }
                    if(res.length >2){
                     this.$nextTick(() =>{
                       this.form.itemList.forEach(v =>{
                         v.tableList = res
                       })
                     })
-
                   }
                   this.$forceUpdate()
                 })
@@ -604,7 +601,6 @@ export default {
             this.form.itemList.forEach(v =>{
                 v.unitPrice = v.purchasePrice,
                 v.remark = v.remarks
-                // v.applyBuyIds = v.id
             })
             let params = {}
             if(formId){//如果是编辑
@@ -617,8 +613,6 @@ export default {
             }else{//新增
               params = Object.assign({},this.form)
             }
-            console.log('params',params)
-
             let url = ''
             if(this.dataList.length>0){//合并过来的
               url = '/haolifa/wholeMachinePurchaseOrder/mergeAdd'
@@ -627,22 +621,22 @@ export default {
             }else{//新增
               url = '/haolifa/wholeMachinePurchaseOrder/add'
             }
-            // this.$http
-            //     .post(
-            //         url,
-            //         params
-            //     )
-            //     .then(res => {
-            //         this.$toast(this.isAdd ? "创建成功" : "更新成功");
-            //         this.$store.commit(
-            //             "DELMENUTABS",
-            //             "/machinePurchased-order/add"
-            //         );
-            //        this.$router.push('/machinePurchased-order/list')
-            //     })
-            //     .catch(e => {
-            //         this.$toast(e.message || e.msg);
-            //     });
+            this.$http
+                .post(
+                    url,
+                    params
+                )
+                .then(res => {
+                    this.$toast(this.isAdd ? "创建成功" : "更新成功");
+                    this.$store.commit(
+                        "DELMENUTABS",
+                        "/machinePurchased-order/add"
+                    );
+                   this.$router.push('/machinePurchased-order/list')
+                })
+                .catch(e => {
+                    this.$toast(e.message || e.msg);
+                });
         }
     }
 };
