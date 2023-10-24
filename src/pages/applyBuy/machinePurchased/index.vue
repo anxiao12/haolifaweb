@@ -149,7 +149,7 @@
                             <td colspan="1">{{i}}</td>
                             <td colspan="1">{{item.productModel}}</td>
                             <td colspan="1">{{item.productName}}</td>
-                            <td colspan="1">{{item.productSeries}}</td>
+                            <td colspan="1">{{item.series}}</td>
                             <td colspan="1">{{item.specification}}</td>
                             <td colspan="1">{{item.productColor}}</td>
                             <td colspan="1">{{item.productNumber}}</td>

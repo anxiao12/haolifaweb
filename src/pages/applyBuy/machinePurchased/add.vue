@@ -175,6 +175,7 @@ export default {
                 series:'',
                 supplierNo:'',
               }],
+              editParamsForSuppler:[],
               layerFlag:false,
               selectedProductModel:'',
               selectedSpecification:'',
@@ -271,7 +272,6 @@ export default {
   },
   created(){
          let { ids,pageType,supList,dataList,isAdd,formId } = this.$route.query;
-
         this.isAdd = isAdd;
         if(formId){
           this.isEdit = true
@@ -305,7 +305,9 @@ export default {
           for (let i = 0; i < JSON.parse(dataList).length; i++) {//合并采购，带进来产品数量等部分数据,控制显示的条数
                 // this.form.itemList[i] = JSON.parse(dataList)[i]//切记，直接赋值是无法监听到变化的，所以需要用push，sort等方法,用this.$set
                 //是因为如果你在组件实例化之后添加了新的表单项，这些新的项可能不会被自动捕获，无法确保新添加的项是响应式的
-                this.form.itemList.push(JSON.parse(dataList)[i])
+              //  console.log('JSON.parse(dataList)[i]',JSON.parse(dataList)[i])
+               this.form.itemList.push(JSON.parse(dataList)[i])
+                // console.log('this.form.itemList',this.form.itemList)
                 this.$set(this.form.itemList[i], 'productNumber', JSON.parse(dataList)[i].productNumber);
                 this.$set(this.form.itemList[i], 'purchasePrice', '');
                 this.$set(this.form.itemList[i], 'itemAmount', '');
@@ -316,7 +318,7 @@ export default {
           }
         }
          if(formId){//编辑页面查询详情
-          this.getInfo(formId)
+            this.getInfo(formId)
          }
         if(!pageType){//新增，加载全部供应商
            this.$http.post("/haolifa/whole/machine/supplier/listAll").then(res => {
@@ -326,19 +328,16 @@ export default {
               this.supplierInfoList = res;
          });
         }
-        if(supList){//加载供应商
+        if(supList){//加载合并过来的供应商
           this.supplierList = JSON.parse(this.$route.query.supList).map(res =>{
             return {
               value: res.supplierCode, text: res.supplierName,address:res.address,contact:res.contact,telephone:res.telephone
             }
         })
-        this.form.supplierNo = this.supList[0].supplierCode;
+        this.form.supplierNo = this.supList[0].supplierCode;//默认展示供应商下拉列表中的第一个
         this.chooseSupply(this.form.supplierNo) //如果是合并过来的先不需要调用及联菜单
         }
   },
-    mounted() {
-
-    },
     methods: {
       confirmProduct(){
            this.$set(this.form.itemList[this.lineIndex], 'productNumber', '');
@@ -359,9 +358,6 @@ export default {
               this.$toast('只能选择一条数据，请重新选择');
               return
             }
-            // this.form.itemList[this.lineIndex] = Object.assign({},dataList[0],
-            // {productNumber:this.dataList.length>0 && this.dataList[this.lineIndex].productNumber || this.form.itemList[this.lineIndex].productNumber})
-
            this.$set(this.form.itemList, this.lineIndex, Object.assign({}, dataList[0], {
               productNumber: this.dataList.length > 0 && this.dataList[this.lineIndex].productNumber || this.form.itemList[this.lineIndex].productNumber
             }));
@@ -399,7 +395,26 @@ export default {
                             series:res.productSeries,
                             supplierNo: this.form.supplierNo,
                       }
+                      this.editParamsForSuppler.push({
+                            productModel:res.productModel,
+                            specifications:res.specification,
+                            series:res.productSeries,
+                      })
                     })
+                      this.$http.post("/haolifa/whole/machine/product/listSupplierByParam", { list:this.editParamsForSuppler })
+                      .then(res => {
+                          if (res.length === 0) {
+                              this.$toast("未找到供应商");
+                              return;
+                          } else {
+                             this.supplierList = res.map(item => {
+                                return { value: item.supplierCode, text: item.supplierName ,address:item.address,contact:item.contact,telephone:item.telephone};
+                            });
+                          }
+                      })
+                      .catch(e => {
+                          this.$toast(e.message);
+                      });
                 })
                 .catch(e => {
                     this.$toast(e.msg);
@@ -428,15 +443,15 @@ export default {
                 });
 
       },
-           removeDuplicates(originalArray) {
-              const uniqueSet = new Set();
-              return originalArray.filter(item => {
-                if (!uniqueSet.has(item.productOrderNo)) {
-                  uniqueSet.add(item.productOrderNo);
-                  return true;
-                }
-                return false;
-              });
+      removeDuplicates(originalArray) {
+        const uniqueSet = new Set();
+        return originalArray.filter(item => {
+          if (!uniqueSet.has(item.productOrderNo)) {
+            uniqueSet.add(item.productOrderNo);
+            return true;
+          }
+          return false;
+        });
         },
        initGetProductMessage(params,index){
          this.$http
@@ -584,10 +599,12 @@ export default {
               return false
             }
 
-            let { formId ,ids} = this.$route.query;
+            let { formId } = this.$route.query;
+            console.log('this.form.itemList',this.form.itemList)
             this.form.itemList.forEach(v =>{
                 v.unitPrice = v.purchasePrice,
                 v.remark = v.remarks
+                // v.applyBuyIds = v.id
             })
             let params = {}
             if(formId){//如果是编辑
@@ -596,11 +613,12 @@ export default {
               this.form.itemList.forEach(res =>{
                 delete res.id
               })
-              params = Object.assign({},this.form,{applyBuyIds:JSON.parse(ids)})
+              params = Object.assign({},this.form)
             }else{//新增
               params = Object.assign({},this.form)
             }
-            console.log('this.dataList',this.dataList)
+            console.log('params',params)
+
             let url = ''
             if(this.dataList.length>0){//合并过来的
               url = '/haolifa/wholeMachinePurchaseOrder/mergeAdd'
@@ -609,22 +627,22 @@ export default {
             }else{//新增
               url = '/haolifa/wholeMachinePurchaseOrder/add'
             }
-            this.$http
-                .post(
-                    url,
-                    params
-                )
-                .then(res => {
-                    this.$toast(this.isAdd ? "创建成功" : "更新成功");
-                    this.$store.commit(
-                        "DELMENUTABS",
-                        "/machinePurchased-order/add"
-                    );
-                   this.$router.push('/machinePurchased-order/list')
-                })
-                .catch(e => {
-                    this.$toast(e.message || e.msg);
-                });
+            // this.$http
+            //     .post(
+            //         url,
+            //         params
+            //     )
+            //     .then(res => {
+            //         this.$toast(this.isAdd ? "创建成功" : "更新成功");
+            //         this.$store.commit(
+            //             "DELMENUTABS",
+            //             "/machinePurchased-order/add"
+            //         );
+            //        this.$router.push('/machinePurchased-order/list')
+            //     })
+            //     .catch(e => {
+            //         this.$toast(e.message || e.msg);
+            //     });
         }
     }
 };

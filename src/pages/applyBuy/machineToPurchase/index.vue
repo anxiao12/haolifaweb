@@ -175,7 +175,6 @@ export default {
             for (let i in arr) {
                 if (arr[i].checked) {
                     let rowScope = list[arr[i].value]
-                    console.log('rowScope',rowScope)
                     if(rowScope){
                         paramsList.push({
                           productModel:rowScope.productModel,
