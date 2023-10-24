@@ -357,7 +357,7 @@ export default {
             }
            this.$set(this.form.itemList, this.lineIndex, Object.assign({}, dataList[0], {
               productNumber: this.dataList.length > 0 && this.dataList[this.lineIndex].productNumber || this.form.itemList[this.lineIndex].productNumber,
-              applyBuyIds:this.dataList.length > 0 && this.dataList[this.lineIndex].id || this.form.itemList[this.lineIndex].id,
+              applyBuyId:this.dataList.length > 0 && this.dataList[this.lineIndex].id || this.form.itemList[this.lineIndex].id,
             }));
 
             this.form.itemList.forEach(res =>{//计算分项金额
@@ -462,7 +462,7 @@ export default {
                     }
                     this.form.productOrderNo= this.removeDuplicates(productOrderNoArr).join(',')//去重复展示销售订单号
                   // if(res.length === 1){//不管是否多条，默认展示一条数据出来
-                      this.form.itemList[index] =  Object.assign({},res[0],{productNumber:JSON.parse(dataList)[index].productNumber,applyBuyIds:JSON.parse(dataList)[index].id})
+                      this.form.itemList[index] =  Object.assign({},res[0],{productNumber:JSON.parse(dataList)[index].productNumber,applyBuyId:JSON.parse(dataList)[index].id})
                       this.form.itemList.forEach(res =>{//计算分项金额
                           res.itemAmount = res.purchasePrice * res.productNumber
                       })
