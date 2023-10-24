@@ -76,7 +76,7 @@
                       </div>
                     <div class="flex">
                         <input-box :disabled='isEdit ? true : false' v-model="item.nominalPressure" class="flex-item mr-10" label="压力"></input-box>
-                        <input-box  v-model="item.productNumber" class="flex-item mr-10" label="数量"></input-box>
+                        <input-box @keydown='changeNum' v-model="item.productNumber" class="flex-item mr-10" label="数量"></input-box>
                         <input-box  v-model="item.purchasePrice" type="number" class="flex-item mr-10" label="采购价"></input-box>
                         <input-box v-model="item.valveBodyMaterial" class="flex-item mr-10" label="阀体"></input-box>
                     </div>
@@ -336,6 +336,9 @@ export default {
         }
   },
     methods: {
+      changeNum(){
+        //
+      },
       confirmProduct(){
            this.$set(this.form.itemList[this.lineIndex], 'productNumber', '');
             this.$set(this.form.itemList[this.lineIndex], 'purchasePrice', '');
