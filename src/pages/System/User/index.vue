@@ -77,14 +77,14 @@ export default {
             location:"",
             userList: [],
             locationList:[
-              {
-                text:'北京',
-                value:'北京'
-              },
-               {
-                text:'山西',
-                value:'山西'
-              },
+              // {
+              //   text:'北京',
+              //   value:'北京'
+              // },
+              //  {
+              //   text:'山西',
+              //   value:'山西'
+              // },
             ],
             roleIds: [],
             roleId: "",
@@ -111,20 +111,23 @@ export default {
         this.$refs.datalist.update(true);
         this.getUserList();
     },
-    created(){
-      // this.getLocation()
-    },
     methods: {
-      // getLocation(){
-      //   this.$http
-      //           .get(`/haolifa/user/`+'DATA_LOCATION')
-      //           .then(res => {
-      //             console.log('res',res)
-      //           })
-      //           .catch(e => {
-      //               this.$toast(e.message || e.msg);
-      //           });
-      // },
+      getLocation(){
+        this.$http
+                .get(`/haolifa/sys-dict/getDictListByType/DATA_LOCATION`)
+                .then(res => {
+                  this.locationList = res.map(res =>{
+                    return {
+                      text:res.desc,
+                      value:res.code
+                    }
+                  });
+                  this.userLayer = true;
+                })
+                .catch(e => {
+                    this.$toast(e.message || e.msg);
+                });
+      },
         flush() {
             this.$refs.datalist.update(true);
         },
@@ -230,7 +233,7 @@ export default {
                 });
         },
         addUser() {
-            this.userLayer = true;
+            this.getLocation()
         },
         getUserList() {
             this.userList = [];
