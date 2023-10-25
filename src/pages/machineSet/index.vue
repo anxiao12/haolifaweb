@@ -4,13 +4,15 @@
         <div class="flex-v-center tool-bar">
             <div class="flex-v-center search-bar" style="margin-right: 20px;">
                 <i class="icon f-20 c-8">search</i>
-                <input type="text" class="flex-item" v-model="filter.graphNo" @change="$refs.list.update(true)" placeholder="图号" style="width: 200px;">
-                <input type="text" class="flex-item" v-model="filter.model" @change="$refs.list.update(true)" placeholder="型号" style="width: 100px;">
-                <input type="text" class="flex-item" v-model="filter.specifications" @change="$refs.list.update(true)" placeholder="规格" style="width: 100px;">
-                <select v-model="filter.classifyId" class="f-14" @change="$refs.list.update(true)">
+                <input type="text" class="flex-item" v-model="filter.supplierCode" @change="$refs.list.update(true)" placeholder="供应商代号" style="width: 100px;">
+                <input type="text" class="flex-item" v-model="filter.productName" @change="$refs.list.update(true)" placeholder="产品名称" style="width: 100px;">
+                  <input type="text" class="flex-item" v-model="filter.productModel" @change="$refs.list.update(true)" placeholder="型号" style="width: 100px;">
+                <input type="text" class="flex-item" v-model="filter.specification" @change="$refs.list.update(true)" placeholder="规格" style="width: 100px;">
+                <input type="text" class="flex-item" v-model="filter.series" @change="$refs.list.update(true)" placeholder="规格" style="width: 100px;">
+                <!-- <select v-model="filter.classifyId" class="f-14" @change="$refs.list.update(true)">
                     <option value="0">全部</option>
                     <option v-for="item in classifyList" :value="item.value" v-bind:key="item.value">{{item.text}}</option>
-                </select>
+                </select> -->
                 <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
             </div>
             <div class="flex-item"></div>
@@ -72,7 +74,7 @@
                     <td>{{item.driveForm}}</td>
                     <td>{{item.structureForm}}</td>
                     <td>{{item.connectionMethod}}</td>
-                    <td>{{item.supplierColor}}</td>
+                    <td>{{item.productColor}}</td>
                     <td>{{item.medium}}</td>
                     <td>{{item.temperature}}</td>
                     <td>{{item.remarks}}</td>
@@ -110,9 +112,11 @@ export default {
         return {
             classifyList: [],
             filter: {
-                graphNo: "",
-                model: "",
-                specifications: "",
+                supplierCode: "",
+                productName:"",
+                productModel: "",
+                specification: "",
+                series:"",
                 classifyId: 0
             }
         };
@@ -131,9 +135,11 @@ export default {
     methods: {
         flush() {
             this.filter = {
-                graphNo: "",
-                model: "",
-                specifications: "",
+                supplierCode: "",
+                productName:"",
+                productModel: "",
+                specification: "",
+                series:"",
                 classifyId: 0
             };
             this.$refs.list.update(true);

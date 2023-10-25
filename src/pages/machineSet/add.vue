@@ -26,7 +26,7 @@
 
             <div class="flex-v-center">
                 <input-box v-model="form.connectionMethod" class="mr-10" label="连接方式" style="width: 35%"></input-box>
-                <input-box v-model="form.supplierColor" class="mr-10" label="供应商颜色" style="width: 30%"></input-box>
+                <input-box v-model="form.productColor" class="mr-10" label="产品颜色" style="width: 30%"></input-box>
                 <input-box v-model="form.medium" class="mr-10" label="介质" style="width: 30%"></input-box>
 
             </div>
@@ -89,7 +89,7 @@ export default {
                 specification:'',
                 structureForm:'',
                 supplierCode:'',
-                supplierColor:'',
+                productColor:'',
                 supplierName:'',
                 temperature:'',
                 valveBodyMaterial:'',
@@ -130,7 +130,7 @@ export default {
                 specification:'',
                 structureForm:'',
                 supplierCode:'',
-                supplierColor:'',
+                productColor:'',
                 supplierName:'',
                 temperature:'',
                 valveBodyMaterial:'',

@@ -24,7 +24,7 @@
             </div>
             <div class="flex">
                 <input-box v-model="form.supplierConfirmer" class="flex-item mr-10" label="供方确认人" style="margin-right: 20px;"></input-box>
-               <date-picker v-model="form.confirmTime" class="flex-item mr-10" label="确认时间" style="margin-right: 20px;"></date-picker>
+                <date-picker v-model="form.confirmTime" class="flex-item mr-10" label="确认时间" style="margin-right: 20px;"></date-picker>
                 <date-picker v-model="form.deliveryTime" class="flex-item mr-10" label="交货日期" style="margin-right: 20px;"></date-picker>
                 <date-picker v-model="form.operateTime" class="flex-item mr-10" label="经办时间" style="margin-right: 20px;"></date-picker>
             </div>
@@ -88,6 +88,7 @@
                     </div>
                     <div class="flex">
                         <input-box :disabled='isEdit ? true : false' v-model="item.valveShaft" class="flex-item mr-10" label="阀轴材质"></input-box>
+                        <input-box :disabled='isEdit ? true : false' v-model="item.productColor" class="flex-item mr-10" label="颜色"></input-box>
                         <input-box disabled v-model="item.itemAmount" type="number" class="flex-item mr-10" label="分项金额"></input-box>
                         <input-box :disabled='isEdit ? true : false' v-model="item.remarks" class="flex-item mr-10" label="备注"></input-box>
                     </div>
@@ -122,6 +123,7 @@
                     <th>驱动形式</th>
                     <th>链接方式</th>
                     <th>阀轴材质</th>
+                    <th>颜色</th>
                     <th>分项金额</th>
                     <th>备注</th>
                 </tr>
@@ -143,6 +145,7 @@
                     <td>{{item.driveForm}}</td>
                     <td>{{item.connectionMethod}}</td>
                     <td>{{item.valveShaft}}</td>
+                    <td>{{item.productColor}}</td>
                     <td>{{item.itemAmount}}</td>
                     <td>{{item.remarks}}</td>
                 </template>
@@ -332,7 +335,8 @@ export default {
             }
         })
         this.form.supplierNo = this.supList[0].supplierCode;//默认展示供应商下拉列表中的第一个
-        this.chooseSupply(this.form.supplierNo) //如果是合并过来的先不需要调用及联菜单
+        // this.chooseSupply(this.form.supplierNo) //如果是合并过来的先不需要调用及联菜单
+        this.copyChooseSupply(this.form.supplierNo)
         }
   },
     methods: {
@@ -381,7 +385,6 @@ export default {
                 .get(`/haolifa/wholeMachinePurchaseOrder/detail/${formId}`)
                 .then(res => {
                     this.form = res;
-                    console.log('res',res)
                     let result = res.itemList.map(res =>{
                       return {
                         ...res,
@@ -444,7 +447,7 @@ export default {
                 });
 
       },
-      removeDuplicates(originalArray) {
+      removeDuplicates(originalArray) {//去重
         const uniqueSet = new Set();
         return originalArray.filter(item => {
           if (!uniqueSet.has(item.productOrderNo)) {
@@ -454,7 +457,7 @@ export default {
           return false;
         });
         },
-       initGetProductMessage(params,index){
+       initGetProductMessage(params,index){//初始化产品信息
          this.$http
                 .post(`/haolifa/whole/machine/product/listProductByParam`, {'list':params})
                 .then(res => {
@@ -531,17 +534,27 @@ export default {
         this.form.supplierLinkman = choosedObj.contact;
         this.form.supplierPhone = choosedObj.telephone;
         this.form.supplierName =choosedObj.text;
-        this.form.itemList.forEach(res =>{
-           Object.keys(res).map(item =>{
-            if(!Array.isArray(item)){
-                res[item] = ''
+         let currentItemList = this.form.itemList.map((res,i) =>{//每次切换产品重新获取数据
+            return {
+                productModel:res.productModel,
+                specifications:res.specification,
+                series:res.series,
+                supplierNo:val
             }
-            if(Array.isArray(item)){
-              res[item] = []
-            }
-           })
-        })
+         })
+         currentItemList.map((res,index) =>{
+            this.filter[index] = res;
+           this.initGetProductMessage([res],index)
+         })
         this.getListCascadeBySupplierNo(val)
+      },
+      copyChooseSupply(val){
+        this.supplierNumber=val;
+        let choosedObj= this.supplierList.filter(res => res.value === val)[0]
+        this.form.supplierAddr = choosedObj.address;
+        this.form.supplierLinkman = choosedObj.contact;
+        this.form.supplierPhone = choosedObj.telephone;
+        this.form.supplierName =choosedObj.text;
       },
       getListCascadeBySupplierNo(supplierNo){//获取及联菜单型号
           this.$http
