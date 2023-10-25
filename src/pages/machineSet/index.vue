@@ -8,12 +8,12 @@
                 <input type="text" class="flex-item" v-model="filter.productName" @change="$refs.list.update(true)" placeholder="产品名称" style="width: 100px;">
                   <input type="text" class="flex-item" v-model="filter.productModel" @change="$refs.list.update(true)" placeholder="型号" style="width: 100px;">
                 <input type="text" class="flex-item" v-model="filter.specification" @change="$refs.list.update(true)" placeholder="规格" style="width: 100px;">
-                <input type="text" class="flex-item" v-model="filter.series" @change="$refs.list.update(true)" placeholder="规格" style="width: 100px;">
+                <input type="text" class="flex-item" v-model="filter.series" @change="$refs.list.update(true)" placeholder="系列" style="width: 100px;">
                 <!-- <select v-model="filter.classifyId" class="f-14" @change="$refs.list.update(true)">
                     <option value="0">全部</option>
                     <option v-for="item in classifyList" :value="item.value" v-bind:key="item.value">{{item.text}}</option>
                 </select> -->
-                <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
+                <!-- <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i> -->
             </div>
             <div class="flex-item"></div>
             <router-link to="/machineSet/add">
@@ -37,7 +37,7 @@
                     <th>驱动形式</th>
                     <th>结构形式</th>
                     <th>连接方式</th>
-                    <th>供应商颜色</th>
+                    <th>产品颜色</th>
                     <th>介质</th>
                     <th>温度</th>
                     <th>备注</th>

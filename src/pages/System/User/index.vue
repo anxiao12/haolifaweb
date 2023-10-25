@@ -111,7 +111,20 @@ export default {
         this.$refs.datalist.update(true);
         this.getUserList();
     },
+    created(){
+      // this.getLocation()
+    },
     methods: {
+      // getLocation(){
+      //   this.$http
+      //           .get(`/haolifa/user/`+'DATA_LOCATION')
+      //           .then(res => {
+      //             console.log('res',res)
+      //           })
+      //           .catch(e => {
+      //               this.$toast(e.message || e.msg);
+      //           });
+      // },
         flush() {
             this.$refs.datalist.update(true);
         },
