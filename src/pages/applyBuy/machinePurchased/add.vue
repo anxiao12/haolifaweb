@@ -223,6 +223,7 @@ export default {
                         driveForm:'',
                         connectionMethod:'',
                         valveShaft:'',
+                        productColor:"",
                         itemAmount:'',
                         remarks:'',
                         productModels:[],
@@ -438,6 +439,7 @@ export default {
                      this.form.itemList[index].driveForm = res[0].driveForm
                      this.form.itemList[index].connectionMethod = res[0].connectionMethod
                      this.form.itemList[index].valveShaft = res[0].valveShaft
+                     this.form.itemList[index].productColor = res[0].productColor
                      this.form.itemList[index].remarks = res[0].remarks
                   })
                   this.$forceUpdate()
@@ -590,6 +592,7 @@ export default {
                 driveForm:'',
                 connectionMethod:'',
                 valveShaft:'',
+                productColor:'',
                 itemAmount:'',
                 remarks:'',
             });
