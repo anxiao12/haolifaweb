@@ -1,210 +1,105 @@
 <template>
     <div class="page-home scroll-y">
-        <i
-            class="icon icon-abs"
-            @click="flush"
-        >autorenew</i>
+        <i class="icon icon-abs" @click="flush">autorenew</i>
         <div class="home-row flex">
             <div class="home-card flex-item flex-col relative">
                 <div class="home-tab flex-v-center">
-                    <a
-                        class="home-tab-item a"
-                        :class="{'on': tab1}"
-                        @click="tab1=true"
-                    >待办事项</a>
-                    <a
-                        class="home-tab-item a"
-                        :class="{'on': !tab1}"
-                        @click="tab1=false"
-                    >已办事项</a>
-                    <a
-                        href="javascript:;"
-                        @click="toTask"
-                        style="position:relative;left:66%;color:#009bff"
-                    >更多..</a>
+                    <a class="home-tab-item a" :class="{ 'on': tab1 }" @click="tab1 = true">待办事项</a>
+                    <a class="home-tab-item a" :class="{ 'on': !tab1 }" @click="tab1 = false">已办事项</a>
+                    <a href="javascript:;" @click="toTask" style="position:relative;left:66%;color:#009bff">更多..</a>
                 </div>
-                <div
-                    class="home-list flex-item scroll-y"
-                    v-if="tab1"
-                >
-                    <div
-                        class="home-list-item a flex-v-center"
-                        v-for="item in todo"
-                        :key="item.id"
-                    >
+                <div class="home-list flex-item scroll-y" v-if="tab1">
+                    <div class="home-list-item a flex-v-center" v-for="item in todo" :key="item.id">
                         <i class="icon f-16 c-a">hourglass_full</i>
-                        <div
-                            style="width:145px"
-                            v-if="item.flowId == 5"
-                            class="c-8 date-time"
-                            @click="$router.push({path:'/entrust',query:{instanceId:item.instanceId,stepId:item.stepId}})"
-                        >发起人：{{item.createUserRealName}}</div>
-                        <div
-                            style="width:145px"
-                            v-if="item.flowId == 4"
-                            class="c-8 date-time"
-                            @click="$router.push({path:'/replace',query:{instanceId:item.instanceId,stepId:item.stepId}})"
-                        >发起人：{{item.createUserRealName}}</div>
-                        <div
-                            style="width:145px"
-                            v-if="item.flowId == 3"
-                            class="c-8 date-time"
-                            @click="$router.push({path:'/supplierAudit',query:{instanceId:item.instanceId,stepId:item.stepId}})"
-                        >发起人：{{item.createUserRealName}}</div>
-                        <div
-                            style="width:145px"
-                            v-if="item.flowId == 1 || item.flowId == 6"
-                            class="c-8 date-time"
-                            @click="$router.push({path:'/produce',query:{instanceId:item.instanceId,stepId:item.stepId}})"
-                        >发起人：{{item.createUserRealName}}</div>
-                        <div
-                            style="width:145px"
-                            v-if="item.flowId == 2"
-                            class="c-8 date-time"
-                            @click="$router.push({path:'/purchase',query:{instanceId:item.instanceId,stepId:item.stepId}})"
-                        >发起人：{{item.createUserRealName}}</div>
-                        <div
-                            style="width:145px"
-                            v-if="item.flowId == 10"
-                            class="c-8 date-time"
-                            @click="$router.push({path:'/paymentApply',query:{instanceId:item.instanceId,stepId:item.stepId}})"
-                        >发起人：{{item.createUserRealName}}</div>
-                        <div
-                            style="width:145px"
-                            v-if="item.flowId == 12"
-                            class="c-8 date-time"
-                            @click="$router.push({path:'/jkfkEntrust',query:{instanceId:item.instanceId,stepId:item.stepId}})"
-                        >发起人：{{item.createUserRealName}}</div>
-                        <div
-                            style="width:145px"
-                            v-if="item.flowId == 11"
-                            class="c-8 date-time"
-                            @click="$router.push({path:'/baoxiaoEntrust',query:{instanceId:item.instanceId,stepId:item.stepId}})"
-                        >发起人：{{item.createUserRealName}}</div>
-                         <div
-                            style="width:145px"
-                            v-if="item.flowId == 13"
-                            class="c-8 date-time"
-                            @click="$router.push({path:'/machine',query:{instanceId:item.instanceId,stepId:item.stepId}})"
-                        >发起人：{{item.createUserRealName}}</div>
-                          <div
-                            style="width:145px"
-                            v-if="item.flowId == 14"
-                            class="c-8 date-time"
-                            @click="$router.push({path:'/purchaseMachine',query:{instanceId:item.instanceId,stepId:item.stepId}})"
-                        >发起人：{{item.createUserRealName}}</div>
-                        <div
-                            class="c-8 date-time text-ellipsis"
-                            style="width:145px"
-                        >流程：{{item.flowName}}</div>
-                        <div class="flex-item text-ellipsis">{{(item.flowId == 12 || item.flowId == 11) ? '流程号':'订单号'}}：{{item.formNo}}</div>
-                        <div class="date-time text-ellipsis">发起时间：{{item.createTime}}</div>
+                        <div style="width:145px" v-if="item.flowId == 5" class="c-8 date-time"
+                            @click="$router.push({ path: '/entrust', query: { instanceId: item.instanceId, stepId: item.stepId } })">
+                            发起人：{{ item.createUserRealName }}</div>
+                        <div style="width:145px" v-if="item.flowId == 4" class="c-8 date-time"
+                            @click="$router.push({ path: '/replace', query: { instanceId: item.instanceId, stepId: item.stepId } })">
+                            发起人：{{ item.createUserRealName }}</div>
+                        <div style="width:145px" v-if="item.flowId == 3" class="c-8 date-time"
+                            @click="$router.push({ path: '/supplierAudit', query: { instanceId: item.instanceId, stepId: item.stepId } })">
+                            发起人：{{ item.createUserRealName }}</div>
+                        <div style="width:145px" v-if="item.flowId == 1 || item.flowId == 6" class="c-8 date-time"
+                            @click="$router.push({ path: '/produce', query: { instanceId: item.instanceId, stepId: item.stepId } })">
+                            发起人：{{ item.createUserRealName }}</div>
+                        <div style="width:145px" v-if="item.flowId == 2" class="c-8 date-time"
+                            @click="$router.push({ path: '/purchase', query: { instanceId: item.instanceId, stepId: item.stepId } })">
+                            发起人：{{ item.createUserRealName }}</div>
+                        <div style="width:145px" v-if="item.flowId == 10" class="c-8 date-time"
+                            @click="$router.push({ path: '/paymentApply', query: { instanceId: item.instanceId, stepId: item.stepId } })">
+                            发起人：{{ item.createUserRealName }}</div>
+                        <div style="width:145px" v-if="item.flowId == 12" class="c-8 date-time"
+                            @click="$router.push({ path: '/jkfkEntrust', query: { instanceId: item.instanceId, stepId: item.stepId } })">
+                            发起人：{{ item.createUserRealName }}</div>
+                        <div style="width:145px" v-if="item.flowId == 11" class="c-8 date-time"
+                            @click="$router.push({ path: '/baoxiaoEntrust', query: { instanceId: item.instanceId, stepId: item.stepId } })">
+                            发起人：{{ item.createUserRealName }}</div>
+                        <div style="width:145px" v-if="item.flowId == 13 || item.flowId == 15" class="c-8 date-time"
+                            @click="$router.push({ path: '/machine', query: { instanceId: item.instanceId, stepId: item.stepId } })">
+                            发起人：{{ item.createUserRealName }}</div>
+                        <div style="width:145px" v-if="item.flowId == 14 || item.flowId == 16" class="c-8 date-time"
+                            @click="$router.push({ path: '/purchaseMachine', query: { instanceId: item.instanceId, stepId: item.stepId } })">
+                            发起人：{{ item.createUserRealName }}</div>
+                        <!-- <div style="width:145px" v-if="item.flowId == 15" class="c-8 date-time"
+                            @click="$router.push({ path: '/purchaseMachine', query: { instanceId: item.instanceId, stepId: item.stepId } })">
+                            发起人：{{ item.createUserRealName }}</div> -->
+                        <div class="c-8 date-time text-ellipsis" style="width:145px">流程：{{ item.flowName }}</div>
+                        <div class="flex-item text-ellipsis">{{ (item.flowId == 12 || item.flowId == 11) ?
+                            '流程号' : '订单号' }}：{{ item.formNo }}</div>
+                        <div class="date-time text-ellipsis">发起时间：{{ item.createTime }}</div>
                     </div>
-                    <div
-                        v-if="!todo.length"
-                        style="pointer-events:none;"
-                        class="abs flex-center"
-                    >
+                    <div v-if="!todo.length" style="pointer-events:none;" class="abs flex-center">
                         <no-data></no-data>
                     </div>
                 </div>
-                <div
-                    class="home-list flex-item scroll-y"
-                    v-else
-                >
-                    <div
-                        class="home-list-item a flex-v-center"
-                        v-for="item in done"
-                        :key="item.id"
-                    >
+                <div class="home-list flex-item scroll-y" v-else>
+                    <div class="home-list-item a flex-v-center" v-for="item in done" :key="item.id">
                         <i class="icon f-16 c-a">hourglass_full</i>
-                        <div
-                            style="width:145px"
-                            v-if="item.flowId == 5"
-                            class="c-8 date-time"
-                            @click="$router.push({path:'/purchase',query:{instanceId:item.instanceId,stepId:item.stepId}})"
-                        >发起人：{{item.createUserRealName}}</div>
-                        <div
-                            style="width:145px"
-                            v-if="item.flowId == 4"
-                            class="c-8 date-time"
-                            @click="$router.push({path:'/replace',query:{instanceId:item.instanceId,stepId:item.stepId}})"
-                        >发起人：{{item.createUserRealName}}</div>
-                        <div
-                            style="width:145px"
-                            v-if="item.flowId == 3"
-                            class="c-8 date-time"
-                            @click="$router.push({path:'/supplierAudit',query:{instanceId:item.instanceId,stepId:item.stepId}})"
-                        >发起人：{{item.createUserRealName}}</div>
-                        <div
-                            style="width:145px"
-                            v-if="item.flowId == 1 || item.flowId == 6"
-                            class="c-8 date-time"
-                            @click="$router.push({path:'/produce',query:{instanceId:item.instanceId,stepId:item.stepId}})"
-                        >发起人：{{item.createUserRealName}}</div>
-                        <div
-                            style="width:145px"
-                            v-if="item.flowId == 2"
-                            class="c-8 date-time"
-                            @click="$router.push({path:'/purchase',query:{instanceId:item.instanceId,stepId:item.stepId}})"
-                        >发起人：{{item.createUserRealName}}</div>
-                        <div
-                            style="width:145px"
-                            v-if="item.flowId == 10"
-                            class="c-8 date-time"
-                            @click="$router.push({path:'/paymentApply',query:{instanceId:item.instanceId,stepId:item.stepId}})"
-                        >发起人：{{item.createUserRealName}}</div>
-                        <div
-                            style="width:145px"
-                            v-if="item.flowId == 12"
-                            class="c-8 date-time"
-                            @click="$router.push({path:'/jkfkEntrust',query:{instanceId:item.instanceId,stepId:item.stepId}})"
-                        >发起人：{{item.createUserRealName}}</div>
-                        <div
-                            style="width:145px"
-                            v-if="item.flowId == 11"
-                            class="c-8 date-time"
-                            @click="$router.push({path:'/baoxiaoEntrust',query:{instanceId:item.instanceId,stepId:item.stepId}})"
-                        >发起人：{{item.createUserRealName}}</div>
-                          <div
-                            style="width:145px"
-                            v-if="item.flowId == 13"
-                            class="c-8 date-time"
-                            @click="$router.push({path:'/machine',query:{instanceId:item.instanceId,stepId:item.stepId}})"
-                        >发起人：{{item.createUserRealName}}</div>
-                         <div
-                            style="width:145px"
-                            v-if="item.flowId == 14"
-                            class="c-8 date-time"
-                            @click="$router.push({path:'/purchaseMachine',query:{instanceId:item.instanceId,stepId:item.stepId}})"
-                        >发起人：{{item.createUserRealName}}</div>
-                        <div
-                            class="c-8 date-time text-ellipsis"
-                            style="width:145px"
-                        >流程：{{item.flowName}}</div>
-                        <div class="flex-item text-ellipsis">{{(item.flowId == 12 || item.flowId == 11) ? '流程号':'订单号'}}：{{item.formNo}}</div>
-                        <div class="date-time text-ellipsis">发起时间：{{item.createTime}}</div>
+                        <div style="width:145px" v-if="item.flowId == 5" class="c-8 date-time"
+                            @click="$router.push({ path: '/purchase', query: { instanceId: item.instanceId, stepId: item.stepId } })">
+                            发起人：{{ item.createUserRealName }}</div>
+                        <div style="width:145px" v-if="item.flowId == 4" class="c-8 date-time"
+                            @click="$router.push({ path: '/replace', query: { instanceId: item.instanceId, stepId: item.stepId } })">
+                            发起人：{{ item.createUserRealName }}</div>
+                        <div style="width:145px" v-if="item.flowId == 3" class="c-8 date-time"
+                            @click="$router.push({ path: '/supplierAudit', query: { instanceId: item.instanceId, stepId: item.stepId } })">
+                            发起人：{{ item.createUserRealName }}</div>
+                        <div style="width:145px" v-if="item.flowId == 1 || item.flowId == 6" class="c-8 date-time"
+                            @click="$router.push({ path: '/produce', query: { instanceId: item.instanceId, stepId: item.stepId } })">
+                            发起人：{{ item.createUserRealName }}</div>
+                        <div style="width:145px" v-if="item.flowId == 2" class="c-8 date-time"
+                            @click="$router.push({ path: '/purchase', query: { instanceId: item.instanceId, stepId: item.stepId } })">
+                            发起人：{{ item.createUserRealName }}</div>
+                        <div style="width:145px" v-if="item.flowId == 10" class="c-8 date-time"
+                            @click="$router.push({ path: '/paymentApply', query: { instanceId: item.instanceId, stepId: item.stepId } })">
+                            发起人：{{ item.createUserRealName }}</div>
+                        <div style="width:145px" v-if="item.flowId == 12" class="c-8 date-time"
+                            @click="$router.push({ path: '/jkfkEntrust', query: { instanceId: item.instanceId, stepId: item.stepId } })">
+                            发起人：{{ item.createUserRealName }}</div>
+                        <div style="width:145px" v-if="item.flowId == 11" class="c-8 date-time"
+                            @click="$router.push({ path: '/baoxiaoEntrust', query: { instanceId: item.instanceId, stepId: item.stepId } })">
+                            发起人：{{ item.createUserRealName }}</div>
+                        <div style="width:145px" v-if="item.flowId == 13" class="c-8 date-time"
+                            @click="$router.push({ path: '/machine', query: { instanceId: item.instanceId, stepId: item.stepId } })">
+                            发起人：{{ item.createUserRealName }}</div>
+                        <div style="width:145px" v-if="item.flowId == 14" class="c-8 date-time"
+                            @click="$router.push({ path: '/purchaseMachine', query: { instanceId: item.instanceId, stepId: item.stepId } })">
+                            发起人：{{ item.createUserRealName }}</div>
+                        <div class="c-8 date-time text-ellipsis" style="width:145px">流程：{{ item.flowName }}</div>
+                        <div class="flex-item text-ellipsis">{{ (item.flowId == 12 || item.flowId == 11) ?
+                            '流程号' : '订单号' }}：{{ item.formNo }}</div>
+                        <div class="date-time text-ellipsis">发起时间：{{ item.createTime }}</div>
                     </div>
-                    <div
-                        v-if="!done.length"
-                        style="pointer-events:none;"
-                        class="abs flex-center"
-                    >
+                    <div v-if="!done.length" style="pointer-events:none;" class="abs flex-center">
                         <no-data></no-data>
                     </div>
                 </div>
             </div>
-            <div
-                class="home-card flex-item flex-col relative"
-                v-if="roleFlag"
-            >
+            <div class="home-card flex-item flex-col relative" v-if="roleFlag">
                 <div class="home-tab flex-v-center">
                     <a class="home-tab-item a on">打分列表</a>
-                    <a
-                        href="javascript:;"
-                        @click="scoreDetail"
-                        style="position:relative;left:79%;color:#009bff"
-                    >查看打分</a>
+                    <a href="javascript:;" @click="scoreDetail" style="position:relative;left:79%;color:#009bff">查看打分</a>
                 </div>
                 <div class="home-list flex-item scroll-y">
                     <div class="home-list-item a flex-v-center">
@@ -215,135 +110,63 @@
                         <div class="flex-item text-ellipsis">更新时间</div>
                         <div class="flex-item text-ellipsis">操作</div>
                     </div>
-                    <div
-                        class="home-list-item a flex-v-center"
-                        v-for="item in scoreList"
-                        :key="item.id"
-                    >
+                    <div class="home-list-item a flex-v-center" v-for="item in scoreList" :key="item.id">
                         <i class="icon f-16 c-a">hourglass_full</i>
-                        <div class="flex-item text-ellipsis">{{item.userName}}</div>
-                        <div class="flex-item text-ellipsis">{{item.postName}}</div>
-                        <div class="flex-item text-ellipsis">{{item.createTime}}</div>
-                        <div class="flex-item text-ellipsis">{{item.updateTime}}</div>
-                        <div
-                            class="flex-item text-ellipsis"
-                            style="color:#409eff"
-                            @click="giveScore(item)"
-                        >打分</div>
+                        <div class="flex-item text-ellipsis">{{ item.userName }}</div>
+                        <div class="flex-item text-ellipsis">{{ item.postName }}</div>
+                        <div class="flex-item text-ellipsis">{{ item.createTime }}</div>
+                        <div class="flex-item text-ellipsis">{{ item.updateTime }}</div>
+                        <div class="flex-item text-ellipsis" style="color:#409eff" @click="giveScore(item)">打分</div>
                     </div>
-                    <div
-                        v-if="!scoreList.length"
-                        style="pointer-events:none;"
-                        class="flex-item flex-center"
-                    >
+                    <div v-if="!scoreList.length" style="pointer-events:none;" class="flex-item flex-center">
                         <no-data></no-data>
                     </div>
                 </div>
             </div>
-            <div
-                class="home-card flex-item flex-col relative"
-                v-else
-            >
+            <div class="home-card flex-item flex-col relative" v-else>
                 <div class="home-tab flex-v-center">
-                    <a
-                        class="home-tab-item a"
-                        :class="{'on': tab2}"
-                        @click="tab2=true"
-                    >通知</a>
-                    <a
-                        class="home-tab-item a"
-                        :class="{'on': !tab2}"
-                        @click="tab2=false"
-                    >公告</a>
+                    <a class="home-tab-item a" :class="{ 'on': tab2 }" @click="tab2 = true">通知</a>
+                    <a class="home-tab-item a" :class="{ 'on': !tab2 }" @click="tab2 = false">公告</a>
                 </div>
-                <div
-                    class="home-list flex-item scroll-y"
-                    v-if="tab2"
-                >
+                <div class="home-list flex-item scroll-y" v-if="tab2">
                     <div class="home-list-item a flex-v-center">
                         <!--<i class="icon f-16 c-a">hourglass_full</i>-->
-                        <div
-                            class="c-8 date-time"
-                            style="width:80%"
-                        >标题</div>
-                        <div
-                            class="c-8 date-time"
-                            style="width:85px;"
-                        >创建时间</div>
+                        <div class="c-8 date-time" style="width:80%">标题</div>
+                        <div class="c-8 date-time" style="width:85px;">创建时间</div>
                         <!-- <div class="flex-item text-ellipsis">内容</div> -->
                     </div>
-                    <div
-                        class="home-list-item a flex-v-center"
-                        v-for="item in notice"
-                        :key="item.id"
-                        @click="newDetail(item.id)"
-                    >
+                    <div class="home-list-item a flex-v-center" v-for="item in notice" :key="item.id"
+                        @click="newDetail(item.id)">
                         <i class="icon f-16 c-a">hourglass_full</i>
-                        <div
-                            class="c-8 date-time"
-                            style="width: 76%;"
-                        >{{item.title}}</div>
-                        <div
-                            class="c-8 date-time"
-                            style="width:85px;"
-                        >{{item.showTime}}</div>
+                        <div class="c-8 date-time" style="width: 76%;">{{ item.title }}</div>
+                        <div class="c-8 date-time" style="width:85px;">{{ item.showTime }}</div>
                         <!-- <div class="flex-item text-ellipsis">{{item.content}}</div> -->
                     </div>
-                    <div
-                        v-if="!notice.length"
-                        style="pointer-events:none;"
-                        class="abs flex-center"
-                    >
+                    <div v-if="!notice.length" style="pointer-events:none;" class="abs flex-center">
                         <no-data></no-data>
                     </div>
                 </div>
-                <div
-                    class="home-list flex-item scroll-y"
-                    v-else
-                >
+                <div class="home-list flex-item scroll-y" v-else>
                     <div class="home-list-item a flex-v-center">
                         <!--<i class="icon f-16 c-a">hourglass_full</i>-->
-                        <div
-                            class="c-8 date-time"
-                            style="width:80%"
-                        >标题</div>
-                        <div
-                            class="c-8 date-time"
-                            style="width:85px;"
-                        >创建时间</div>
+                        <div class="c-8 date-time" style="width:80%">标题</div>
+                        <div class="c-8 date-time" style="width:85px;">创建时间</div>
                         <!-- <div class="flex-item text-ellipsis">内容</div> -->
                     </div>
-                    <div
-                        class="home-list-item a flex-v-center"
-                        v-for="item in news"
-                        :key="item.id"
-                        @click="newDetail(item.id)"
-                    >
+                    <div class="home-list-item a flex-v-center" v-for="item in news" :key="item.id"
+                        @click="newDetail(item.id)">
                         <i class="icon f-16 c-a">hourglass_full</i>
-                        <div
-                            class="c-8 date-time"
-                            style="width:76%"
-                        >{{item.title}}</div>
-                        <div
-                            class="c-8 date-time"
-                            style="width:85px;"
-                        >{{item.showTime}}</div>
+                        <div class="c-8 date-time" style="width:76%">{{ item.title }}</div>
+                        <div class="c-8 date-time" style="width:85px;">{{ item.showTime }}</div>
                         <!-- <div class="flex-item text-ellipsis">{{item.content}}</div> -->
                     </div>
-                    <div
-                        v-if="!news.length"
-                        style="pointer-events:none;"
-                        class="abs flex-center"
-                    >
+                    <div v-if="!news.length" style="pointer-events:none;" class="abs flex-center">
                         <no-data></no-data>
                     </div>
                 </div>
             </div>
         </div>
-        <div
-            class="home-row flex"
-            v-if="!roleFlag"
-        >
+        <div class="home-row flex" v-if="!roleFlag">
             <div class="home-card flex-item flex-col">
                 <!-- <div class="home-tab flex-v-center">
                     <a class="home-tab-item a on">订单列表</a>
@@ -370,25 +193,13 @@
                 <div class="home-tab flex-v-center">
                     <a class="home-tab-item a on">生产日计划</a>
                     <div style="width:90%;margin:20px auto;display:flex;position: relative;z-index:20">
-                        <el-date-picker
-                            size="mini"
-                            v-model="filter.planDate"
-                            type="date"
-                            value-format="yyyy-MM-dd"
-                            @change="$refs.list.update(true)"
-                            placeholder="选择计划日期"
-                        ></el-date-picker>
+                        <el-date-picker size="mini" v-model="filter.planDate" type="date" value-format="yyyy-MM-dd"
+                            @change="$refs.list.update(true)" placeholder="选择计划日期"></el-date-picker>
                     </div>
                 </div>
                 <div class="flex-item scroll-y">
-                    <data-list
-                        ref="list"
-                        :page-size="15"
-                        :param="filter"
-                        url="/haolifa/production-daily-plan/detail/page"
-                        method="post"
-                        :borderFlag="true"
-                    >
+                    <data-list ref="list" :page-size="15" :param="filter" url="/haolifa/production-daily-plan/detail/page"
+                        method="post" :borderFlag="true">
                         <tr slot="header">
                             <th style="width: 60px;">序号</th>
                             <th>计划日期</th>
@@ -400,311 +211,183 @@
                             <th>实际完成日期</th>
                             <th>备注</th>
                         </tr>
-                        <template
-                            slot="item"
-                            slot-scope="{ item,index }"
-                        >
+                        <template slot="item" slot-scope="{ item,index }">
                             <td class="c-a">{{ index }}</td>
-                            <td>{{item.planDate}}</td>
-                            <td>{{item.orderNo}}</td>
-                            <td>{{item.orderNumber}}</td>
-                            <td>{{item.finishNumber}}</td>
-                            <td>{{item.deliveryDate}}</td>
-                            <td>{{item.planFinishDate}}</td>
-                            <td>{{item.actualFinishDate}}</td>
-                            <td>{{item.remark}}</td>
+                            <td>{{ item.planDate }}</td>
+                            <td>{{ item.orderNo }}</td>
+                            <td>{{ item.orderNumber }}</td>
+                            <td>{{ item.finishNumber }}</td>
+                            <td>{{ item.deliveryDate }}</td>
+                            <td>{{ item.planFinishDate }}</td>
+                            <td>{{ item.actualFinishDate }}</td>
+                            <td>{{ item.remark }}</td>
                         </template>
                     </data-list>
                 </div>
             </div>
         </div>
-        <div
-            class="home-row flex"
-            v-if="roleFlag"
-        >
-            <div
-                class="home-card flex-item flex-col"
-                style="min-height:240px"
-            >
-                <el-descriptions
-                    class="margin-top"
-                    :column="4"
-                    border
-                    label-class-name="my-label"
-                    contentClassName="my-content"
-                >
+        <div class="home-row flex" v-if="roleFlag">
+            <div class="home-card flex-item flex-col" style="min-height:240px">
+                <el-descriptions class="margin-top" :column="4" border label-class-name="my-label"
+                    contentClassName="my-content">
                     <el-descriptions-item>
                         <template slot="label">
-                            <el-link
-                                type="primary"
-                                style="font-weight: 600;"
-                                :underline="false"
-                                @click="toXlIndex"
-                            >应收款总额</el-link>
+                            <el-link type="primary" style="font-weight: 600;" :underline="false"
+                                @click="toXlIndex">应收款总额</el-link>
                         </template>
-                        {{initInfo.totalAccountsReceivable}}
+                        {{ initInfo.totalAccountsReceivable }}
                     </el-descriptions-item>
                     <el-descriptions-item>
                         <template slot="label">到期应收</template>
-                        {{initInfo.dueReceivable}}
+                        {{ initInfo.dueReceivable }}
                     </el-descriptions-item>
                     <el-descriptions-item>
                         <template slot="label">
-                            <el-link
-                                type="primary"
-                                style="font-weight: 600;"
-                                :underline="false"
-                                @click="toCgIndex"
-                            >应付款总额</el-link>
+                            <el-link type="primary" style="font-weight: 600;" :underline="false"
+                                @click="toCgIndex">应付款总额</el-link>
                         </template>
-                        {{initInfo.totalAccountsPayable}}
+                        {{ initInfo.totalAccountsPayable }}
                     </el-descriptions-item>
                     <el-descriptions-item>
                         <template slot="label">到期应付</template>
-                        {{initInfo.duePayable}}
+                        {{ initInfo.duePayable }}
                     </el-descriptions-item>
                     <el-descriptions-item>
                         <template slot="label">
-                            <el-link
-                                type="primary"
-                                style="font-weight: 600;"
-                                :underline="false"
-                                @click="toXlIndex"
-                            >产值总额</el-link>
+                            <el-link type="primary" style="font-weight: 600;" :underline="false"
+                                @click="toXlIndex">产值总额</el-link>
                         </template>
-                        {{initInfo.totalOutputValue}}
+                        {{ initInfo.totalOutputValue }}
                     </el-descriptions-item>
                     <el-descriptions-item>
                         <template slot="label">
-                            <el-link
-                                type="primary"
-                                style="font-weight: 600;"
-                                :underline="false"
-                                @click="toXlIndex"
-                            >当月产值</el-link>
+                            <el-link type="primary" style="font-weight: 600;" :underline="false"
+                                @click="toXlIndex">当月产值</el-link>
                         </template>
-                        {{initInfo.currentMonthOutputValue}}
+                        {{ initInfo.currentMonthOutputValue }}
                     </el-descriptions-item>
                     <el-descriptions-item>
                         <template slot="label">
-                            <el-link
-                                type="primary"
-                                style="font-weight: 600;"
-                                :underline="false"
-                                @click="toXlIndex"
-                            >订货总额</el-link>
+                            <el-link type="primary" style="font-weight: 600;" :underline="false"
+                                @click="toXlIndex">订货总额</el-link>
                         </template>
-                        {{initInfo.totalOrder}}
+                        {{ initInfo.totalOrder }}
                     </el-descriptions-item>
                     <el-descriptions-item>
                         <template slot="label">
-                            <el-link
-                                type="primary"
-                                style="font-weight: 600;"
-                                :underline="false"
-                                @click="toXlIndex"
-                            >当月订货额</el-link>
+                            <el-link type="primary" style="font-weight: 600;" :underline="false"
+                                @click="toXlIndex">当月订货额</el-link>
                         </template>
-                        {{initInfo.currentMonthTotalOrder}}
+                        {{ initInfo.currentMonthTotalOrder }}
                     </el-descriptions-item>
                     <el-descriptions-item>
                         <template slot="label">利润总额</template>
-                        {{initInfo.totalProfit}}
+                        {{ initInfo.totalProfit }}
                     </el-descriptions-item>
                     <el-descriptions-item>
                         <template slot="label">各项费用支出总额</template>
-                        {{initInfo.variousExpenses}}
+                        {{ initInfo.variousExpenses }}
                     </el-descriptions-item>
                     <el-descriptions-item>
                         <template slot="label">资产负债率</template>
-                        {{initInfo.assetLiabilityRatio}}
+                        {{ initInfo.assetLiabilityRatio }}
                     </el-descriptions-item>
                     <el-descriptions-item>
                         <template slot="label">销售利润率</template>
-                        {{initInfo.salesProfitMargin}}
+                        {{ initInfo.salesProfitMargin }}
                     </el-descriptions-item>
                     <el-descriptions-item>
                         <template slot="label">成本费用利用率</template>
-                        {{initInfo.costUtilization}}
+                        {{ initInfo.costUtilization }}
                     </el-descriptions-item>
                     <el-descriptions-item>
                         <template slot="label">现金流量</template>
-                        {{initInfo.cashFlow}}
+                        {{ initInfo.cashFlow }}
                     </el-descriptions-item>
                     <el-descriptions-item>
                         <template slot="label">制造成本</template>
-                        {{initInfo.manufacturingCost}}
+                        {{ initInfo.manufacturingCost }}
                     </el-descriptions-item>
                     <el-descriptions-item>
                         <template slot="label">占比</template>
-                        {{initInfo.manufacturingCostRatio}}
+                        {{ initInfo.manufacturingCostRatio }}
                     </el-descriptions-item>
                     <el-descriptions-item>
                         <template slot="label">管理成本</template>
-                        {{initInfo.manageCost}}
+                        {{ initInfo.manageCost }}
                     </el-descriptions-item>
                     <el-descriptions-item>
                         <template slot="label">占比</template>
-                        {{initInfo.manageCostRatio}}
+                        {{ initInfo.manageCostRatio }}
                     </el-descriptions-item>
                     <el-descriptions-item>
                         <template slot="label">库存周转率</template>
-                        {{initInfo.inventoryTurnoverRate}}
+                        {{ initInfo.inventoryTurnoverRate }}
                     </el-descriptions-item>
                 </el-descriptions>
             </div>
         </div>
         <div v-if="roleFlag">
             <div style="width:90%;margin:20px auto;display:flex;position: relative;z-index:20">
-                <el-date-picker
-                    size="mini"
-                    v-model="yearDate"
-                    :clearable="false"
-                    type="year"
-                    value-format="yyyy"
-                    @change="getCbOne"
-                    :editable="false"
-                    placeholder="选择年"
-                ></el-date-picker>
+                <el-date-picker size="mini" v-model="yearDate" :clearable="false" type="year" value-format="yyyy"
+                    @change="getCbOne" :editable="false" placeholder="选择年"></el-date-picker>
             </div>
             <div style="height:300px;width:96%;margin:0 auto;margin-top: -54px">
-                <div
-                    id="cbyOne"
-                    style="width:100%;height:300px;margin:0 auto"
-                ></div>
+                <div id="cbyOne" style="width:100%;height:300px;margin:0 auto"></div>
             </div>
             <div style="width:90%;margin:20px auto;display:flex;position: relative;z-index:20">
-                <el-date-picker
-                    size="mini"
-                    v-model="yearDate2"
-                    :clearable="false"
-                    type="year"
-                    value-format="yyyy"
-                    @change="getCbTwo"
-                    :editable="false"
-                    placeholder="选择年"
-                ></el-date-picker>
+                <el-date-picker size="mini" v-model="yearDate2" :clearable="false" type="year" value-format="yyyy"
+                    @change="getCbTwo" :editable="false" placeholder="选择年"></el-date-picker>
             </div>
             <div style="height:300px;width:96%;margin:0 auto;margin-top: -54px">
-                <div
-                    id="cbyTwo"
-                    style="width:100%;height:300px;margin:0 auto"
-                ></div>
+                <div id="cbyTwo" style="width:100%;height:300px;margin:0 auto"></div>
             </div>
             <div style="width:90%;margin:20px auto;display:flex;position: relative;z-index:20">
-                <el-date-picker
-                    size="mini"
-                    v-model="yearDate3"
-                    :clearable="false"
-                    type="year"
-                    value-format="yyyy"
-                    @change="getCbThree"
-                    :editable="false"
-                    placeholder="选择年"
-                ></el-date-picker>
+                <el-date-picker size="mini" v-model="yearDate3" :clearable="false" type="year" value-format="yyyy"
+                    @change="getCbThree" :editable="false" placeholder="选择年"></el-date-picker>
             </div>
             <div style="height:300px;width:96%;margin:0 auto;margin-top: -54px">
-                <div
-                    id="cbyThree"
-                    style="width:100%;height:300px;margin:0 auto"
-                ></div>
+                <div id="cbyThree" style="width:100%;height:300px;margin:0 auto"></div>
             </div>
         </div>
-        <layer
-            v-if="scorelayer"
-            title="打分 "
-            width="70%"
-        >
-            <div
-                class="layer-text"
-                style="padding-bottom: 50px;"
-            >
+        <layer v-if="scorelayer" title="打分 " width="70%">
+            <div class="layer-text" style="padding-bottom: 50px;">
                 <div class="flex">
-                    <select-box
-                        v-model="form.userId"
-                        class="flex-item mr-20"
-                        :disabled="true"
-                        :list="userList"
-                        label="姓名"
-                    ></select-box>
+                    <select-box v-model="form.userId" class="flex-item mr-20" :disabled="true" :list="userList"
+                        label="姓名"></select-box>
                 </div>
                 <div class="flex">
-                    <select-box
-                        v-model="form.assessmentId"
-                        @change="assessmentChange"
-                        class="flex-item mr-20"
-                        :list="assessmentList"
-                        label="考核内容"
-                    ></select-box>
+                    <select-box v-model="form.assessmentId" @change="assessmentChange" class="flex-item mr-20"
+                        :list="assessmentList" label="考核内容"></select-box>
                 </div>
                 <div class="flex">
-                    <input-box
-                        v-model="info.standard"
-                        :disabled="true"
-                        class="flex-item mr-20"
-                        label="考核标准"
-                    ></input-box>
+                    <input-box v-model="info.standard" :disabled="true" class="flex-item mr-20" label="考核标准"></input-box>
                 </div>
                 <div class="flex">
-                    <input-box
-                        v-model="info.score"
-                        :disabled="true"
-                        class="flex-item mr-20"
-                        label="对应分值"
-                    ></input-box>
+                    <input-box v-model="info.score" :disabled="true" class="flex-item mr-20" label="对应分值"></input-box>
                 </div>
                 <div class="flex">
-                    <input-box
-                        v-model="form.score"
-                        class="flex-item mr-20"
-                        label="分数"
-                    ></input-box>
+                    <input-box v-model="form.score" class="flex-item mr-20" label="分数"></input-box>
                 </div>
                 <div class="flex">
-                    <input-box
-                        v-model="form.remark"
-                        class="flex-item mr-20"
-                        label="说明"
-                    ></input-box>
+                    <input-box v-model="form.remark" class="flex-item mr-20" label="说明"></input-box>
                 </div>
             </div>
             <div class="layer-btns">
-                <el-button
-                    class="mr-20"
-                    size="mini"
-                    :loading="loading"
-                    type="primary"
-                    @click="save"
-                >保存</el-button>
-                <el-button
-                    class="mr-20"
-                    size="mini"
-                    @click="close"
-                >关闭</el-button>
+                <el-button class="mr-20" size="mini" :loading="loading" type="primary" @click="save">保存</el-button>
+                <el-button class="mr-20" size="mini" @click="close">关闭</el-button>
             </div>
         </layer>
-        <layer
-            v-if="scoreDetailLayer"
-            title="打分结果列表"
-            width="70%"
-        >
+        <layer v-if="scoreDetailLayer" title="打分结果列表" width="70%">
             <div class="flex-item scroll-y">
-                <data-list
-                    ref="scoreDetailList"
-                    :page-size="50"
-                    :param="{}"
-                    url="/haolifa/pay-assessment-score/getList"
-                    method="post"
-                >
+                <data-list ref="scoreDetailList" :page-size="50" :param="{}" url="/haolifa/pay-assessment-score/getList"
+                    method="post">
                     <tr slot="header">
                         <th style="width: 60px;">序号</th>
                         <th>人员</th>
                         <th>分数</th>
                     </tr>
-                    <template
-                        slot="item"
-                        slot-scope="{ item, index }"
-                    >
+                    <template slot="item" slot-scope="{ item, index }">
                         <td class="c-a">{{ index }}</td>
                         <td>{{ item.userName }}</td>
                         <td>{{ item.score }}</td>
@@ -712,11 +395,7 @@
                 </data-list>
             </div>
             <div class="layer-btns">
-                <btn
-                    flat
-                    color="#008eff"
-                    @click="scoreDetailLayer=false"
-                >关闭</btn>
+                <btn flat color="#008eff" @click="scoreDetailLayer = false">关闭</btn>
             </div>
         </layer>
     </div>
@@ -1179,9 +858,11 @@ export default {
     // height: 100%;
     padding: 10px 0;
     width: 100%;
+
     .home-row {
         padding: 10px;
     }
+
     .home-card {
         margin: 0 10px;
         border: 1px solid #ddd;
@@ -1190,18 +871,22 @@ export default {
         width: 0;
         max-height: 300px;
     }
+
     .home-tab {
         border-bottom: 1px solid #eee;
         padding: 0 10px;
         overflow: hidden;
+
         .home-tab-item {
             display: inline-block;
             padding: 12px 10px 10px 10px;
             border-bottom: 2px solid transparent;
             margin-bottom: -1px;
+
             &:hover {
                 background: #f3f3f3;
             }
+
             &.on {
                 border-color: #008eff;
                 color: #008eff;
@@ -1209,24 +894,30 @@ export default {
             }
         }
     }
+
     .home-list {
         padding: 8px 0;
     }
+
     .home-list-item {
         padding: 7px 10px;
         white-space: nowrap;
         line-height: 1em;
         box-sizing: border-box;
+
         &:hover {
             background: #f2f2f2;
         }
+
         .icon {
             margin-right: 10px;
         }
+
         .date-time {
             margin-right: 20px;
         }
     }
+
     .my-label {
         background: #409eff26;
         color: #666;
@@ -1234,6 +925,7 @@ export default {
         font-weight: 600 !important;
         border: 1px solid #c0c4cc !important;
     }
+
     .my-content {
         font-size: 15px;
         border: 1px solid #c0c4cc !important;

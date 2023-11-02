@@ -1,177 +1,88 @@
 <template>
     <div class="page-orders-list">
-        <i
-            class="icon icon-abs"
-            @click="flush"
-        >autorenew</i>
+        <i class="icon icon-abs" @click="flush">autorenew</i>
         <div class="flex-v-center tool-bar">
-            <div
-                class="flex-v-center search-bar"
-                style="margin-right: 20px;"
-            >
+            <div class="flex-v-center search-bar" style="margin-right: 20px;">
                 <i class="icon f-20 c-8">search</i>
-                <input
-                    type="text"
-                    class="flex-item"
-                    v-model="filter.orderNo"
-                    @change="$refs.list.update(true);getOrderQty()"
-                    placeholder="订单号"
-                    style="width: 100px;"
-                >
+                <input type="text" class="flex-item" v-model="filter.orderNo"
+                    @change="$refs.list.update(true); getOrderQty()" placeholder="订单号" style="width: 100px;">
                 订单状态：
-                <select
-                    v-model="filter.orderStatus"
-                    class="f-14"
-                    @change="$refs.list.update(true);getOrderQty()"
-                >
+                <select v-model="filter.orderStatus" class="f-14" @change="$refs.list.update(true); getOrderQty()">
                     <option value="-1">全部</option>
-                    <option
-                        v-for="item in newOrderStatusList"
-                        :value="item.value"
-                        v-bind:key="item.value"
-                    >{{item.text}}</option>
+                    <option v-for="item in newOrderStatusList" :value="item.value" v-bind:key="item.value">{{ item.text }}
+                    </option>
                 </select>
                 发货状态：
-                <select
-                    v-model="filter.deliverStatus"
-                    class="f-14"
-                    @change="$refs.list.update(true);getOrderQty()"
-                >
+                <select v-model="filter.deliverStatus" class="f-14" @change="$refs.list.update(true); getOrderQty()">
                     <option value="-1">全部</option>
                     <option value="0">待发货</option>
                     <option value="1">部分发货</option>
                     <option value="2">发货完成</option>
                 </select>
-                <i
-                    class="icon"
-                    style="margin-left: -20px;pointer-events:none;"
-                >arrow_drop_down</i>
-                <el-date-picker
-                    v-model="filter.startDate"
-                    type="date"
-                    value-format="yyyy-MM-dd"
-                    @change="$refs.list.update(true);getOrderQty()"
-                    :editable="false"
-                    placeholder="选择年月日"
-                ></el-date-picker>结束时间:
-                <el-date-picker
-                    v-model="filter.endDate"
-                    type="date"
-                    value-format="yyyy-MM-dd"
-                    @change="$refs.list.update(true);getOrderQty()"
-                    :editable="false"
-                    placeholder="选择年月日"
-                ></el-date-picker>
-                <input
-                    type="text"
-                    class="flex-item"
-                    v-model="filter.demandName"
-                    @change="$refs.list.update(true);getOrderQty()"
-                    placeholder="需方"
-                    style="width: 100px;"
-                >
+                <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
+                <el-date-picker v-model="filter.startDate" type="date" value-format="yyyy-MM-dd"
+                    @change="$refs.list.update(true); getOrderQty()" :editable="false"
+                    placeholder="选择年月日"></el-date-picker>结束时间:
+                <el-date-picker v-model="filter.endDate" type="date" value-format="yyyy-MM-dd"
+                    @change="$refs.list.update(true); getOrderQty()" :editable="false" placeholder="选择年月日"></el-date-picker>
+                <input type="text" class="flex-item" v-model="filter.demandName"
+                    @change="$refs.list.update(true); getOrderQty()" placeholder="需方" style="width: 100px;">
             </div>
             <div class="flex-item"></div>
             <router-link to="/order/add">
-                <btn
-                    class="b"
-                    flat
-                    color="#008eff"
-                >新增订单</btn>
+                <btn class="b" flat color="#008eff">新增订单</btn>
             </router-link>
         </div>
         <div class="flex-v-center tool-bar">
-            <span
-                class="f-16"
-                style="margin-left: 10px;color:#008eff"
-            >订单产品总数量:{{orderQty}}</span>
-            <span
-                class="f-16"
-                style="margin-left: 10px;color:#008eff"
-            >订单产品已发货数量:{{deliveryOrderQty}}</span>
+            <span class="f-16" style="margin-left: 10px;color:#008eff">订单产品总数量:{{ orderQty }}</span>
+            <span class="f-16" style="margin-left: 10px;color:#008eff">订单产品已发货数量:{{ deliveryOrderQty }}</span>
         </div>
         <div class="flex-item scroll-y">
-            <data-list
-                ref="list"
-                :param="filter"
-                url="/haolifa/order-product/pageInfo"
-                method="post"
-            >
+            <data-list ref="list" :param="filter" url="/haolifa/order-product/pageInfo" method="post">
                 <tr slot="header">
                     <th style="width: 60px;">序号</th>
                     <th>订单编号</th>
                     <th>需方</th>
+                    <th>类别</th>
+                    <th>地区</th>
                     <th>发货日期</th>
                     <th>订单数量</th>
                     <th>发货状态</th>
                     <th>订单状态</th>
                     <th>创建时间</th>
-                    <th
-                        class="t-right"
-                        style="width: 80px;"
-                    >操作</th>
+                    <th class="t-right" style="width: 80px;">操作</th>
                 </tr>
                 <!-- item: 当前行数据; index: 当前行数 -->
-                <template
-                    slot="item"
-                    slot-scope="{ item, index }"
-                >
-                    <td class="c-a">{{index}}</td>
-                    <td>{{item.orderNo}}</td>
-                    <td>{{item.demandName}}</td>
-                    <td :class="new Date(item.deliveryDate).getTime()<new Date().getTime() ?'cell-color':''">{{item.deliveryDate}}</td>
-                    <td :class="new Date(item.deliveryDate).getTime()<new Date().getTime() ?'cell-color':''">{{item.totalCount}}</td>
-                    <td :class="new Date(item.deliveryDate).getTime()<new Date().getTime() ?'cell-color':''">{{deliverStatusList[item.deliverStatus].text}}</td>
-                    <td :class="new Date(item.deliveryDate).getTime()<new Date().getTime() ?'cell-color':''">{{orderStatusList[item.orderStatus].text}}</td>
-                    <td>{{item.createTime}}</td>
+                <template slot="item" slot-scope="{ item, index }">
+                    <td class="c-a">{{ index }}</td>
+                    <td>{{ item.orderNo }}</td>
+                    <td>{{ item.demandName }}</td>
+                    <td>{{ showOrderType(item.isCheckMaterial) }}</td>
+                    <td>{{ item.location }}</td>
+                    <td :class="new Date(item.deliveryDate).getTime() < new Date().getTime() ? 'cell-color' : ''">
+                        {{ item.deliveryDate }}</td>
+                    <td :class="new Date(item.deliveryDate).getTime() < new Date().getTime() ? 'cell-color' : ''">
+                        {{ item.totalCount }}</td>
+                    <td :class="new Date(item.deliveryDate).getTime() < new Date().getTime() ? 'cell-color' : ''">
+                        {{ deliverStatusList[item.deliverStatus].text }}</td>
+                    <td :class="new Date(item.deliveryDate).getTime() < new Date().getTime() ? 'cell-color' : ''">
+                        {{ orderStatusList[item.orderStatus].text }}</td>
+                    <td>{{ item.createTime }}</td>
                     <td class="t-right">
-                        <a
-                            href="javascript:;"
-                            class="blue"
-                            @click="progress(item)"
-                            v-if="item.orderStatus==0"
-                            style="margin-right: 3px;"
-                        >发起流程|</a>
-                        <a
-                            href="javascript:;"
-                            class="blue"
-                            @click="approveProgress(item)"
-                            v-if="item.orderStatus !=0"
-                            style="margin-right: 3px;"
-                        >审批进度|</a>
-                        <a
-                            href="javascript:;"
-                            class="blue"
-                            @click="fileUpload(item)"
-                            style="margin-right: 3px;"
-                        >附件上传|</a>
-                        <a
-                            href="javascript:;"
-                            class="blue"
-                            @click="infoShow(item)"
-                            style="margin-right: 3px;"
-                        >详情</a>
-                        <a
-                            href="javascript:;"
-                            class="red"
-                            @click="remove(item)"
-                            v-if="item.orderStatus==0||item.orderStatus==14"
-                            style="margin-right: 3px;"
-                        >|删除</a>
+                        <a href="javascript:;" v-if="item.orderStatus == 0" class="blue" @click="progress(item)"
+                            style="margin-right: 3px;">发起流程|</a>
+                        <a href="javascript:;" class="blue" @click="approveProgress(item)" v-if="item.orderStatus != 0"
+                            style="margin-right: 3px;">审批进度|</a>
+                        <a href="javascript:;" class="blue" @click="fileUpload(item)" style="margin-right: 3px;">附件上传|</a>
+                        <a href="javascript:;" class="blue" @click="infoShow(item)" style="margin-right: 3px;">详情</a>
+                        <a href="javascript:;" class="red" @click="remove(item)"
+                            v-if="item.orderStatus == 0 || item.orderStatus == 14" style="margin-right: 3px;">|删除</a>
                     </td>
                 </template>
             </data-list>
         </div>
-        <layer
-            v-if="btnFlag"
-            style="z-index:101"
-            title="核料清单详情"
-            width="70%"
-        >
-            <div
-                class="layer-text"
-                style="padding-bottom: 50px;"
-            >
+        <layer v-if="btnFlag" style="z-index:101" title="核料清单详情" width="70%">
+            <div class="layer-text" style="padding-bottom: 50px;">
                 <div class="form-content metalwork-info">
                     <table class="f-14 order-info">
                         <tr>
@@ -191,10 +102,7 @@
                             <td style="width: 8%;"></td>
                         </tr>
                         <tr>
-                            <td
-                                colspan="14"
-                                class="b"
-                            >核料清单</td>
+                            <td colspan="14" class="b">核料清单</td>
                         </tr>
                         <tr>
                             <th>物料名称</th>
@@ -210,74 +118,39 @@
                             <th>替换零件</th>
                             <th>备注</th>
                         </tr>
-                        <tr
-                            v-for="(item, i) in preCheckMaterList"
-                            :key="i"
-                        >
-                            <td>{{item.materialName}}</td>
-                            <td colspan="3">{{item.materialGraphNo}}</td>
-                            <td colspan="2">{{item.model}}</td>
-                            <td>{{item.specifications}}</td>
+                        <tr v-for="(item, i) in preCheckMaterList" :key="i">
+                            <td>{{ item.materialName }}</td>
+                            <td colspan="3">{{ item.materialGraphNo }}</td>
+                            <td colspan="2">{{ item.model }}</td>
+                            <td>{{ item.specifications }}</td>
                             <!-- <td>{{item.price}}</td> -->
-                            <td>{{item.unit}}</td>
-                            <td>{{item.materialCount}}</td>
-                            <td>{{item.lackMaterialCount}}</td>
-                            <td>{{checkStatusList[item.checkStatus-1].text}}</td>
-                            <td>{{item.checkStatus==3?'是':'否'}}</td>
-                            <td>{{item.replaceMaterialGraphNo}}</td>
-                            <td>{{item.remark}}</td>
+                            <td>{{ item.unit }}</td>
+                            <td>{{ item.materialCount }}</td>
+                            <td>{{ item.lackMaterialCount }}</td>
+                            <td>{{ checkStatusList[item.checkStatus - 1].text }}</td>
+                            <td>{{ item.checkStatus == 3 ? '是' : '否' }}</td>
+                            <td>{{ item.replaceMaterialGraphNo }}</td>
+                            <td>{{ item.remark }}</td>
                         </tr>
                     </table>
                 </div>
             </div>
             <div class="layer-btns">
-                <btn
-                    flat
-                    color="#008eff"
-                    @click="btnFlag = false"
-                >关闭</btn>
+                <btn flat color="#008eff" @click="btnFlag = false">关闭</btn>
             </div>
         </layer>
-        <layer
-            v-if="fileLayer"
-            :title="'附件上传'"
-            width="70%"
-            style
-        >
-            <div
-                class="flex"
-                style="padding-left: 50px;"
-            >
-                <upload-box
-                    btnText="上传订单附件"
-                    :multiple="multiple"
-                    :fileList="fileList"
-                    :onchange="uploadFile"
-                    :onremove="removeFile"
-                    style="width: 100%"
-                ></upload-box>
+        <layer v-if="fileLayer" :title="'附件上传'" width="70%" style>
+            <div class="flex" style="padding-left: 50px;">
+                <upload-box btnText="上传订单附件" :multiple="multiple" :fileList="fileList" :onchange="uploadFile"
+                    :onremove="removeFile" style="width: 100%"></upload-box>
             </div>
             <div class="layer-btns">
-                <btn
-                    flat
-                    @click="fileLayer=false"
-                >取消</btn>
-                <btn
-                    flat
-                    color="#008eff"
-                    @click="fileSave()"
-                >保存</btn>
+                <btn flat @click="fileLayer = false">取消</btn>
+                <btn flat color="#008eff" @click="fileSave()">保存</btn>
             </div>
         </layer>
-        <layer
-            v-if="layer"
-            title="详情"
-            width="80%"
-        >
-            <div
-                class="layer-text"
-                style="padding-bottom: 50px;"
-            >
+        <layer v-if="layer" title="详情" width="80%">
+            <div class="layer-text" style="padding-bottom: 50px;">
                 <div class="form-content metalwork-info">
                     <table class="f-14 order-info">
                         <tr>
@@ -298,48 +171,24 @@
                             <td style="width: 8%;"></td>
                         </tr>
                         <tr>
-                            <td
-                                colspan="17"
-                                class="b"
-                            >订单编号 : {{info.orderNo}}</td>
+                            <td colspan="17" class="b">订单编号 : {{ info.orderNo }}</td>
                         </tr>
                         <tr>
-                            <td
-                                colspan="17"
-                                class="b"
-                            >发货日期 : {{info.deliveryDate}}</td>
+                            <td colspan="17" class="b">发货日期 : {{ info.deliveryDate }}</td>
                         </tr>
                         <tr>
-                            <td
-                                colspan="17"
-                                class="b"
-                            >订单状态 : {{ orderStatusList[info.orderStatus].text }}</td>
+                            <td colspan="17" class="b">订单状态 : {{ orderStatusList[info.orderStatus].text }}</td>
                         </tr>
                         <tr>
-                            <td
-                                colspan="17"
-                                class="b"
-                            >
+                            <td colspan="17" class="b">
                                 订单合同:
-                                <a
-                                    :href="info.orderContractUrl"
-                                    style="margin-right: 15px;"
-                                >下载</a>
-                                <a
-                                    target="_blank"
-                                    v-if="(info.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$') "
-                                    :href="info.orderContractUrl"
-                                >预览</a>
-                                <a
-                                    target="_blank"
-                                    v-if="!(info.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$')"
-                                    :href="'http://view.officeapps.live.com/op/view.aspx?src='+ info.orderContractUrl"
-                                >预览</a>
-                                <a
-                                    href="javascript:;"
-                                    @click="getPreCheckMater(info.orderNo)"
-                                    style="margin-left: 15px;"
-                                >核料清单</a>
+                                <a :href="info.orderContractUrl" style="margin-right: 15px;">下载</a>
+                                <a target="_blank" v-if="(info.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$')"
+                                    :href="info.orderContractUrl">预览</a>
+                                <a target="_blank" v-if="!(info.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$')"
+                                    :href="'http://view.officeapps.live.com/op/view.aspx?src=' + info.orderContractUrl">预览</a>
+                                <a href="javascript:;" @click="getPreCheckMater(info.orderNo)"
+                                    style="margin-left: 15px;">核料清单</a>
                             </td>
                             <!-- <td colspan="6" class="b">
                         订单备份合同:
@@ -347,347 +196,155 @@
                             </td>-->
                         </tr>
                         <tr>
-                            <td
-                                colspan="17"
-                                class="b"
-                                v-if="fileDetailList.length"
-                            >订单附件:</td>
-                            <td
-                                colspan="17"
-                                class="b"
-                                v-else
-                            >订单附件:无</td>
+                            <td colspan="17" class="b" v-if="fileDetailList.length">订单附件:</td>
+                            <td colspan="17" class="b" v-else>订单附件:无</td>
                         </tr>
-                        <tr
-                            v-for="(item,index) in fileDetailList"
-                            :key="index"
-                        >
-                            <td
-                                colspan="5"
-                                class="b"
-                            >{{item.fileName}}</td>
-                            <td
-                                colspan="12"
-                                class="b"
-                            >
-                                <a
-                                    target="_blank"
-                                    v-if="(item.fileUrl).match('\.(pdf|jpe?g|png|bmp)$') "
-                                    :href="item.fileUrl"
-                                >预览</a>
-                                <a
-                                    target="_blank"
-                                    v-if="!(item.fileUrl).match('\.(pdf|jpe?g|png|bmp)$')"
-                                    :href="'http://view.officeapps.live.com/op/view.aspx?src='+ item.fileUrl"
-                                >预览</a>
+                        <tr v-for="(item, index) in fileDetailList" :key="index">
+                            <td colspan="5" class="b">{{ item.fileName }}</td>
+                            <td colspan="12" class="b">
+                                <a target="_blank" v-if="(item.fileUrl).match('\.(pdf|jpe?g|png|bmp)$')"
+                                    :href="item.fileUrl">预览</a>
+                                <a target="_blank" v-if="!(item.fileUrl).match('\.(pdf|jpe?g|png|bmp)$')"
+                                    :href="'http://view.officeapps.live.com/op/view.aspx?src=' + item.fileUrl">预览</a>
                             </td>
                         </tr>
                         <tr>
-                            <td
-                                colspan="8"
-                                class="b"
-                            >装配车间: {{info.assemblyShop}}</td>
-                            <td
-                                colspan="9"
-                                class="b"
-                            >装配小组: {{info.assemblyGroup}}</td>
+                            <td colspan="8" class="b">装配车间: {{ info.assemblyShop }}</td>
+                            <td colspan="9" class="b">装配小组: {{ info.assemblyGroup }}</td>
                         </tr>
                         <tr>
-                            <td
-                                colspan="8"
-                                class="b"
-                            >采购反馈时间: {{info.purchaseFeedbackTime}}</td>
-                            <td
-                                colspan="9"
-                                class="b"
-                            >生产反馈时间: {{info.productionFeedbackTime}}</td>
+                            <td colspan="8" class="b">采购反馈时间: {{ info.purchaseFeedbackTime }}</td>
+                            <td colspan="9" class="b">生产反馈时间: {{ info.productionFeedbackTime }}</td>
                         </tr>
                         <!-- <tr>
                     <td colspan="6" class="b">工厂反馈完成时间: {{info.finishFeedbackTime}}</td>
                     <td colspan="6" class="b">反馈确认人: {{info.feedbackTimeConfirmUser}}</td>
                         </tr>-->
                         <tr>
-                            <td
-                                colspan="4"
-                                class="b"
-                            >技术清单:</td>
+                            <td colspan="4" class="b">技术清单:</td>
                             <td colspan="13">
-                                <a
-                                    v-if="info.orderTechnicalDetaileds.length"
-                                    target="_blank"
-                                    :href="'/haolifa/export/order-technical-detailed?orderNo='+info.orderNo"
-                                >导出</a>
-                                <a
-                                    href="javascript:;"
-                                    v-else
-                                >无</a>
+                                <a v-if="info.orderTechnicalDetaileds.length" target="_blank"
+                                    :href="'/haolifa/export/order-technical-detailed?orderNo=' + info.orderNo">导出</a>
+                                <a href="javascript:;" v-else>无</a>
                             </td>
                         </tr>
                         <tr v-if="info.orderTechnicalDetaileds.length">
-                            <td
-                                colspan="1"
-                                rowspan="2"
-                            >序号</td>
-                            <td
-                                colspan="1"
-                                rowspan="2"
-                            >产品名称</td>
-                            <td
-                                colspan="1"
-                                rowspan="2"
-                            >型号</td>
-                            <td
-                                colspan="1"
-                                rowspan="2"
-                            >规格</td>
-                            <td
-                                colspan="1"
-                                rowspan="2"
-                            >数量</td>
-                            <td
-                                colspan="1"
-                                rowspan="2"
-                            >上法兰标准</td>
-                            <td
-                                colspan="3"
-                                rowspan="1"
-                            >上法兰尺寸</td>
-                            <td
-                                colspan="5"
-                                rowspan="1"
-                            >出轴尺寸</td>
-                            <td
-                                colspan="1"
-                                rowspan="2"
-                            >静扭矩</td>
-                            <td
-                                colspan="1"
-                                rowspan="2"
-                            >执行器型号</td>
-                            <td
-                                colspan="1"
-                                rowspan="2"
-                            >备注</td>
+                            <td colspan="1" rowspan="2">序号</td>
+                            <td colspan="1" rowspan="2">产品名称</td>
+                            <td colspan="1" rowspan="2">型号</td>
+                            <td colspan="1" rowspan="2">规格</td>
+                            <td colspan="1" rowspan="2">数量</td>
+                            <td colspan="1" rowspan="2">上法兰标准</td>
+                            <td colspan="3" rowspan="1">上法兰尺寸</td>
+                            <td colspan="5" rowspan="1">出轴尺寸</td>
+                            <td colspan="1" rowspan="2">静扭矩</td>
+                            <td colspan="1" rowspan="2">执行器型号</td>
+                            <td colspan="1" rowspan="2">备注</td>
                         </tr>
                         <tr v-if="info.orderTechnicalDetaileds.length">
-                            <td
-                                colspan="1"
-                                rowspan="1"
-                            >连接孔</td>
-                            <td
-                                colspan="1"
-                                rowspan="1"
-                            >角度</td>
-                            <td
-                                colspan="1"
-                                rowspan="1"
-                            >中心距</td>
-                            <td
-                                colspan="1"
-                                rowspan="1"
-                            >出轴型式</td>
-                            <td
-                                colspan="1"
-                                rowspan="1"
-                            >出轴长度</td>
-                            <td
-                                colspan="1"
-                                rowspan="1"
-                            >轴图号</td>
-                            <td
-                                colspan="1"
-                                rowspan="1"
-                            >过渡盘</td>
-                            <td
-                                colspan="1"
-                                rowspan="1"
-                            >连接套</td>
+                            <td colspan="1" rowspan="1">连接孔</td>
+                            <td colspan="1" rowspan="1">角度</td>
+                            <td colspan="1" rowspan="1">中心距</td>
+                            <td colspan="1" rowspan="1">出轴型式</td>
+                            <td colspan="1" rowspan="1">出轴长度</td>
+                            <td colspan="1" rowspan="1">轴图号</td>
+                            <td colspan="1" rowspan="1">过渡盘</td>
+                            <td colspan="1" rowspan="1">连接套</td>
                         </tr>
-                        <tr
-                            v-for="(val,index) in info.orderTechnicalDetaileds"
-                            :key="index"
-                        >
-                            <td colspan="1">{{val.seqNo}}</td>
-                            <td colspan="1">{{val.productName}}</td>
-                            <td colspan="1">{{val.productModel}}</td>
-                            <td colspan="1">{{val.specifications}}</td>
-                            <td colspan="1">{{val.productNum}}</td>
-                            <td colspan="1">{{val.upperFlangeStandard}}</td>
-                            <td colspan="1">{{val.connectingHole}}</td>
-                            <td colspan="1">{{val.angle}}</td>
-                            <td colspan="1">{{val.centerDistance}}</td>
-                            <td colspan="1">{{val.outputShaftType}}</td>
-                            <td colspan="1">{{val.outputShaftLength}}</td>
-                            <td colspan="1">{{val.axisDrawingNo}}</td>
-                            <td colspan="1">{{val.transitionPlate}}</td>
-                            <td colspan="1">{{val.connectingSleeve}}</td>
-                            <td colspan="1">{{val.staticTorque}}</td>
-                            <td colspan="1">{{val.actuatorModel}}</td>
-                            <td colspan="1">{{val.remark}}</td>
+                        <tr v-for="(val, index) in info.orderTechnicalDetaileds" :key="index">
+                            <td colspan="1">{{ val.seqNo }}</td>
+                            <td colspan="1">{{ val.productName }}</td>
+                            <td colspan="1">{{ val.productModel }}</td>
+                            <td colspan="1">{{ val.specifications }}</td>
+                            <td colspan="1">{{ val.productNum }}</td>
+                            <td colspan="1">{{ val.upperFlangeStandard }}</td>
+                            <td colspan="1">{{ val.connectingHole }}</td>
+                            <td colspan="1">{{ val.angle }}</td>
+                            <td colspan="1">{{ val.centerDistance }}</td>
+                            <td colspan="1">{{ val.outputShaftType }}</td>
+                            <td colspan="1">{{ val.outputShaftLength }}</td>
+                            <td colspan="1">{{ val.axisDrawingNo }}</td>
+                            <td colspan="1">{{ val.transitionPlate }}</td>
+                            <td colspan="1">{{ val.connectingSleeve }}</td>
+                            <td colspan="1">{{ val.staticTorque }}</td>
+                            <td colspan="1">{{ val.actuatorModel }}</td>
+                            <td colspan="1">{{ val.remark }}</td>
                         </tr>
                         <tr>
-                            <td
-                                colspan="17"
-                                class="b"
-                            >订单产品列表</td>
+                            <td colspan="17" class="b">订单产品列表</td>
                         </tr>
                         <tr>
-                            <td
-                                colspan="1"
-                                class="b"
-                            >产品编号</td>
-                            <td
-                                colspan="2"
-                                class="b"
-                            >产品名称</td>
-                            <td
-                                colspan="1"
-                                class="b"
-                            >型号</td>
-                            <td
-                                colspan="1"
-                                class="b"
-                            >标签属性</td>
-                            <td
-                                colspan="1"
-                                class="b"
-                            >规格</td>
-                            <td
-                                colspan="2"
-                                class="b"
-                            >颜色</td>
-                            <td
-                                colspan="1"
-                                class="b"
-                            >产品数量</td>
+                            <td colspan="1" class="b">产品编号</td>
+                            <td colspan="2" class="b">产品名称</td>
+                            <td colspan="1" class="b">型号</td>
+                            <td colspan="1" class="b">标签属性</td>
+                            <td colspan="1" class="b">规格</td>
+                            <td colspan="2" class="b">颜色</td>
+                            <td colspan="1" class="b">产品数量</td>
                             <!-- <td colspan="1" class="b">单价</td> -->
-                            <td
-                                colspan="1"
-                                class="b"
-                            >总计价格</td>
-                            <td
-                                colspan="4"
-                                class="b"
-                            >材质说明</td>
-                            <td
-                                colspan="3"
-                                class="b"
-                            >产品备注</td>
+                            <td colspan="1" class="b">总计价格</td>
+                            <td colspan="4" class="b">材质说明</td>
+                            <td colspan="3" class="b">产品备注</td>
                         </tr>
-                        <tr
-                            v-for="(item,j) in info.orderProductAssociates"
-                            :key="j"
-                        >
-                            <td colspan="1">{{item.productNo}}</td>
-                            <td colspan="2">{{item.productName}}</td>
-                            <td colspan="1">{{item.productModel}}</td>
-                            <td colspan="1">{{item.lable}}</td>
-                            <td colspan="1">{{item.specifications}}</td>
-                            <td colspan="2">{{item.productColor}}</td>
-                            <td colspan="1">{{item.productNumber}}</td>
+                        <tr v-for="(item, j) in info.orderProductAssociates" :key="j">
+                            <td colspan="1">{{ item.productNo }}</td>
+                            <td colspan="2">{{ item.productName }}</td>
+                            <td colspan="1">{{ item.productModel }}</td>
+                            <td colspan="1">{{ item.lable }}</td>
+                            <td colspan="1">{{ item.specifications }}</td>
+                            <td colspan="2">{{ item.productColor }}</td>
+                            <td colspan="1">{{ item.productNumber }}</td>
                             <!-- <td colspan="1">{{item.price}}</td> -->
-                            <td colspan="1">{{item.totalPrice}}</td>
-                            <td colspan="4">{{item.materialDescription}}</td>
-                            <td colspan="3">{{item.productRemark}}</td>
+                            <td colspan="1">{{ item.totalPrice }}</td>
+                            <td colspan="4">{{ item.materialDescription }}</td>
+                            <td colspan="3">{{ item.productRemark }}</td>
                         </tr>
                         <tr v-if="accessoryList.length > 0">
-                            <td
-                                colspan="17"
-                                class="b"
-                            >审批附件:</td>
+                            <td colspan="17" class="b">审批附件:</td>
                         </tr>
                         <tr v-if="accessoryList.length > 0">
-                            <td
-                                colspan="6"
-                                class="b"
-                            >文件名称</td>
-                            <td
-                                colspan="6"
-                                class="b"
-                            >文件地址</td>
-                            <td
-                                colspan="4"
-                                class="b"
-                            >——</td>
+                            <td colspan="6" class="b">文件名称</td>
+                            <td colspan="6" class="b">文件地址</td>
+                            <td colspan="4" class="b">——</td>
                         </tr>
-                        <tr
-                            v-for="(accessory,index) in accessoryList"
-                            :key="index"
-                        >
-                            <td colspan="6">{{accessory.fileName}}</td>
-                            <td colspan="6">{{accessory.fileUrl}}</td>
+                        <tr v-for="(accessory, index) in accessoryList" :key="index">
+                            <td colspan="6">{{ accessory.fileName }}</td>
+                            <td colspan="6">{{ accessory.fileUrl }}</td>
                             <td colspan="4">
-                                <a
-                                    target="_blank"
-                                    v-if="!(accessory.fileUrl).match('\.(doc|docx|xls|xlsx)$') "
-                                    :href="accessory.fileUrl"
-                                >预览</a>
-                                <a
-                                    target="_blank"
-                                    v-if="(accessory.fileUrl).match('\.(doc|docx|xls|xlsx)$')"
-                                    :href="'http://view.officeapps.live.com/op/view.aspx?src='+ accessory.fileUrl"
-                                >预览</a>
+                                <a target="_blank" v-if="!(accessory.fileUrl).match('\.(doc|docx|xls|xlsx)$')"
+                                    :href="accessory.fileUrl">预览</a>
+                                <a target="_blank" v-if="(accessory.fileUrl).match('\.(doc|docx|xls|xlsx)$')"
+                                    :href="'http://view.officeapps.live.com/op/view.aspx?src=' + accessory.fileUrl">预览</a>
                             </td>
                         </tr>
                         <tr>
-                            <td
-                                colspan="17"
-                                class="b"
-                            >审核信息</td>
+                            <td colspan="17" class="b">审核信息</td>
                         </tr>
                         <tr>
-                            <td
-                                colspan="3"
-                                class="b"
-                            >流程节点</td>
-                            <td
-                                colspan="2"
-                                class="b"
-                            >角色</td>
-                            <td
-                                colspan="1"
-                                class="b"
-                            >审核人</td>
-                            <td
-                                colspan="2"
-                                class="b"
-                            >审核状态</td>
-                            <td
-                                colspan="5"
-                                class="b"
-                            >审核意见</td>
-                            <td
-                                colspan="4"
-                                class="b"
-                            >审核时间</td>
+                            <td colspan="3" class="b">流程节点</td>
+                            <td colspan="2" class="b">角色</td>
+                            <td colspan="1" class="b">审核人</td>
+                            <td colspan="2" class="b">审核状态</td>
+                            <td colspan="5" class="b">审核意见</td>
+                            <td colspan="4" class="b">审核时间</td>
                         </tr>
-                        <tr
-                            v-for="pro in processList"
-                            :key="pro.stepName"
-                        >
-                            <td colspan="3">{{pro.stepName}}</td>
-                            <td colspan="2">{{pro.roleName}}</td>
-                            <td colspan="1">{{pro.auditUserName}}</td>
-                            <td colspan="2">{{statusList[pro.auditResult]}}</td>
-                            <td colspan="5">{{pro.auditInfo}}</td>
-                            <td colspan="4">{{pro.auditTime}}</td>
+                        <tr v-for="pro in processList" :key="pro.stepName">
+                            <td colspan="3">{{ pro.stepName }}</td>
+                            <td colspan="2">{{ pro.roleName }}</td>
+                            <td colspan="1">{{ pro.auditUserName }}</td>
+                            <td colspan="2">{{ statusList[pro.auditResult] }}</td>
+                            <td colspan="5">{{ pro.auditInfo }}</td>
+                            <td colspan="4">{{ pro.auditTime }}</td>
                         </tr>
                     </table>
                 </div>
             </div>
             <div class="layer-btns">
-                <btn
-                    flat
-                    color="#008eff"
-                    @click="close"
-                >关闭</btn>
+                <btn flat color="#008eff" @click="close">关闭</btn>
             </div>
         </layer>
         <layer v-if="loading">
-            <div
-                class="abs t-center"
-                style="padding: 20px;"
-            >
+            <div class="abs t-center" style="padding: 20px;">
                 <loading size="30" />
                 <div style="margin-top: 10px;">正在保存</div>
             </div>
@@ -830,6 +487,15 @@ export default {
             this.$refs.list.update(true);
             this.getOrderQty();
         },
+        showOrderType(type) {
+            if (type === 0) {
+                return '不走核料'
+            } else if (type === 1) {
+                return '走核料'
+            } else {
+                return '整机订单'
+            }
+        },
         getAccessory(orderNo) {
             this.$http
                 .get(`/haolifa/flowInstance/flow/accessoryInfo?formNo=${orderNo}&formId=0`)
@@ -931,18 +597,24 @@ export default {
                 });
         },
         progress(item) {
+            console.log(item);
             let id = "";
             let flowId;
             let summary;
-            if(item.isCheckMaterial === 0){
-              flowId = 6
-              summary='不核料订单审批'
-            }else if(item.isCheckMaterial === 2){
-              flowId = 13
-              summary='整机订单流程'
-            }else{
-              flowId = 1
-              summary='生产订单审批'
+            if (item.isCheckMaterial === 0) {
+                flowId = 6
+                summary = '不核料订单审批'
+            } else if (item.isCheckMaterial === 2) {
+                if (item.location == "tianjin") {
+                    flowId = 15
+                    summary = '天津整机订单流程'
+                } else {
+                    flowId = 13
+                    summary = '整机订单流程'
+                }
+            } else {
+                flowId = 1
+                summary = '生产订单审批'
             }
 
             this.$http
@@ -1060,6 +732,7 @@ export default {
         padding: 5px 20px 5px 10px;
         appearance: none;
     }
+
     .scroll-y {
         padding-bottom: 40px;
     }
@@ -1072,40 +745,50 @@ export default {
     white-space: nowrap;
     text-overflow: ellipsis;
 }
+
 .metalwork-info {
     padding: 30px 20px;
+
     tr:first-child td {
         padding: 0;
         border: none;
     }
+
     th {
         font-weight: normal;
         color: #888;
     }
+
     td {
         color: #444;
     }
+
     th,
     td {
         padding: 10px;
         border: 1px solid #fff;
         border: 1px solid #ddd;
     }
+
     .checkbox-list {
         flex-wrap: wrap;
     }
+
     .checkbox-item {
         line-height: 1em;
         width: 180px;
         margin: 5px 0;
     }
 }
+
 .order-info {
+
     th,
     td {
         white-space: unset !important;
     }
 }
+
 .cell-color {
     color: #de8a0c;
 }
