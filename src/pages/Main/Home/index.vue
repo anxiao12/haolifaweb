@@ -35,7 +35,9 @@
                         <div style="width:145px" v-if="item.flowId == 11" class="c-8 date-time"
                             @click="$router.push({ path: '/baoxiaoEntrust', query: { instanceId: item.instanceId, stepId: item.stepId } })">
                             发起人：{{ item.createUserRealName }}</div>
-                        <div style="width:145px" v-if="item.flowId == 13 || item.flowId == 15" class="c-8 date-time"
+                        <div style="width:145px"
+                            v-if="item.flowId == 13 || item.flowId == 15 || item.flowId == 17 || item.flowId == 19"
+                            class="c-8 date-time"
                             @click="$router.push({ path: '/machine', query: { instanceId: item.instanceId, stepId: item.stepId } })">
                             发起人：{{ item.createUserRealName }}</div>
                         <div style="width:145px" v-if="item.flowId == 14 || item.flowId == 16" class="c-8 date-time"

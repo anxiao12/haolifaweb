@@ -4,13 +4,22 @@
         <div class="flex-v-center tool-bar">
             <div class="flex-v-center search-bar" style="margin-right: 20px;">
                 <i class="icon f-20 c-8">search</i>
-                <input type="text" class="flex-item" v-model="filter.purchaseOrderNo" @change="$refs.list.update(true)" placeholder="订单编号" style="width: 200px;">
-                <input type="text" class="flex-item" v-model="filter.productOrderNo" @change="$refs.list.update(true)" placeholder="销售订单号" style="width: 200px;">
-                <input type="text" class="flex-item" v-model="filter.supplierName" @change="$refs.list.update(true)" placeholder="供应商名称" style="width: 200px;">
-                <input type="text" class="flex-item" v-model="filter.supplierNo" @change="$refs.list.update(true)" placeholder="供应商编号" style="width: 200px;">
+                <input type="text" class="flex-item" v-model="filter.purchaseOrderNo" @change="$refs.list.update(true)"
+                    placeholder="订单编号" style="width: 200px;">
+                <input type="text" class="flex-item" v-model="filter.productOrderNo" @change="$refs.list.update(true)"
+                    placeholder="销售订单号" style="width: 200px;">
+                <input type="text" class="flex-item" v-model="filter.supplierName" @change="$refs.list.update(true)"
+                    placeholder="供应商名称" style="width: 200px;">
+                <input type="text" class="flex-item" v-model="filter.supplierNo" @change="$refs.list.update(true)"
+                    placeholder="供应商编号" style="width: 200px;">
                 <select v-model="filter.status" class="f-14" @change="$refs.list.update(true)">
                     <option value="0">合同状态</option>
-                    <option v-for="item in statusList" :value="item.status" v-bind:key="item.id">{{item.name}}</option>
+                    <option v-for="item in statusList" :value="item.status" v-bind:key="item.id">{{ item.name }}</option>
+                </select>
+                地区：
+                <select v-model="filter.location" class="f-14" @change="$refs.list.update(true);">
+                    <option value="">全部</option>
+                    <option :value="item.value" v-for="item, i in locationList" :key="i">{{ item.text }}</option>
                 </select>
                 <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
             </div>
@@ -22,11 +31,13 @@
 
         </div>
         <div class="flex-item scroll-y">
-            <data-list ref="list" method="post" :page-size="15" :param="filter" url="/haolifa/wholeMachinePurchaseOrder/pageList">
+            <data-list ref="list" method="post" :page-size="15" :param="filter"
+                url="/haolifa/wholeMachinePurchaseOrder/pageList">
                 <tr slot="header">
                     <th style="width: 60px;">序号</th>
                     <th>创建时间</th>
                     <th>采购合同号</th>
+                    <th>地区</th>
                     <th>销售订单号</th>
                     <th>供应商名称</th>
                     <td>交货日期</td>
@@ -38,25 +49,32 @@
                     <th class="t-right" style="width: 80px;">操作</th>
                 </tr>
                 <template slot="item" slot-scope="{ item, index }">
-                    <td>{{index}}</td>
-                    <td>{{item.createTime}}</td>
-                    <td>{{item.purchaseOrderNo}}</td>
-                    <td>{{item.productOrderNo}}</td>
-                    <td>{{item.supplierName}}</td>
-                    <td>{{item.deliveryTime}}</td>
-                    <td>{{item.totalCount}}</td>
-                    <td>{{item.totalPrice}}</td>
-                    <td>{{item.qualifiedNumber}}</td>
-                    <td>{{statusList[item.status-1].name}}</td>
-                    <td>{{item.createUser}}</td>
-                      <td class="t-right">
+                    <td>{{ index }}</td>
+                    <td>{{ item.createTime }}</td>
+                    <td>{{ item.purchaseOrderNo }}</td>
+                    <td>{{ item.locationName }}</td>
+                    <td>{{ item.productOrderNo }}</td>
+                    <td>{{ item.supplierName }}</td>
+                    <td>{{ item.deliveryTime }}</td>
+                    <td>{{ item.totalCount }}</td>
+                    <td>{{ item.totalPrice }}</td>
+                    <td>{{ item.qualifiedNumber }}</td>
+                    <td>{{ statusList[item.status - 1].name }}</td>
+                    <td>{{ item.createUser }}</td>
+                    <td class="t-right">
                         <a href="javascript:;" style="margin-right: 3px" class="blue" @click="getInfo(item.id)">查看</a>
-                        <a href="javascript:;" style="margin-right: 3px" v-if="item.status == '3'" class="blue" @click="completePurchase(item.id)">采购完成</a>
-                        <a href="javascript:;" style="margin-right: 3px" v-if="item.status == 1" class="blue" @click="approve(item.purchaseOrderNo)">发起审批</a>
-                        <a href="javascript:;" style="margin-right: 3px" v-if="item.status == 4" class="blue" @click="approve(item.purchaseOrderNo)">重新发起审批</a>
-                        <a href="javascript:;" style="margin-right: 3px" v-if="item.status == 1 || item.status==4" class="blue" @click="updatePurchase(item.id)">编辑</a>
-                        <a href="javascript:;" style="margin-right: 3px" v-if="item.status == 2" class="blue" @click="approveProgress(item)">审批进度</a>
-                        <a href="javascript:;" v-if="item.status == 1 ||item.status == 4" class="blue" @click="deletePurchase(item.id)">删除</a>
+                        <a href="javascript:;" style="margin-right: 3px" v-if="item.status == '3'" class="blue"
+                            @click="completePurchase(item.id)">采购完成</a>
+                        <a href="javascript:;" style="margin-right: 3px" v-if="item.status == 1" class="blue"
+                            @click="approve(item.purchaseOrderNo)">发起审批</a>
+                        <a href="javascript:;" style="margin-right: 3px" v-if="item.status == 4" class="blue"
+                            @click="approve(item.purchaseOrderNo)">重新发起审批</a>
+                        <a href="javascript:;" style="margin-right: 3px" v-if="item.status == 1 || item.status == 4"
+                            class="blue" @click="updatePurchase(item.id)">编辑</a>
+                        <a href="javascript:;" style="margin-right: 3px" v-if="item.status == 2" class="blue"
+                            @click="approveProgress(item)">审批进度</a>
+                        <a href="javascript:;" v-if="item.status == 1 || item.status == 4" class="blue"
+                            @click="deletePurchase(item.id)">删除</a>
                     </td>
                 </template>
             </data-list>
@@ -110,24 +128,24 @@
                             </td>
                         </tr>
                         <tr>
-                            <th colspan="6">订单号：{{info.purchaseOrderNo}}</th>
-                            <td colspan="6">下单日期：{{info.createTime}}</td>
+                            <th colspan="6">订单号：{{ info.purchaseOrderNo }}</th>
+                            <td colspan="6">下单日期：{{ info.createTime }}</td>
                         </tr>
                         <tr>
-                            <th colspan="6">供方：{{info.supplierName}}</th>
-                            <td colspan="6">需方：{{info.demander}}</td>
+                            <th colspan="6">供方：{{ info.supplierName }}</th>
+                            <td colspan="6">需方：{{ info.demander }}</td>
                         </tr>
                         <tr>
-                            <th colspan="6">供方联系人：{{info.supplierLinkman}}</th>
-                            <td colspan="6">需方联系人：{{info.demanderLinkman}}</td>
+                            <th colspan="6">供方联系人：{{ info.supplierLinkman }}</th>
+                            <td colspan="6">需方联系人：{{ info.demanderLinkman }}</td>
                         </tr>
                         <tr>
-                            <th colspan="6">供方联系人电话：{{info.supplierPhone}}</th>
-                            <td colspan="6">需方联系人电话：{{info.demanderPhone}}</td>
+                            <th colspan="6">供方联系人电话：{{ info.supplierPhone }}</th>
+                            <td colspan="6">需方联系人电话：{{ info.demanderPhone }}</td>
                         </tr>
                         <tr>
-                            <th colspan="6">供方地址：{{info.supplierAddr}}</th>
-                            <td colspan="6">需方地址：{{info.demanderAddr}}</td>
+                            <th colspan="6">供方地址：{{ info.supplierAddr }}</th>
+                            <td colspan="6">需方地址：{{ info.demanderAddr }}</td>
                         </tr>
                         <tr>
                             <td colspan="12">兹向贵公司订购以下货品（如下表所列），请于24小时内签字回传！</td>
@@ -145,26 +163,26 @@
                             <td colspan="1" class="b">材质</td>
                             <td colspan="1" class="b">备注</td>
                         </tr>
-                        <tr v-for="(item,i) in itemList" :key="item.id">
-                            <td colspan="1">{{i}}</td>
-                            <td colspan="1">{{item.productModel}}</td>
-                            <td colspan="1">{{item.productName}}</td>
-                            <td colspan="1">{{item.series}}</td>
-                            <td colspan="1">{{item.specification}}</td>
-                            <td colspan="1">{{item.productColor}}</td>
-                            <td colspan="1">{{item.productNumber}}</td>
-                            <td colspan="1">{{item.unitPrice}}</td>
-                            <td colspan="1">{{item.itemAmount}}</td>
-                            <td colspan="1">{{item.materialQuality}}</td>
-                            <td colspan="1">{{item.remark}}</td>
+                        <tr v-for="(item, i) in itemList" :key="item.id">
+                            <td colspan="1">{{ i }}</td>
+                            <td colspan="1">{{ item.productModel }}</td>
+                            <td colspan="1">{{ item.productName }}</td>
+                            <td colspan="1">{{ item.series }}</td>
+                            <td colspan="1">{{ item.specification }}</td>
+                            <td colspan="1">{{ item.productColor }}</td>
+                            <td colspan="1">{{ item.productNumber }}</td>
+                            <td colspan="1">{{ item.unitPrice }}</td>
+                            <td colspan="1">{{ item.itemAmount }}</td>
+                            <td colspan="1">{{ item.materialQuality }}</td>
+                            <td colspan="1">{{ item.remark }}</td>
                         </tr>
-                          <tr>
+                        <tr>
                             <th colspan="4">合计</th>
                             <td colspan="1"></td>
                             <td colspan="1"></td>
-                            <td colspan="1">{{reduceTotal(itemList)}}</td>
+                            <td colspan="1">{{ reduceTotal(itemList) }}</td>
                             <td colspan="1"></td>
-                            <td colspan="1">{{info.totalPrice}}</td>
+                            <td colspan="1">{{ info.totalPrice }}</td>
                             <td colspan="1"></td>
                             <td colspan="1"></td>
                         </tr>
@@ -185,7 +203,7 @@
                         <tr>
                             <td colspan="12">
                                 <span class="b">1、交货日期</span>
-                                {{info.deliveryTime}}&nbsp;&nbsp;&nbsp;供方须严格按交期交货，如需调整日期，须及时知会本公司并经本公司批准，否则延误交货须扣除该批货款10%。
+                                {{ info.deliveryTime }}&nbsp;&nbsp;&nbsp;供方须严格按交期交货，如需调整日期，须及时知会本公司并经本公司批准，否则延误交货须扣除该批货款10%。
                             </td>
                         </tr>
                         <tr>
@@ -196,7 +214,7 @@
                         <tr>
                             <td colspan="12">
                                 <span class="b">3、付款方式</span>
-                                {{info.payType}}
+                                {{ info.payType }}
                             </td>
                         </tr>
                         <tr>
@@ -232,16 +250,20 @@
                             <td colspan="3">经办：</td>
                         </tr>
                         <tr>
-                            <td colspan="3" style="text-align: center">年&nbsp;&nbsp;&nbsp;&nbsp;月&nbsp;&nbsp;&nbsp;&nbsp;日</td>
-                            <td colspan="3" style="text-align: center">年&nbsp;&nbsp;&nbsp;&nbsp;月&nbsp;&nbsp;&nbsp;&nbsp;日</td>
-                            <td colspan="3" style="text-align: center">年&nbsp;&nbsp;&nbsp;&nbsp;月&nbsp;&nbsp;&nbsp;&nbsp;日</td>
-                            <td colspan="3" style="text-align: center">年&nbsp;&nbsp;&nbsp;&nbsp;月&nbsp;&nbsp;&nbsp;&nbsp;日</td>
+                            <td colspan="3" style="text-align: center">年&nbsp;&nbsp;&nbsp;&nbsp;月&nbsp;&nbsp;&nbsp;&nbsp;日
+                            </td>
+                            <td colspan="3" style="text-align: center">年&nbsp;&nbsp;&nbsp;&nbsp;月&nbsp;&nbsp;&nbsp;&nbsp;日
+                            </td>
+                            <td colspan="3" style="text-align: center">年&nbsp;&nbsp;&nbsp;&nbsp;月&nbsp;&nbsp;&nbsp;&nbsp;日
+                            </td>
+                            <td colspan="3" style="text-align: center">年&nbsp;&nbsp;&nbsp;&nbsp;月&nbsp;&nbsp;&nbsp;&nbsp;日
+                            </td>
                         </tr>
                     </table>
                 </div>
             </div>
             <div class="layer-btns">
-                <btn flat color="#008eff" @click="layer=false">关闭</btn>
+                <btn flat color="#008eff" @click="layer = false">关闭</btn>
             </div>
         </layer>
         <!-- <layer v-if="numLayer" title="详情" width="70%">
@@ -302,10 +324,11 @@ export default {
                 { status: 5, name: "采购完成" }
             ],
             filter: {
-              purchaseOrderNo:'',
-              status:1,
-              supplierName:'',
-              supplierNo:''
+                purchaseOrderNo: '',
+                status: 1,
+                supplierName: '',
+                supplierNo: '',
+                location: ""
             },
             wreck: { orderNo: "", wreckAmount: 0, wreckReason: "" },
             completeLayer: false,
@@ -316,50 +339,66 @@ export default {
             orderUrl: "",
             layer: false,
             numLayer: false,
-            numList: []
+            numList: [],
+            locationList: []
         };
     },
     created() {
-        if(this.$route.query.name){
+        if (this.$route.query.name) {
             this.filter.supplierName = this.$route.query.name
             this.$refs.list.update(true);
+        } else {
+
+            this.flush()
         }
+        this.getLocation()
     },
     activated() {
-        if(this.$route.query.name){
+        if (this.$route.query.name) {
             this.filter.supplierName = this.$route.query.name
             this.$refs.list.update(true);
         }
-    },
-    mounted(){
-      this.flush()
-    },
-    created(){
-      this.flush()
+        this.getLocation()
     },
     methods: {
-      addPurchase(){
-        this.$router.push({
-          path:'/machinePurchased-order/add',
-          query:{
-            isAdd:true
-          }
-        })
-      },
+        getLocation() {
+            this.$http
+                .get(`/haolifa/sys-dict/getDictListByType/DATA_LOCATION`)
+                .then(res => {
+                    this.locationList = res.map(res => {
+                        return {
+                            text: res.desc,
+                            value: res.code
+                        }
+                    });
+                })
+                .catch(e => {
+                    this.$toast(e.message || e.msg);
+                });
+        },
+        addPurchase() {
+            this.$router.push({
+                path: '/machinePurchased-order/add',
+                query: {
+                    isAdd: true
+                }
+            })
+        },
         flush() {
             this.filter = {
-                purchaseOrderNo:'',
-                status:'',
-                supplierName:'',
-                supplierNo:'',
+                purchaseOrderNo: '',
+                status: '',
+                supplierName: '',
+                supplierNo: '',
+                location: ""
             };
             this.$refs.list.update(true);
         },
-        reduceTotal(itemList){
-          let totalNumber =  itemList.reduce((pre,cur) =>{
-            return pre + cur.productNumber
-          },0)
-          return totalNumber
+        reduceTotal(itemList) {
+            let totalNumber = itemList.reduce((pre, cur) => {
+                return pre + cur.productNumber
+            }, 0)
+            return totalNumber
 
         },
         getInfo(formId) {
@@ -375,15 +414,15 @@ export default {
                     this.$toast(e.msg);
                 });
         },
-        downloadOrder: function(id) {
+        downloadOrder: function (id) {
             this.$http
                 .get(`/haolifa/export/purchaseOrder/${id}`)
-                .then(res => {})
+                .then(res => { })
                 .catch(e => {
                     this.$toast(e.msg);
                 });
         },
-        createInspect: function(formId) {
+        createInspect: function (formId) {
             this.$http
                 .get(`/haolifa/purchase-order/createInspect/${formId}`)
                 .then(res => {
@@ -407,7 +446,7 @@ export default {
                 query: { formNo: item.purchaseOrderNo, formId: 0 }
             });
         },
-        approve: function(orderNo) {
+        approve: function (orderNo) {
             this.$confirm({
                 title: "发起审批",
                 text: "确定发起审批？",
@@ -426,13 +465,13 @@ export default {
                 }
             });
         },
-        updatePurchase: function(orderId) {
+        updatePurchase: function (orderId) {
             this.$router.push(`/machinePurchased-order/add?formId=${orderId}`);
         },
-        completePurchase: function(orderNo) {
+        completePurchase: function (orderNo) {
             // this.completeLayer = true;
             // this.wreck.orderNo = orderNo;
-             this.$http
+            this.$http
                 .post(`/haolifa/wholeMachinePurchaseOrder/finish/${orderNo}`)
                 .then(res => {
                     this.completeLayer = false;
@@ -453,7 +492,7 @@ export default {
         //             this.$toast(e.msg || e.message);
         //         });
         // },
-        deletePurchase: function(id) {
+        deletePurchase: function (id) {
             this.$confirm({
                 title: "删除确认",
                 text: `您确定要删除该订单么？`,
@@ -494,6 +533,7 @@ export default {
 
 <style lang="less">
 .purchaseadd {
+
     // height: 100%;
     select {
         background: none;
@@ -503,28 +543,35 @@ export default {
         appearance: none;
     }
 }
+
 .page-supplier-info {
     padding: 30px 20px;
+
     tr:first-child td {
         padding: 0;
         border: none;
     }
+
     th {
         font-weight: normal;
         color: #888;
     }
+
     td {
         color: #444;
     }
+
     th,
     td {
         padding: 10px;
         border: 1px solid #fff;
         border: 1px solid #ddd;
     }
+
     .checkbox-list {
         flex-wrap: wrap;
     }
+
     .checkbox-item {
         line-height: 1em;
         width: 180px;

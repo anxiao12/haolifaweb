@@ -5,20 +5,32 @@
             <div class="flex-v-center search-bar" style="margin-right: 20px;">
                 <i class="icon f-20 c-8">search</i>
                 <input type="text" class="flex-item" v-model="filter.orderNo" @change="
-            $refs.list.update(true);
-            getPriceTotal();
-          " placeholder="生产订单号" style="width: 200px;">
+                    $refs.list.update(true);
+                getPriceTotal();
+                " placeholder="生产订单号" style="width: 200px;">
                 <i class="icon f-20 c-8">search</i>
                 <input type="text" class="flex-item" v-model="filter.constractParty" @change="
-            $refs.list.update(true);
-            getPriceTotal();
-          " placeholder="合同方" style="width: 200px;">
+                    $refs.list.update(true);
+                getPriceTotal();
+                " placeholder="合同方" style="width: 200px;">
                 发票状态：
                 <select v-model="filter.status" class="f-14" @change="
-            $refs.list.update(true);
-            getPriceTotal();
-          ">
+                    $refs.list.update(true);
+                getPriceTotal();
+                ">
                     <option v-for="item in statusList" :value="item.status" v-bind:key="item.id">{{ item.name }}</option>
+                </select>
+                合同类型：
+                <select v-model="filter.orderType" class="f-14" @change="$refs.list.update(true); getPriceTotal()">
+                    <option value="">全部</option>
+                    <option value="0">不核料</option>
+                    <option value="1">走核料</option>
+                    <option value="2">整机订单</option>
+                </select>
+                地区：
+                <select v-model="filter.location" class="f-14" @change="$refs.list.update(true); getPriceTotal()">
+                    <option value="">全部</option>
+                    <option :value="item.value" v-for="item, i in locationList" :key="i">{{ item.text }}</option>
                 </select>
                 <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
             </div>
@@ -32,6 +44,8 @@
                 <tr slot="header">
                     <th style="width: 60px;">序号</th>
                     <th>合同编号</th>
+                    <th>类别</th>
+                    <th>地区</th>
                     <th>合同方</th>
                     <th>合同金额</th>
                     <th>开票金额</th>
@@ -45,6 +59,8 @@
                 <template slot="item" slot-scope="{ item, index }">
                     <td class="c-a">{{ index }}</td>
                     <td>{{ item.orderNo }}</td>
+                    <td>{{ orderTypeList[item.orderType] }}</td>
+                    <td>{{ item.location }}</td>
                     <td>{{ item.constractParty }}</td>
                     <td>{{ item.orderAmount }}</td>
                     <td>{{ item.totalAmount }}</td>
@@ -84,12 +100,17 @@ export default {
                 type: 1,
                 status: -1,
                 orderNo: "",
+                location: "",
+                orderType: "",
                 constractParty: ""
-            }
+            },
+            orderTypeList: ["不核料", "走核料", "整机订单"],
+            locationList: []
         };
     },
     mounted() {
         this.getPriceTotal();
+        this.getLocation();
     },
     methods: {
         flush() {
@@ -97,10 +118,27 @@ export default {
                 type: 1,
                 status: -1,
                 orderNo: "",
+                location: "",
+                orderType: "",
                 constractParty: ""
             };
             this.$refs.list.update(true);
             this.getPriceTotal();
+        },
+        getLocation() {
+            this.$http
+                .get(`/haolifa/sys-dict/getDictListByType/DATA_LOCATION`)
+                .then(res => {
+                    this.locationList = res.map(res => {
+                        return {
+                            text: res.desc,
+                            value: res.code
+                        }
+                    });
+                })
+                .catch(e => {
+                    this.$toast(e.message || e.msg);
+                });
         },
         edit(item) {
             this.$router.push(`/jgzx-invoice/edit?id=${item.id}`);
@@ -147,12 +185,14 @@ export default {
         padding: 5px 20px 5px 10px;
         appearance: none;
     }
+
     .scroll-y {
         padding-bottom: 40px;
     }
 
     //
 }
+
 .fixed-length {
     width: 100px;
     display: block;

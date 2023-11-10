@@ -4,25 +4,35 @@
         <div class="flex-v-center tool-bar">
             <div class="flex-v-center search-bar" style="margin-right: 20px;">
                 <i class="icon f-20 c-8">search</i>
-                <input type="text" class="flex-item" v-model="filter.productModel" @change="$refs.list.update(true)" placeholder="成品型号" style="width: 200px;">
-                <input type="text" class="flex-item" v-model="filter.productName" @change="$refs.list.update(true)" placeholder="成品名称" style="width: 200px;">
-                <input type="text" class="flex-item" v-model="filter.productOrderNo" @change="$refs.list.update(true)" placeholder="生产订单编号" style="width: 200px;">
+                <input type="text" class="flex-item" v-model="filter.productModel" @change="$refs.list.update(true)"
+                    placeholder="成品型号" style="width: 200px;">
+                <input type="text" class="flex-item" v-model="filter.productName" @change="$refs.list.update(true)"
+                    placeholder="成品名称" style="width: 200px;">
+                <input type="text" class="flex-item" v-model="filter.productOrderNo" @change="$refs.list.update(true)"
+                    placeholder="生产订单编号" style="width: 200px;">
                 <!-- <input type="text" class="flex-item" v-model="filter.status" @change="$refs.list.update(true)" placeholder="状态" style="width: 200px;"> -->
-
+                状态：
                 <select v-model="filter.status" class="f-14" @change="$refs.list.update(true)">
-                    <option v-for="item in allStatus" :value="item.value" v-bind:key="item.id">{{item.text}}</option>
+                    <option v-for="item in allStatus" :value="item.value" v-bind:key="item.id">{{ item.text }}</option>
+                </select>
+                地区：
+                <select v-model="filter.location" class="f-14" @change="$refs.list.update(true);">
+                    <option value="">全部</option>
+                    <option :value="item.value" v-for="item, i in locationList" :key="i">{{ item.text }}</option>
                 </select>
             </div>
             <btn class="b" flat @click="mergeData" color="#008eff">合并采购合同</btn>
         </div>
         <div class="flex-item scroll-y">
-            <data-list ref="list" :page-size="15" :param="filter" url="/haolifa/wholeMachineApplyBuy/pageList" method="post">
+            <data-list ref="list" :page-size="15" :param="filter" url="/haolifa/wholeMachineApplyBuy/pageList"
+                method="post">
                 <tr slot="header">
                     <th style="width: 60px;">序号</th>
                     <th>
                         <input type="checkbox" name v-model="all" @change="selectAll">
                     </th>
                     <th>生产订单编号</th>
+                    <th>地区</th>
                     <th>成品名称</th>
                     <th>成品型号</th>
                     <th>系列</th>
@@ -38,25 +48,27 @@
                 </tr>
                 <!-- item: 当前行数据; index: 当前行数 -->
                 <template slot="item" slot-scope="{ item, index,i }">
-                    <td class="c-a">{{index}}</td>
-                     <td v-if="item.status==0">
+                    <td class="c-a">{{ index }}</td>
+                    <td v-if="item.status == 0">
                         <input type="checkbox" name="boxId" :value="i">
                     </td>
                     <td v-else></td>
-                    <td>{{item.productOrderNo}}</td>
-                    <td>{{item.productName}}</td>
-                    <td>{{item.productNo}}</td>
-                    <td>{{item.productSeries}}</td>
-                    <td>{{item.specifications}}</td>
-                    <td>{{item.productNumber}}</td>
-                    <td>{{item.unitPrice}}</td>
-                    <td>{{item.productColor}}</td>
-                    <td>{{item.materialDescription}}</td>
-                    <td>{{item.returnDate}}</td>
-                    <td>{{item.productRemark}}</td>
-                    <td>{{allStatus[item.status].text}}</td>
+                    <td>{{ item.productOrderNo }}</td>
+                    <td>{{ item.locationName }}</td>
+                    <td>{{ item.productName }}</td>
+                    <td>{{ item.productNo }}</td>
+                    <td>{{ item.productSeries }}</td>
+                    <td>{{ item.specifications }}</td>
+                    <td>{{ item.productNumber }}</td>
+                    <td>{{ item.unitPrice }}</td>
+                    <td>{{ item.productColor }}</td>
+                    <td>{{ item.materialDescription }}</td>
+                    <td>{{ item.returnDate }}</td>
+                    <td>{{ item.productRemark }}</td>
+                    <td>{{ allStatus[item.status].text }}</td>
                     <td class="t-right">
-                        <a href="javascript:;" v-if="item.status==0" style="margin-right: 3px" class="blue" @click="dealApplyBuy(item.id)">处理完成</a>
+                        <a href="javascript:;" v-if="item.status == 0" style="margin-right: 3px" class="blue"
+                            @click="dealApplyBuy(item.id)">处理完成</a>
                     </td>
                 </template>
             </data-list>
@@ -72,13 +84,14 @@ export default {
     data() {
         return {
             filter: {
-              productModel:'',
-              productName:'',
-              productNo:'',
-              productOrderNo:'',
-              status:'',
+                productModel: '',
+                productName: '',
+                productNo: '',
+                productOrderNo: '',
+                status: '',
+                location: ""
             },
-             // 0未处理 1 待审批 2 待采购 3 已处理 4 审批不通过
+            // 0未处理 1 待审批 2 待采购 3 已处理 4 审批不通过
             allStatus: [
                 { value: 0, text: "未处理" },
                 { value: 1, text: "已处理" },
@@ -87,33 +100,53 @@ export default {
                 // { value: 4, text: "审批不通过" },
                 { value: '', text: "全部" }
             ],
-            all: false
+            all: false,
+            locationList: []
         };
     },
+    created() {
+        this.getLocation();
+    },
     methods: {
-      dealStatus(status){
-        // 0未处理 1 待审批 2 待采购 3 已处理 4 审批不通过
-        if(status ===0){
-          return '未处理'
-        }else if(status === 1){
-          return '待审批'
-        }else if(status === 2){
-          return '待采购'
-        }else if(status ===3){
-          return '已处理'
-        }else if(status === 4){
-          return '审批不通过'
-        }
-      },
+        dealStatus(status) {
+            // 0未处理 1 待审批 2 待采购 3 已处理 4 审批不通过
+            if (status === 0) {
+                return '未处理'
+            } else if (status === 1) {
+                return '待审批'
+            } else if (status === 2) {
+                return '待采购'
+            } else if (status === 3) {
+                return '已处理'
+            } else if (status === 4) {
+                return '审批不通过'
+            }
+        },
         flush() {
             this.filter = {
-                productModel:'',
-                productName:'',
-                productNo:'',
-                productOrderNo:'',
-                status:'',
+                productModel: '',
+                productName: '',
+                productNo: '',
+                productOrderNo: '',
+                status: '',
+                location: ""
             };
             this.$refs.list.update(true);
+        },
+        getLocation() {
+            this.$http
+                .get(`/haolifa/sys-dict/getDictListByType/DATA_LOCATION`)
+                .then(res => {
+                    this.locationList = res.map(res => {
+                        return {
+                            text: res.desc,
+                            value: res.code
+                        }
+                    });
+                })
+                .catch(e => {
+                    this.$toast(e.message || e.msg);
+                });
         },
         dealApplyBuy(itemId) {
             this.$http
@@ -130,15 +163,15 @@ export default {
             let arr = document.getElementsByName("boxId");
             if (this.all) {
                 for (let i in arr) {
-                  if(Number(i) || i==0){
-                    arr[i].checked = true;
-                  }
+                    if (Number(i) || i == 0) {
+                        arr[i].checked = true;
+                    }
                 }
             } else {
                 for (let j in arr) {
-                  if(Number(j) || j ==0){
-                    arr[j].checked = false;
-                  }
+                    if (Number(j) || j == 0) {
+                        arr[j].checked = false;
+                    }
 
                 }
             }
@@ -169,18 +202,18 @@ export default {
         mergeData() {
             let list = JSON.parse(JSON.stringify(this.$refs.list.list));
             let arr = document.getElementsByName("boxId"),
-            ids = []
-            let paramsList=[]
-            let dataList=[]
+                ids = []
+            let paramsList = []
+            let dataList = []
             for (let i in arr) {
                 if (arr[i].checked) {
                     let rowScope = list[arr[i].value]
-                    if(rowScope){
+                    if (rowScope) {
                         paramsList.push({
-                          productModel:rowScope.productModel,
-                          productNo:rowScope.productNo,
-                          specifications:rowScope.specifications,//规格
-                          productSeries:rowScope.productSeries
+                            productModel: rowScope.productModel,
+                            productNo: rowScope.productNo,
+                            specifications: rowScope.specifications,//规格
+                            productSeries: rowScope.productSeries
                         })
                         ids.push(list[arr[i].value].id);
                         dataList.push(list[arr[i].value]);
@@ -193,20 +226,20 @@ export default {
                 return;
             }
             this.$http
-                .post("/haolifa/whole/machine/product/listSupplierByParam", { list:paramsList })
+                .post("/haolifa/whole/machine/product/listSupplierByParam", { list: paramsList })
                 .then(res => {
                     if (res.length === 0) {
                         this.$toast("未找到供应商");
                         return;
                     } else {
-                      // console.log('origin',this.removeDuplicates(dataList))
-                      // let dealDataList = this.removeDuplicates(dataList)
+                        // console.log('origin',this.removeDuplicates(dataList))
+                        // let dealDataList = this.removeDuplicates(dataList)
                         this.$router.push({
                             name: "machinePurchased-orderadd",
                             query: {
-                                supList:JSON.stringify(res) ,
-                                pageType:'edit',
-                                dataList:JSON.stringify(dataList),
+                                supList: JSON.stringify(res),
+                                pageType: 'edit',
+                                dataList: JSON.stringify(dataList),
                                 ids: JSON.stringify(ids),
                             }
                         });
@@ -229,12 +262,14 @@ export default {
         padding: 5px 20px 5px 10px;
         appearance: none;
     }
+
     .scroll-y {
         padding-bottom: 40px;
     }
 
     //
 }
+
 .fixed-length {
     width: 100px;
     display: block;

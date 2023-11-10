@@ -5,28 +5,42 @@
             <div class="flex-v-center search-bar" style="margin-right: 20px;">
                 <i class="icon f-20 c-8">search</i>
                 <input type="text" class="flex-item" v-model="filter.orderNo" @change="
-            $refs.list.update(true);
-            getPriceTotal();
-          " placeholder="订单号" style="width: 100px;">
+                    $refs.list.update(true);
+                getPriceTotal();
+                " placeholder="订单号" style="width: 100px;">
                 <i class="icon f-20 c-8">search</i>
                 <input type="text" class="flex-item" v-model="filter.constractParty" @change="
-            $refs.list.update(true);
-            getPriceTotal();
-          " placeholder="合同方" style="width: 250px;">
+                    $refs.list.update(true);
+                getPriceTotal();
+                " placeholder="合同方" style="width: 250px;">
                 开票状态：
                 <select v-model="filter.status" class="f-14" @change="statusChange">
                     <option v-for="item in allStatus" :value="item.value" v-bind:key="item.id">{{ item.text }}</option>
                 </select>
                 <i class="icon" style="margin-left: -10px;pointer-events:none;">arrow_drop_down</i>
                 开票开始日期：
-                <el-date-picker v-model="filter.startInvoiceDate" type="date" style="width:130px" value-format="yyyy-MM-dd" @change="
-            $refs.list.update(true);
-            getPriceTotal();
-          " :editable="false" placeholder="选择年月日"></el-date-picker>开票结束日期：
-                <el-date-picker style="width:130px" v-model="filter.endInvoiceDate" type="date" value-format="yyyy-MM-dd" @change="
-            $refs.list.update(true);
-            getPriceTotal();
-          " :editable="false" placeholder="选择年月日"></el-date-picker>
+                <el-date-picker v-model="filter.startInvoiceDate" type="date" style="width:130px" value-format="yyyy-MM-dd"
+                    @change="
+                        $refs.list.update(true);
+                    getPriceTotal();
+                    " :editable="false" placeholder="选择年月日"></el-date-picker>开票结束日期：
+                <el-date-picker style="width:130px" v-model="filter.endInvoiceDate" type="date" value-format="yyyy-MM-dd"
+                    @change="
+                        $refs.list.update(true);
+                    getPriceTotal();
+                    " :editable="false" placeholder="选择年月日"></el-date-picker>
+                合同类型：
+                <select v-model="filter.orderType" class="f-14" @change="$refs.list.update(true); getPriceTotal()">
+                    <option value="">全部</option>
+                    <option value="0">不核料</option>
+                    <option value="1">走核料</option>
+                    <option value="2">整机订单</option>
+                </select>
+                地区：
+                <select v-model="filter.location" class="f-14" @change="$refs.list.update(true); getPriceTotal()">
+                    <option value="">全部</option>
+                    <option :value="item.value" v-for="item, i in locationList" :key="i">{{ item.text }}</option>
+                </select>
             </div>
             <btn class="b" flat color="#008eff" @click="layer = true">添加发票</btn>
         </div>
@@ -38,6 +52,8 @@
                 <tr slot="header">
                     <th style="width: 60px;">序号</th>
                     <th>合同编号</th>
+                    <th>类别</th>
+                    <th>地区</th>
                     <th>合同方</th>
                     <th>合同金额</th>
                     <th>开票金额</th>
@@ -51,6 +67,8 @@
                 <template slot="item" slot-scope="{ item, index }">
                     <td>{{ index }}</td>
                     <td>{{ item.orderNo }}</td>
+                    <td>{{ orderTypeList[item.orderType] }}</td>
+                    <td>{{ item.location }}</td>
                     <td>{{ item.constractParty }}</td>
                     <td>￥ {{ item.orderAmount }}</td>
                     <td>￥ {{ item.totalAmount }}</td>
@@ -60,8 +78,10 @@
                     <td>{{ statusArr[item.status].text }}</td>
                     <td>{{ item.remark }}</td>
                     <td class="t-right">
-                        <a href="javascript:;" v-if="item.status == 1 || item.status == 0" class="blue" @click="billing(item)">开票</a>
-                        <a href="javascript:;" v-if="item.status == 1 || item.status == 0" class="blue" @click="download(item.orderNo)">| 出库记录下载</a>
+                        <a href="javascript:;" v-if="item.status == 1 || item.status == 0" class="blue"
+                            @click="billing(item)">开票</a>
+                        <a href="javascript:;" v-if="item.status == 1 || item.status == 0" class="blue"
+                            @click="download(item.orderNo)">| 出库记录下载</a>
                         <a href="javascript:;" v-if="item.status == 2" class="blue" @click="edit(item)">编辑</a>
                     </td>
                 </template>
@@ -77,7 +97,8 @@
                 <input-box v-model="form.invoiceIssuing" label="开票单位"></input-box>
                 <input-box v-model="form.invoiceCompany" label="收票单位"></input-box>
                 <input-box type="number" v-model="form.totalAmount" label="发票金额"></input-box>
-                <date-picker v-model="form.invoiceDate" class="flex-item" label="开票时间" style="margin-right: 20px;"></date-picker>
+                <date-picker v-model="form.invoiceDate" class="flex-item" label="开票时间"
+                    style="margin-right: 20px;"></date-picker>
                 <input-box :multi-line="true" type="text" v-model="form.remark" label="备注"></input-box>
             </div>
             <div class="layer-btns">
@@ -90,7 +111,8 @@
             <div class="layer-text" style="padding-bottom: 250px;">
                 <input-box v-model="bill.orderNo" label="合同编号"></input-box>
                 <input-box v-model="bill.billInvoiceNo" label="发票编号"></input-box>
-                <date-picker v-model="bill.invoiceDate" class="flex-item" label="开票时间" style="margin-right: 20px;"></date-picker>
+                <date-picker v-model="bill.invoiceDate" class="flex-item" label="开票时间"
+                    style="margin-right: 20px;"></date-picker>
             </div>
             <div class="layer-btns">
                 <btn flat @click="cancel">取消</btn>
@@ -132,6 +154,8 @@ export default {
                 statusList: [1, 2],
                 orderNo: "",
                 startInvoiceDate: "",
+                location: "",
+                orderType: "",
                 endInvoiceDate: ""
             },
             allStatus: [
@@ -182,11 +206,14 @@ export default {
                 startDate: "",
                 endDate: "",
                 orderNo: ""
-            }
+            },
+            orderTypeList: ["不核料", "走核料", "整机订单"],
+            locationList: []
         };
     },
     mounted() {
         this.getPriceTotal();
+        this.getLocation();
     },
     methods: {
         flush() {
@@ -196,10 +223,27 @@ export default {
                 statusList: [1, 2],
                 orderNo: "",
                 startInvoiceDate: "",
+                location: "",
+                orderType: "",
                 endInvoiceDate: ""
             };
             this.$refs.list.update(true);
             this.getPriceTotal();
+        },
+        getLocation() {
+            this.$http
+                .get(`/haolifa/sys-dict/getDictListByType/DATA_LOCATION`)
+                .then(res => {
+                    this.locationList = res.map(res => {
+                        return {
+                            text: res.desc,
+                            value: res.code
+                        }
+                    });
+                })
+                .catch(e => {
+                    this.$toast(e.message || e.msg);
+                });
         },
         billing(item) {
             this.bill.orderNo = item.orderNo;
@@ -353,6 +397,7 @@ export default {
         padding: 5px 20px 5px 10px;
         appearance: none;
     }
+
     .scroll-y {
         padding-bottom: 40px;
     }

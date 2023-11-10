@@ -8,36 +8,56 @@
             <div class="flex-v-center search-bar" style="margin-right: 20px;">
                 <i class="icon f-20 c-8">search</i>
                 开始时间:
-                <el-date-picker v-model="filter.startDate" type="date" value-format="yyyy-MM-dd" @change="$refs.list.update(true);getPriceYet()" :editable="false" placeholder="选择年月日" style="width: 200px;"></el-date-picker>结束时间:
-                <el-date-picker v-model="filter.endDate" type="date" value-format="yyyy-MM-dd" @change="$refs.list.update(true);getPriceYet()" :editable="false" placeholder="选择年月日" style="width: 200px;"></el-date-picker>
-                <input type="text" class="flex-item" v-model="filter.orderNo" @change="$refs.list.update(true);getPriceYet()" placeholder="生产订单号" style="width: 200px;">
-                <input type="text" class="flex-item" v-model="filter.demandName" @change="$refs.list.update(true);getPriceYet()" placeholder="需方单位" style="width: 200px;">
+                <el-date-picker v-model="filter.startDate" type="date" value-format="yyyy-MM-dd"
+                    @change="$refs.list.update(true); getPriceYet()" :editable="false" placeholder="选择年月日"
+                    style="width: 200px;"></el-date-picker>结束时间:
+                <el-date-picker v-model="filter.endDate" type="date" value-format="yyyy-MM-dd"
+                    @change="$refs.list.update(true); getPriceYet()" :editable="false" placeholder="选择年月日"
+                    style="width: 200px;"></el-date-picker>
+                <input type="text" class="flex-item" v-model="filter.orderNo"
+                    @change="$refs.list.update(true); getPriceYet()" placeholder="生产订单号" style="width: 200px;">
+                <input type="text" class="flex-item" v-model="filter.demandName"
+                    @change="$refs.list.update(true); getPriceYet()" placeholder="需方单位" style="width: 200px;">
             </div>
         </div>
         <div class="flex-v-center tool-bar">
             <div class="fflex-v-center search-bar" style="margin-right: 20px;">
                 订单状态：
-                <select v-model="filter.orderStatus" class="f-14" @change="$refs.list.update(true);getPriceYet()">
+                <select v-model="filter.orderStatus" class="f-14" @change="$refs.list.update(true); getPriceYet()">
                     <option value="-1">全部</option>
-                    <option v-for="item in statusList" :value="item.value" v-bind:key="item.id">{{item.text}}</option>
+                    <option v-for="item in statusList" :value="item.value" v-bind:key="item.id">{{ item.text }}</option>
                 </select>
                 发货状态：
-                <select v-model="filter.deliverStatus" class="f-14" @change="$refs.list.update(true);getPriceYet()">
+                <select v-model="filter.deliverStatus" class="f-14" @change="$refs.list.update(true); getPriceYet()">
                     <option value="-1">全部</option>
                     <option value="0">待发货</option>
                     <option value="1">部分发货</option>
                     <option value="2">发货完成</option>
                 </select>
+                合同类型：
+                <select v-model="filter.isCheckMaterial" class="f-14" @change="$refs.list.update(true); getPriceYet()">
+                    <option value="-1">全部</option>
+                    <option value="0">不核料</option>
+                    <option value="1">走核料</option>
+                    <option value="2">整机订单</option>
+                </select>
+                地区：
+                <select v-model="filter.location" class="f-14" @change="$refs.list.update(true); getPriceYet()">
+                    <option value="">全部</option>
+                    <option :value="item.value" v-for="item, i in locationList" :key="i">{{ item.text }}</option>
+                </select>
                 <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
             </div>
-            <div class="flex-item" style="text-align:right;color:#0f95ff">已收款总金额（元）:{{priceYet}}</div>
-            <div class="flex-item" style="text-align:right;color:#0f95ff">合同总金额（元）:{{priceTotal}}</div>
+            <div class="flex-item" style="text-align:right;color:#0f95ff">已收款总金额（元）:{{ priceYet }}</div>
+            <div class="flex-item" style="text-align:right;color:#0f95ff">合同总金额（元）:{{ priceTotal }}</div>
         </div>
         <div class="flex-item scroll-y">
             <data-list ref="list" method="post" :page-size="15" :param="filter" url="/haolifa/order-product/pageInfo">
                 <tr slot="header">
                     <th style="width: 60px;">序号</th>
                     <th>合同编号</th>
+                    <th>合同类型</th>
+                    <th>地区</th>
                     <th>合同总金额</th>
                     <th>需方单位</th>
                     <!-- <th>采购完成日期</th> -->
@@ -50,19 +70,23 @@
                     <th class="t-right" style="width: 80px;">操作</th>
                 </tr>
                 <template slot="item" slot-scope="{ item, index }">
-                    <td>{{index}}</td>
-                    <td>{{item.orderNo}}</td>
-                    <td>{{item.totalPrice}}</td>
-                    <td>{{item.demandName}}</td>
+                    <td>{{ index }}</td>
+                    <td>{{ item.orderNo }}</td>
+                    <td>{{ types[item.isCheckMaterial] }}</td>
+                    <td>{{ item.location }}</td>
+                    <td>{{ item.totalPrice }}</td>
+                    <td>{{ item.demandName }}</td>
                     <!-- <td>{{item.deliveryTime}}</td> -->
-                    <td>{{item.receivedAccount}}</td>
-                    <td>{{deliverStatusList[item.deliverStatus].text}}</td>
-                    <td>{{statusListArr[item.orderStatus].text}}</td>
+                    <td>{{ item.receivedAccount }}</td>
+                    <td>{{ deliverStatusList[item.deliverStatus].text }}</td>
+                    <td>{{ statusListArr[item.orderStatus].text }}</td>
                     <!-- <td>{{item.createUserId}}</td> -->
-                    <td>{{item.createTime}}</td>
+                    <td>{{ item.createTime }}</td>
                     <td>
-                        <a target="_blank" v-if="(item.orderContractExtendUrl).match('\.(pdf|jpe?g|png|bmp)$') " :href="item.orderContractExtendUrl">预览</a>
-                        <a target="_blank" v-if="!(item.orderContractExtendUrl).match('\.(pdf|jpe?g|png|bmp)$')" :href="'http://view.officeapps.live.com/op/view.aspx?src='+ item.orderContractExtendUrl">预览</a>
+                        <a target="_blank" v-if="(item.orderContractExtendUrl).match('\.(pdf|jpe?g|png|bmp)$')"
+                            :href="item.orderContractExtendUrl">预览</a>
+                        <a target="_blank" v-if="!(item.orderContractExtendUrl).match('\.(pdf|jpe?g|png|bmp)$')"
+                            :href="'http://view.officeapps.live.com/op/view.aspx?src=' + item.orderContractExtendUrl">预览</a>
                     </td>
                     <td class="t-right">
                         <a href="javascript:;" style="margin-right: 3px" class="blue" @click="info(item.orderNo)">查看</a>
@@ -131,14 +155,19 @@ export default {
                 endDate: "",
                 orderNo: "",
                 orderStatus: -1,
-                deliverStatus: -1
+                deliverStatus: -1,
+                location: "",
+                isCheckMaterial: -1
                 // createUserId:0
             },
-            priceYet: ""
+            priceYet: "",
+            types: ["不核料", "走核料", "整机订单"],
+            locationList: []
         };
     },
     mounted() {
         this.getPriceYet();
+        this.getLocation();
     },
     methods: {
         flush() {
@@ -148,10 +177,27 @@ export default {
                 endDate: "",
                 orderNo: "",
                 orderStatus: -1,
-                deliverStatus: -1
+                deliverStatus: -1,
+                location: "",
+                isCheckMaterial: -1
             };
             this.$refs.list.update(true);
             this.getPriceYet();
+        },
+        getLocation() {
+            this.$http
+                .get(`/haolifa/sys-dict/getDictListByType/DATA_LOCATION`)
+                .then(res => {
+                    this.locationList = res.map(res => {
+                        return {
+                            text: res.desc,
+                            value: res.code
+                        }
+                    });
+                })
+                .catch(e => {
+                    this.$toast(e.message || e.msg);
+                });
         },
         toProcOrder() {
             this.$router.push(`/contract`);
@@ -193,7 +239,9 @@ export default {
 .page-contract {
     // height: 100%;
 }
+
 .page-contract {
+
     // height: 100%;
     select {
         background: none;

@@ -19,6 +19,18 @@
                     <option value="1">部分发货</option>
                     <option value="2">发货完成</option>
                 </select>
+                合同类型：
+                <select v-model="filter.isCheckMaterial" class="f-14" @change="$refs.list.update(true); getOrderQty()">
+                    <option value="-1">全部</option>
+                    <option value="0">不核料</option>
+                    <option value="1">走核料</option>
+                    <option value="2">整机订单</option>
+                </select>
+                地区：
+                <select v-model="filter.location" class="f-14" @change="$refs.list.update(true); getOrderQty()">
+                    <option value="">全部</option>
+                    <option :value="item.value" v-for="item, i in locationList" :key="i">{{ item.text }}</option>
+                </select>
                 <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
                 <el-date-picker v-model="filter.startDate" type="date" value-format="yyyy-MM-dd"
                     @change="$refs.list.update(true); getOrderQty()" :editable="false"
@@ -409,6 +421,8 @@ export default {
                 startDate: "",
                 endDate: "",
                 demandName: "",
+                location: "",
+                isCheckMaterial: -1
             },
             orderQty: "",
             deliveryOrderQty: "",
@@ -469,10 +483,13 @@ export default {
                 3: "流程初始化",
                 4: "未审核",
             },
+            locationList: [],
+
         };
     },
     created() {
         this.getOrderQty();
+        this.getLocation();
     },
     methods: {
         flush() {
@@ -483,9 +500,26 @@ export default {
                 startDate: "",
                 endDate: "",
                 demandName: "",
+                location: "",
+                isCheckMaterial: -1
             };
             this.$refs.list.update(true);
             this.getOrderQty();
+        },
+        getLocation() {
+            this.$http
+                .get(`/haolifa/sys-dict/getDictListByType/DATA_LOCATION`)
+                .then(res => {
+                    this.locationList = res.map(res => {
+                        return {
+                            text: res.desc,
+                            value: res.code
+                        }
+                    });
+                })
+                .catch(e => {
+                    this.$toast(e.message || e.msg);
+                });
         },
         showOrderType(type) {
             if (type === 0) {
@@ -606,11 +640,17 @@ export default {
                 summary = '不核料订单审批'
             } else if (item.isCheckMaterial === 2) {
                 if (item.location == "tianjin") {
-                    flowId = 15
+                    flowId = 19
                     summary = '天津整机订单流程'
+                } else if (item.location == "hengtai") {
+                    flowId = 15
+                    summary = '恒泰整机订单流程'
+                } else if (item.location == "shanxi") {
+                    flowId = 17
+                    summary = '山西整机订单流程'
                 } else {
                     flowId = 13
-                    summary = '整机订单流程'
+                    summary = '北京整机订单流程'
                 }
             } else {
                 flowId = 1
