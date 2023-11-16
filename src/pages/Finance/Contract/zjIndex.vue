@@ -5,15 +5,16 @@
             <div class="flex-v-center search-bar" style="margin-right: 20px;">
                 <i class="icon f-20 c-8">search</i>
                 <input type="text" class="flex-item" v-model="filter.purchaseOrderNo" @change="$refs.list.update(true)"
-                    placeholder="订单编号" style="width: 200px;">
-                <input type="text" class="flex-item" v-model="filter.productOrderNo" @change="$refs.list.update(true)"
-                    placeholder="销售订单号" style="width: 200px;">
+                    placeholder="合同编号" style="width: 200px;">
+                <!-- <input type="text" class="flex-item" v-model="filter.productOrderNo" @change="$refs.list.update(true)"
+                    placeholder="销售订单号" style="width: 200px;"> -->
                 <input type="text" class="flex-item" v-model="filter.supplierName" @change="$refs.list.update(true)"
                     placeholder="供应商名称" style="width: 200px;">
-                <input type="text" class="flex-item" v-model="filter.supplierNo" @change="$refs.list.update(true)"
-                    placeholder="供应商编号" style="width: 200px;">
+                <!-- <input type="text" class="flex-item" v-model="filter.supplierNo" @change="$refs.list.update(true)"
+                    placeholder="供应商编号" style="width: 200px;"> -->
+                合同状态：
                 <select v-model="filter.status" class="f-14" @change="$refs.list.update(true)">
-                    <option value="0">合同状态</option>
+                    <option value="">全部</option>
                     <option v-for="item in statusList" :value="item.status" v-bind:key="item.id">{{ item.name }}</option>
                 </select>
                 地区：
@@ -24,10 +25,6 @@
                 <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
             </div>
             <div class="flex-item"></div>
-            <div @click="addPurchase()"
-                v-if='$store.state.permission.buttons[0] == "admin" || $store.state.permission.buttons.indexOf("zjsz-add") > -1'>
-                <btn class="b" flat color="#008eff">新增采购</btn>
-            </div>
 
         </div>
         <div class="flex-item scroll-y">
@@ -35,63 +32,109 @@
                 url="/haolifa/wholeMachinePurchaseOrder/pageList">
                 <tr slot="header">
                     <th style="width: 60px;">序号</th>
-                    <th>创建时间</th>
-                    <th>采购合同号</th>
-                    <th>地区</th>
-                    <th>销售订单号</th>
-                    <th>供应商名称</th>
-                    <td>交货日期</td>
-                    <th>合同采购总数量</th>
+                    <th>合同编号</th>
                     <th>合同总金额</th>
-                    <th>检验合格数量</th>
+                    <th>地区</th>
+                    <th>供方单位</th>
+                    <th>已付款</th>
+                    <th>采购完成日期</th>
+                    <!-- <th>合同类型</th> -->
                     <th>订单状态</th>
+                    <th>创建人</th>
+                    <th>创建日期</th>
                     <th>创建者</th>
                     <th class="t-right" style="width: 80px;">操作</th>
                 </tr>
                 <template slot="item" slot-scope="{ item, index }">
                     <td>{{ index }}</td>
-                    <td>{{ item.createTime }}</td>
                     <td>{{ item.purchaseOrderNo }}</td>
-                    <td>{{ item.locationName }}</td>
-                    <td>{{ item.productOrderNo }}</td>
-                    <td>{{ item.supplierName }}</td>
-                    <td>{{ item.deliveryTime }}</td>
-                    <td>{{ item.totalCount }}</td>
                     <td>{{ item.totalPrice }}</td>
-                    <td>{{ item.qualifiedNumber }}</td>
+                    <td>{{ item.locationName }}</td>
+                    <td>{{ item.supplierName }}</td>
+                    <td>{{ item.paidAccount }}</td>
+                    <td>{{ item.deliveryTime }}</td>
+                    <!-- <td>{{ item.orderType == 0 ? '零件采购' : '毛坯加工' }}</td> -->
                     <td>{{ statusList[item.status - 1].name }}</td>
+                    <td>{{ item.createUserId }}</td>
+                    <td>{{ item.createTime }}</td>
                     <td>{{ item.createUser }}</td>
                     <td class="t-right">
                         <a href="javascript:;" style="margin-right: 3px" class="blue" @click="getInfo(item.id)">查看</a>
-                        <a href="javascript:;" style="margin-right: 3px" v-if="item.status == '3'" class="blue"
-                            @click="completePurchase(item.id)">采购完成</a>
-                        <a href="javascript:;" style="margin-right: 3px" v-if="item.status == 1" class="blue"
-                            @click="approve(item.purchaseOrderNo)">发起审批</a>
-                        <a href="javascript:;" style="margin-right: 3px" v-if="item.status == 4" class="blue"
-                            @click="approve(item.purchaseOrderNo)">重新发起审批</a>
-                        <a href="javascript:;" style="margin-right: 3px" v-if="item.status == 1 || item.status == 4"
-                            class="blue" @click="updatePurchase(item.id)">编辑</a>
-                        <a href="javascript:;" style="margin-right: 3px" v-if="item.status == 2" class="blue"
-                            @click="approveProgress(item)">审批进度</a>
-                        <a href="javascript:;" v-if="item.status == 1 || item.status == 4" class="blue"
-                            @click="deletePurchase(item.id)">删除</a>
                     </td>
                 </template>
             </data-list>
         </div>
-        <!-- <layer v-if="completeLayer" :title="'订单折损'" width="450px">
-            <div class="flex">
-                <input-box v-model="wreck.wreckAmount" class="flex-item mr-20" label="折损金额"></input-box>
-                <input-box v-model="wreck.wreckReason" class="flex-item mr-20" label="折损原因"></input-box>
-            </div>
-            <div class="layer-btns">
-                <btn flat @click="completeLayer=false">取消</btn>
-                <btn flat color="#008eff" @click="complete()">保存</btn>
-            </div>
-        </layer> -->
-        <layer v-if="layer" title="详情" width="70%">
+        <layer v-if="layer" width="70%">
             <div class="layer-text" style="padding-bottom: 50px;">
-                <div class="form-content metalwork-info">
+                <el-tabs v-model="activeName" @tab-click="handleClick">
+                    <el-tab-pane label="详情" name="1"></el-tab-pane>
+                    <el-tab-pane label="付款记录" name="2"></el-tab-pane>
+                </el-tabs>
+                <div class="form-content metalwork-info" v-show="activeName == 2">
+                    <div class="flex-item ml-20">
+                        <a class="a" flat style="color: #008eff" @click="addPay()" href="javascript:;">新增付款记录</a>
+                    </div>
+                    <table class="f-14">
+                        <tr>
+                            <td style="width: 16%;"></td>
+                            <td style="width: 16%;"></td>
+                            <td style="width: 16%;"></td>
+                            <td style="width: 16%;"></td>
+                            <td style="width: 16%;"></td>
+                            <td style="width: 20%;"></td>
+                        </tr>
+                        <tr>
+                            <th>订单号</th>
+                            <th>总金额(￥)</th>
+                            <th>打款日期</th>
+                            <!-- <th>合同类型</th> -->
+                            <th>录入人</th>
+                            <th>创建日期</th>
+                            <th>更新日期</th>
+                        </tr>
+                        <tr v-for="item in payList" :key="item.id">
+                            <td>{{ item.orderNo }}</td>
+                            <td>{{ item.amount.toLocaleString() }}</td>
+                            <td>{{ item.payTime }}</td>
+                            <!-- <td v-if="item.orderType == 1">生产</td>
+                    <td v-else>采购</td>-->
+                            <td>{{ item.createUserId }}</td>
+                            <td>{{ item.createTime }}</td>
+                            <td>{{ item.updateTime }}</td>
+                        </tr>
+                        <tr v-if="!payList.length">
+                            <td colspan="6" style="text-align: center;">无数据</td>
+                        </tr>
+                    </table>
+                    <div v-show="addFlag">
+                        <div class="b" style="margin: 20px 0 10px;">付款记录添加</div>
+                        <div class="card flex" style="margin-top: 0;">
+                            <div class="flex-item">
+                                <div class="flex">
+                                    <input-box v-model="order.orderNo" disabled hint="必填" class="flex-item mr-10"
+                                        label="合同订单号"></input-box>
+                                    <input-box v-model="order.amount" type="number" hint="必填" class="flex-item mr-10"
+                                        label="总金额"></input-box>
+                                    <date-picker v-model="order.payTime" hint="必填" class="mr-10" label="付款日期"
+                                        style="margin-right: 20px;"></date-picker>
+                                    <div class="flex-item" style="line-height:82px;">
+                                        合同类型:
+                                        <select type="number" style="width:60%" v-model="order.orderType" hint="必填"
+                                            class="f-14 mr-10 select-form" label="合同类型">
+                                            <!-- <option value="1">采购</option> -->
+                                            <option value="3">整机采购</option>
+                                            <!-- <option value="2">生产</option> -->
+                                        </select>
+                                        <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
+                                    </div>
+                                    <!-- <input-box v-model='order.payTime' class='mr-10' label='付款日期'></input-box> -->
+                                    <button class="btn btn-sm" @click="save()">保存</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-content metalwork-info" v-show="activeName == 1">
                     <table class="f-14">
                         <tr>
                             <td style="width: 10%;"></td>
@@ -109,22 +152,6 @@
                             <td colspan="6" class="b">采购订单</td>
                             <td colspan="6" class="b">
                                 <a class="a" flat style="color: #008eff;margin-right:10px;" :href="orderUrl">合同下载</a>
-                                <!-- <a
-                                    target="_blank"
-                                    v-if="(orderUrl).match('\.(pdf|jpe?g|png|bmp)$') "
-                                    class="a"
-                                    flat
-                                    style="color: #008eff"
-                                    :href="orderUrl"
-                                >合同预览</a>
-                                <a
-                                    target="_blank"
-                                    v-if="!(orderUrl).match('\.(pdf|jpe?g|png|bmp)$')"
-                                    class="a"
-                                    flat
-                                    style="color: #008eff"
-                                    :href="'http://view.officeapps.live.com/op/view.aspx?src='+ orderUrl"
-                                >合同预览</a>-->
                             </td>
                         </tr>
                         <tr>
@@ -266,44 +293,6 @@
                 <btn flat color="#008eff" @click="layer = false">关闭</btn>
             </div>
         </layer>
-        <!-- <layer v-if="numLayer" title="详情" width="70%">
-            <div class="layer-text" style="padding-bottom: 50px;">
-                <div class="form-content metalwork-info">
-                    <table class="f-14">
-                        <tr>
-                            <td style="width: 10%;"></td>
-                            <td style="width: 20%;"></td>
-                            <td style="width: 20%;"></td>
-                            <td style="width: 15%;"></td>
-                            <td style="width: 15%;"></td>
-                            <td style="width: 15%;"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="1" class="b">序号</td>
-                            <td colspan="1" class="b">图号</td>
-                            <td colspan="1" class="b">零件名称</td>
-                            <td colspan="1" class="b">采购总数</td>
-                            <td colspan="1" class="b">报检总数</td>
-                            <td colspan="1" class="b">合格总数</td>
-                        </tr>
-                        <tr v-for="(item,i) in numList" :key="i">
-                            <td colspan="1">{{i+1}}</td>
-                            <td colspan="1">{{item.materialGraphNo}}</td>
-                            <td colspan="1">{{item.materialName}}</td>
-                            <td colspan="1">{{item.purchaseNumber}}</td>
-                            <td colspan="1">{{item.deliveryNumber}}</td>
-                            <td colspan="1">{{item.qualifiedNumber}}</td>
-                        </tr>
-                        <tr v-if="numList.length===0">
-                            <td colspan="6" style="text-align:center">无数据</td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-            <div class="layer-btns">
-                <btn flat color="#008eff" @click="numLayer=false">关闭</btn>
-            </div>
-        </layer> -->
     </div>
 </template>
 
@@ -325,7 +314,7 @@ export default {
             ],
             filter: {
                 purchaseOrderNo: '',
-                status: 1,
+                status: "",
                 supplierName: '',
                 supplierNo: '',
                 location: ""
@@ -340,7 +329,17 @@ export default {
             layer: false,
             numLayer: false,
             numList: [],
-            locationList: []
+            locationList: [],
+            payFlag: false,
+            payList: [],
+            addFlag: false,
+            order: {
+                amount: "",
+                orderNo: "",
+                payTime: "",
+                orderType: "3"
+            },
+            activeName: "1"
         };
     },
     created() {
@@ -354,7 +353,6 @@ export default {
         this.getLocation()
     },
     activated() {
-        console.log(this.$store.state.permission)
         if (this.$route.query.name) {
             this.filter.supplierName = this.$route.query.name
             this.$refs.list.update(true);
@@ -362,6 +360,7 @@ export default {
         this.getLocation()
     },
     methods: {
+        getPriceTotal() { },
         getLocation() {
             this.$http
                 .get(`/haolifa/sys-dict/getDictListByType/DATA_LOCATION`)
@@ -377,14 +376,6 @@ export default {
                     this.$toast(e.message || e.msg);
                 });
         },
-        addPurchase() {
-            this.$router.push({
-                path: '/machinePurchased-order/add',
-                query: {
-                    isAdd: true
-                }
-            })
-        },
         flush() {
             this.filter = {
                 purchaseOrderNo: '',
@@ -395,6 +386,52 @@ export default {
             };
             this.$refs.list.update(true);
         },
+        payClick(orderNo) {
+            this.payFlag = true;
+            this.$http
+                .get(`/haolifa/payment/list?orderNo=${orderNo}`)
+                .then(res => {
+                    this.payList = res;
+                })
+                .catch(e => {
+                    this.$toast(e.msg);
+                });
+        },
+        addPay() {
+            this.order.orderNo = this.info.purchaseOrderNo
+            this.addFlag = true;
+        },
+        save() {
+            if (!this.order.orderNo) {
+                this.$toast("请填写合同订单号");
+                return;
+            }
+            if (!this.order.amount) {
+                this.$toast("请填写总金额");
+                return;
+            }
+            if (!this.order.payTime) {
+                this.$toast("请选择付款日期");
+                return;
+            }
+            this.order.orderType = parseInt(this.order.orderType);
+            this.$http
+                .post("/haolifa/payment/save", this.order)
+                .then(res => {
+                    this.$toast("提交成功");
+                    this.order = {
+                        amount: "",
+                        orderNo: this.info.purchaseOrderNo,
+                        payTime: "",
+                        orderType: "3"
+                    };
+                    this.addFlag = false;
+                    this.payClick(this.info.purchaseOrderNo);
+                })
+                .catch(e => {
+                    this.$toast(e.message || e.msg);
+                });
+        },
         reduceTotal(itemList) {
             let totalNumber = itemList.reduce((pre, cur) => {
                 return pre + cur.productNumber
@@ -403,6 +440,9 @@ export default {
 
         },
         getInfo(formId) {
+            this.activeName = "1";
+            this.addFlag = false;
+
             this.$http
                 .get(`/haolifa/wholeMachinePurchaseOrder/detail/${formId}`)
                 .then(res => {
@@ -410,132 +450,18 @@ export default {
                     this.itemList = res.itemList;
                     this.layer = true;
                     this.orderUrl = res.fileUrl;
+                    this.payClick(this.info.purchaseOrderNo)
+                    this.order = {
+                        amount: "",
+                        orderNo: this.info.purchaseOrderNo,
+                        payTime: "",
+                        orderType: "3"
+                    }
                 })
                 .catch(e => {
                     this.$toast(e.msg);
                 });
         },
-        downloadOrder: function (id) {
-            this.$http
-                .get(`/haolifa/export/purchaseOrder/${id}`)
-                .then(res => { })
-                .catch(e => {
-                    this.$toast(e.msg);
-                });
-        },
-        createInspect: function (formId) {
-            this.$http
-                .get(`/haolifa/purchase-order/createInspect/${formId}`)
-                .then(res => {
-                    console.log("报检单号", res);
-                    this.$confirm({
-                        title: "完善报检单",
-                        text: "现在去完善报检单？",
-                        color: "blue",
-                        btns: ["稍后再说", "现在完善"],
-                        yes: () => {
-                            this.$router.push(
-                                `/applyBuy-material/edit?id=${res}`
-                            );
-                        }
-                    });
-                });
-        },
-        approveProgress(item) {
-            this.$router.push({
-                path: `/purchsemanage-purchase/approveProgress?`,
-                query: { formNo: item.purchaseOrderNo, formId: 0 }
-            });
-        },
-        approve: function (orderNo) {
-            this.$confirm({
-                title: "发起审批",
-                text: "确定发起审批？",
-                color: "blue",
-                btns: ["取消", "确认"],
-                yes: () => {
-                    this.$http
-                        .get(`/haolifa/wholeMachinePurchaseOrder/approve/${orderNo}/0`)
-                        .then(res => {
-                            this.$toast("发起成功");
-                            this.$refs.list.update(true);
-                        })
-                        .catch(e => {
-                            this.$toast(e.msg || e.message);
-                        });
-                }
-            });
-        },
-        updatePurchase: function (orderId) {
-            this.$router.push(`/machinePurchased-order/add?formId=${orderId}`);
-        },
-        completePurchase: function (orderNo) {
-            // this.completeLayer = true;
-            // this.wreck.orderNo = orderNo;
-            this.$confirm({
-                title: "采购完成",
-                text: "确定采购完成吗",
-                color: "blue",
-                btns: ["取消", "确认"],
-                yes: () => {
-                    this.$http
-                        .post(`/haolifa/wholeMachinePurchaseOrder/finish/${orderNo}`)
-                        .then(res => {
-                            this.completeLayer = false;
-                            this.$refs.list.update(true);
-                        })
-                        .catch(e => {
-                            this.$toast(e.msg || e.message);
-                        });
-                }
-            });
-        },
-        // complete: function() {
-        //     this.$http
-        //         .post("/haolifa/purchase-order/complete", this.wreck)
-        //         .then(res => {
-        //             this.completeLayer = false;
-        //             this.$refs.list.update(true);
-        //         })
-        //         .catch(e => {
-        //             this.$toast(e.msg || e.message);
-        //         });
-        // },
-        deletePurchase: function (id) {
-            this.$confirm({
-                title: "删除确认",
-                text: `您确定要删除该订单么？`,
-                color: "red",
-                btns: ["取消", "删除"],
-                yes: () => {
-                    this.$http
-                        .delete(
-                            `/haolifa/wholeMachinePurchaseOrder/remove/${id}`
-                        )
-                        .then(res => {
-                            this.$toast("删除成功");
-                            this.$refs.list.update(true);
-                        })
-                        .catch(e => {
-                            this.$toast(e.msg);
-                        });
-                }
-            });
-        },
-        // numClick(purchaseNo) {
-        //     this.numLayer = true;
-        //     this.numList = [];
-        //     this.$http
-        //         .get(
-        //             `/haolifa/wholeMachinePurchaseOrder/detail/${purchaseNo}`
-        //         )
-        //         .then(res => {
-        //             this.numList = res;
-        //         })
-        //         .catch(e => {
-        //             this.$toast(e.msg);
-        //         });
-        // }
     }
 };
 </script>

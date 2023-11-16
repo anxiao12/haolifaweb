@@ -9,8 +9,8 @@
             </div>
             <div v-if="item.open" class="openMenu">
                 <router-link class="nav-item flex-v-center c-6" v-for="m in item.children" v-if="menus.includes(m.id)"
-                    :key="m.id" :title="m.name" :to="m.url"
-                    :class="{ 'on': $route.meta.id === m.id }">{{ m.name }}</router-link>
+                    :key="m.id" :title="m.name" :to="m.url" :class="{ 'on': $route.meta.id === m.id }">{{ m.name
+                    }}</router-link>
             </div>
         </div>
     </div>
@@ -246,7 +246,7 @@ export default {
                 name: "配套管理",
                 id: "parent-ptgl",
                 children: [
-                   {
+                    {
                         name: "整机设置",
                         url: "/machineSet",
                         id: "zjsz",
@@ -273,7 +273,7 @@ export default {
                 name: "供应商管理",
                 id: "parent-gysgl",
                 children: [
-                   {
+                    {
                         name: "整机供应商",
                         url: "/machinesupplier/list",
                         id: "zjgys",
@@ -309,12 +309,12 @@ export default {
                 name: "采购管理",
                 id: "parent-cggl",
                 children: [
-                   {
+                    {
                         name: "整机待采购列表",
                         url: "/machineToPurchase-order",
                         id: "zjdcglb",
                     },
-                     {
+                    {
                         name: "整机采购列表",
                         url: "/machinePurchased-order/list",
                         id: "zjcglb",
@@ -501,6 +501,11 @@ export default {
                         name: "采购合同管理",
                         url: "/contract",
                         id: "htgl",
+                    },
+                    {
+                        name: "整机采购合同管理",
+                        url: "/cwContract",
+                        id: "cw-zjcght",
                     },
                     {
                         name: "进项发票管理",
@@ -973,7 +978,7 @@ export default {
                     item.open = false;
                 });
                 this.list = res;
-                console.log('list',res)
+                console.log('list', res)
             });
         },
     },

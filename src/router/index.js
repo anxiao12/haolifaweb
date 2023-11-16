@@ -95,10 +95,11 @@ router.beforeEach((to, from, next) => {
   axios
     .get('/haolifa/self/info')
     .then(res => {
-      console.log('res',res)
+      console.log('res', res)
       res = res.data.result;
       res.menus.push('home');
       store.commit('LOGIN', res);
+      store.commit("UPDATE_BUTTONS", res.buttons)
       resetRouter(res.menus);
       router.replace({
         path: to.path,

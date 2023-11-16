@@ -10,6 +10,17 @@ export default [{
         id: 'htgl'
     }
 }, {
+    path: '/cwContract',
+    name: 'cwContract',
+    component: () =>
+        import( /* webpackChunkName: "contract" */ './zjIndex.vue'),
+    meta: {
+        level: 2,
+        title: '整机采购合同管理',
+        open: false,
+        id: 'cw-zjcght'
+    }
+}, {
     path: '/production',
     name: 'production',
     component: () =>

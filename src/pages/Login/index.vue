@@ -12,11 +12,13 @@
                         <div class="inputIcon t-user"></div>
                     </div>
                     <div class="t-inputWrap">
-                        <input type="password" v-model="password" autocomplete="off" @keydown.enter="login" placeholder="请输入密码" />
+                        <input type="password" v-model="password" autocomplete="off" @keydown.enter="login"
+                            placeholder="请输入密码" />
                         <div class="inputIcon t-password"></div>
                     </div>
                     <div class="t-inputWrap">
-                        <input type="text" class="inputCode" autocomplete="off" v-model="imageCode" @keyup.enter="login" placeholder="请输入验证码" />
+                        <input type="text" class="inputCode" autocomplete="off" v-model="imageCode" @keyup.enter="login"
+                            placeholder="请输入验证码" />
                         <div class="codeImg">
                             <img @click="getImageCode()" :src="authImg" alt />
                         </div>
@@ -27,7 +29,7 @@
                     <a href="javascript:;" class="loginBtn" :loading="loading" @click="login">登录</a>
                 </div>
                 <div class="t-inputWrap" style="text-align:right;">
-                    <span style="color:#f36ca1" v-show="errorMsgFlag">{{errorMsg}}</span>
+                    <span style="color:#f36ca1" v-show="errorMsgFlag">{{ errorMsg }}</span>
                     <a class="a f-13" v-tooltip:top="'请联系管理员修改密码'" style="color:rgb(178, 204, 239);">忘记密码？</a>
                     <span class="flex-item"></span>
                 </div>
@@ -107,6 +109,7 @@ export default {
                     res.menus.push("home");
                     this.errorMsgFlag = false;
                     this.$store.commit("LOGIN", res);
+                    // this.$store.commit("UPDATE_BUTTONS", res.buttons)
                     resetRouter(res.menus);
                     this.$router.replace("/");
                 })
@@ -129,27 +132,33 @@ export default {
 .page-login {
     background: url("../../assets/img/login_bg.jpg") center / cover;
     flex-direction: column;
+
     .avatar {
         margin-right: 15px;
     }
+
     .login-logo {
         height: 30px;
         filter: grayscale(100%);
         opacity: 0.5;
         margin-right: 10px;
     }
+
     .login-account {
         padding: 20px 0;
     }
+
     .login-form {
         padding: 30px 0 10px 0;
     }
+
     .loginBox {
         background: url("../../assets/img/login.png") no-repeat;
         width: 400px;
         height: 445px;
         margin-left: 655px;
         overflow: hidden;
+
         h3 {
             font-size: 24px;
             color: #fff;
@@ -157,11 +166,13 @@ export default {
             margin-bottom: 30px;
             text-align: center;
         }
+
         .t-inputWrap {
             width: 280px;
             margin: 15px auto;
             position: relative;
         }
+
         .t-inputWrap input {
             width: 100%;
             height: 45px;
@@ -173,6 +184,7 @@ export default {
             outline: none;
             background-color: rgba(40, 111, 203, 0);
         }
+
         .t-inputWrap .inputIcon {
             width: 15px;
             height: 15px;
@@ -182,18 +194,23 @@ export default {
             background-image: url("../../assets/img/login_bg.png");
             background-repeat: no-repeat;
         }
+
         .t-inputWrap .t-user {
             background-position: left top;
         }
+
         .t-inputWrap .t-password {
             background-position: left -19px;
         }
+
         .t-inputWrap .t-codeIcon {
             background-position: left -37px;
         }
+
         .t-inputWrap .inputCode {
             width: 200px;
         }
+
         .t-inputWrap .codeImg {
             width: 74px;
             height: 43px;
@@ -201,10 +218,12 @@ export default {
             float: right;
             background: #f1f1f1;
         }
+
         .t-inputWrap .codeImg img {
             width: 100%;
             height: 100%;
         }
+
         .t-inputWrap a.loginBtn {
             width: 100%;
             display: block;
@@ -218,39 +237,49 @@ export default {
             transition: background 0.3s;
             -webkit-transition: background 0.3s;
         }
+
         .t-inputWrap a.loginBtn:hover {
             background: #32b4f7;
         }
     }
+
     input::-webkit-input-placeholder {
         color: #92bff9;
     }
+
     .t-mt10 {
         margin-top: 8%;
     }
+
     .t-mt5 {
         margin-top: 5%;
     }
+
     @media screen and (min-width: 960px) and (max-width: 1366px) {
         .t-mt5 {
             margin-top: 3%;
         }
+
         .t-mt10 {
             margin-top: 2%;
         }
     }
+
     @media screen and (min-width: 1367px) and (max-width: 1440px) {
         .t-mt5 {
             margin-top: 5%;
         }
+
         .t-mt10 {
             margin-top: 5%;
         }
     }
+
     @media screen and (width: 1600px) {
         .t-mt5 {
             margin-top: 5%;
         }
+
         .t-mt10 {
             margin-top: 5%;
         }
