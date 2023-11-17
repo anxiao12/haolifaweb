@@ -99,7 +99,7 @@ router.beforeEach((to, from, next) => {
       res = res.data.result;
       res.menus.push('home');
       store.commit('LOGIN', res);
-      store.commit("UPDATE_BUTTONS", res.buttons)
+      // store.commit("UPDATE_BUTTONS", res.buttons)
       resetRouter(res.menus);
       router.replace({
         path: to.path,

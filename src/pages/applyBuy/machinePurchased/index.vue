@@ -24,8 +24,8 @@
                 <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
             </div>
             <div class="flex-item"></div>
-            <div @click="addPurchase()"
-                v-if='$store.state.permission.buttons[0] == "admin" || $store.state.permission.buttons.indexOf("zjsz-add") > -1'>
+            <!-- v-if='$store.state.permission.buttons[0] == "admin" || $store.state.permission.buttons.indexOf("zjsz-add") > -1'> -->
+            <div @click="addPurchase()">
                 <btn class="b" flat color="#008eff">新增采购</btn>
             </div>
 

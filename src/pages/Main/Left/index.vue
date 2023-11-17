@@ -315,6 +315,11 @@ export default {
                         id: "zjdcglb",
                     },
                     {
+                        name: "整机设置",
+                        url: "/qmachineSet",
+                        id: "zjsz-query",
+                    },
+                    {
                         name: "整机采购列表",
                         url: "/machinePurchased-order/list",
                         id: "zjcglb",
