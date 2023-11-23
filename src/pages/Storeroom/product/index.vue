@@ -13,6 +13,7 @@
                     <option value="">全部</option>
                     <option :value="item.value" v-for="item, i in locationList" :key="i">{{ item.text }}</option>
                 </select>
+                类型:
                 <select v-model="filter.operationType" class="f-14" @change="$refs.list.update(true)">
                     <option value="0">全部</option>
                     <option value="1">出库</option>
@@ -345,4 +346,5 @@ export default {
     .scroll-y {
         padding-bottom: 40px;
     }
-}</style>
+}
+</style>

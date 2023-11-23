@@ -23,13 +23,13 @@
                     <th class="t-right" style="width: 100px;">操作</th>
                 </tr>
                 <template slot="item" slot-scope="{ item, index }">
-                    <td>{{index}}</td>
-                    <td>{{item.realName}}</td>
-                    <td>{{item.username}}</td>
-                    <td>{{item.departName}}</td>
-                    <td>{{item.postName}}</td>
-                    <td>{{item.roles.map(item => item.description).toString() || '-'}}</td>
-                    <td>{{item.location}}</td>
+                    <td>{{ index }}</td>
+                    <td>{{ item.realName }}</td>
+                    <td>{{ item.username }}</td>
+                    <td>{{ item.departName }}</td>
+                    <td>{{ item.postName }}</td>
+                    <td>{{ item.roles.map(item => item.description).toString() || '-' }}</td>
+                    <td>{{ item.location }}</td>
                     <!-- <td>{{item.username}}</td> -->
                     <td class="t-right">
                         <a href="javascript:;" style="margin-right: 3px" class="blue" @click="edit(item)">编辑</a> |
@@ -44,7 +44,7 @@
                 <select-box :list="roles" v-model="roleId" label="请选择角色"></select-box>
             </div>
             <div class="layer-btns">
-                <btn flat @click="layer=false">取消</btn>
+                <btn flat @click="layer = false">取消</btn>
                 <btn flat color="#008eff" @click="submit">保存</btn>
             </div>
         </layer>
@@ -74,17 +74,17 @@ export default {
             layer: false,
             userLayer: false,
             roles: [],
-            location:"",
+            location: "",
             userList: [],
-            locationList:[
-              // {
-              //   text:'北京',
-              //   value:'北京'
-              // },
-              //  {
-              //   text:'山西',
-              //   value:'山西'
-              // },
+            locationList: [
+                // {
+                //   text:'北京',
+                //   value:'北京'
+                // },
+                //  {
+                //   text:'山西',
+                //   value:'山西'
+                // },
             ],
             roleIds: [],
             roleId: "",
@@ -93,7 +93,7 @@ export default {
                 id: "",
                 username: "",
                 password: "",
-                location:"",
+                location: "",
                 realName: "",
                 userNo: "",
                 sex: 0,
@@ -110,24 +110,24 @@ export default {
     activated() {
         this.$refs.datalist.update(true);
         this.getUserList();
+        this.getLocation()
     },
     methods: {
-      getLocation(){
-        this.$http
+        getLocation() {
+            this.$http
                 .get(`/haolifa/sys-dict/getDictListByType/DATA_LOCATION`)
                 .then(res => {
-                  this.locationList = res.map(res =>{
-                    return {
-                      text:res.desc,
-                      value:res.code
-                    }
-                  });
-                  this.userLayer = true;
+                    this.locationList = res.map(res => {
+                        return {
+                            text: res.desc,
+                            value: res.code
+                        }
+                    });
                 })
                 .catch(e => {
                     this.$toast(e.message || e.msg);
                 });
-      },
+        },
         flush() {
             this.$refs.datalist.update(true);
         },
@@ -188,7 +188,6 @@ export default {
         },
         userSubmit() {
             if (
-                !this.form.location ||
                 !this.form.username ||
                 !this.form.password
             ) {
@@ -205,6 +204,7 @@ export default {
                     this.form.entryTime = item.workingTime;
                     this.form.departId = item.departId;
                     this.form.postId = item.postId;
+                    // this.form.location = item.location;
                 }
             });
             const method = this.form.id ? "put" : "post";
@@ -223,6 +223,7 @@ export default {
                         entryTime: "",
                         departId: "",
                         postId: "",
+                        location: "",
                         userId: ""
                     };
                     this.$toast("保存成功");
@@ -233,7 +234,7 @@ export default {
                 });
         },
         addUser() {
-            this.getLocation()
+            this.userLayer = true;
         },
         getUserList() {
             this.userList = [];

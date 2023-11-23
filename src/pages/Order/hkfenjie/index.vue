@@ -117,6 +117,7 @@ export default {
     },
     created() {
         this.getPayType();
+        this.getLocation();
     },
     methods: {
         flush() {
