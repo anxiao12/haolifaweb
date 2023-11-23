@@ -4,7 +4,8 @@
         <div class="flex-v-center tool-bar">
             <div class="flex-v-center search-bar" style="margin-right: 20px;">
                 <i class="icon f-20 c-8">search</i>
-                <input type="text" class="flex-item" v-model="filter.contractOrderNo" @change="$refs.list.update(true)" placeholder="订单号" style="width: 200px;">
+                <input type="text" class="flex-item" v-model="filter.contractOrderNo" @change="$refs.list.update(true)"
+                    placeholder="订单号" style="width: 200px;">
                 发货状态:
                 <select v-model="filter.deliverStatus" class="f-14" @change="$refs.list.update(true)">
                     <option value="-1">全部</option>
@@ -25,6 +26,7 @@
                     <th>发货通知单号</th>
                     <th style="width:50px;">发货通知单</th>
                     <th>订单号</th>
+                    <th>地区</th>
                     <th>发货状态</th>
                     <th>订单总数量</th>
                     <th>已发货数量</th>
@@ -37,20 +39,21 @@
                 </tr>
                 <!-- item: 当前行数据; index: 当前行数 -->
                 <template slot="item" slot-scope="{ item, index }">
-                    <td class="c-a">{{index}}</td>
-                    <td>{{item.deliveryNo}}</td>
+                    <td class="c-a">{{ index }}</td>
+                    <td>{{ item.deliveryNo }}</td>
                     <td>
-                        <a class="fixed-length" :href="item.deliveryUrl" :title="item.deliveryUrl">{{item.deliveryUrl}}</a>
+                        <a class="fixed-length" :href="item.deliveryUrl" :title="item.deliveryUrl">{{ item.deliveryUrl }}</a>
                     </td>
-                    <td>{{item.contractOrderNo}}</td>
-                    <td>{{deliverStatusList[item.deliverStatus]}}</td>
-                    <td>{{item.totalCount}}</td>
-                    <td>{{item.deliveredNumber}}</td>
-                    <td>{{statusList[item.auditResult]}}</td>
-                    <td>{{item.auditInfo}}</td>
-                    <td>{{item.auditTime}}</td>
-                    <td>{{item.createTime}}</td>
-                    <td>{{item.updateTime}}</td>
+                    <td>{{ item.contractOrderNo }}</td>
+                    <td>{{ item.location }}</td>
+                    <td>{{ deliverStatusList[item.deliverStatus] }}</td>
+                    <td>{{ item.totalCount }}</td>
+                    <td>{{ item.deliveredNumber }}</td>
+                    <td>{{ statusList[item.auditResult] }}</td>
+                    <td>{{ item.auditInfo }}</td>
+                    <td>{{ item.auditTime }}</td>
+                    <td>{{ item.createTime }}</td>
+                    <td>{{ item.updateTime }}</td>
                     <!-- <td class="t-right"> -->
                     <!-- <a href="javascript:;" style="margin-right: 3px" v-if="item.auditResult != 2" class="blue" @click="edit(item.id)">编辑</a>
                     <a href="javascript:;" class="blue" @click="addRecord(item)">添加发货记录</a>-->
@@ -94,8 +97,7 @@ export default {
         },
         addRecord(item) {
             this.$router.push(
-                `/delivery-record/add?contractOrderNo=${
-                    item.contractOrderNo
+                `/delivery-record/add?contractOrderNo=${item.contractOrderNo
                 }&deliveryNoticeNo=${item.deliveryNo}`
             );
         },

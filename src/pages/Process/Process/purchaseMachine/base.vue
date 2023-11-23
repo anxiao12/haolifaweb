@@ -1,74 +1,51 @@
 <template>
-    <div
-        class="p-p-base"
-        v-if="data"
-    >
+    <div class="p-p-base" v-if="data">
         <div class="node">
             <div class="flex-item mt-10 mb-10">
                 <span class="f-20">基本信息</span>
-                <btn
-                    @click="nuclear(data.formNo)"
-                    style="left: 74%;"
-                >核料清单查看</btn>
+                <btn @click="nuclear(data.formNo)" style="left: 74%;">核料清单查看</btn>
             </div>
 
             <div class="node">
                 <div class="node-title mb-10">
                     <span class="b">流程描述：</span>
-                    <span class="mr-15">{{data.summary}}</span>
+                    <span class="mr-15">{{ data.summary }}</span>
                 </div>
                 <div class="node-title mb-10">
                     <span class="b">生产订单号：</span>
-                    <span class="mr-15">{{data.formNo}}</span>
+                    <span class="mr-15">{{ data.formNo }}</span>
                 </div>
                 <div class="node-title mb-10">
                     <span class="b">发 起 人：</span>
-                    <span class="mr-15">{{data.initUserName}}</span>
+                    <span class="mr-15">{{ data.initUserName }}</span>
                 </div>
                 <div class="node-title mb-10">
                     <span class="b">发起时间：</span>
-                    <span>{{data.createTime}}</span>
+                    <span>{{ data.createTime }}</span>
                 </div>
                 <div class="node-title mb-10">
                     <span class="b">待审批附件：</span>
                     <span>
-                        <a
-                            class="a"
-                            flat
-                            style="color: #008eff"
-                            :href="orderUrl"
-                        >下载生产订单</a>
+                        <a class="a" flat style="color: #008eff" :href="orderUrl">下载生产订单</a>
                     </span>
                 </div>
                 <div class="node-title mb-10">
                     <span class="b">待审批附件预览：</span>
                     <span>
-                        <a
-                            target="_blank"
-                            class="a"
-                            flat
-                            style="color: #008eff"
-                            :href="'http://view.officeapps.live.com/op/view.aspx?src='+ orderUrl"
-                        >生产订单预览</a>
+                        <a target="_blank" class="a" flat style="color: #008eff"
+                            :href="'http://view.officeapps.live.com/op/view.aspx?src=' + orderUrl">生产订单预览</a>
                     </span>
                 </div>
             </div>
             <div v-if="data.dealStep">
                 <div class="flex-item mt-10 mb-10">
                     <span class="f-20">审批栏</span>
-                    <span class="f-10 ml-20">当前节点:{{data.dealStep.stepName}}</span>
-                    <btn
-                        class="ml-10"
-                        v-if="dealStepId == 51"
-                        @click="addJishu"
-                    >添加技术清单</btn>
+                    <span class="f-10 ml-20">当前节点:{{ data.dealStep.stepName }}</span>
+                    <btn class="ml-10" v-if="dealStepId == 51" @click="addJishu">添加技术清单</btn>
                 </div>
                 <div class="node">
                     <div>
-                        <div
-                            class="flex"
-                            v-if="dealStepId == 51"
-                        >
+                        <div class="flex" v-if="dealStepId == 51">
                             <!-- <input-box v-model="updateInfo.technicalRequire" :multi-line="true" class="flex-item" label="技术清单说明" style="margin-right: 20px;"></input-box> -->
                             <table class="f-14 order-info">
                                 <tr>
@@ -92,233 +69,98 @@
                                     <td style="width: 100px;"></td>
                                 </tr>
                                 <tr>
-                                    <td
-                                        colspan="18"
-                                        class="b"
-                                    >技术清单</td>
+                                    <td colspan="18" class="b">技术清单</td>
                                 </tr>
 
                                 <tr>
-                                    <td
-                                        colspan="1"
-                                        rowspan="2"
-                                    >序号</td>
-                                    <td
-                                        colspan="1"
-                                        rowspan="2"
-                                    >产品名称</td>
-                                    <td
-                                        colspan="1"
-                                        rowspan="2"
-                                    >型号</td>
-                                    <td
-                                        colspan="1"
-                                        rowspan="2"
-                                    >规格</td>
-                                    <td
-                                        colspan="1"
-                                        rowspan="2"
-                                    >数量</td>
-                                    <td
-                                        colspan="1"
-                                        rowspan="2"
-                                    >上法兰标准</td>
-                                    <td
-                                        colspan="3"
-                                        rowspan="1"
-                                    >上法兰尺寸</td>
-                                    <td
-                                        colspan="5"
-                                        rowspan="1"
-                                    >出轴尺寸</td>
-                                    <td
-                                        colspan="1"
-                                        rowspan="2"
-                                    >静扭矩</td>
-                                    <td
-                                        colspan="1"
-                                        rowspan="2"
-                                    >执行器型号</td>
-                                    <td
-                                        colspan="1"
-                                        rowspan="2"
-                                    >备注</td>
-                                    <td
-                                        colspan="1"
-                                        rowspan="2"
-                                    >操作</td>
+                                    <td colspan="1" rowspan="2">序号</td>
+                                    <td colspan="1" rowspan="2">产品名称</td>
+                                    <td colspan="1" rowspan="2">型号</td>
+                                    <td colspan="1" rowspan="2">规格</td>
+                                    <td colspan="1" rowspan="2">数量</td>
+                                    <td colspan="1" rowspan="2">上法兰标准</td>
+                                    <td colspan="3" rowspan="1">上法兰尺寸</td>
+                                    <td colspan="5" rowspan="1">出轴尺寸</td>
+                                    <td colspan="1" rowspan="2">静扭矩</td>
+                                    <td colspan="1" rowspan="2">执行器型号</td>
+                                    <td colspan="1" rowspan="2">备注</td>
+                                    <td colspan="1" rowspan="2">操作</td>
                                 </tr>
                                 <tr>
-                                    <td
-                                        colspan="1"
-                                        rowspan="1"
-                                    >连接孔</td>
-                                    <td
-                                        colspan="1"
-                                        rowspan="1"
-                                    >角度</td>
-                                    <td
-                                        colspan="1"
-                                        rowspan="1"
-                                    >中心距</td>
-                                    <td
-                                        colspan="1"
-                                        rowspan="1"
-                                    >出轴型式</td>
-                                    <td
-                                        colspan="1"
-                                        rowspan="1"
-                                    >出轴长度</td>
-                                    <td
-                                        colspan="1"
-                                        rowspan="1"
-                                    >轴图号</td>
-                                    <td
-                                        colspan="1"
-                                        rowspan="1"
-                                    >连接套</td>
-                                    <td
-                                        colspan="1"
-                                        rowspan="1"
-                                    >过渡盘</td>
+                                    <td colspan="1" rowspan="1">连接孔</td>
+                                    <td colspan="1" rowspan="1">角度</td>
+                                    <td colspan="1" rowspan="1">中心距</td>
+                                    <td colspan="1" rowspan="1">出轴型式</td>
+                                    <td colspan="1" rowspan="1">出轴长度</td>
+                                    <td colspan="1" rowspan="1">轴图号</td>
+                                    <td colspan="1" rowspan="1">连接套</td>
+                                    <td colspan="1" rowspan="1">过渡盘</td>
                                 </tr>
-                                <tr
-                                    v-for="(val,index) in technicalRequire"
-                                    :key="index"
-                                >
-                                    <td colspan="1">{{val.seqNo}}</td>
+                                <tr v-for="(val, index) in technicalRequire" :key="index">
+                                    <td colspan="1">{{ val.seqNo }}</td>
                                     <td colspan="1">
-                                        <input-box
-                                            type="text"
-                                            v-model="val.productName"
-                                        ></input-box>
+                                        <input-box type="text" v-model="val.productName"></input-box>
                                     </td>
                                     <td colspan="1">
-                                        <input-box
-                                            type="text"
-                                            v-model="val.productModel"
-                                        ></input-box>
+                                        <input-box type="text" v-model="val.productModel"></input-box>
                                     </td>
                                     <td colspan="1">
-                                        <input-box
-                                            type="text"
-                                            v-model="val.specifications"
-                                        ></input-box>
+                                        <input-box type="text" v-model="val.specifications"></input-box>
                                     </td>
                                     <td colspan="1">
-                                        <input-box
-                                            type="text"
-                                            v-model="val.productNum"
-                                        ></input-box>
+                                        <input-box type="text" v-model="val.productNum"></input-box>
                                     </td>
                                     <td colspan="1">
-                                        <input-box
-                                            type="text"
-                                            v-model="val.upperFlangeStandard	"
-                                        ></input-box>
+                                        <input-box type="text" v-model="val.upperFlangeStandard"></input-box>
                                     </td>
                                     <td colspan="1">
-                                        <input-box
-                                            type="text"
-                                            v-model="val.connectingHole"
-                                        ></input-box>
+                                        <input-box type="text" v-model="val.connectingHole"></input-box>
                                     </td>
                                     <td colspan="1">
-                                        <input-box
-                                            type="text"
-                                            v-model="val.angle"
-                                        ></input-box>
+                                        <input-box type="text" v-model="val.angle"></input-box>
                                     </td>
                                     <td colspan="1">
-                                        <input-box
-                                            type="text"
-                                            v-model="val.centerDistance"
-                                        ></input-box>
+                                        <input-box type="text" v-model="val.centerDistance"></input-box>
                                     </td>
                                     <td colspan="1">
-                                        <input-box
-                                            type="text"
-                                            v-model="val.outputShaftType"
-                                        ></input-box>
+                                        <input-box type="text" v-model="val.outputShaftType"></input-box>
                                     </td>
                                     <td colspan="1">
-                                        <input-box
-                                            type="text"
-                                            v-model="val.outputShaftLength"
-                                        ></input-box>
+                                        <input-box type="text" v-model="val.outputShaftLength"></input-box>
                                     </td>
                                     <td colspan="1">
-                                        <input-box
-                                            type="text"
-                                            v-model="val.axisDrawingNo"
-                                        ></input-box>
+                                        <input-box type="text" v-model="val.axisDrawingNo"></input-box>
                                     </td>
                                     <td colspan="1">
-                                        <input-box
-                                            type="text"
-                                            v-model="val.connectingSleeve"
-                                        ></input-box>
+                                        <input-box type="text" v-model="val.connectingSleeve"></input-box>
                                     </td>
                                     <td colspan="1">
-                                        <input-box
-                                            type="text"
-                                            v-model="val.transitionPlate"
-                                        ></input-box>
+                                        <input-box type="text" v-model="val.transitionPlate"></input-box>
                                     </td>
                                     <td colspan="1">
-                                        <input-box
-                                            type="text"
-                                            v-model="val.staticTorque"
-                                        ></input-box>
+                                        <input-box type="text" v-model="val.staticTorque"></input-box>
                                     </td>
                                     <td colspan="1">
-                                        <input-box
-                                            type="text"
-                                            v-model="val.actuatorModel"
-                                        ></input-box>
+                                        <input-box type="text" v-model="val.actuatorModel"></input-box>
                                     </td>
                                     <td colspan="1">
-                                        <input-box
-                                            type="text"
-                                            v-model="val.remark"
-                                        ></input-box>
+                                        <input-box type="text" v-model="val.remark"></input-box>
                                     </td>
                                     <td colspan="1">
-                                        <el-button
-                                            size="mini"
-                                            icon="el-icon-circle-plus"
-                                            type="primary"
-                                            @click="addTechnicalRequire"
-                                            circle
-                                        ></el-button>
-                                        <el-button
-                                            style="margin-left:0"
-                                            size="mini"
-                                            icon="el-icon-delete"
-                                            type="danger"
-                                            @click="delTechnicalRequire(index)"
-                                            circle
-                                        ></el-button>
+                                        <el-button size="mini" icon="el-icon-circle-plus" type="primary"
+                                            @click="addTechnicalRequire" circle></el-button>
+                                        <el-button style="margin-left:0" size="mini" icon="el-icon-delete" type="danger"
+                                            @click="delTechnicalRequire(index)" circle></el-button>
                                     </td>
                                 </tr>
                             </table>
                         </div>
-                        <div
-                            v-if="dealStepId == 51"
-                            class="mt-20"
-                        >
-                            <el-button
-                                size="mini"
-                                type="primary"
-                                @click="saveJishu"
-                                :loading="jishuLoading"
-                            >保存技术清单</el-button>
+                        <div v-if="dealStepId == 51" class="mt-20">
+                            <el-button size="mini" type="primary" @click="saveJishu"
+                                :loading="jishuLoading">保存技术清单</el-button>
                         </div>
 
-                        <div
-                            class="flex"
-                            v-if="dealStepId > 51"
-                        >
+                        <div class="flex" v-if="dealStepId > 51">
                             <!-- <input-box
                                 :disabled="true"
                                 v-model="updateInfo.technicalRequire"
@@ -328,7 +170,7 @@
                                 style="margin-right: 20px;"
                             ></input-box>-->
                             <!-- <table class="f-14 order-info"> -->
-                                <!-- <tr>
+                            <!-- <tr>
                                     <td style="width: 100px;"></td>
                                     <td style="width: 100px;"></td>
                                     <td style="width: 100px;"></td>
@@ -364,7 +206,7 @@
                                     v-else
                                 >无</a>
                             </td> -->
-                                <!-- </tr>
+                            <!-- </tr>
 
                                 <tr>
                                     <td
@@ -446,7 +288,7 @@
                                         rowspan="1"
                                     >连接套</td>
                                 </tr> -->
-                                <!-- <tr
+                            <!-- <tr
                                     v-for="(val,index) in orderInfo.orderTechnicalDetaileds"
                                     :key="index"
                                 >
@@ -471,62 +313,26 @@
                             <!-- </table> -->
 
                         </div>
-                        <div
-                            class="flex"
-                            v-if="dealStepId == 56"
-                        >
-                            <input-box
-                                v-model="updateInfo.assemblyShop"
-                                class="flex-item"
-                                label="装配车间"
-                                style="margin-right: 20px;"
-                            ></input-box>
+                        <div class="flex" v-if="dealStepId == 56">
+                            <input-box v-model="updateInfo.assemblyShop" class="flex-item" label="装配车间"
+                                style="margin-right: 20px;"></input-box>
                         </div>
-                        <div
-                            class="flex"
-                            v-if="dealStepId == 57"
-                        >
-                            <input-box
-                                :disabled="true"
-                                v-model="updateInfo.assemblyShop"
-                                class="flex-item"
-                                label="装配车间"
-                                style="margin-right: 20px;"
-                            ></input-box>
-                            <input-box
-                                v-model="updateInfo.assemblyGroup"
-                                class="flex-item"
-                                label="装配小组"
-                                style="margin-right: 20px;"
-                            ></input-box>
+                        <div class="flex" v-if="dealStepId == 57">
+                            <input-box :disabled="true" v-model="updateInfo.assemblyShop" class="flex-item" label="装配车间"
+                                style="margin-right: 20px;"></input-box>
+                            <input-box v-model="updateInfo.assemblyGroup" class="flex-item" label="装配小组"
+                                style="margin-right: 20px;"></input-box>
                         </div>
-                        <div
-                            class="flex"
-                            v-if="dealStepId == 54"
-                        >
-                            <date-picker
-                                v-model="updateInfo.purchaseFeedbackTime"
-                                hint="必填"
-                                class="flex-item"
-                                label="采购完成时间"
-                                style="margin-right: 20px;"
-                            ></date-picker>
+                        <div class="flex" v-if="dealStepId == 54">
+                            <date-picker v-model="updateInfo.purchaseFeedbackTime" hint="必填" class="flex-item"
+                                label="采购完成时间" style="margin-right: 20px;"></date-picker>
                         </div>
-                        <div
-                            class="flex"
-                            v-if="dealStepId == 55 && purchaseList.length>0"
-                        >
-                            <input-box
-                                :disabled="true"
-                                v-model="updateInfo.purchaseFeedbackTime"
-                                hint="必填"
-                                class="flex-item"
-                                label="采购完成时间"
-                                style="margin-right: 20px;"
-                            ></input-box>
+                        <div class="flex" v-if="dealStepId == 55 && purchaseList.length > 0">
+                            <input-box :disabled="true" v-model="updateInfo.purchaseFeedbackTime" hint="必填"
+                                class="flex-item" label="采购完成时间" style="margin-right: 20px;"></input-box>
                         </div>
                         <div>
-                            <div v-if="purchaseList.length>0">
+                            <div v-if="purchaseList.length > 0">
                                 <div class="flex-item mt-10 mb-10">
                                     <span class="f-20">待采购项</span>
                                 </div>
@@ -539,53 +345,28 @@
                                             <th>采购数量</th>
                                         </tr>
                                         <tr :key="i" v-for="(item, i) in purchaseList">
-                                            <td>{{item.productOrderNo}}</td>
-                                            <td>{{item.materialName}}</td>
-                                            <td>{{item.materialGraphNo}}</td>
-                                            <td>{{item.purchaseNumber}}</td>
+                                            <td>{{ item.productOrderNo }}</td>
+                                            <td>{{ item.materialName }}</td>
+                                            <td>{{ item.materialGraphNo }}</td>
+                                            <td>{{ item.purchaseNumber }}</td>
                                         </tr>
                                     </table>
                                 </div>
                             </div>
                         </div>
                         <div class="flex">
-                            <input-box
-                                v-model="handleStep.auditInfo"
-                                :multi-line="true"
-                                class="flex-item"
-                                label="审批意见"
-                                style="margin-right: 20px;"
-                            ></input-box>
+                            <input-box v-model="handleStep.auditInfo" :multi-line="true" class="flex-item" label="审批意见"
+                                style="margin-right: 20px;"></input-box>
                         </div>
                         <div class="flex">
-                            <upload-box
-                                btnText="附件上传"
-                                :fileList="fileList"
-                                :onchange="uploadFile"
-                                :onremove="removeFile"
-                                :multiple="multiple"
-                                style="width: 50%"
-                            ></upload-box>
+                            <upload-box btnText="附件上传" :fileList="fileList" :onchange="uploadFile" :onremove="removeFile"
+                                :multiple="multiple" style="width: 50%"></upload-box>
                         </div>
-                        <div
-                            class="flex"
-                            style="margin-top:10px;"
-                        >
+                        <div class="flex" style="margin-top:10px;">
                             <!-- <btn @click="handleStepM(1)">同意</btn> -->
-                            <el-button
-                                size="mini"
-                                type="primary"
-                                :loading="loading"
-                                @click="handleStepM(1)"
-                            >同意</el-button>
-                            <btn
-                                class="ml-10"
-                                @click="handleStepM(0)"
-                            >不同意</btn>
-                            <btn
-                                class="ml-10"
-                                @click="backStepM()"
-                            >退回</btn>
+                            <el-button size="mini" type="primary" :loading="loading" @click="handleStepM(1)">同意</el-button>
+                            <btn class="ml-10" @click="handleStepM(0)">不同意</btn>
+                            <btn class="ml-10" @click="backStepM()">退回</btn>
                         </div>
                     </div>
                 </div>
@@ -607,45 +388,28 @@
                             <th>审核附件</th>
                             <th>操作</th>
                         </tr>
-                        <tr
-                            v-for="(item, i) in data.historyInfos"
-                            :key="i"
-                        >
-                            <td>{{item.historyId}}</td>
-                            <td>{{item.instanceId}}</td>
-                            <td>{{item.auditResult == 3?'发起':'审批'}}</td>
-                            <td>{{item.stepName}}</td>
-                            <td>{{item.auditUserName}}</td>
-                            <td>{{auditResults[item.auditResult].name}}</td>
-                            <td>{{item.auditInfo}}</td>
-                            <td v-if="i<data.historyInfos.length-1">
-                                <a
-                                    target="_blank"
-                                    v-for="(file,index) in item.accessories"
-                                    :key="index"
-                                    :href="file.fileUrl"
-                                >{{file.fileName}}</a>
+                        <tr v-for="(item, i) in data.historyInfos" :key="i">
+                            <td>{{ item.historyId }}</td>
+                            <td>{{ item.instanceId }}</td>
+                            <td>{{ item.auditResult == 3 ? '发起' : '审批' }}</td>
+                            <td>{{ item.stepName }}</td>
+                            <td>{{ item.auditUserName }}</td>
+                            <td>{{ auditResults[item.auditResult].name }}</td>
+                            <td>{{ item.auditInfo }}</td>
+                            <td v-if="i < data.historyInfos.length - 1">
+                                <a target="_blank" v-for="(file, index) in item.accessories" :key="index"
+                                    :href="file.fileUrl">{{ file.fileName }}</a>
                                 <br>
                             </td>
-                            <td v-else-if="fileDetailList.length>0">
-                                <a
-                                    target="_blank"
-                                    style="display:block"
-                                    v-for="(f,index) in fileDetailList"
-                                    :key="index"
-                                    :href="f.fileUrl"
-                                >{{f.fileName}}</a>
+                            <td v-else-if="fileDetailList.length > 0">
+                                <a target="_blank" style="display:block" v-for="(f, index) in fileDetailList" :key="index"
+                                    :href="f.fileUrl">{{ f.fileName }}</a>
                                 <br>
                             </td>
                             <td v-else>无</td>
                             <td>
-                                <a
-                                    href="javascript:;"
-                                    v-if="item.accessories.length || fileDetailList.length"
-                                    style="margin-right: 3px"
-                                    class="blue"
-                                    @click="removeAccessory(item.historyId)"
-                                >删除</a>
+                                <a href="javascript:;" v-if="item.accessories.length || fileDetailList.length"
+                                    style="margin-right: 3px" class="blue" @click="removeAccessory(item.historyId)">删除</a>
                             </td>
                         </tr>
                     </table>
@@ -656,51 +420,26 @@
                     <span class="f-20">审批附件</span>
                 </div>
                 <div class="flex-item">
-                    <div
-                        v-for="(item,i) in data.accessories"
-                        :key="i"
-                        style="margin-left:20px;margin-top:5px;"
-                    >
+                    <div v-for="(item, i) in data.accessories" :key="i" style="margin-left:20px;margin-top:5px;">
                         <div class="flex">
-                            <a
-                                :href="item.fileUrl"
-                                style="text-decoration:none ;out-line: none ;color:blue"
-                                target="_blank"
-                            >{{item.fileName}}</a>
+                            <a :href="item.fileUrl" style="text-decoration:none ;out-line: none ;color:blue"
+                                target="_blank">{{ item.fileName }}</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <layer
-            v-if="backStepLayer"
-            :title="'退回节点'"
-            width="450px"
-        >
+        <layer v-if="backStepLayer" :title="'退回节点'" width="450px">
             <div class="node">
-                <div
-                    class="node-item"
-                    v-for="(item,index) in backSteps"
-                    :key="index"
-                >
-                    <radio-box
-                        v-model="handleStep.backStepId"
-                        :label="item.stepId"
-                    ></radio-box>
-                    {{item.stepName}}
+                <div class="node-item" v-for="(item, index) in backSteps" :key="index">
+                    <radio-box v-model="handleStep.backStepId" :label="item.stepId"></radio-box>
+                    {{ item.stepName }}
                 </div>
             </div>
             <div class="layer-btns">
-                <btn
-                    flat
-                    @click="cancel()"
-                >取消</btn>
-                <btn
-                    flat
-                    color="#008eff"
-                    @click="complete()"
-                >提交</btn>
+                <btn flat @click="cancel()">取消</btn>
+                <btn flat color="#008eff" @click="complete()">提交</btn>
             </div>
         </layer>
     </div>
@@ -916,13 +655,13 @@ export default {
                 .then((res) => {
                     res.createTime = moment(res.createTime).format("YYYY-MM-DD HH:mm");
                     this.data = res;
-                    console.log('this.data',this.data)
+                    console.log('this.data', this.data)
                     this.data.historyInfos.accessory;
                     this.handleStep.id = res.instanceId;
                     if (res.dealStep) {
                         this.handleStep.stepId = res.dealStep.stepId;
                         this.dealStepId = res.dealStep.stepId;
-                        console.log('stepId',this.dealStepId)
+                        console.log('stepId', this.dealStepId)
                     }
                     //获取订单上传附件
                     this.$http
@@ -1046,7 +785,7 @@ export default {
                             }
                         } else if (this.dealStepId == 54) {
                             // 采购反馈
-                            this.$http.post(`/haolifa/applyBuy/updateStatusByOrderNo?arriveTime=${this.updateInfo.purchaseFeedbackTime}&orderNo=${this.updateInfo.orderNo}`).then((res) => {});
+                            this.$http.post(`/haolifa/applyBuy/updateStatusByOrderNo?arriveTime=${this.updateInfo.purchaseFeedbackTime}&orderNo=${this.updateInfo.orderNo}`).then((res) => { });
                             this.$http.post(`/haolifa/order-product/updateInfo`, this.updateInfo).then((res) => {
                                 this.updateInfo.purchaseFeedbackTime = null;
                             });
@@ -1055,7 +794,7 @@ export default {
                             if (this.orderInfo.isCheckMaterial == 1) {
                                 status = 5;
                             }
-                            this.$http.post(`/haolifa/applyBuy/updateStatusByOrderNo/2?orderNo=${this.updateInfo.orderNo}`).then((res) => {});
+                            this.$http.post(`/haolifa/applyBuy/updateStatusByOrderNo/2?orderNo=${this.updateInfo.orderNo}`).then((res) => { });
                             this.$http.post(`/haolifa/order-product/updateInfo`, this.updateInfo).then((res) => {
                                 this.updateInfo.finishFeedbackTime = null;
                             });
@@ -1072,8 +811,8 @@ export default {
                             this.$http.post(`/haolifa/order-product/updateInfo`, this.updateInfo).then((res) => {
                                 this.updateInfo.assemblyGroup = null;
                             });
-                        }else if(this.dealStepId === 97){//97代表整机订单
-                          //isCheckMaterial=2 代表整机订单  1走核料  0不走核料
+                        } else if (this.dealStepId === 97 || this.dealStepId === 103 || this.dealStepId === 109 || this.dealStepId === 115) {//97代表整机订单
+                            //isCheckMaterial=2 代表整机订单  1走核料  0不走核料
                             if (this.orderInfo.isCheckMaterial == 2) { //整机订单
                                 status = 15;
                             }
@@ -1118,7 +857,7 @@ export default {
                         if (this.dealStepId == 55) {
                             // 释放料
                             this.$http.post(`/haolifa/order-product/release-material?orderNo=${updateStatus.orderNo}`);
-                            this.$http.post(`/haolifa/applyBuy/updateStatusByOrderNo?orderNo=${this.updateInfo.orderNo}/4`).then((res) => {});
+                            this.$http.post(`/haolifa/applyBuy/updateStatusByOrderNo?orderNo=${this.updateInfo.orderNo}/4`).then((res) => { });
                         }
                         this.$store.commit("DELMENUTABS", "/produce");
                         this.$router.push("/");
@@ -1213,22 +952,27 @@ export default {
 <style lang="less">
 .p-p-base {
     padding: 20px;
+
     .node {
         border: 1px solid #e6e6e6;
         padding: 15px;
         border-radius: 8px;
     }
+
     tr:first-child td {
         padding: 0;
         border: none;
     }
+
     th {
         font-weight: normal;
         color: #888;
     }
+
     td {
         color: #444;
     }
+
     th,
     td {
         padding: 10px;

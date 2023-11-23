@@ -4,12 +4,14 @@
         <div class="flex-v-center tool-bar">
             <div class="flex-v-center search-bar" style="margin-right: 20px;">
                 <i class="icon f-20 c-8">search</i>
-                <input type="text" class="flex-item" v-model="filter.orderNo" @change="$refs.list.update(true)" placeholder="订单号">
-                <input type="text" class="flex-item" v-model="filter.productNo" @change="$refs.list.update(true)" placeholder="成品ID">
+                <input type="text" class="flex-item" v-model="filter.orderNo" @change="$refs.list.update(true)"
+                    placeholder="订单号">
+                <input type="text" class="flex-item" v-model="filter.productNo" @change="$refs.list.update(true)"
+                    placeholder="成品ID">
                 <span>区域：</span>
-                  <select v-model="filter.location" class="f-14" @change="$refs.list.update(true)">
-                    <option value="shanxi">山西</option>
-                    <option value="beijing">北京</option>
+                <select v-model="filter.location" class="f-14" @change="$refs.list.update(true);">
+                    <option value="">全部</option>
+                    <option :value="item.value" v-for="item, i in locationList" :key="i">{{ item.text }}</option>
                 </select>
                 <select v-model="filter.operationType" class="f-14" @change="$refs.list.update(true)">
                     <option value="0">全部</option>
@@ -22,7 +24,8 @@
             <btn class="b" flat color="#008eff" @click="exportExcel">成品出库导出</btn>
         </div>
         <div class="flex-item scroll-y">
-            <data-list ref="list" page-num-str="currentPage" :param="filter" url="/haolifa/store-room/entryOut/pageInfo" method="get">
+            <data-list ref="list" page-num-str="currentPage" :param="filter" url="/haolifa/store-room/entryOut/pageInfo"
+                method="get">
                 <tr slot="header">
                     <th style="width: 60px;">序号</th>
                     <th>订单号</th>
@@ -37,18 +40,19 @@
                     <th class="t-right" style="width: 80px;">操作</th>
                 </tr>
                 <template slot="item" slot-scope="{ item, index }">
-                    <td class="c-a">{{index}}</td>
-                    <td>{{item.orderNo}}</td>
-                    <td>{{item.productNo}}</td>
-                    <td>{{item.productModel}}</td>
-                    <td>{{item.productSpecifications}}</td>
-                    <td>{{typeList[item.operationType-1]}}</td>
-                    <td>{{item.quantity}}</td>
-                    <td>{{item.price}}</td>
-                    <td>{{item.createTime}}</td>
-                    <td>{{item.location === 'shanxi' ? '山西' :'北京'}}</td>
+                    <td class="c-a">{{ index }}</td>
+                    <td>{{ item.orderNo }}</td>
+                    <td>{{ item.productNo }}</td>
+                    <td>{{ item.productModel }}</td>
+                    <td>{{ item.productSpecifications }}</td>
+                    <td>{{ typeList[item.operationType - 1] }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.price }}</td>
+                    <td>{{ item.createTime }}</td>
+                    <td>{{ item.location === 'shanxi' ? '山西' : '北京' }}</td>
                     <td class="t-right">
-                        <a href="javascript:;" class="blue" v-if="item.operationType==2 && item.execute == 0" @click="outProduct(item)">出库</a>
+                        <a href="javascript:;" class="blue" v-if="item.operationType == 2 && item.execute == 0"
+                            @click="outProduct(item)">出库</a>
                     </td>
                 </template>
             </data-list>
@@ -57,25 +61,31 @@
             <div>
                 <div class="flex">
                     <input-box v-model="form.orderNo" class="flex-item ml-10 mr-10" disabled label="订单号"></input-box>
-                    <input-box v-model="form.productNo" class="flex-item mr-10" label="成品ID" disabled="disabled"></input-box>
-                    <input-box v-model="form.productModel" class="flex-item mr-10" label="成品型号" disabled="disabled"></input-box>
-                    <input-box v-model="form.productSpecifications" class="flex-item mr-10" label="成品规格" disabled="disabled"></input-box>
+                    <input-box v-model="form.productNo" class="flex-item mr-10" label="成品ID"
+                        disabled="disabled"></input-box>
+                    <input-box v-model="form.productModel" class="flex-item mr-10" label="成品型号"
+                        disabled="disabled"></input-box>
+                    <input-box v-model="form.productSpecifications" class="flex-item mr-10" label="成品规格"
+                        disabled="disabled"></input-box>
                 </div>
                 <div class="flex">
                     <input-box v-model="form.customerName" class="flex-item ml-10 mr-10" label="客户名称"></input-box>
                     <input-box v-model="form.customerNo" class="flex-item mr-10" label="客户代号"></input-box>
-                    <select-box class="flex-item mr-10" :list="outPlaceList" v-model="form.outPlace" label="出库目的地"></select-box>
+                    <select-box class="flex-item mr-10" :list="outPlaceList" v-model="form.outPlace"
+                        label="出库目的地"></select-box>
                     <!--<input-box v-model="form.price" class="flex-item mr-10" label="出库单价（销售单价)"></input-box>-->
                 </div>
                 <div class="flex">
-                    <select-box class="flex-item ml-10 mr-10" :list="form.selectStoreRooms" v-model="form.roomNo" @change="loadStoreRocks()" label="库房"></select-box>
-                    <select-box class="flex-item mr-10" :list="form.storeRoomRacks" v-model="form.rackNo" label="库位"></select-box>
+                    <select-box class="flex-item ml-10 mr-10" :list="form.selectStoreRooms" v-model="form.roomNo"
+                        @change="loadStoreRocks()" label="库房"></select-box>
+                    <select-box class="flex-item mr-10" :list="form.storeRoomRacks" v-model="form.rackNo"
+                        label="库位"></select-box>
                     <input-box v-model="outNumber" disabled="disabled" class="flex-item mr-10" label="可出库数量"></input-box>
                     <input-box v-model="form.quantity" class="flex-item mr-10" label="出库数量（请填写负数）"></input-box>
                 </div>
             </div>
             <div class="layer-btns">
-                <btn flat @click="form.layerShow=false">取消</btn>
+                <btn flat @click="form.layerShow = false">取消</btn>
                 <el-button size="mini" :loading="loading" type="primary" @click="outSave">保存</el-button>
             </div>
         </layer>
@@ -92,7 +102,7 @@
                 </div>
             </div>
             <div class="layer-btns">
-                <btn flat @click="exportLayer=false">取消</btn>
+                <btn flat @click="exportLayer = false">取消</btn>
                 <btn flat color="#008eff" @click="download()">确定</btn>
             </div>
         </layer>
@@ -110,7 +120,7 @@ export default {
             filter: {
                 orderNo: "",
                 productNo: "",
-                location:"",
+                location: "",
                 operationType: "0",
                 type: "1"
             },
@@ -143,8 +153,12 @@ export default {
             outPlaceList: [
                 { value: 0, text: "客户" },
                 { value: 1, text: "成品库" }
-            ]
+            ],
+            locationList: []
         };
+    },
+    activated() {
+        this.getLocation()
     },
     methods: {
         flush() {
@@ -152,10 +166,25 @@ export default {
                 orderNo: "",
                 productNo: "",
                 operationType: "0",
-                location:"",
+                location: "",
                 type: "1"
             };
             this.$refs.list.update(true);
+        },
+        getLocation() {
+            this.$http
+                .get(`/haolifa/sys-dict/getDictListByType/DATA_LOCATION`)
+                .then(res => {
+                    this.locationList = res.map(res => {
+                        return {
+                            text: res.desc,
+                            value: res.code
+                        }
+                    });
+                })
+                .catch(e => {
+                    this.$toast(e.message || e.msg);
+                });
         },
         loadStoreRocks() {
             this.$http
@@ -195,8 +224,7 @@ export default {
             this.form.roomNo = item.roomNo;
             this.$http
                 .get(
-                    `/haolifa/order-product/details?orderNo=${
-                        this.form.orderNo
+                    `/haolifa/order-product/details?orderNo=${this.form.orderNo
                     }`
                 )
                 .then(res => {
@@ -293,10 +321,8 @@ export default {
             a.setAttribute("download", ""); // download属性
             a.setAttribute(
                 "href",
-                `/haolifa/export/product-out?startDate=${
-                    this.exportForm.startDate
-                }&endDate=${this.exportForm.endDate}&orderNo=${
-                    this.exportForm.orderNo
+                `/haolifa/export/product-out?startDate=${this.exportForm.startDate
+                }&endDate=${this.exportForm.endDate}&orderNo=${this.exportForm.orderNo
                 }&operationType=1`
             );
             a.click();
@@ -319,5 +345,4 @@ export default {
     .scroll-y {
         padding-bottom: 40px;
     }
-}
-</style>
+}</style>

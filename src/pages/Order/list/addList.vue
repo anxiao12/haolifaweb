@@ -667,6 +667,7 @@ export default {
                 })
                 .then((res) => {
                     id = res.instanceId;
+                    // let status = (flowId == 19 || flowId == 15 || flowId == 17 || flowId == 13) ? 15 : 1
                     this.$http
                         .post("/haolifa/order-product/updateStatus", {
                             orderNo: item.orderNo,

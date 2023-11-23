@@ -17,6 +17,11 @@
                         {{ item.text }}
                     </option>
                 </select>
+                地区：
+                <select v-model="filter.location" class="f-14" @change="$refs.list.update(true)">
+                    <option value="">全部</option>
+                    <option :value="item.value" v-for="item, i in locationList" :key="i">{{ item.text }}</option>
+                </select>
                 <!-- 发货状态：
                 <select v-model="filter.deliverStatus" class="f-14" @change="$refs.list.update(true);getOrderQty()">
                     <option value="-1">全部</option>
@@ -98,7 +103,8 @@ export default {
                 payAccount: "",
                 payCompany: "",
                 paymentType: "",
-                location: ""
+                location: "",
+                contractStatus: ""
             },
             billTypeArr: ["", "现金日记账", "银行日记账", "其他货币日记账"],
             statusList: [],
@@ -106,6 +112,7 @@ export default {
                 { value: "0", text: "未完成" },
                 { value: "2", text: "已完成" },
             ],
+            locationList: []
         };
     },
     created() {
@@ -122,9 +129,25 @@ export default {
                 payAccount: "",
                 payCompany: "",
                 paymentType: "",
-                location: ""
+                location: "",
+                contractStatus: ""
             };
             this.$refs.list.update(true);
+        },
+        getLocation() {
+            this.$http
+                .get(`/haolifa/sys-dict/getDictListByType/DATA_LOCATION`)
+                .then(res => {
+                    this.locationList = res.map(res => {
+                        return {
+                            text: res.desc,
+                            value: res.code
+                        }
+                    });
+                })
+                .catch(e => {
+                    this.$toast(e.message || e.msg);
+                });
         },
         //付款类型
         getPayType() {
