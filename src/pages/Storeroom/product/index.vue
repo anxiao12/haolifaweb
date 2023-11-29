@@ -50,7 +50,7 @@
                     <td>{{ item.quantity }}</td>
                     <td>{{ item.price }}</td>
                     <td>{{ item.createTime }}</td>
-                    <td>{{ item.location === 'shanxi' ? '山西' : '北京' }}</td>
+                    <td>{{ item.locationName }}</td>
                     <td class="t-right">
                         <a href="javascript:;" class="blue" v-if="item.operationType == 2 && item.execute == 0"
                             @click="outProduct(item)">出库</a>
