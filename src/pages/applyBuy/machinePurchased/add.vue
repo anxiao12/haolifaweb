@@ -99,8 +99,7 @@
             <input-box :disabled='isEdit ? true : false' v-model="item.productColor" class="flex-item mr-10"
               label="颜色"></input-box>
             <input-box disabled v-model="item.itemAmount" type="number" class="flex-item mr-10" label="分项金额"></input-box>
-            <input-box :disabled='isEdit ? true : false' v-model="item.remark" class="flex-item mr-10"
-              label="备注"></input-box>
+            <input-box v-model="item.remark" class="flex-item mr-10" label="备注"></input-box>
           </div>
         </div>
         <div v-if="form.itemList.length > 1">
