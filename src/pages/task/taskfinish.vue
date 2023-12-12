@@ -7,7 +7,8 @@
             <button class="btn btn-small" style="background:#ccc" @click="totask">待办事项</button>
             <div class="flex-v-center search-bar" style="margin-right: 20px;margin-left: 80px;">
                 <i class="icon f-20 c-8">search</i>
-                <input type="text" class="flex-item" v-model="filter.formNo" @change="$refs.list.update(true)" placeholder="订单号" style="width: 200px;" />
+                <input type="text" class="flex-item" v-model="filter.formNo" @change="$refs.list.update(true)"
+                    placeholder="订单号" style="width: 200px;" />
             </div>
         </div>
         <div class="flex-item scroll-y">
@@ -21,69 +22,36 @@
                     <th>发起时间</th>
                 </tr>
                 <template slot="item" slot-scope="{ item, index }">
-                    <td>{{index}}</td>
+                    <td>{{ index }}</td>
                     <td>
-                        <a
-                            v-if="item.flowId == 1 || item.flowId==6"
-                            href="javascript:;"
-                            style="margin-right: 3px"
+                        <a v-if="item.flowId == 1 || item.flowId == 6" href="javascript:;" style="margin-right: 3px"
                             class="blue"
-                            @click="$router.push({path:'/produce',query:{instanceId:item.instanceId,stepId:item.stepId}})"
-                        >详情</a>
-                        <a
-                            v-if="item.flowId == 2"
-                            href="javascript:;"
-                            style="margin-right: 3px"
-                            class="blue"
-                            @click="$router.push({path:'/purchase',query:{instanceId:item.instanceId,stepId:item.stepId}})"
-                        >详情</a>
-                        <a
-                            v-if="item.flowId == 3"
-                            href="javascript:;"
-                            style="margin-right: 3px"
-                            class="blue"
-                            @click="$router.push({path:'/supplierAudit',query:{instanceId:item.instanceId,stepId:item.stepId}})"
-                        >详情</a>
-                        <a
-                            v-if="item.flowId == 4"
-                            href="javascript:;"
-                            style="margin-right: 3px"
-                            class="blue"
-                            @click="$router.push({path:'/replace',query:{instanceId:item.instanceId,stepId:item.stepId}})"
-                        >详情</a>
-                        <a
-                            v-if="item.flowId == 5"
-                            href="javascript:;"
-                            style="margin-right: 3px"
-                            class="blue"
-                            @click="$router.push({path:'/purchase',query:{instanceId:item.instanceId,stepId:item.stepId}})"
-                        >详情</a>
-                        <a
-                            v-if="item.flowId == 10"
-                            href="javascript:;"
-                            style="margin-right: 3px"
-                            class="blue"
-                            @click="$router.push({path:'/paymentApply',query:{instanceId:item.instanceId,stepId:item.stepId}})"
-                        >详情</a>
-                        <a
-                            v-if="item.flowId == 11"
-                            href="javascript:;"
-                            style="margin-right: 3px"
-                            class="blue"
-                            @click="$router.push({path:'/baoxiaoEntrust',query:{instanceId:item.instanceId,stepId:item.stepId}})"
-                        >详情</a>
-                        <a
-                            v-if="item.flowId == 12"
-                            href="javascript:;"
-                            style="margin-right: 3px"
-                            class="blue"
-                            @click="$router.push({path:'/jkfkEntrust',query:{instanceId:item.instanceId,stepId:item.stepId}})"
-                        >详情</a>
+                            @click="$router.push({ path: '/produce', query: { instanceId: item.instanceId, stepId: item.stepId } })">详情</a>
+                        <a v-if="item.flowId == 2" href="javascript:;" style="margin-right: 3px" class="blue"
+                            @click="$router.push({ path: '/purchase', query: { instanceId: item.instanceId, stepId: item.stepId } })">详情</a>
+                        <a v-if="item.flowId == 3" href="javascript:;" style="margin-right: 3px" class="blue"
+                            @click="$router.push({ path: '/supplierAudit', query: { instanceId: item.instanceId, stepId: item.stepId } })">详情</a>
+                        <a v-if="item.flowId == 4" href="javascript:;" style="margin-right: 3px" class="blue"
+                            @click="$router.push({ path: '/replace', query: { instanceId: item.instanceId, stepId: item.stepId } })">详情</a>
+                        <a v-if="item.flowId == 5" href="javascript:;" style="margin-right: 3px" class="blue"
+                            @click="$router.push({ path: '/purchase', query: { instanceId: item.instanceId, stepId: item.stepId } })">详情</a>
+                        <a v-if="item.flowId == 10" href="javascript:;" style="margin-right: 3px" class="blue"
+                            @click="$router.push({ path: '/paymentApply', query: { instanceId: item.instanceId, stepId: item.stepId } })">详情</a>
+                        <a v-if="item.flowId == 11" href="javascript:;" style="margin-right: 3px" class="blue"
+                            @click="$router.push({ path: '/baoxiaoEntrust', query: { instanceId: item.instanceId, stepId: item.stepId } })">详情</a>
+                        <a v-if="item.flowId == 12" href="javascript:;" style="margin-right: 3px" class="blue"
+                            @click="$router.push({ path: '/jkfkEntrust', query: { instanceId: item.instanceId, stepId: item.stepId } })">详情</a>
+                        <a v-if="item.flowId == 13 || item.flowId == 15 || item.flowId == 17 || item.flowId == 19"
+                            href="javascript:;" style="margin-right: 3px" class="blue"
+                            @click="$router.push({ path: '/machine', query: { instanceId: item.instanceId, stepId: item.stepId } })">详情</a>
+                        <a v-if="item.flowId == 14 || item.flowId == 16 || item.flowId == 18 || item.flowId == 20"
+                            href="javascript:;" style="margin-right: 3px" class="blue"
+                            @click="$router.push({ path: '/purchaseMachine', query: { instanceId: item.instanceId, stepId: item.stepId } })">详情</a>
                     </td>
-                    <td>{{item.createUserRealName}}</td>
-                    <td>{{item.flowName}}</td>
-                    <td>{{item.formNo}}</td>
-                    <td>{{item.createTime}}</td>
+                    <td>{{ item.createUserRealName }}</td>
+                    <td>{{ item.flowName }}</td>
+                    <td>{{ item.formNo }}</td>
+                    <td>{{ item.createTime }}</td>
                 </template>
             </data-list>
         </div>
@@ -124,6 +92,7 @@ export default {
 
 <style lang="less">
 .page-contract {
+
     // height: 100%;
     select {
         background: none;
