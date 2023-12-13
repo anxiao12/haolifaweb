@@ -54,7 +54,7 @@
                     <th>其他</th>
                     <th>创建时间</th>
                     <th>修改时间</th>
-                    <th>是否标准产品</th>
+                    <!-- <th>是否标准产品</th> -->
                     <!--
                     <th>产品ID</th>
                     <th>产品编号</th> -->
@@ -90,7 +90,7 @@
                     <td>{{ item.other }}</td>
                     <td>{{ item.createTime }}</td>
                     <td>{{ item.modifyTime }}</td>
-                    <td>{{ item.modifyTime }}</td>
+                    <!-- <td>{{ item.modifyTime }}</td> -->
                     <!--
                     <td>{{item.id}}</td>
                     <td>{{item.productId}}</td> -->
