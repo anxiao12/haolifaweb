@@ -475,6 +475,9 @@ export default {
         .post(`/haolifa/whole/machine/product/listProductByParam`, { 'list': params })
         .then(res => {
           let { dataList } = this.$route.query;
+          if (!dataList) {
+            return;
+          }
           let productOrderNoArr = []
           for (let i = 0; i < JSON.parse(dataList).length; i++) {//合并采购，带进来产品数量等部分数据；
             productOrderNoArr.push(this.dataList[i].productOrderNo)
