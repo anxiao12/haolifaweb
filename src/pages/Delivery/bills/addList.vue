@@ -28,6 +28,7 @@
                     <th>订单号</th>
                     <th>地区</th>
                     <th>发货状态</th>
+                    <th>发货日期</th>
                     <th>订单总数量</th>
                     <th>已发货数量</th>
                     <th>审批结果</th>
@@ -42,11 +43,13 @@
                     <td class="c-a">{{ index }}</td>
                     <td>{{ item.deliveryNo }}</td>
                     <td>
-                        <a class="fixed-length" :href="item.deliveryUrl" :title="item.deliveryUrl">{{ item.deliveryUrl }}</a>
+                        <a class="fixed-length" :href="item.deliveryUrl" :title="item.deliveryUrl">{{ item.deliveryUrl
+                        }}</a>
                     </td>
                     <td>{{ item.contractOrderNo }}</td>
                     <td>{{ item.location }}</td>
                     <td>{{ deliverStatusList[item.deliverStatus] }}</td>
+                    <td>{{ item.planDeliveryTime }}</td>
                     <td>{{ item.totalCount }}</td>
                     <td>{{ item.deliveredNumber }}</td>
                     <td>{{ statusList[item.auditResult] }}</td>

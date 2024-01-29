@@ -1,7 +1,7 @@
 <template>
     <div class="page-part-add abs scroll-y">
         <div class="form-content">
-            <div class="title b f-18">{{form.id ? '编辑' : '新增'}}发货通知单</div>
+            <div class="title b f-18">{{ form.id ? '编辑' : '新增' }}发货通知单</div>
             <div class="flex-v-center">
                 <!-- <input-box
           v-model='form.deliveryNo'
@@ -16,6 +16,10 @@
                 <input-box v-model="form.contractOrderNo" class="mr-10" label="订单号" style="width: 50%"></input-box>
             </div>
             <div class="flex-v-center">
+                <date-picker v-model="form.planDeliveryTime" style="width: 50%" class="flex-item"
+                    label="发货日期"></date-picker>
+            </div>
+            <div class="flex-v-center">
                 <upload-box btnText="上传发货单" :fileList="fileList" :onchange="uploadFile" style="width: 50%"></upload-box>
             </div>
             <div class="flex-v-center" style="margin: 20px 0;">
@@ -24,8 +28,8 @@
             </div>
             <layer v-if="loading">
                 <div class="abs t-center" style="padding: 20px;">
-                    <loading size="30"/>
-                    <div style="margin-top: 10px;">{{loadingMsg}}</div>
+                    <loading size="30" />
+                    <div style="margin-top: 10px;">{{ loadingMsg }}</div>
                 </div>
             </layer>
         </div>
@@ -44,7 +48,8 @@ export default {
             form: {
                 id: "",
                 contractOrderNo: "",
-                deliveryUrl: ""
+                deliveryUrl: "",
+                planDeliveryTime: ""
             }
         };
     },
@@ -58,6 +63,7 @@ export default {
         this.form = {
             id: "",
             contractOrderNo: "",
+            planDeliveryTime: "",
             deliveryUrl: ""
         };
         this.fileList = [];
@@ -152,6 +158,7 @@ export default {
 <style lang='less'>
 .page-part-add {
     padding: 30px 20px;
+
     .title {
         margin-bottom: 20px;
     }
