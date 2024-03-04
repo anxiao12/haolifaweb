@@ -110,23 +110,15 @@ export default {
         this.form.quantity = -item.materialCount;
         this.form.name = item.materialName;
         this.auditLayerItem.replaceMaterialNo = item.replaceMaterialNo;
+        this.form.roomNo = "";
+        this.form.rackNo = "";
+        this.form.materialBatchNo = "";
+
         this.getRoomList();
         // this.getRoomRackList();
         // this.getRoomId();
         // this.getRackId();
     },
-    // created() {
-    //     let item = this.$route.params;
-    //     this.form.materialGraphNo = item.materialGraphNo;
-    //     this.form.orderNo = item.orderNo;
-    //     this.form.quantity = -item.materialCount;
-    //     this.form.name = item.materialName;
-    //     this.auditLayerItem.replaceMaterialNo = item.replaceMaterialNo;
-    //     this.getRoomList();
-    //     // this.getRoomRackList();
-    //     // this.getRoomId();
-    //     // this.getRackId();
-    // },
     methods: {
         //获取批次号
         getRackId(storeRoomRackNo) {
