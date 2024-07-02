@@ -1,13 +1,16 @@
 <template>
     <div class="apply-buy-add">
         <div class="content">
-            <div class="title b f-18">{{entrustNo ? '编辑' : '新增'}}机加工单</div>
+            <div class="title b f-18">{{ entrustNo ? '编辑' : '新增' }}机加工单</div>
             <div class="flex">
                 <input-box v-model="form.purchaseNo" class="flex-item mr-20" label="采购合同号"></input-box>
-                <select-box :list="materialClassify" v-model="classifyId" @change="getMaterialGraphNoList()" label="零件类型" class="flex-item mr-20"></select-box>
+                <select-box :list="materialClassify" v-model="classifyId" @change="getMaterialGraphNoList()"
+                    label="零件类型" class="flex-item mr-20"></select-box>
                 <!-- <select-box class="flex-item mr-20" :list="materialGraphNoList" @change="getBatch" v-model="form.materialGraphNo" label="零件图号"></select-box> -->
-                <el-select class="flex-item mr-20 mycss" v-model="form.materialGraphNo" filterable @change="noChange" placeholder="零件图号请选择">
-                    <el-option v-for="item in materialGraphNoList" :key="item.value" :label="item.value" :value="item.value"></el-option>
+                <el-select class="flex-item mr-20 mycss" v-model="form.materialGraphNo" filterable @change="noChange"
+                    placeholder="零件图号请选择">
+                    <el-option v-for="item in materialGraphNoList" :key="item.value" :label="item.value"
+                        :value="item.value"></el-option>
                 </el-select>
             </div>
             <!-- style="margin-right: 20px;width: 240px;" style="margin-right: 20px;width: 240px;"-->
@@ -15,11 +18,13 @@
                 <!-- <input-box v-model="form.batchNumber" class="flex-item mr-20 " label="批次号"></input-box> -->
                 <date-picker v-model="form.planCompleteTime" class="flex-item mr-20" label="计划完成时间"></date-picker>
                 <input-box v-model="form.processedGraphNo" class="flex-item mr-20" label="加工后图号"></input-box>
-                <select-box class="flex-item mr-20" :list="batchNumberList" v-model="form.batchNumber" label="批次号"></select-box>
+                <select-box class="flex-item mr-20" :list="batchNumberList" v-model="form.batchNumber"
+                    label="批次号"></select-box>
                 <select-box class="flex-item mr-20" :list="busTypeList" v-model="form.busType" label="类别"></select-box>
             </div>
             <div class="flex">
-                <input-box v-model="form.materialGraphName" class="flex-item mr-20" :disabled="true" label="零件名称"></input-box>
+                <input-box v-model="form.materialGraphName" class="flex-item mr-20" :disabled="true"
+                    label="零件名称"></input-box>
                 <input-box v-model="form.model" class="flex-item mr-20" label="型号"></input-box>
                 <input-box v-model="form.specifications" class="flex-item mr-20" label="规格"></input-box>
                 <input-box v-model="form.number" class="flex-item mr-20" label="数量"></input-box>
@@ -100,7 +105,7 @@ export default {
                         return { value: item.id, text: item.classifyName };
                     })
                     .filter(item => {
-                        if (item.text == "阀体" || item.text == "阀板")
+                        if (item.text == "阀体" || item.text == "阀板" || item.text == "阀座" || item.text == "盖板" || item.text == "压盖" || item.text == "通用零件" || item.text == "标准件")
                             return true;
                         return false;
                     });
@@ -134,21 +139,35 @@ export default {
                     this.form.materialClassifyName = item.text;
                 }
             });
-            this.$http
-                .get(`/haolifa/material/getListByClassifyId/${this.classifyId}`)
-                .then(res => {
-                    this.materialGraphNoList = res.map(item => {
-                        return {
-                            value: item.graphNo,
-                            text: item.graphNo,
-                            name: item.name
-                        };
-                    });
-                    this.materialGraphNoList = this.materialGraphNoList.filter(
-                        item => this.reg.test(item.text)
-                    );
-                    this.form.materialGraphNo = this.materialGraphNoList[0].value;
+            let data = { classifyId: this.classifyId, materialName: "", type: 2 };
+            this.$http.post(`/haolifa/material/graphList`, data).then((res) => {
+                this.materialGraphNoList = res.map(item => {
+                    return {
+                        value: item.graphNo,
+                        text: item.graphNo,
+                        name: item.name
+                    };
                 });
+                // this.materialGraphNoList = this.materialGraphNoList.filter(
+                //     item => this.reg.test(item.text)
+                // );
+                this.form.materialGraphNo = this.materialGraphNoList[0].value;
+            });
+            // this.$http
+            //     .get(`/haolifa/material/getListByClassifyId/${this.classifyId}`)
+            //     .then(res => {
+            //         this.materialGraphNoList = res.map(item => {
+            //             return {
+            //                 value: item.graphNo,
+            //                 text: item.graphNo,
+            //                 name: item.name
+            //             };
+            //         });
+            //         this.materialGraphNoList = this.materialGraphNoList.filter(
+            //             item => this.reg.test(item.text)
+            //         );
+            //         this.form.materialGraphNo = this.materialGraphNoList[0].value;
+            //     });
         },
         getBatch() {
             this.$http
@@ -182,18 +201,16 @@ export default {
                         if (item.text == this.form.materialClassifyName) {
                             this.classifyId = item.value;
                         }
-                        this.$http
-                            .get(
-                                `/haolifa/material/getListByClassifyId/${this.classifyId}`
-                            )
-                            .then(res => {
-                                this.materialGraphNoList = res.map(item => {
-                                    return {
-                                        value: item.graphNo,
-                                        text: item.graphNo
-                                    };
-                                });
+                        this.$http.post(`/haolifa/material/graphList`, {
+                            classifyId: this.classifyId, type: 2, materialName: "",
+                        }).then(res => {
+                            this.materialGraphNoList = res.map(item => {
+                                return {
+                                    value: item.graphNo,
+                                    text: item.graphNo
+                                };
                             });
+                        });
                     });
                 })
                 .catch(e => {
@@ -266,15 +283,18 @@ export default {
 <style lang="less">
 .apply-buy-add {
     padding: 20px;
+
     .card {
         padding: 10px;
         margin: 20px 0;
         background: #f5f5f5;
     }
+
     .content {
         max-width: 100%;
         margin: 0 auto;
     }
+
     .mycss {
         input {
             border: 0;
