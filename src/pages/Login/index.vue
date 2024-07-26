@@ -110,9 +110,22 @@ export default {
                     this.errorMsgFlag = false;
                     this.$store.commit("LOGIN", res);
                     // this.$store.commit("UPDATE_BUTTONS", res.buttons)
+                    this.$session.set("permissionList", JSON.parse(JSON.stringify(res.buttons)))
                     resetRouter(res.menus);
                     this.$router.replace("/");
                 })
+                .catch(e => {
+                    this.loading = false;
+                    this.errorMsgFlag = true;
+                    this.getImageCode();
+                });
+        },
+        getImageCode() {
+            this.$http.get("/haolifa/code").then(res => {
+                this.imageCodeUrl = res;
+                resetRouter(res.menus);
+                this.$router.replace("/");
+            })
                 .catch(e => {
                     this.loading = false;
                     this.errorMsgFlag = true;

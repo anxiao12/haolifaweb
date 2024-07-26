@@ -9,7 +9,8 @@
                 订单状态：
                 <select v-model="filter.orderStatus" class="f-14" @change="$refs.list.update(true); getOrderQty()">
                     <option value="-1">全部</option>
-                    <option v-for="item in newOrderStatusList" :value="item.value" v-bind:key="item.value">{{ item.text }}
+                    <option v-for="item in newOrderStatusList" :value="item.value" v-bind:key="item.value">{{ item.text
+                        }}
                     </option>
                 </select>
                 发货状态：
@@ -25,7 +26,8 @@
                     @change="$refs.list.update(true); getOrderQty()" :editable="false"
                     placeholder="选择年月日"></el-date-picker>结束时间:
                 <el-date-picker v-model="filter.endDate" type="date" value-format="yyyy-MM-dd"
-                    @change="$refs.list.update(true); getOrderQty()" :editable="false" placeholder="选择年月日"></el-date-picker>
+                    @change="$refs.list.update(true); getOrderQty()" :editable="false"
+                    placeholder="选择年月日"></el-date-picker>
                 <input type="text" class="flex-item" v-model="filter.demandName"
                     @change="$refs.list.update(true); getOrderQty()" placeholder="需方" style="width: 200px;">
             </div>
@@ -67,7 +69,8 @@
                         {{ orderStatusList[item.orderStatus].text }}</td>
                     <td>{{ item.createTime }}</td>
                     <td class="t-right">
-                        <a href="javascript:;" class="blue" @click="uploadShow(item)" style="margin-right: 3px;">重新上传</a>
+                        <a href="javascript:;" class="blue" @click="uploadShow(item)"
+                            style="margin-right: 3px;">重新上传</a>
                         <a href="javascript:;" class="blue" @click="editShow(item)" style="margin-right: 3px;">编辑</a>
                         <a href="javascript:;" class="blue" @click="infoShow(item)" style="margin-right: 3px;">详情</a>
                     </td>
@@ -595,12 +598,15 @@ export default {
         progress(item) {
             let id = "";
             this.$http
-                .post("/haolifa/flowInstance/create", {
-                    flowId: 1,
-                    formId: item.id,
-                    formType: 1,
-                    formNo: item.orderNo,
-                    summary: "生产订单审批",
+                // .post("/haolifa/flowInstance/create", {
+                //     flowId: 1,
+                //     formId: item.id,
+                //     formType: 1,
+                //     formNo: item.orderNo,
+                //     summary: "生产订单审批",
+                // })
+                .post("/haolifa/order-product/startFlow/" + item.orderNo, {
+                    id: item.orderNo
                 })
                 .then((res) => {
                     id = res.instanceId;

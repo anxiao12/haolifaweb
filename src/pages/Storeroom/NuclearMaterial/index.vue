@@ -16,20 +16,25 @@
                 </tr>
                 <!-- item: 当前行数据; index: 当前行数 -->
                 <template slot="item" slot-scope="{ item, index }">
-                    <td class="c-a">{{index}}</td>
-                    <td>{{item.orderNo}}</td>
+                    <td class="c-a">{{ index }}</td>
+                    <td>{{ item.orderNo }}</td>
                     <td>
-                        <a class="fixed-length" :href="item.orderContractUrl" :title="item.orderContractUrl">{{item.orderContractUrl}}</a>
+                        <a class="fixed-length" :href="item.orderContractUrl"
+                            :title="item.orderContractUrl">{{ item.orderContractUrl }}</a>
                     </td>
-                    <td>{{statusList[item.orderStatus-2].text}}</td>
-                    <td>{{item.deliveryDate}}</td>
-                    <td>{{item.createTime}}</td>
-                    <td>{{item.updateTime}}</td>
+                    <td>{{ statusList[item.orderStatus - 2].text }}</td>
+                    <td>{{ item.deliveryDate }}</td>
+                    <td>{{ item.createTime }}</td>
+                    <td>{{ item.updateTime }}</td>
                     <td class="t-right">
-                        <a href="javascript:;" class="blue" v-if="item.orderStatus == 2" @click="nuclear(item)" style="margin-right: 3px;">核料</a>
-                        <a href="javascript:;" class="blue" v-if="item.orderStatus != 2" @click="nuclearForm(item)" style="margin-right: 3px;">核料清单</a>
-                        <a href="javascript:;" class="blue" v-if="item.orderStatus != 2" @click="releaseForm(item.orderNo)" style="margin-right: 3px;">释放料</a>
-                        <a href="javascript:;" class="blue" v-if="item.orderStatus == 3" @click="replaceForm(item)" style="margin-right: 3px;">替换料清单</a>
+                        <a href="javascript:;" class="blue" v-if="item.orderStatus == 2" @click="nuclear(item)"
+                            style="margin-right: 3px;">核料</a>
+                        <a href="javascript:;" class="blue" v-if="item.orderStatus != 2" @click="nuclearForm(item)"
+                            style="margin-right: 3px;">核料清单</a>
+                        <a href="javascript:;" class="blue" v-if="item.orderStatus != 2"
+                            @click="releaseForm(item.orderNo)" style="margin-right: 3px;">释放料</a>
+                        <a href="javascript:;" class="blue" v-if="item.orderStatus == 3" @click="replaceForm(item)"
+                            style="margin-right: 3px;">替换料清单</a>
                     </td>
                 </template>
             </data-list>
@@ -98,6 +103,7 @@ export default {
 .page-part-list {
     //
 }
+
 .fixed-length {
     width: 100px;
     display: block;

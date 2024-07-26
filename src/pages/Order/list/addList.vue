@@ -9,7 +9,8 @@
                 订单状态：
                 <select v-model="filter.orderStatus" class="f-14" @change="$refs.list.update(true); getOrderQty()">
                     <option value="-1">全部</option>
-                    <option v-for="item in newOrderStatusList" :value="item.value" v-bind:key="item.value">{{ item.text }}
+                    <option v-for="item in newOrderStatusList" :value="item.value" v-bind:key="item.value">{{ item.text
+                        }}
                     </option>
                 </select>
                 发货状态：
@@ -36,7 +37,8 @@
                     @change="$refs.list.update(true); getOrderQty()" :editable="false"
                     placeholder="选择年月日"></el-date-picker>结束时间:
                 <el-date-picker v-model="filter.endDate" type="date" value-format="yyyy-MM-dd"
-                    @change="$refs.list.update(true); getOrderQty()" :editable="false" placeholder="选择年月日"></el-date-picker>
+                    @change="$refs.list.update(true); getOrderQty()" :editable="false"
+                    placeholder="选择年月日"></el-date-picker>
                 <input type="text" class="flex-item" v-model="filter.demandName"
                     @change="$refs.list.update(true); getOrderQty()" placeholder="需方" style="width: 100px;">
             </div>
@@ -85,7 +87,8 @@
                             style="margin-right: 3px;">发起流程|</a>
                         <a href="javascript:;" class="blue" @click="approveProgress(item)" v-if="item.orderStatus != 0"
                             style="margin-right: 3px;">审批进度|</a>
-                        <a href="javascript:;" class="blue" @click="fileUpload(item)" style="margin-right: 3px;">附件上传|</a>
+                        <a href="javascript:;" class="blue" @click="fileUpload(item)"
+                            style="margin-right: 3px;">附件上传|</a>
                         <a href="javascript:;" class="blue" @click="infoShow(item)" style="margin-right: 3px;">详情</a>
                         <a href="javascript:;" class="red" @click="remove(item)"
                             v-if="item.orderStatus == 0 || item.orderStatus == 14" style="margin-right: 3px;">|删除</a>
@@ -658,12 +661,15 @@ export default {
             }
 
             this.$http
-                .post("/haolifa/flowInstance/create", {
-                    flowId: flowId,
-                    formId: item.id,
-                    formType: 1,
-                    formNo: item.orderNo,
-                    summary: summary
+                // .post("/haolifa/flowInstance/create", {
+                //     flowId: flowId,
+                //     formId: item.id,
+                //     formType: 1,
+                //     formNo: item.orderNo,
+                //     summary: summary
+                // })
+                .post("/haolifa/order-product/startFlow/" + item.orderNo, {
+                    id: item.orderNo
                 })
                 .then((res) => {
                     id = res.instanceId;

@@ -208,10 +208,10 @@ export default {
             })
             let data = { classifyId: id, materialName: "", type: 3 };
             console.log(this.form.items[index].materialName)
-            if (this.form.items[index].materialName == "阀体") {
-                this.form.items[index].sprayColorList = this.sprayFtColorList;
-            } else {
+            if (this.form.items[index].materialName == "阀板") {
                 this.form.items[index].sprayColorList = this.sprayFbColorList;
+            } else {
+                this.form.items[index].sprayColorList = this.sprayFtColorList;
             }
             // this.$http.post(`/haolifa/material/graphNo-list`, data).then((res) => {
             this.$http.post(`/haolifa/material/graphList`, data).then((res) => {

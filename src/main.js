@@ -6,6 +6,8 @@ import store from './store/';
 import axios from 'axios';
 import 'element-ui/lib/theme-chalk/index.css';
 import echarts from 'echarts';
+import './directives/permissionDir'
+import { session } from './utils/util'
 // import obj2FormData from './utils/obj2FormData'
 import {
   Tree,
@@ -58,7 +60,7 @@ Vue.use(Icon);
 Vue.config.productionTip = false;
 Vue.prototype.$echarts = echarts;
 Vue.prototype.$http = axios;
-
+Vue.prototype.$session = session;
 new Vue({
   router,
   store,
@@ -74,7 +76,7 @@ new Vue({
 // })
 
 axios.interceptors.response.use(
-  function(response) {
+  function (response) {
     if (response.data) {
       if (response.data.code === '0000') return response.data.result;
       if (response.data.code === '1') {
@@ -84,7 +86,7 @@ axios.interceptors.response.use(
       return Promise.reject(response.data || response);
     }
   },
-  function(e) {
+  function (e) {
     if (e.response.status == 401) {
       if (e.response.data.code === '1') {
         router.replace('/login');

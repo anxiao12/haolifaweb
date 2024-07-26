@@ -50,7 +50,7 @@
                             发起人：{{ item.createUserRealName }}</div> -->
                         <div class="c-8 date-time text-ellipsis" style="width:145px">流程：{{ item.flowName }}</div>
                         <div class="flex-item text-ellipsis">{{ (item.flowId == 12 || item.flowId == 11) ?
-                            '流程号' : '订单号' }}：{{ item.formNo }}</div>
+            '流程号' : '订单号' }}：{{ item.formNo }}</div>
                         <div class="date-time text-ellipsis">发起时间：{{ item.createTime }}</div>
                     </div>
                     <div v-if="!todo.length" style="pointer-events:none;" class="abs flex-center">
@@ -96,7 +96,7 @@
                             发起人：{{ item.createUserRealName }}</div>
                         <div class="c-8 date-time text-ellipsis" style="width:145px">流程：{{ item.flowName }}</div>
                         <div class="flex-item text-ellipsis">{{ (item.flowId == 12 || item.flowId == 11) ?
-                            '流程号' : '订单号' }}：{{ item.formNo }}</div>
+            '流程号' : '订单号' }}：{{ item.formNo }}</div>
                         <div class="date-time text-ellipsis">发起时间：{{ item.createTime }}</div>
                     </div>
                     <div v-if="!done.length" style="pointer-events:none;" class="abs flex-center">
@@ -107,7 +107,8 @@
             <div class="home-card flex-item flex-col relative" v-if="roleFlag">
                 <div class="home-tab flex-v-center">
                     <a class="home-tab-item a on">打分列表</a>
-                    <a href="javascript:;" @click="scoreDetail" style="position:relative;left:79%;color:#009bff">查看打分</a>
+                    <a href="javascript:;" @click="scoreDetail"
+                        style="position:relative;left:79%;color:#009bff">查看打分</a>
                 </div>
                 <div class="home-list flex-item scroll-y">
                     <div class="home-list-item a flex-v-center">
@@ -206,8 +207,8 @@
                     </div>
                 </div>
                 <div class="flex-item scroll-y">
-                    <data-list ref="list" :page-size="15" :param="filter" url="/haolifa/production-daily-plan/detail/page"
-                        method="post" :borderFlag="true">
+                    <data-list ref="list" :page-size="15" :param="filter"
+                        url="/haolifa/production-daily-plan/detail/page" method="post" :borderFlag="true">
                         <tr slot="header">
                             <th style="width: 60px;">序号</th>
                             <th>计划日期</th>
@@ -369,7 +370,8 @@
                         :list="assessmentList" label="考核内容"></select-box>
                 </div>
                 <div class="flex">
-                    <input-box v-model="info.standard" :disabled="true" class="flex-item mr-20" label="考核标准"></input-box>
+                    <input-box v-model="info.standard" :disabled="true" class="flex-item mr-20"
+                        label="考核标准"></input-box>
                 </div>
                 <div class="flex">
                     <input-box v-model="info.score" :disabled="true" class="flex-item mr-20" label="对应分值"></input-box>
@@ -473,6 +475,7 @@ export default {
     },
     components: { DataList },
     activated() {
+        console.log(111111111, this.$session.get("permissionList"))
         if (!this.filter.planDate) {
             this.filter.planDate = this.getToday();
         }

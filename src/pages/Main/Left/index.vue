@@ -960,6 +960,43 @@ export default {
                     },
                 ],
             },
+            // “问题档案”，子菜单包括：生产技术问题、质量管理问题、安全环保问题、行政管理问题、经营管理问题、财务管理问题
+            {
+                name: "问题档案",
+                id: "parent-wtdn",
+                children: [
+                    {
+                        name: "生产技术问题",
+                        url: "/shengchanjishuList",
+                        id: "wtdn-scjs",
+                    },
+                    {
+                        name: "质量管理问题",
+                        url: "/zhiliangList",
+                        id: "wtdn-zlgl",
+                    },
+                    {
+                        name: "安全环保问题",
+                        url: "/anquanList",
+                        id: "wtdn-aqhb",
+                    },
+                    {
+                        name: "行政管理问题",
+                        url: "/xingzhengList",
+                        id: "wtdn-xzgl",
+                    },
+                    {
+                        name: "经营管理问题",
+                        url: "/jingyingList",
+                        id: "wtdn-jygl",
+                    },
+                    {
+                        name: "财务管理问题",
+                        url: "/caiwuList",
+                        id: "wtdn-cwgl",
+                    },
+                ]
+            }
         ];
         menu.forEach((m) => {
             m.children = m.children.filter((item) => menus.includes(item.id));
