@@ -4,7 +4,7 @@
         <div class="flex-v-center tool-bar">
             <div class="flex-v-center search-bar" style="margin-right: 20px;">
                 <i class="icon f-20 c-8">search</i>
-                <input type="text" class="flex-item" v-model="filter.orderNo" @change="$refs.list.update(true)" placeholder="订单号">
+                <!-- <input type="text" class="flex-item" v-model="filter.orderNo" @change="$refs.list.update(true)" placeholder="订单号" /> -->
                 生产状态：
                 <select v-model="filter.orderStatus" class="f-14" @change="$refs.list.update(true)">
                     <option v-for="item in scStatusList" :value="item.value" v-bind:key="item.id">{{item.text}}</option>
@@ -38,7 +38,11 @@
                     <td>{{item.finishFeedbackTime}}</td>
                     <td>
                         <a target="_blank" v-if="(item.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$') " :href="item.orderContractUrl">预览</a>
-                        <a target="_blank" v-if="!(item.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$')" :href="'http://view.officeapps.live.com/op/view.aspx?src='+ item.orderContractUrl">预览</a>
+                        <a
+                            target="_blank"
+                            v-if="!(item.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$')"
+                            :href="'http://view.officeapps.live.com/op/view.aspx?src='+ item.orderContractUrl"
+                        >预览</a>
                     </td>
                     <td class="t-right">
                         <!-- <icon-btn small @click="edit(item)">edit</icon-btn>
@@ -58,6 +62,7 @@
                     <table class="f-14" ref="tableList">
                         <tr>
                             <th>订单号</th>
+                            <th>零件类型</th>
                             <th>零件图号</th>
                             <th>零件名称</th>
                             <!-- <th>价格</th> -->
@@ -68,6 +73,7 @@
                         </tr>
                         <tr v-for="(item,i) in infoList" :key="item.id">
                             <td>{{item.orderNo}}</td>
+                            <td>{{item.materialClassifyName}}</td>
                             <td :class="editFlag?'bgc':''">
                                 <div :contenteditable="editFlag">{{item.materialGraphNo}}</div>
                             </td>
@@ -170,8 +176,7 @@ export default {
                 { value: 12, text: "申请发货" },
                 { value: 13, text: "发货完成" },
                 { value: 14, text: "审核不通过" },
-                { value: 15, text: "采购中" },
-
+                { value: 15, text: "采购中" }
             ],
             scStatusList: [
                 { value: 7, text: "生产中" },
@@ -241,15 +246,24 @@ export default {
                 btns: ["取消", "确定"],
                 yes: () => {
                     let rows = this.$refs["tableList"].rows;
+                    let flag = false;
                     this.editForm = [];
                     for (let i = 1; i < rows.length; i++) {
                         let obj = {};
                         obj.orderNo = rows[i].cells[0].innerText;
-                        obj.graphNo = rows[i].cells[1].innerText;
-                        obj.materialName = rows[i].cells[2].innerText;
-                        obj.quantity = rows[i].cells[3].innerText;
+                        obj.graphNo = rows[i].cells[2].innerText;
+                        if (obj.graphNo.charAt(obj.graphNo.length - 1) == "M") {
+                            flag = true;
+                        }
+                        obj.materialName = rows[i].cells[3].innerText;
+                        obj.quantity = rows[i].cells[4].innerText;
                         this.editForm.push(obj);
                     }
+                    if (flag) {
+                        this.$toast("零件材料最后一位不能为M");
+                        return;
+                    }
+
                     this.$http
                         .post(
                             "/haolifa/material-requisition/save",

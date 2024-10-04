@@ -20,7 +20,7 @@
                         <div style="width:145px" v-if="item.flowId == 3" class="c-8 date-time"
                             @click="$router.push({ path: '/supplierAudit', query: { instanceId: item.instanceId, stepId: item.stepId } })">
                             发起人：{{ item.createUserRealName }}</div>
-                        <div style="width:145px" v-if="item.flowId == 1 || item.flowId == 6" class="c-8 date-time"
+                        <div style="width:145px" v-if="item.flowId == 1 || item.flowId == 6 || item.flowId == 21|| item.flowId == 22" class="c-8 date-time"
                             @click="$router.push({ path: '/produce', query: { instanceId: item.instanceId, stepId: item.stepId } })">
                             发起人：{{ item.createUserRealName }}</div>
                         <div style="width:145px" v-if="item.flowId == 2" class="c-8 date-time"
@@ -69,7 +69,7 @@
                         <div style="width:145px" v-if="item.flowId == 3" class="c-8 date-time"
                             @click="$router.push({ path: '/supplierAudit', query: { instanceId: item.instanceId, stepId: item.stepId } })">
                             发起人：{{ item.createUserRealName }}</div>
-                        <div style="width:145px" v-if="item.flowId == 1 || item.flowId == 6" class="c-8 date-time"
+                        <div style="width:145px" v-if="item.flowId == 1 || item.flowId == 6 || item.flowId == 21|| item.flowId == 22" class="c-8 date-time"
                             @click="$router.push({ path: '/produce', query: { instanceId: item.instanceId, stepId: item.stepId } })">
                             发起人：{{ item.createUserRealName }}</div>
                         <div style="width:145px" v-if="item.flowId == 2" class="c-8 date-time"

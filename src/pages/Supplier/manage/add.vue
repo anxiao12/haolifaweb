@@ -3,53 +3,53 @@
         <div class="form-content">
             <div class="title b f-18">{{form.id ? '编辑' : '新增'}}供应商</div>
             <div class="flex-v-center">
-                <input-box v-model="form.suppilerName" class="flex-item" label="企业名称"></input-box>
+                <input-box v-model="form.suppilerName" class="flex-item" hint="必填" label="企业名称"></input-box>
             </div>
             <div class="flex-v-center">
                 <select-box v-model="form.nature" class="mr-20" label="企业性质" :list="natureList"></select-box>
-                <input-box v-model="form.address" class="flex-item" label="地址"></input-box>
+                <input-box v-model="form.address" class="flex-item" hint="必填" label="地址"></input-box>
             </div>
             <div class="flex">
                 <input-box v-model="form.website" class="flex-item mr-20" label="企业网址"></input-box>
-                <input-box v-model="form.phone" class="flex-item mr-20" label="企业电话"></input-box>
+                <input-box v-model="form.phone" class="flex-item mr-20" hint="必填" label="企业电话"></input-box>
                 <input-box v-model="form.postcode" type="number" class="flex-item mr-20" label="邮编"></input-box>
                 <input-box v-model="form.fax" class="flex-item" label="传真"></input-box>
             </div>
             <div class="flex-v-center">
-                <input-box v-model="form.legalPerson" class="mr-20" label="法人姓名"></input-box>
+                <input-box v-model="form.legalPerson" class="mr-20" hint="必填" label="法人姓名"></input-box>
                 <input-box v-model="form.legalPersonPhone" class="mr-20" label="法人电话"></input-box>
-                <input-box v-model="form.supplierProduct" class="flex-item" label="供应商提供产品"></input-box>
+                <input-box v-model="form.supplierProduct" class="flex-item" hint="必填" label="供应商提供产品"></input-box>
             </div>
             <div class="flex-v-center">
-                <input-box v-model="form.totalFactoryArea" type="number" label="工厂总面积"></input-box>
+                <input-box v-model="form.totalFactoryArea" hint="必填" type="number" label="工厂总面积"></input-box>
                 <span class="mr-20">平米</span>
-                <input-box v-model="form.totalArchitArea" type="number" label="建筑物面积"></input-box>
+                <input-box v-model="form.totalArchitArea" type="number" hint="必填" label="建筑物面积"></input-box>
                 <span class="mr-20">平米</span>
                 <select-box v-model="form.workType" label="班次" :list="workTypeList"></select-box>
             </div>
             <div class="flex-v-center">
-                <input-box v-model="form.processRoute" class="flex-item" label="工艺路线"></input-box>
+                <input-box v-model="form.processRoute" class="flex-item" hint="必填" label="工艺路线"></input-box>
             </div>
             <div class="flex-v-center">
-                <input-box v-model="form.evaluation" class="flex-item" label="供应商评价"></input-box>
+                <input-box v-model="form.evaluation" class="flex-item" hint="必填" label="供应商评价"></input-box>
             </div>
             <div class="flex-v-center">
-                <input-box v-model="form.suppilerNo" class="mr-20" label="供应商编号" style="width: 240px;"></input-box>
+                <input-box v-model="form.suppilerNo" class="mr-20" hint="必填" label="供应商编号" style="width: 240px;"></input-box>
                 <input-box v-model="form.suppilerPreparer" class="mr-20" label="填表人"></input-box>
-                <input-box v-model="form.responsiblePerson" label="负责人"></input-box>
+                <input-box v-model="form.responsiblePerson" hint="必填" label="负责人"></input-box>
             </div>
             <div class="flex">
                 <upload-box btnText="供应商附件上传" :fileList="fileList" :multiple="multiple" :onchange="uploadFile" :onremove="removeFile" style="width: 50%"></upload-box>
             </div>
             <div class="f-14 c-6 b" style="margin: 25px 0 0;">员工情况</div>
             <div class="flex-v-center">
-                <input-box v-model="form.staffInfo.totalWorkers" type="number" label="员工总人数"></input-box>
+                <input-box v-model="form.staffInfo.totalWorkers" hint="必填" type="number" label="员工总人数"></input-box>
                 <span class="mr-20">人</span>
-                <input-box v-model="form.staffInfo.managerWorkers" type="number" label="管理人员"></input-box>
+                <input-box v-model="form.staffInfo.managerWorkers" hint="必填" type="number" label="管理人员"></input-box>
                 <span class="mr-20">人</span>
-                <input-box v-model="form.staffInfo.productionWorkers" type="number" label="生产工人"></input-box>
+                <input-box v-model="form.staffInfo.productionWorkers" hint="必填" type="number" label="生产工人"></input-box>
                 <span class="mr-20">人</span>
-                <input-box v-model="form.staffInfo.technicistWorkers" type="number" label="技术人员"></input-box>
+                <input-box v-model="form.staffInfo.technicistWorkers" hint="必填" type="number" label="技术人员"></input-box>
                 <span>人</span>
             </div>
             <div>
@@ -116,7 +116,7 @@
         </div>
         <layer v-if="loading">
             <div class="abs t-center" style="padding: 20px;">
-                <loading size="30"/>
+                <loading size="30" />
                 <div style="margin-top: 10px;">正在保存</div>
             </div>
         </layer>
@@ -259,6 +259,26 @@ export default {
                 });
         },
         submit() {
+            if (
+                !this.form.suppilerName ||
+                !this.form.address ||
+                !this.form.phone ||
+                !this.form.legalPerson ||
+                !this.form.supplierProduct ||
+                !this.form.totalFactoryArea ||
+                !this.form.totalArchitArea ||
+                !this.form.processRoute ||
+                !this.form.evaluation ||
+                !this.form.suppilerNo ||
+                !this.form.responsiblePerson ||
+                !this.form.staffInfo.totalWorkers ||
+                !this.form.staffInfo.managerWorkers ||
+                !this.form.staffInfo.productionWorkers ||
+                !this.form.staffInfo.technicistWorkers
+            ) {
+                this.$toast("请输入必填项");
+                return;
+            }
             const { form } = this;
             form.accessories = this.accessories;
             const url = form.id ? "/supplier/edit" : "/supplier/add";

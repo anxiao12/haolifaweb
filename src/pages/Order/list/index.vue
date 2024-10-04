@@ -4,12 +4,19 @@
         <div class="flex-v-center tool-bar">
             <div class="flex-v-center search-bar" style="margin-right: 20px;">
                 <i class="icon f-20 c-8">search</i>
-                <input type="text" class="flex-item" v-model="filter.orderNo"
-                    @change="$refs.list.update(true); getOrderQty()" placeholder="订单号" style="width: 200px;">
+                <input
+                    type="text"
+                    class="flex-item"
+                    v-model="filter.orderNo"
+                    @change="$refs.list.update(true); getOrderQty()"
+                    placeholder="订单号"
+                    style="width: 200px;"
+                />
                 订单状态：
                 <select v-model="filter.orderStatus" class="f-14" @change="$refs.list.update(true); getOrderQty()">
                     <option value="-1">全部</option>
-                    <option v-for="item in newOrderStatusList" :value="item.value" v-bind:key="item.value">{{ item.text
+                    <option v-for="item in newOrderStatusList" :value="item.value" v-bind:key="item.value">
+                        {{ item.text
                         }}
                     </option>
                 </select>
@@ -29,19 +36,35 @@
                 </select>
                 地区：
                 <select v-model="filter.location" class="f-14" @change="$refs.list.update(true); getOrderQty()">
-                    <option value="">全部</option>
+                    <option value>全部</option>
                     <option :value="item.value" v-for="item, i in locationList" :key="i">{{ item.text }}</option>
                 </select>
                 <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
                 开始时间:
-                <el-date-picker v-model="filter.startDate" type="date" value-format="yyyy-MM-dd"
-                    @change="$refs.list.update(true); getOrderQty()" :editable="false"
-                    placeholder="选择年月日"></el-date-picker>结束时间:
-                <el-date-picker v-model="filter.endDate" type="date" value-format="yyyy-MM-dd"
-                    @change="$refs.list.update(true); getOrderQty()" :editable="false"
-                    placeholder="选择年月日"></el-date-picker>
-                <input type="text" class="flex-item" v-model="filter.demandName"
-                    @change="$refs.list.update(true); getOrderQty()" placeholder="需方" style="width: 200px;">
+                <el-date-picker
+                    v-model="filter.startDate"
+                    type="date"
+                    value-format="yyyy-MM-dd"
+                    @change="$refs.list.update(true); getOrderQty()"
+                    :editable="false"
+                    placeholder="选择年月日"
+                ></el-date-picker>结束时间:
+                <el-date-picker
+                    v-model="filter.endDate"
+                    type="date"
+                    value-format="yyyy-MM-dd"
+                    @change="$refs.list.update(true); getOrderQty()"
+                    :editable="false"
+                    placeholder="选择年月日"
+                ></el-date-picker>
+                <input
+                    type="text"
+                    class="flex-item"
+                    v-model="filter.demandName"
+                    @change="$refs.list.update(true); getOrderQty()"
+                    placeholder="需方"
+                    style="width: 200px;"
+                />
             </div>
             <div class="flex-item"></div>
         </div>
@@ -75,18 +98,15 @@
                     </td>-->
                     <td>{{ showOrderType(item.isCheckMaterial) }}</td>
                     <td>{{ item.location }}</td>
-                    <td :class="new Date(item.deliveryDate).getTime() < new Date().getTime() ? 'cell-color' : ''">
-                        {{ item.deliveryDate }}</td>
-                    <td :class="new Date(item.deliveryDate).getTime() < new Date().getTime() ? 'cell-color' : ''">
-                        {{ item.totalCount }}</td>
-                    <td :class="new Date(item.deliveryDate).getTime() < new Date().getTime() ? 'cell-color' : ''">
-                        {{ deliverStatusList[item.deliverStatus].text }}</td>
-                    <td :class="new Date(item.deliveryDate).getTime() < new Date().getTime() ? 'cell-color' : ''">
-                        {{ orderStatusList[item.orderStatus].text }}</td>
+                    <td :class="new Date(item.deliveryDate).getTime() < new Date().getTime() ? 'cell-color' : ''">{{ item.deliveryDate }}</td>
+                    <td :class="new Date(item.deliveryDate).getTime() < new Date().getTime() ? 'cell-color' : ''">{{ item.totalCount }}</td>
+                    <td
+                        :class="new Date(item.deliveryDate).getTime() < new Date().getTime() ? 'cell-color' : ''"
+                    >{{ deliverStatusList[item.deliverStatus].text }}</td>
+                    <td :class="new Date(item.deliveryDate).getTime() < new Date().getTime() ? 'cell-color' : ''">{{ orderStatusList[item.orderStatus].text }}</td>
                     <td>{{ item.createTime }}</td>
                     <td class="t-right">
-                        <a href="javascript:;" class="blue" @click="approveProgress(item)" v-if="item.orderStatus != 0"
-                            style="margin-right: 3px;">审批进度|</a>
+                        <a href="javascript:;" class="blue" @click="approveProgress(item)" v-if="item.orderStatus != 0" style="margin-right: 3px;">审批进度|</a>
                         <!-- <a href="javascript:;" class="blue" @click="approveProgress(item)" v-if="item.orderStatus==1" style="margin-right: 3px;">审批进度|</a> -->
                         <a href="javascript:;" class="blue" @click="infoShow(item)" style="margin-right: 3px;">详情</a>
                     </td>
@@ -128,12 +148,13 @@
                             <td colspan="17" class="b">
                                 订单合同:
                                 <a :href="info.orderContractUrl" style="margin-right: 15px;">下载</a>
-                                <a target="_blank" v-if="(info.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$')"
-                                    :href="info.orderContractUrl">预览</a>
-                                <a target="_blank" v-if="!(info.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$')"
-                                    :href="'http://view.officeapps.live.com/op/view.aspx?src=' + info.orderContractUrl">预览</a>
-                                <a href="javascript:;" @click="getPreCheckMater(info.orderNo)"
-                                    style="margin-left: 15px;">核料清单</a>
+                                <a target="_blank" v-if="(info.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$')" :href="info.orderContractUrl">预览</a>
+                                <a
+                                    target="_blank"
+                                    v-if="!(info.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$')"
+                                    :href="'http://view.officeapps.live.com/op/view.aspx?src=' + info.orderContractUrl"
+                                >预览</a>
+                                <a href="javascript:;" @click="getPreCheckMater(info.orderNo)" style="margin-left: 15px;">核料清单</a>
                             </td>
                             <!-- <td colspan="6" class="b">
                         订单备份合同:
@@ -147,10 +168,12 @@
                         <tr v-for="(item, index) in fileDetailList" :key="index">
                             <td colspan="5" class="b">{{ item.fileName }}</td>
                             <td colspan="12" class="b">
-                                <a target="_blank" v-if="(item.fileUrl).match('\.(pdf|jpe?g|png|bmp)$')"
-                                    :href="item.fileUrl">预览</a>
-                                <a target="_blank" v-if="!(item.fileUrl).match('\.(pdf|jpe?g|png|bmp)$')"
-                                    :href="'http://view.officeapps.live.com/op/view.aspx?src=' + item.fileUrl">预览</a>
+                                <a target="_blank" v-if="(item.fileUrl).match('\.(pdf|jpe?g|png|bmp)$')" :href="item.fileUrl">预览</a>
+                                <a
+                                    target="_blank"
+                                    v-if="!(item.fileUrl).match('\.(pdf|jpe?g|png|bmp)$')"
+                                    :href="'http://view.officeapps.live.com/op/view.aspx?src=' + item.fileUrl"
+                                >预览</a>
                             </td>
                         </tr>
                         <tr>
@@ -168,8 +191,11 @@
                         <tr>
                             <td colspan="4" class="b">技术清单:</td>
                             <td colspan="13">
-                                <a v-if="info.orderTechnicalDetaileds.length" target="_blank"
-                                    :href="'/haolifa/export/order-technical-detailed?orderNo=' + info.orderNo">导出</a>
+                                <a
+                                    v-if="info.orderTechnicalDetaileds.length"
+                                    target="_blank"
+                                    :href="'/haolifa/export/order-technical-detailed?orderNo=' + info.orderNo"
+                                >导出</a>
                                 <a href="javascript:;" v-else>无</a>
                             </td>
                         </tr>
@@ -256,10 +282,12 @@
                             <td colspan="6">{{ accessory.fileName }}</td>
                             <td colspan="7">{{ accessory.fileUrl }}</td>
                             <td colspan="4">
-                                <a target="_blank" v-if="!(accessory.fileUrl).match('\.(doc|docx|xls|xlsx)$')"
-                                    :href="accessory.fileUrl">预览</a>
-                                <a target="_blank" v-if="(accessory.fileUrl).match('\.(doc|docx|xls|xlsx)$')"
-                                    :href="'http://view.officeapps.live.com/op/view.aspx?src=' + accessory.fileUrl">预览</a>
+                                <a target="_blank" v-if="!(accessory.fileUrl).match('\.(doc|docx|xls|xlsx)$')" :href="accessory.fileUrl">预览</a>
+                                <a
+                                    target="_blank"
+                                    v-if="(accessory.fileUrl).match('\.(doc|docx|xls|xlsx)$')"
+                                    :href="'http://view.officeapps.live.com/op/view.aspx?src=' + accessory.fileUrl"
+                                >预览</a>
                             </td>
                         </tr>
                         <tr>
@@ -364,7 +392,7 @@ export default {
             deliverStatusList: [
                 { value: 0, text: "待发货" },
                 { value: 1, text: "部分发货" },
-                { value: 2, text: "发货完成" },
+                { value: 2, text: "发货完成" }
             ],
             orderQty: "",
             deliveryOrderQty: "",
@@ -384,7 +412,7 @@ export default {
                 { value: 12, text: "申请发货" },
                 { value: 13, text: "发货完成" },
                 { value: 14, text: "审核不通过" },
-                { value: 15, text: "采购中" },
+                { value: 15, text: "采购中" }
             ],
             newOrderStatusList: [
                 { value: 0, text: "创建" },
@@ -402,7 +430,7 @@ export default {
                 // { value: 12, text: "申请发货" },
                 // { value: 13, text: "发货完成" },
                 { value: 14, text: "审核不通过" },
-                { value: 15, text: "采购中" },
+                { value: 15, text: "采购中" }
             ],
             filter: {
                 orderNo: "",
@@ -431,8 +459,8 @@ export default {
                     tuhao: "",
                     jinniuju: "",
                     guodupan: "",
-                    jishuxinhao: "",
-                },
+                    jishuxinhao: ""
+                }
             ],
             //核料清单列表
             preCheckMaterList: [],
@@ -440,7 +468,7 @@ export default {
             checkStatusList: [
                 { value: 1, text: "成功" },
                 { value: 2, text: "待采购" },
-                { value: 3, text: "可替换" },
+                { value: 3, text: "可替换" }
             ],
             fileDetailList: [],
             processList: [],
@@ -448,7 +476,7 @@ export default {
                 0: "审核不通过",
                 1: "审核通过",
                 3: "流程初始化",
-                4: "未审核",
+                4: "未审核"
             },
             locationList: []
         };
@@ -461,7 +489,7 @@ export default {
         } else {
             this.getOrderQty();
         }
-        this.getLocation()
+        this.getLocation();
     },
     activated() {
         if (this.$route.query.name) {
@@ -471,18 +499,18 @@ export default {
         } else {
             this.getOrderQty();
         }
-        this.getLocation()
+        this.getLocation();
         // this.getOrderStatusList();
     },
     // activated(){}
     methods: {
         showOrderType(type) {
             if (type === 0) {
-                return '不走核料'
+                return "不走核料";
             } else if (type === 1) {
-                return '走核料'
+                return "走核料";
             } else {
-                return '整机订单'
+                return "整机订单";
             }
         },
         flush() {
@@ -507,7 +535,7 @@ export default {
                         return {
                             text: res.desc,
                             value: res.code
-                        }
+                        };
                     });
                 })
                 .catch(e => {
@@ -516,34 +544,38 @@ export default {
         },
         getAccessory(orderNo) {
             this.$http
-                .get(`/haolifa/flowInstance/flow/accessoryInfo?formNo=${orderNo}&formId=0`)
-                .then((res) => {
-                    res.forEach((item) => {
+                .get(
+                    `/haolifa/flowInstance/flow/accessoryInfo?formNo=${orderNo}&formId=0`
+                )
+                .then(res => {
+                    res.forEach(item => {
                         if (item.fileUrl != "") {
                             this.accessoryList.push(item);
                         }
                     });
                 })
-                .catch((e) => {
+                .catch(e => {
                     this.$toast(e.msg || e.message);
                 });
         },
         getOrderStatusList() {
-            this.$http.get("/haolifa/order-product/order-status-list").then((res) => {
-                this.orderStatusList = res.map((item) => {
-                    return { value: item.code, text: item.desc };
+            this.$http
+                .get("/haolifa/order-product/order-status-list")
+                .then(res => {
+                    this.orderStatusList = res.map(item => {
+                        return { value: item.code, text: item.desc };
+                    });
                 });
-            });
         },
         getPreCheckMater(orderNo) {
             this.btnFlag = true;
             //核料清单查询
             this.$http
                 .get(`/haolifa/order-product/order-material?orderNo=${orderNo}`)
-                .then((res) => {
+                .then(res => {
                     this.preCheckMaterList = res;
                 })
-                .catch((e) => {
+                .catch(e => {
                     this.$toast(e.msg || e.message);
                 });
         },
@@ -557,27 +589,29 @@ export default {
                 //     formNo: item.orderNo,
                 //     summary: "生产订单审批",
                 // })
-                .post("/haolifa/order-product/startFlow/" + item.orderNo, {
-                    id: item.orderNo
+                .post("/haolifa/order-product/startFlow/" + item.id, {
+                    id: item.id
                 })
-                .then((res) => {
-                    id = res.instanceId;
+                .then(res => {
+                    // id = res.instanceId;
                     // this.loading = false;
                     // this.$toast(`发起流程成功,流程ID: ${res.instanceId}`);
-                    this.$http
-                        .post("/haolifa/order-product/updateStatus", {
-                            orderNo: item.orderNo,
-                            status: 1,
-                        })
-                        .then((res) => {
-                            this.loading = false;
-                            this.$toast(`发起流程成功,流程ID: ${id}`);
-                        });
+                    // this.$http
+                    //     .post("/haolifa/order-product/updateStatus", {
+                    //         orderNo: item.orderNo,
+                    //         status: 1,
+                    //     })
+                    //     .then((res) => {
+                    this.loading = false;
+                    this.$toast(`发起流程成功`);
+                    // });
                 });
         },
         // 审批进度查看
         approveProgress(item) {
-            this.$router.push(`/order/approveProgress?formNo=${item.orderNo}&formId=0`);
+            this.$router.push(
+                `/order/approveProgress?formNo=${item.orderNo}&formId=0`
+            );
         },
         infoShow(item) {
             // this.$router.push(`/order/info?orderNo=${item.orderNo}`);
@@ -588,38 +622,42 @@ export default {
             // this.getOrderStatusList();
             this.$http
                 .get(`/haolifa/order-product/accessory?orderNo=${item.orderNo}`)
-                .then((res) => {
+                .then(res => {
                     this.fileDetailList = res;
                 })
-                .catch((e) => {
+                .catch(e => {
                     this.$toast(e.msg || e.message);
                 });
         },
         getProcess(item) {
             this.$http
-                .get(`/haolifa/flowInstance/flow/progress/?formNo=${encodeURIComponent(item.orderNo)}`)
-                .then((res) => {
+                .get(
+                    `/haolifa/flowInstance/flow/progress/?formNo=${encodeURIComponent(
+                        item.orderNo
+                    )}`
+                )
+                .then(res => {
                     this.processList = [];
-                    res.map((item) => {
+                    res.map(item => {
                         this.processList.push(item);
                         if (item.child.length > 0) {
-                            item.child.map((it) => {
+                            item.child.map(it => {
                                 this.processList.push(it);
                             });
                         }
                     });
                 })
-                .catch((e) => {
+                .catch(e => {
                     this.$toast(e.msg || e.message);
                 });
         },
         getInfo(orderNo) {
             this.$http
                 .get(`/haolifa/order-product/details?orderNo=${orderNo}`)
-                .then((res) => {
+                .then(res => {
                     this.info = res;
                 })
-                .catch((e) => {
+                .catch(e => {
                     this.$toast(e.msg || e.message);
                 });
         },
@@ -636,28 +674,28 @@ export default {
                 yes: () => {
                     this.$http
                         .delete(`/haolifa/order-product/delete/${item.id}`)
-                        .then((res) => {
+                        .then(res => {
                             this.$toast("删除成功");
                             this.$refs.list.update(true);
                         })
-                        .catch((e) => {
+                        .catch(e => {
                             this.$toast(e.msg);
                         });
-                },
+                }
             });
         },
         getOrderQty() {
             this.$http
                 .post("/haolifa/statistics/order-product", this.filter)
-                .then((res) => {
+                .then(res => {
                     this.orderQty = res.orderQty;
                     this.deliveryOrderQty = res.deliveryOrderQty;
                 })
-                .catch((e) => {
+                .catch(e => {
                     this.$toast(e.msg);
                 });
-        },
-    },
+        }
+    }
 };
 </script>
 
@@ -720,7 +758,6 @@ export default {
 }
 
 .order-info {
-
     th,
     td {
         white-space: unset !important;

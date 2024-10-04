@@ -47,6 +47,7 @@ export default {
                 "assessment",
                 "contacts",
                 "filter_b_and_w",
+                "filter_b_and_w",
             ],
         };
     },

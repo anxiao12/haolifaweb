@@ -791,7 +791,7 @@ export default {
                     let option = {
                         color: ["#3398DB", "#FF6666", "#66CCCC"],
                         title: {
-                            text: "产品类型质量统计图",
+                            text: "物料类型质量统计图",
                             // subtext: "纯属虚构",
                             x: "left"
                         },
